@@ -4,7 +4,11 @@ OF_PATH = ../../..
 
 //THIS HAS ALL THE HEADER AND LIBS FOR OF CORE
 #include "../../../libs/openFrameworksCompiled/project/osx/CoreOF.xcconfig"
-LIBUSB_HEADERS = $(OF_PATH)/addons/ofxKinect/libs/libusb/include
+LIBUSB_HEADERS = $(OF_PATH)/addons/ofxKinect/libs/libusb/osx/include
+OPENCV_HEADERS = $(OF_PATH)/addons/ofxOpenCv/src $(OF_PATH)/addons/ofxOpenCv/libs/opencv/include $(OF_PATH)/addons/ofxOpenCv/libs/opencv/include/opencv
+OPENCV_LIBS = $(OF_PATH)/addons/ofxOpenCv/libs/opencv/lib/osx/opencv.a
 
-OTHER_LDFLAGS = $(OF_CORE_LIBS) 
-HEADER_SEARCH_PATHS = $(OF_CORE_HEADERS) $(LIBUSB_HEADERS)
+
+
+OTHER_LDFLAGS = $(OF_CORE_LIBS) $(OPENCV_LIBS)
+HEADER_SEARCH_PATHS = $(OF_CORE_HEADERS) $(LIBUSB_HEADERS) $(OPENCV_HEADERS)

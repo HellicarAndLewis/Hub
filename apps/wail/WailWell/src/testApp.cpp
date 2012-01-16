@@ -3,18 +3,35 @@
 float waterThreshold = 10;
 //--------------------------------------------------------------
 void testApp::setup(){
+	kinect.init();
+	kinect.open();
+	depthImg.allocate(640, 480);
+	ofSetFrameRate(30);
+	ofSetVerticalSync(true);
+	
 	gui.addSlider("Water surface level", waterThreshold, 0, 255);
 	gui.loadFromXML();
 	gui.setAutoSave(true);
+
+	
 }
 
+void testApp::exit() {
+	kinect.close();
+}
 //--------------------------------------------------------------
 void testApp::update(){
-
+	kinect.update();
+	if(kinect.isFrameNew()) {
+		depthImg.setFromPixels(kinect.getDepthPixels(),640,480);
+		
+	}
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
+	ofSetHexColor(0xFFFFFF);
+	kinect.drawDepth(0, 0, ofGetWidth(), ofGetHeight());
 	if(gui.isOn()) gui.draw();
 }
 
