@@ -9,7 +9,8 @@ openFrameworksUniversal.a
 
 #rule to avoid non-official addons going into git
 #see addons/.gitignore
-addons/**
+#marek took this out
+#addons/**
 
 #xcode files
 *.pbxuser
