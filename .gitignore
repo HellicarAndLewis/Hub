@@ -46,7 +46,8 @@ apps/addonsExamples/*/*.workspace
 
 #rule to avoid non-official apps going into git
 #see apps/.gitignore
-apps/**
+#marek took this out
+#apps/**
 
 #codeblocks OF lib files
 libs/openFrameworksCompiled/project/*/*.depend
