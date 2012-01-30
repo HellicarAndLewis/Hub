@@ -5,9 +5,10 @@
 #include "ofxOpenCv.h"
 #include "ofxOsc.h"
 #include "xmlgui/container/SimpleGui.h"
+#include "ofxCvBlobTracker.h"
 
 
-class testApp : public ofBaseApp{
+class testApp : public ofBaseApp, public ofxCvBlobListener {
 
 public:
 	void setup();
@@ -28,6 +29,9 @@ public:
 	
 	ofxKinect kinect;
 	ofxCvGrayscaleImage depthImg;
+	ofxCvContourFinder contourFinder;
+	ofxCvBlobTracker blobTracker;
+	
 	ofxOscSender osc;
 	
 	
@@ -38,4 +42,14 @@ public:
 	ofVec2f *dragger;
 	void setupMask();
 	void saveMask();
+	float waterThreshold;
+	float maxWaterDepth;
+	float minBlobSize;
+	float maxBlobSize;
+	
+	// callbacks for blob listener
+	void blobOn( int x, int y, int id, int order );
+    void blobMoved( int x, int y, int id, int order );
+    void blobOff( int x, int y, int id, int order );
+
 };

@@ -56,6 +56,10 @@
 		EAC8152414D6AF2600595518 /* Instantiator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAC8151714D6AF2600595518 /* Instantiator.cpp */; };
 		EAC8152514D6AF2600595518 /* ofGuiEventDispatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAC8151A14D6AF2600595518 /* ofGuiEventDispatcher.cpp */; };
 		EAC8152614D6AF2600595518 /* Resources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAC8151E14D6AF2600595518 /* Resources.cpp */; };
+		EAC8153514D6D82600595518 /* CPUImageFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAC8152914D6D82600595518 /* CPUImageFilter.cpp */; };
+		EAC8153614D6D82600595518 /* ofxCvBlobTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAC8152B14D6D82600595518 /* ofxCvBlobTracker.cpp */; };
+		EAC8153714D6D82600595518 /* ofxCvCoordWarping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAC8152E14D6D82600595518 /* ofxCvCoordWarping.cpp */; };
+		EAC8153914D6D82600595518 /* ofxCvOpticalFlowLK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAC8153214D6D82600595518 /* ofxCvOpticalFlowLK.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -324,6 +328,16 @@
 		EAC8151D14D6AF2600595518 /* ParameterInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParameterInfo.h; sourceTree = "<group>"; };
 		EAC8151E14D6AF2600595518 /* Resources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Resources.cpp; sourceTree = "<group>"; };
 		EAC8151F14D6AF2600595518 /* Resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resources.h; sourceTree = "<group>"; };
+		EAC8152914D6D82600595518 /* CPUImageFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPUImageFilter.cpp; sourceTree = "<group>"; };
+		EAC8152A14D6D82600595518 /* CPUImageFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPUImageFilter.h; sourceTree = "<group>"; };
+		EAC8152B14D6D82600595518 /* ofxCvBlobTracker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCvBlobTracker.cpp; sourceTree = "<group>"; };
+		EAC8152C14D6D82600595518 /* ofxCvBlobTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCvBlobTracker.h; sourceTree = "<group>"; };
+		EAC8152D14D6D82600595518 /* ofxCvConstants_Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCvConstants_Track.h; sourceTree = "<group>"; };
+		EAC8152E14D6D82600595518 /* ofxCvCoordWarping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCvCoordWarping.cpp; sourceTree = "<group>"; };
+		EAC8152F14D6D82600595518 /* ofxCvCoordWarping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCvCoordWarping.h; sourceTree = "<group>"; };
+		EAC8153214D6D82600595518 /* ofxCvOpticalFlowLK.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCvOpticalFlowLK.cpp; sourceTree = "<group>"; };
+		EAC8153314D6D82600595518 /* ofxCvOpticalFlowLK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCvOpticalFlowLK.h; sourceTree = "<group>"; };
+		EAC8153414D6D82600595518 /* ofxCvTrackedBlob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCvTrackedBlob.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -360,6 +374,7 @@
 			children = (
 				EA4CBCB114D6AD1500684485 /* xmlgui */,
 				EA8E87F814C4967B00940115 /* ofxOpenCv */,
+				EAC8152714D6D82600595518 /* ofxOpenCVExtensions */,
 				EA8E87D114C492F300940115 /* ofxOsc */,
 				EA8E871714C492ED00940115 /* ofxKinect */,
 				EA8E87A714C492ED00940115 /* ofxXmlSettings */,
@@ -1201,6 +1216,32 @@
 			path = framework;
 			sourceTree = "<group>";
 		};
+		EAC8152714D6D82600595518 /* ofxOpenCVExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				EAC8152814D6D82600595518 /* src */,
+			);
+			name = ofxOpenCVExtensions;
+			path = ../../../addons/ofxOpenCVExtensions;
+			sourceTree = "<group>";
+		};
+		EAC8152814D6D82600595518 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				EAC8152914D6D82600595518 /* CPUImageFilter.cpp */,
+				EAC8152A14D6D82600595518 /* CPUImageFilter.h */,
+				EAC8152B14D6D82600595518 /* ofxCvBlobTracker.cpp */,
+				EAC8152C14D6D82600595518 /* ofxCvBlobTracker.h */,
+				EAC8152D14D6D82600595518 /* ofxCvConstants_Track.h */,
+				EAC8152E14D6D82600595518 /* ofxCvCoordWarping.cpp */,
+				EAC8152F14D6D82600595518 /* ofxCvCoordWarping.h */,
+				EAC8153214D6D82600595518 /* ofxCvOpticalFlowLK.cpp */,
+				EAC8153314D6D82600595518 /* ofxCvOpticalFlowLK.h */,
+				EAC8153414D6D82600595518 /* ofxCvTrackedBlob.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1315,6 +1356,10 @@
 				EAC8152414D6AF2600595518 /* Instantiator.cpp in Sources */,
 				EAC8152514D6AF2600595518 /* ofGuiEventDispatcher.cpp in Sources */,
 				EAC8152614D6AF2600595518 /* Resources.cpp in Sources */,
+				EAC8153514D6D82600595518 /* CPUImageFilter.cpp in Sources */,
+				EAC8153614D6D82600595518 /* ofxCvBlobTracker.cpp in Sources */,
+				EAC8153714D6D82600595518 /* ofxCvCoordWarping.cpp in Sources */,
+				EAC8153914D6D82600595518 /* ofxCvOpticalFlowLK.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

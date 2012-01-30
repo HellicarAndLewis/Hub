@@ -11,14 +11,19 @@
 // to the "WailWall" app.
 //
 
-float waterThreshold = 10;	
+
 //--------------------------------------------------------------
 void testApp::setup(){
+	waterThreshold = 10;
+	maxWaterDepth = 255;
+	minBlobSize = 10;
+	maxBlobSize = 200;
 	kinect.init();
 	kinect.open();
 	kinect.setUseTexture(false);
 	depthImg.allocate(kinect.getWidth(), kinect.getHeight());
 	
+	blobTracker.setListener(this);
 	ofSetFrameRate(30);
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
@@ -29,6 +34,9 @@ void testApp::setup(){
 	//gui.setup();
 	//gui.addDrawable("Depth", depthImg);
 	gui.addSlider("Water Surface Level", waterThreshold, 0, 255);
+	gui.addSlider("Maximum Water Depth", maxWaterDepth, 0, 255);
+	gui.addSlider("Minimum Blob Size", minBlobSize, 10, 320);
+	gui.addSlider("Maximum Blob Size", maxBlobSize, 320, 640);
 	gui.setEnabled(true);
  
 	gui.loadSettings("wailwell.xml");
@@ -78,11 +86,26 @@ void testApp::update(){
 		float startTime = ofGetElapsedTimef();
 		depthImg.setFromPixels(kinect.getDepthPixels(),640,480);
 		
-		cvThreshold(depthImg.getCvImage(), depthImg.getCvImage(), waterThreshold, 255, CV_THRESH_TOZERO_INV);
 		
-		
+		// threshold anything too close to the camera
+		cvThreshold(depthImg.getCvImage(), depthImg.getCvImage(), maxWaterDepth, 255, CV_THRESH_TOZERO_INV);
 		depthImg.flagImageChanged();
 		
+		// threshold anything too far away from the camera - i.e. the surface of the water
+		cvThreshold(depthImg.getCvImage(), depthImg.getCvImage(), waterThreshold, 255, CV_THRESH_TOZERO);
+		depthImg.flagImageChanged();
+		
+		
+		
+		//--------------------------------------------------------------------------------
+			// map from min1-max1 to min2-max2
+			float scale = 255/(maxWaterDepth-waterThreshold);
+			cvConvertScale( depthImg.getCvImage(), depthImg.getCvImage(), scale, -(waterThreshold*scale));
+		
+		
+		
+//		depthImg.rangeMap(waterThreshold, maxWaterDepth, 0, 255);
+		depthImg.flagImageChanged();
 		CvPoint points[NUM_MASK_POINTS];
 		for(int i = 0; i < NUM_MASK_POINTS; i++) {
 			points[i] = cvPoint(mask[i].x, mask[i].y);
@@ -111,6 +134,8 @@ void testApp::update(){
 				   );
 		depthImg.flagImageChanged();
 		
+		contourFinder.findContours(depthImg, minBlobSize*minBlobSize, maxBlobSize*maxBlobSize, 20, false);
+		blobTracker.trackBlobs(contourFinder.blobs);
 		lastVisionCalculationDuration = ofGetElapsedTimef() - startTime;
 	}
 	
@@ -123,23 +148,29 @@ void testApp::update(){
 void testApp::draw(){
 	ofBackground(0);
 	
-	ofSetHexColor(0xFFFFFF);
-	kinect.drawDepth(0, 0, ofGetWidth(), ofGetHeight());
-	depthImg.draw(10, 10, 640, 480);
-	ofNoFill();
-	ofRect(10, 10, 640, 480);
-	ofFill();
-	
-	
 	glPushMatrix();
-	glTranslatef(10, 10, 0);
-	for(int i = 0; i < NUM_MASK_POINTS; i++) {
-		if(dragger==&mask[i]) {
-			ofSetHexColor(0x00FF00);
-		} else {
-			ofSetHexColor(0xFF0000);
+	{
+		glTranslatef(10, 10, 0);
+	
+		ofSetHexColor(0xFFFFFF);
+		kinect.drawDepth(0, 0, ofGetWidth(), ofGetHeight());
+		depthImg.draw(0, 0, 640, 480);
+		//contourFinder.draw(0, 0);
+		ofNoFill();
+		ofRect(10, 10, 640, 480);
+		ofFill();
+		blobTracker.draw(0, 0);
+		
+		
+		
+		for(int i = 0; i < NUM_MASK_POINTS; i++) {
+			if(dragger==&mask[i]) {
+				ofSetHexColor(0x00FF00);
+			} else {
+				ofSetHexColor(0xFF0000);
+			}
+			ofRect(mask[i].x-1, mask[i].y-1, 2, 2);
 		}
-		ofRect(mask[i].x-1, mask[i].y-1, 2, 2);
 	}
 	glPopMatrix();
 	
@@ -203,4 +234,15 @@ void testApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void testApp::dragEvent(ofDragInfo dragInfo){ 
 
+}
+
+// callbacks for blob listener
+void testApp::blobOn( int x, int y, int id, int order ) {
+	
+}
+void testApp::blobMoved( int x, int y, int id, int order ) {
+	
+}
+void testApp::blobOff( int x, int y, int id, int order ) {
+	
 }
