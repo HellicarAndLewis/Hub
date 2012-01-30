@@ -8,7 +8,7 @@
 #pragma once
 #include "Control.h"
 #include "Listener.h"
-
+#define AUTO_LAYOUT_PADDING 15
 namespace xmlgui {
 	
 	enum LayoutType {

@@ -99,6 +99,7 @@ public:
 	
 	void getParameterInfo(vector<ParameterInfo> &params) {
 		LabeledControl::getParameterInfo(params);
+		ofJoinString(opts, "|");
 		params.push_back(ParameterInfo("Options", "options","textfield",&options));
 		params.push_back(ParameterInfo("Value", "value","intfield",value));
 		params.push_back(ParameterInfo("vertical", "vertical", "toggle", &vertical));

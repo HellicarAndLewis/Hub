@@ -4,6 +4,8 @@
 #include "ofxKinect.h"
 #include "ofxOpenCv.h"
 #include "ofxOsc.h"
+#include "xmlgui/container/SimpleGui.h"
+
 
 class testApp : public ofBaseApp{
 
@@ -28,9 +30,5 @@ public:
 	ofxCvGrayscaleImage depthImg;
 	ofxOscSender osc;
 	
-	//screen layout
-	string screenSettingsFile;
-	bool generateScreens;
-	bool shouldLoadScreens;
-	bool shouldSaveScreens;
+	xmlgui::SimpleGui gui;
 };

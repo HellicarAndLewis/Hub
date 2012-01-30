@@ -14,6 +14,11 @@
 
 #include "LabeledControl.h"
 
+#define hexValR(A)  ((A >> 16) & 0xff)
+#define hexValG(A) ((A >> 8) & 0xff)
+#define hexValB(A) ((A >> 0) & 0xff)
+
+
 class List: public LabeledControl {
 public:
 	
@@ -100,7 +105,7 @@ public:
 			
 			ofRect(x, scrollOffset + y + i*itemHeight, width-scrollerWidth, itemHeight);
 			
-			if(i==ival(value)) ofSetColor(0x00FF00);
+			if(i==ival(value)) ofSetHexColor(0x00FF00);
 			xmlgui::Resources::drawString(items[i], x+5, scrollOffset + y + (i+1)*itemHeight-4);
 			
 			// only draw as much as we need
@@ -203,4 +208,6 @@ public:
 	
 	ofPoint lastMouse;
 	vector<string> items;
+	string valueToString() { return ofToString(ival(value)); }
+	void valueFromString(string inp) { ival(value) = atoi(inp.c_str()); }
 };

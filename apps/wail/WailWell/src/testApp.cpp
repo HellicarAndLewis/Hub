@@ -25,7 +25,7 @@ void testApp::setup(){
 	
 	gui.addSlider("Water Surface Level", waterThreshold, 0, 255);
 	
-
+ 
 	gui.loadFromXML();
 	gui.setAutoSave(true);
 	

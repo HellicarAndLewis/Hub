@@ -22,7 +22,7 @@ public:
 		width = 110;
 		upImg = downImg = NULL;
 		upImgUrl = downImgUrl = "";
-		upColor = 0xFFFFFF;
+		upColor = 0x555555;
 		downColor = 0;
 		overColor = 0xCCCCCC;
 	}

@@ -11,8 +11,8 @@
 
 //#define DEFAULT_FONT "OCRAStd.ttf"
 //#define DEFAULT_FONT_SIZE 12
-#define DEFAULT_FONT "me-nlo.ttf"
-#define DEFAULT_FONT_SIZE 9
+#define DEFAULT_FONT "res/automat.ttf"
+#define DEFAULT_FONT_SIZE 6
 
 
 ofTrueTypeFont *xmlgui::Resources::font = NULL;

@@ -9,7 +9,7 @@
 #include "Container.h"
 #include "Gui.h"
 #include "Instantiator.h"
-#define AUTO_LAYOUT_PADDING 15
+
 
 xmlgui::Container::Container(): Control() {
 	type = "container";

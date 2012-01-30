@@ -47,10 +47,10 @@ void xmlgui::Instantiator::registerControls() {
 
 	REGISTER_CONTROL(Container,		"container");
 	REGISTER_CONTROL(Pane,			"pane");
-	
+
 	REGISTER_CONTROL(PushButton,	"pushbutton");
 	REGISTER_CONTROL(Slider,		"slider");
-	REGISTER_CONTROL(ColorPicker,	"colorpicker");
+//	REGISTER_CONTROL(ColorPicker,	"colorpicker");
 	REGISTER_CONTROL(Knob,			"knob");
 	REGISTER_CONTROL(Toggle,		"toggle");
 	REGISTER_CONTROL(Contour,		"contour");
@@ -63,7 +63,7 @@ void xmlgui::Instantiator::registerControls() {
 	REGISTER_CONTROL(Slider2D,		"slider2d");
 	REGISTER_CONTROL(Drawable,		"drawable");
 	REGISTER_CONTROL(List,			"list");
-	
+
 	REGISTER_CONTROL(DoubleField,	"doublefield");
 	REGISTER_CONTROL(TextField,		"textfield");
 	REGISTER_CONTROL(Text,			"text");
@@ -72,9 +72,9 @@ void xmlgui::Instantiator::registerControls() {
 	REGISTER_CONTROL(IntField,		"intfield");
 
 	REGISTER_CONTROL(FileField,		"file");
-	
+
 	REGISTER_CONTROL(Grid,			"grid");
-	
+
 	// menu stuff for gui editor
 	REGISTER_CONTROL(Menu,			"menu");
 	REGISTER_CONTROL(MenuBar,		"menubar");
