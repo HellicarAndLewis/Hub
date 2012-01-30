@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A683B8E514D5A5A300C3B6F7 /* ofxWWScreenManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A683B8E414D5A5A300C3B6F7 /* ofxWWScreenManager.cpp */; };
+		A683B8F414D5A64A00C3B6F7 /* ofxWWScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A683B8F314D5A64A00C3B6F7 /* ofxWWScreen.cpp */; };
+		A683B91014D5A9A800C3B6F7 /* ofxWWRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A683B90F14D5A9A800C3B6F7 /* ofxWWRenderer.cpp */; };
+		A683B93E14D5BE1C00C3B6F7 /* ofxWWSimulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A683B93D14D5BE1C00C3B6F7 /* ofxWWSimulation.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -98,6 +102,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A683B8E314D5A5A300C3B6F7 /* ofxWWScreenManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxWWScreenManager.h; sourceTree = "<group>"; };
+		A683B8E414D5A5A300C3B6F7 /* ofxWWScreenManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxWWScreenManager.cpp; sourceTree = "<group>"; };
+		A683B8F214D5A64A00C3B6F7 /* ofxWWScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxWWScreen.h; sourceTree = "<group>"; };
+		A683B8F314D5A64A00C3B6F7 /* ofxWWScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxWWScreen.cpp; sourceTree = "<group>"; };
+		A683B90E14D5A9A800C3B6F7 /* ofxWWRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxWWRenderer.h; sourceTree = "<group>"; };
+		A683B90F14D5A9A800C3B6F7 /* ofxWWRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxWWRenderer.cpp; sourceTree = "<group>"; };
+		A683B93C14D5BE1C00C3B6F7 /* ofxWWSimulation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxWWSimulation.h; sourceTree = "<group>"; };
+		A683B93D14D5BE1C00C3B6F7 /* ofxWWSimulation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxWWSimulation.cpp; sourceTree = "<group>"; };
+		A69C743B14D6470B00C0EABC /* ofModifiers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofModifiers.h; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
@@ -109,7 +122,7 @@
 		E45BE9770E8CC7DD009D7055 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		E45BE9790E8CC7DD009D7055 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		E45BE97A0E8CC7DD009D7055 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
-		E4B69B5B0A3A1756003C02F2 /* emptyExampleDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = emptyExampleDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4B69B5B0A3A1756003C02F2 /* WailWellDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WailWellDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B69E1D0A3A1BDC003C02F2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = testApp.cpp; path = src/testApp.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1F0A3A1BDC003C02F2 /* testApp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = testApp.h; path = src/testApp.h; sourceTree = SOURCE_ROOT; };
@@ -361,6 +374,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A683B8E614D5A60C00C3B6F7 /* ScreenManagement */ = {
+			isa = PBXGroup;
+			children = (
+				A683B8E314D5A5A300C3B6F7 /* ofxWWScreenManager.h */,
+				A683B8E414D5A5A300C3B6F7 /* ofxWWScreenManager.cpp */,
+				A683B8F214D5A64A00C3B6F7 /* ofxWWScreen.h */,
+				A683B8F314D5A64A00C3B6F7 /* ofxWWScreen.cpp */,
+			);
+			name = ScreenManagement;
+			sourceTree = "<group>";
+		};
+		A683B91114D5A9BD00C3B6F7 /* Renderer */ = {
+			isa = PBXGroup;
+			children = (
+				A683B90E14D5A9A800C3B6F7 /* ofxWWRenderer.h */,
+				A683B90F14D5A9A800C3B6F7 /* ofxWWRenderer.cpp */,
+				A683B93C14D5BE1C00C3B6F7 /* ofxWWSimulation.h */,
+				A683B93D14D5BE1C00C3B6F7 /* ofxWWSimulation.cpp */,
+			);
+			name = Renderer;
+			sourceTree = "<group>";
+		};
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
@@ -427,16 +462,19 @@
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
 				E45BE5980E8CC70C009D7055 /* frameworks */,
-				E4B69B5B0A3A1756003C02F2 /* emptyExampleDebug.app */,
+				E4B69B5B0A3A1756003C02F2 /* WailWellDebug.app */,
 			);
 			sourceTree = "<group>";
 		};
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				A683B91114D5A9BD00C3B6F7 /* Renderer */,
+				A683B8E614D5A60C00C3B6F7 /* ScreenManagement */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
-				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
+				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
+				A69C743B14D6470B00C0EABC /* ofModifiers.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1216,9 +1254,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E4B69B5A0A3A1756003C02F2 /* emptyExample */ = {
+		E4B69B5A0A3A1756003C02F2 /* WailWell */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "emptyExample" */;
+			buildConfigurationList = E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "WailWell" */;
 			buildPhases = (
 				E4B69B580A3A1756003C02F2 /* Sources */,
 				E4B69B590A3A1756003C02F2 /* Frameworks */,
@@ -1230,9 +1268,9 @@
 			dependencies = (
 				E4EEB9AC138B136A00A80321 /* PBXTargetDependency */,
 			);
-			name = emptyExample;
+			name = WailWell;
 			productName = myOFApp;
-			productReference = E4B69B5B0A3A1756003C02F2 /* emptyExampleDebug.app */;
+			productReference = E4B69B5B0A3A1756003C02F2 /* WailWellDebug.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1261,7 +1299,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				E4B69B5A0A3A1756003C02F2 /* emptyExample */,
+				E4B69B5A0A3A1756003C02F2 /* WailWell */,
 			);
 		};
 /* End PBXProject section */
@@ -1336,6 +1374,10 @@
 				EA8E886814C4967B00940115 /* ofxCvHaarFinder.cpp in Sources */,
 				EA8E886914C4967B00940115 /* ofxCvImage.cpp in Sources */,
 				EA8E886A14C4967B00940115 /* ofxCvShortImage.cpp in Sources */,
+				A683B8E514D5A5A300C3B6F7 /* ofxWWScreenManager.cpp in Sources */,
+				A683B8F414D5A64A00C3B6F7 /* ofxWWScreen.cpp in Sources */,
+				A683B91014D5A9A800C3B6F7 /* ofxWWRenderer.cpp in Sources */,
+				A683B93E14D5BE1C00C3B6F7 /* ofxWWSimulation.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1502,7 +1544,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../../../addons/ofxOsc/libs/oscpack/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/osx\"";
 				PREBINDING = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)Debug";
+				PRODUCT_NAME = WailWellDebug;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1599,7 +1641,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../../../addons/ofxOsc/libs/oscpack/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/osx\"";
 				PREBINDING = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = WailWell;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1617,7 +1659,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "emptyExample" */ = {
+		E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "WailWell" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4B69B600A3A1757003C02F2 /* Debug */,
