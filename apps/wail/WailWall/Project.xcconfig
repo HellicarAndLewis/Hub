@@ -8,7 +8,8 @@ LIBUSB_HEADERS = $(OF_PATH)/addons/ofxKinect/libs/libusb/osx/include
 OPENCV_HEADERS = $(OF_PATH)/addons/ofxOpenCv/src $(OF_PATH)/addons/ofxOpenCv/libs/opencv/include $(OF_PATH)/addons/ofxOpenCv/libs/opencv/include/opencv
 OPENCV_LIBS = $(OF_PATH)/addons/ofxOpenCv/libs/opencv/lib/osx/opencv.a
 
+FTGL_HEADERS = $(OF_PATH)/addons/ofxFTGL/libs/FTGL/src/ $(OF_PATH)/addons/ofxFTGL/libs/FTGL/src/FTFont $(OF_PATH)/addons/ofxFTGL/libs/FTGL/src/FTGL $(OF_PATH)/addons/ofxFTGL/libs/FTGL/src/FTGlyph $(OF_PATH)/addons/ofxFTGL/libs/FTGL/src/FTLayout
 
 
-OTHER_LDFLAGS = $(OF_CORE_LIBS) $(OPENCV_LIBS)
-HEADER_SEARCH_PATHS = $(OF_CORE_HEADERS) $(LIBUSB_HEADERS) $(OPENCV_HEADERS)
+OTHER_LDFLAGS = $(OF_CORE_LIBS) $(OPENCV_LIBS) 
+HEADER_SEARCH_PATHS = $(OF_CORE_HEADERS) $(LIBUSB_HEADERS) $(OPENCV_HEADERS) $(FTGL_HEADERS)
