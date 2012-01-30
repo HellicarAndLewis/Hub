@@ -7,10 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A621C4C914D73342008AA7F0 /* ofxMPMFluid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A621C4BF14D73342008AA7F0 /* ofxMPMFluid.cpp */; };
+		A621C4CA14D73342008AA7F0 /* ofxMPMNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A621C4C114D73342008AA7F0 /* ofxMPMNode.cpp */; };
+		A621C4CB14D73342008AA7F0 /* ofxMPMObstacle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A621C4C314D73342008AA7F0 /* ofxMPMObstacle.cpp */; };
+		A621C4CC14D73342008AA7F0 /* ofxMPMParticle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A621C4C514D73342008AA7F0 /* ofxMPMParticle.cpp */; };
 		A683B8E514D5A5A300C3B6F7 /* ofxWWScreenManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A683B8E414D5A5A300C3B6F7 /* ofxWWScreenManager.cpp */; };
 		A683B8F414D5A64A00C3B6F7 /* ofxWWScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A683B8F314D5A64A00C3B6F7 /* ofxWWScreen.cpp */; };
 		A683B91014D5A9A800C3B6F7 /* ofxWWRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A683B90F14D5A9A800C3B6F7 /* ofxWWRenderer.cpp */; };
-		A683B93E14D5BE1C00C3B6F7 /* ofxWWSimulation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A683B93D14D5BE1C00C3B6F7 /* ofxWWSimulation.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -86,14 +89,20 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A621C4BF14D73342008AA7F0 /* ofxMPMFluid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMPMFluid.cpp; sourceTree = "<group>"; };
+		A621C4C014D73342008AA7F0 /* ofxMPMFluid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMPMFluid.h; sourceTree = "<group>"; };
+		A621C4C114D73342008AA7F0 /* ofxMPMNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMPMNode.cpp; sourceTree = "<group>"; };
+		A621C4C214D73342008AA7F0 /* ofxMPMNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMPMNode.h; sourceTree = "<group>"; };
+		A621C4C314D73342008AA7F0 /* ofxMPMObstacle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMPMObstacle.cpp; sourceTree = "<group>"; };
+		A621C4C414D73342008AA7F0 /* ofxMPMObstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMPMObstacle.h; sourceTree = "<group>"; };
+		A621C4C514D73342008AA7F0 /* ofxMPMParticle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMPMParticle.cpp; sourceTree = "<group>"; };
+		A621C4C614D73342008AA7F0 /* ofxMPMParticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMPMParticle.h; sourceTree = "<group>"; };
 		A683B8E314D5A5A300C3B6F7 /* ofxWWScreenManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxWWScreenManager.h; sourceTree = "<group>"; };
 		A683B8E414D5A5A300C3B6F7 /* ofxWWScreenManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxWWScreenManager.cpp; sourceTree = "<group>"; };
 		A683B8F214D5A64A00C3B6F7 /* ofxWWScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxWWScreen.h; sourceTree = "<group>"; };
 		A683B8F314D5A64A00C3B6F7 /* ofxWWScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxWWScreen.cpp; sourceTree = "<group>"; };
 		A683B90E14D5A9A800C3B6F7 /* ofxWWRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxWWRenderer.h; sourceTree = "<group>"; };
 		A683B90F14D5A9A800C3B6F7 /* ofxWWRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxWWRenderer.cpp; sourceTree = "<group>"; };
-		A683B93C14D5BE1C00C3B6F7 /* ofxWWSimulation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxWWSimulation.h; sourceTree = "<group>"; };
-		A683B93D14D5BE1C00C3B6F7 /* ofxWWSimulation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxWWSimulation.cpp; sourceTree = "<group>"; };
 		A69C743B14D6470B00C0EABC /* ofModifiers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofModifiers.h; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
@@ -220,6 +229,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A621C48714D73342008AA7F0 /* ofxMPMFluid */ = {
+			isa = PBXGroup;
+			children = (
+				A621C4BE14D73342008AA7F0 /* src */,
+			);
+			name = ofxMPMFluid;
+			path = ../../../addons/ofxMPMFluid;
+			sourceTree = SOURCE_ROOT;
+		};
+		A621C4BE14D73342008AA7F0 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				A621C4BF14D73342008AA7F0 /* ofxMPMFluid.cpp */,
+				A621C4C014D73342008AA7F0 /* ofxMPMFluid.h */,
+				A621C4C114D73342008AA7F0 /* ofxMPMNode.cpp */,
+				A621C4C214D73342008AA7F0 /* ofxMPMNode.h */,
+				A621C4C314D73342008AA7F0 /* ofxMPMObstacle.cpp */,
+				A621C4C414D73342008AA7F0 /* ofxMPMObstacle.h */,
+				A621C4C514D73342008AA7F0 /* ofxMPMParticle.cpp */,
+				A621C4C614D73342008AA7F0 /* ofxMPMParticle.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		A683B8E614D5A60C00C3B6F7 /* ScreenManagement */ = {
 			isa = PBXGroup;
 			children = (
@@ -236,8 +269,6 @@
 			children = (
 				A683B90E14D5A9A800C3B6F7 /* ofxWWRenderer.h */,
 				A683B90F14D5A9A800C3B6F7 /* ofxWWRenderer.cpp */,
-				A683B93C14D5BE1C00C3B6F7 /* ofxWWSimulation.h */,
-				A683B93D14D5BE1C00C3B6F7 /* ofxWWSimulation.cpp */,
 			);
 			name = Renderer;
 			sourceTree = "<group>";
@@ -245,6 +276,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				A621C48714D73342008AA7F0 /* ofxMPMFluid */,
 				EA8E87D114C492F300940115 /* ofxOsc */,
 				EA8E876714C492ED00940115 /* ofxMSAInteractiveObject */,
 				EA8E877814C492ED00940115 /* ofxSimpleGuiToo */,
@@ -657,7 +689,10 @@
 				A683B8E514D5A5A300C3B6F7 /* ofxWWScreenManager.cpp in Sources */,
 				A683B8F414D5A64A00C3B6F7 /* ofxWWScreen.cpp in Sources */,
 				A683B91014D5A9A800C3B6F7 /* ofxWWRenderer.cpp in Sources */,
-				A683B93E14D5BE1C00C3B6F7 /* ofxWWSimulation.cpp in Sources */,
+				A621C4C914D73342008AA7F0 /* ofxMPMFluid.cpp in Sources */,
+				A621C4CA14D73342008AA7F0 /* ofxMPMNode.cpp in Sources */,
+				A621C4CB14D73342008AA7F0 /* ofxMPMObstacle.cpp in Sources */,
+				A621C4CC14D73342008AA7F0 /* ofxMPMParticle.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

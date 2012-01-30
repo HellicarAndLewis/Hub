@@ -28,6 +28,9 @@ void testApp::setup(){
 	
 	screenSettingsFile = "ScreenSettings.xml";
 	
+	renderer.setup(1920, 1080);
+
+	renderer.setupGui();
 	
 	gui.addPage("Screen Settings");
 	gui.addToggle("Generate Screen Layout", generateScreens);
@@ -44,6 +47,8 @@ void testApp::exit() {
 //--------------------------------------------------------------
 void testApp::update(){
 	
+	renderer.update();
+	renderer.render();
 	
 	if(generateScreens){
 		generateScreens = false;
@@ -66,9 +71,6 @@ void testApp::update(){
 void testApp::draw(){
 	ofBackground(0);
 	
-//	ofSetHexColor(0xFFFFFF);
-//	kinect.drawDepth(0, 0, ofGetWidth(), ofGetHeight());
-	
 	//draw preview rects
 	ofPushStyle();
 	ofSetColor(255, 255, 255);
@@ -79,13 +81,17 @@ void testApp::draw(){
 	ofSetColor(255, 255, 0);
 	ofDrawBitmapString("Display Output", screenManager.destRect.x+5, screenManager.destRect.y-5);
 	ofRect(screenManager.destRect);
-	
-	screenManager.renderPreview();
-	screenManager.renderScreens();
-	
 	ofPopStyle();
 	
-	if(gui.isOn()) gui.draw();
+	
+	renderer.getFbo().getTextureReference().bind();
+	screenManager.renderPreview();
+	renderer.getFbo().getTextureReference().unbind();
+	
+	renderer.getFbo().getTextureReference().draw(screenManager.sourceRect);
+	screenManager.renderScreens();
+
+	gui.draw();
 }
 
 //--------------------------------------------------------------
@@ -94,8 +100,8 @@ void testApp::keyPressed(int key){
 		case ' ': {
 			gui.toggleDraw();
 			break;
-		
 		}
+			 
 		case 'f': {
 			ofToggleFullscreen();
 			break;

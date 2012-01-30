@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxOsc.h"
 #include "ofxWWScreenManager.h"
+#include "ofxWWRenderer.h"
 
 class testApp : public ofBaseApp{
 
@@ -24,10 +25,10 @@ public:
 	void gotMessage(ofMessage msg);
 	
 	ofxOscReceiver visionOsc;
-	
 
 	//one for each triplehead output
 	ofxWWScreenManager screenManager;
+	ofxWWRenderer renderer;
 	
 	//screen layout
 	string screenSettingsFile;

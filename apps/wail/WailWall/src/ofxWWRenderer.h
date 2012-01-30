@@ -9,13 +9,20 @@
 
 #pragma once
 #include "ofMain.h"
+#include "ofxMPMFluid.h"
 
 class ofxWWRenderer {
   public:
+	
 	void setup(int width, int height);
+	void setupGui();
 	void update();
-	void draw();
+	void render();
+	
+	ofFbo& getFbo();
+	
   protected:
+	ofxMPMFluid fluid;
 	ofFbo renderTarget;
 	
 };
