@@ -1,9 +1,8 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxKinect.h"
-#include "ofxOpenCv.h"
 #include "ofxOsc.h"
+#include "ofxWWScreenManager.h"
 
 class testApp : public ofBaseApp{
 
@@ -24,9 +23,11 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 	
-	ofxKinect kinect;
-	ofxCvGrayscaleImage depthImg;
-	ofxOscSender osc;
+	ofxOscReceiver visionOsc;
+	
+
+	//one for each triplehead output
+	ofxWWScreenManager screenManager;
 	
 	//screen layout
 	string screenSettingsFile;
