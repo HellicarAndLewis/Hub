@@ -1,5 +1,5 @@
 #pragma once
-#include "Container.h"
+#include "xmlgui/framework/Container.h"
 #include "Instantiator.h"
 #include "Slider.h"
 #include "Toggle.h"
@@ -7,22 +7,30 @@
 #include "List.h"
 #include "PushButton.h"
 #include "ofGuiEventDispatcher.h"
+#include "Drawable.h"
+
 #define SIMPLE_GUI_WIDTH 150
+
 namespace xmlgui {
 	class SimpleGui: public xmlgui::Container, public xmlgui::Listener {
 	public:
-		virtual void setup() {
-			events.setup(this);
+		SimpleGui(): xmlgui::Container() {
 			addListener(this);
 			setLayoutType(xmlgui::LayoutType_vertical);
-			enabled = false;
-			setEnabled(true);
-			setEnabled(false);
 			x = 10;
 			y = 20;
 			mustAddNewColumn = false;
+			isSetup = false;
 		}
+		virtual void setup() {
+			events.setup(this);
+			isSetup = true;
+			enabled = false;
+			setEnabled(true);
+			setEnabled(false);
+					}
 		void setEnabled(bool enabled) {
+			if(!isSetup) this->setup();
 			if(this->enabled!=enabled) {
 				events.setEnabled(enabled);
 				this->enabled = enabled;
@@ -40,6 +48,19 @@ namespace xmlgui {
 			if(settingsFile!="") {	
 				saveSettings();
 			}
+		}
+		
+		Drawable *addDrawable(string name, ofBaseDraws &baseDraws) {
+			using namespace xmlgui;
+			Drawable *drawable = (Drawable*)INSTANTIATE("drawable");
+			drawable->name = drawable->id = name;
+			drawable->drawable = &baseDraws;
+			drawable->width = SIMPLE_GUI_WIDTH;
+			drawable->height = baseDraws.getHeight()*SIMPLE_GUI_WIDTH/baseDraws.getWidth();
+			addChild(drawable);
+			columnCheck();
+			return drawable;
+			
 		}
 		Slider *addSlider(string name, float &value, float min, float max) {
 			using namespace xmlgui;
@@ -180,6 +201,7 @@ namespace xmlgui {
 		
 		bool enabled;
 		bool mustAddNewColumn;
+		bool isSetup;
 		string settingsFile;
 			
 		void toggle() {

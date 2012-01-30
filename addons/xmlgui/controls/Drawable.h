@@ -5,13 +5,13 @@
  * Created by Marek Bereza on 08/02/2011.
  *
  */
-#include "Control.h"
+#include "LabeledControl.h"
 #pragma once
 namespace xmlgui {
-	class Drawable: public xmlgui::Control {
+	class Drawable: public LabeledControl {
 	public:
 		ofBaseDraws *drawable;
-		Drawable(): Control() {
+		Drawable(): LabeledControl() {
 			drawable = NULL;
 		}
 		
