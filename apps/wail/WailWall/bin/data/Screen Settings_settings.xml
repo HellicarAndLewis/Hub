@@ -1,0 +1,14 @@
+<controls>
+    <Toggle_Generate_Screen_Layout>
+        <name>Generate Screen Layout</name>
+        <value>0</value>
+    </Toggle_Generate_Screen_Layout>
+    <Toggle_Load_Screens_File>
+        <name>Load Screens File</name>
+        <value>0</value>
+    </Toggle_Load_Screens_File>
+    <Toggle_Save_Screens_File>
+        <name>Save Screens File</name>
+        <value>0</value>
+    </Toggle_Save_Screens_File>
+</controls>

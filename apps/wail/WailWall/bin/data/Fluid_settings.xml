@@ -1,0 +1,42 @@
+<controls>
+    <SliderInt_Particles>
+        <name>Particles</name>
+        <value>53965</value>
+    </SliderInt_Particles>
+    <SliderFloat_Density>
+        <name>Density</name>
+        <value>5.000000</value>
+    </SliderFloat_Density>
+    <SliderFloat_Stiffness>
+        <name>Stiffness</name>
+        <value>0.500000</value>
+    </SliderFloat_Stiffness>
+    <SliderFloat_Bulk_Viscosity>
+        <name>Bulk Viscosity</name>
+        <value>3.000000</value>
+    </SliderFloat_Bulk_Viscosity>
+    <SliderFloat_Elasticity>
+        <name>Elasticity</name>
+        <value>1.000000</value>
+    </SliderFloat_Elasticity>
+    <SliderFloat_Viscosity>
+        <name>Viscosity</name>
+        <value>1.000000</value>
+    </SliderFloat_Viscosity>
+    <SliderFloat_Yield_Rate>
+        <name>Yield Rate</name>
+        <value>1.000000</value>
+    </SliderFloat_Yield_Rate>
+    <SliderFloat_Gravity>
+        <name>Gravity</name>
+        <value>0.002000</value>
+    </SliderFloat_Gravity>
+    <SliderFloat_Smoothing>
+        <name>Smoothing</name>
+        <value>1.000000</value>
+    </SliderFloat_Smoothing>
+    <Toggle_Do_Obstacles>
+        <name>Do Obstacles</name>
+        <value>1</value>
+    </Toggle_Do_Obstacles>
+</controls>

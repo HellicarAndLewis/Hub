@@ -26,7 +26,7 @@ void testApp::setup(){
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
 	
-	screenSettingsFile = "ScreenSettings.xml";
+	screenSettingsFile = "DisplayLayout.xml";
 	
 	renderer.setup(1920, 1080);
 
