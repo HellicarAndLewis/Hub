@@ -32,7 +32,8 @@ public:
 	ofxCvContourFinder contourFinder;
 	ofxCvBlobTracker blobTracker;
 	
-	ofxOscSender osc;
+	ofxOscSender wallOsc;
+	ofxOscSender soundOsc;
 	
 	
 	xmlgui::SimpleGui gui;
