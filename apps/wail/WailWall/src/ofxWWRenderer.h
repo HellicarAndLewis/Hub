@@ -10,6 +10,7 @@
 #pragma once
 #include "ofMain.h"
 #include "ofxMPMFluid.h"
+#include "ofxWWTweetManager.h"
 
 class ofxWWRenderer {
   public:
@@ -22,6 +23,11 @@ class ofxWWRenderer {
 	ofFbo& getFbo();
 	
   protected:
+	ofxWWTweetManager tweets;
+	
+	void renderFirstLayer();
+	void renderSecondLayer();
+	
 	ofxMPMFluid fluid;
 	ofFbo renderTarget;
 	

@@ -16,9 +16,6 @@
 //	114.15 / 40.38 = 2.83
 //*******
 
-int canvasWidth  = 720*5;
-int canvasHeight = 720*5;
-
 //--------------------------------------------------------------
 void testApp::setup(){
 	
@@ -29,7 +26,6 @@ void testApp::setup(){
 	screenSettingsFile = "DisplayLayout.xml";
 	
 	renderer.setup(1920, 1080);
-
 	renderer.setupGui();
 	
 	gui.addPage("Screen Settings");
@@ -39,11 +35,15 @@ void testApp::setup(){
 	
 	gui.loadFromXML();
 	gui.setAutoSave(true);
+
+	screenManager.loadScreens(screenSettingsFile);
 	
 }
 
 void testApp::exit() {
+	
 }
+
 //--------------------------------------------------------------
 void testApp::update(){
 	
