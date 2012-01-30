@@ -15,7 +15,9 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 	
-	osc.setup("localhost", 12345);
+	wallOsc.setup("localhost", 1234);
+	soundOsc.setup("localhost", 2468);
+	
 	waterThreshold = 10;
 	maxWaterDepth = 255;
 	minBlobSize = 10;
@@ -288,7 +290,8 @@ void testApp::blobOn( int x, int y, int id, int order ) {
 	msg.addFloatArg(blobCoords.x);
 	msg.addFloatArg(blobCoords.y);
 	msg.addFloatArg(blobCoords.z);
-	osc.sendMessage(msg);
+	wallOsc.sendMessage(msg);
+	soundOsc.sendMessage(msg);
 }
 
 void testApp::blobMoved( int x, int y, int id, int order ) {
@@ -301,7 +304,8 @@ void testApp::blobMoved( int x, int y, int id, int order ) {
 	msg.addFloatArg(blobCoords.x);
 	msg.addFloatArg(blobCoords.y);
 	msg.addFloatArg(blobCoords.z);
-	osc.sendMessage(msg);
+	wallOsc.sendMessage(msg);
+	soundOsc.sendMessage(msg);
 }
 void testApp::blobOff( int x, int y, int id, int order ) {
 	if(blobs.find(id)!=blobs.end()) {
@@ -311,5 +315,6 @@ void testApp::blobOff( int x, int y, int id, int order ) {
 	ofxOscMessage msg;
 	msg.setAddress("/touch/up");
 	msg.addIntArg(id);
-	osc.sendMessage(msg);
+	wallOsc.sendMessage(msg);
+	soundOsc.sendMessage(msg);
 }
