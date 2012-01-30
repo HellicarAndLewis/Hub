@@ -52,4 +52,7 @@ public:
     void blobMoved( int x, int y, int id, int order );
     void blobOff( int x, int y, int id, int order );
 
+	ofVec3f getBlobCoords(ofxCvTrackedBlob &blob);
+	void normalizeBlobCoords(ofVec3f &blob);
+	map<int,ofVec3f> blobs;
 };

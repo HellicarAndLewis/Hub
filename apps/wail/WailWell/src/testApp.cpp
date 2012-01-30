@@ -14,6 +14,8 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
+	
+	osc.setup("localhost", 12345);
 	waterThreshold = 10;
 	maxWaterDepth = 255;
 	minBlobSize = 10;
@@ -171,8 +173,25 @@ void testApp::draw(){
 			}
 			ofRect(mask[i].x-1, mask[i].y-1, 2, 2);
 		}
+	
+
+		ofSetHexColor(0x009900);
+		glPushMatrix();
+		{
+			glScalef(640, 480, 1);
+			for(map<int,ofVec3f>::iterator it = blobs.begin();
+				it != blobs.end(); 
+				it++) {
+				
+				ofEllipse((*it).second.x, (*it).second.y, 5.f/640.f, 5.f/480.f);
+			}
+		}
+		glPopMatrix();
+	
 	}
 	glPopMatrix();
+	
+	
 	
 }
 
@@ -235,14 +254,62 @@ void testApp::gotMessage(ofMessage msg){
 void testApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
+ofVec3f testApp::getBlobCoords(ofxCvTrackedBlob &blob) {
+	double minVal;
+	double maxVal;
+	CvPoint maxLoc;
+
+	
+	depthImg.setROI(blob.boundingRect);
+	cvMinMaxLoc(depthImg.getCvImage(),
+				&minVal, &maxVal, NULL, &maxLoc);//,blobMask);
+	depthImg.resetROI();
+	
+	return ofVec3f((float)(blob.boundingRect.x + maxLoc.x), (float)(blob.boundingRect.y + maxLoc.y), (float)maxVal);
+}
+
+void testApp::normalizeBlobCoords(ofVec3f &blob) {
+	blob.x /= 640;
+	blob.y /= 480;
+	blob.z /= 255;
+}
+
 
 // callbacks for blob listener
 void testApp::blobOn( int x, int y, int id, int order ) {
+	ofVec3f blobCoords = getBlobCoords(blobTracker.getById(id));
+	normalizeBlobCoords(blobCoords);
 	
+	blobs[id] = blobCoords;
+
+	ofxOscMessage msg;
+	msg.setAddress("/touch/down");
+	msg.addIntArg(id);
+	msg.addFloatArg(blobCoords.x);
+	msg.addFloatArg(blobCoords.y);
+	msg.addFloatArg(blobCoords.z);
+	osc.sendMessage(msg);
 }
+
 void testApp::blobMoved( int x, int y, int id, int order ) {
-	
+	ofVec3f blobCoords = getBlobCoords(blobTracker.getById(id));
+	normalizeBlobCoords(blobCoords);
+	blobs[id] = blobCoords;
+	ofxOscMessage msg;
+	msg.setAddress("/touch/moved");
+	msg.addIntArg(id);
+	msg.addFloatArg(blobCoords.x);
+	msg.addFloatArg(blobCoords.y);
+	msg.addFloatArg(blobCoords.z);
+	osc.sendMessage(msg);
 }
 void testApp::blobOff( int x, int y, int id, int order ) {
+	if(blobs.find(id)!=blobs.end()) {
+		blobs.erase(id);
+	}
 	
+	ofxOscMessage msg;
+	msg.setAddress("/touch/up");
+	msg.addIntArg(id);
+	osc.sendMessage(msg);
 }
