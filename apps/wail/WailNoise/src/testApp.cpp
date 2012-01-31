@@ -24,7 +24,7 @@ void testApp::setup(){
 	
 	slosh.setup("bubbles/bubble", 11);
 	slosh.setProbability(0.3);
-	slosh.setVolumeRange(0.05, 0.1);
+	slosh.setVolumeRange(0.1, 0.5);
 	drop.setup("drop/drop", 11);
 	drop.setProbability(1);
 	drop.setVolumeRange(0.8, 1);
@@ -65,6 +65,8 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 	ofBackground(0);
+	ofSetHexColor(0xFFFFFF);
+	ofDrawBitmapString("WAILNOISE", 10, 20);
 
 }
 
@@ -111,12 +113,15 @@ void testApp::gotMessage(ofMessage msg){
 void testApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
-void testApp::touchDown(int id, ofVec3f touch) {
+
+void testApp::touchDown(const KinectTouch &touch) {
 	drop.trigger(ofVec3f(ofClamp(touch.x, 0, 1), 0, 0));
 }
-void testApp::touchMoved(int id, ofVec3f touch) {
+
+void testApp::touchMoved(const KinectTouch &touch) {
 	slosh.trigger(ofVec3f(ofClamp(touch.x, 0, 1), 0, 0));
 }
-void testApp::touchUp(int id) {
+
+void testApp::touchUp(const KinectTouch &touch) {
 	
 }

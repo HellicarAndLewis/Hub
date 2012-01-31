@@ -271,14 +271,13 @@ void ofxCvBlobTracker::trackBlobs( const vector<ofxCvBlob>& _blobs ) {
 			//doTouchEvent(blobs[i].getTouchData());
             doBlobOn( blobs[i] );
 		} else {
-            float totalLength =
-                (float)sqrt( blobs[i].deltaLocTotal.x*blobs[i].deltaLocTotal.x
-                           + blobs[i].deltaLocTotal.y*blobs[i].deltaLocTotal.y );
-			if( totalLength >= minimumDisplacementThreshold ) {
-				//doUpdateEvent( blobs[i].getTouchData() );
+           // float totalLength =
+           //     (float)sqrt( blobs[i].deltaLocTotal.x*blobs[i].deltaLocTotal.x
+           //                + blobs[i].deltaLocTotal.y*blobs[i].deltaLocTotal.y );
+			//if( totalLength >= minimumDisplacementThreshold ) {
                 doBlobMoved( blobs[i] );
 				blobs[i].deltaLocTotal = ofPoint( 0.0f, 0.0f );
-			}
+			//}
 		}
 	}
 

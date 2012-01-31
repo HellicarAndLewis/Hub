@@ -10,23 +10,29 @@
  *    \  \:\        \  \:\         |  |:/       \  \::/       \  \::/        |  |:|   
  *     \__\/         \__\/         |__|/         \__\/         \__\/         |__|/   
  *
- *  Description: Interface for listening to blobs over OSC
+ *  Description: Represents a touch made by a hand in a kinect. It's in 3d
  *				 
- *  KinectTouchListener.h, created by Marek Bereza on 30/01/2012.
+ *  KinectTouch.h, created by Marek Bereza on 31/01/2012.
  */
+
 
 #include "ofMain.h"
-#include "KinectTouch.h"
 
 /**
- * You need to inherit from this to listen to kinects
+ * inherits from ofVec3f so you can use x, y and z
  */
-class KinectTouchListener {
-public:
-	virtual void touchDown(const KinectTouch &touch) {}
-	virtual void touchMoved(const KinectTouch &touch) {}
-	virtual void touchUp(const KinectTouch &touch) {}
+class KinectTouch: public ofVec3f {
+public:	
+	// the persistent ID
+	int id;
+	
+	// current velocity - should be 0 on touchDown
+	ofVec3f vel;
+	
+	// the normalized width + normalized height / 2 
+	// gives you a rough indication of size of blob.
+	// should go from 0-1 - 1 is the whole kinect
+	// field of view, so blobs probably won't be much
+	// bigger than 0.1
+	float size;
 };
-
-
-

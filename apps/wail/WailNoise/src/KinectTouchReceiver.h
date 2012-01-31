@@ -10,12 +10,19 @@
  *    \  \:\        \  \:\         |  |:/       \  \::/       \  \::/        |  |:|   
  *     \__\/         \__\/         |__|/         \__\/         \__\/         |__|/   
  *
- *  Description: 
+ *  Description: Wraps ofxOsc and our defined protocol to provide a listener pattern
+ *               using KinectTouchListener. 
+ *
+ *               Call setup(<port>), then setListener(<your listener>)
+ *               then every frame call update()
+ *      
+ *               Depends on ofxOsc.
  *				 
  *  KinectTouchReceiver.h, created by Marek Bereza on 30/01/2012.
  */
 #include "KinectTouchListener.h"
 #include "ofxOsc.h"
+
 
 class KinectTouchReceiver {
 
@@ -40,15 +47,44 @@ public:
 //			printf("Address: %s\n", m.getAddress().c_str());
 			if(m.getAddress()=="/touch/down") {
 				int id = m.getArgAsInt32(0);
-				ofVec3f p = ofVec3f(m.getArgAsFloat(1), m.getArgAsFloat(2), m.getArgAsFloat(3));
-				listener->touchDown(id, p);
+				blobs[id] = KinectTouch();
+				blobs[id].x = m.getArgAsFloat(1);
+				blobs[id].y = m.getArgAsFloat(2);
+				blobs[id].z = m.getArgAsFloat(3);
+				blobs[id].size = m.getArgAsFloat(4);
+				blobs[id].id = id;
+			
+				listener->touchDown(blobs[id]);
+				
 			} else if(m.getAddress()=="/touch/moved") {
 				int id = m.getArgAsInt32(0);
+				bool found = true;
+				if(blobs.find(id)==blobs.end()) {
+					blobs[id] = KinectTouch();
+					found = false;
+				}
 				ofVec3f p = ofVec3f(m.getArgAsFloat(1), m.getArgAsFloat(2), m.getArgAsFloat(3));
-				listener->touchMoved(id, p);
+				blobs[id].vel = blobs[id] - p;
+				blobs[id].x = p.x;
+				blobs[id].y = p.y;
+				blobs[id].z = p.z;
+				blobs[id].size = m.getArgAsFloat(4);
+				blobs[id].id = id;
+				
+				
+				if(!found) {
+					blobs[id].vel = 0;
+					listener->touchDown(blobs[id]);
+				} else {
+					listener->touchMoved(blobs[id]);
+				}
 				//printf("%d %f %f %f\n", id, p.x, p.y, p.z);				
 			} else if(m.getAddress()=="/touch/up") {
-				listener->touchUp(m.getArgAsInt32(0));
+				int id = m.getArgAsInt32(0);
+				if(blobs.find(id)!=blobs.end()) {
+					listener->touchUp(blobs[id]);
+					blobs.erase(id);
+				}
 			}
 		}
 	}
@@ -56,6 +92,7 @@ public:
 private:
 	ofxOscReceiver osc;
 	KinectTouchListener *listener;
+	map<int,KinectTouch> blobs;
 };
 
 

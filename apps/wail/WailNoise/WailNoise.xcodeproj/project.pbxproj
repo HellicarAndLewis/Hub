@@ -102,6 +102,7 @@
 		E4C2424610CC5A17004149E2 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
 		E4EB691F138AFCF100A09F29 /* CoreOF.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = CoreOF.xcconfig; path = ../../../libs/openFrameworksCompiled/project/osx/CoreOF.xcconfig; sourceTree = SOURCE_ROOT; };
 		E4EB6923138AFD0F00A09F29 /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
+		EA0565B714D85751009282B0 /* KinectTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KinectTouch.h; sourceTree = "<group>"; };
 		EA4CBCB314D6AD1500684485 /* SimpleGui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleGui.h; sourceTree = "<group>"; };
 		EA4CBCB514D6AD1500684485 /* ColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPicker.h; sourceTree = "<group>"; };
 		EA4CBCB614D6AD1500684485 /* Contour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Contour.h; sourceTree = "<group>"; };
@@ -304,9 +305,10 @@
 				EAC8156814D705F400595518 /* Slosh.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
-				EAC8157A14D70FD800595518 /* KinectTouchReceiver.h */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
+				EAC8157A14D70FD800595518 /* KinectTouchReceiver.h */,
 				EAC8157914D70F5B00595518 /* KinectTouchListener.h */,
+				EA0565B714D85751009282B0 /* KinectTouch.h */,
 				A69C743B14D6470B00C0EABC /* ofModifiers.h */,
 			);
 			path = src;

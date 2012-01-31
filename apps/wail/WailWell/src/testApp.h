@@ -7,8 +7,26 @@
 #include "xmlgui/container/SimpleGui.h"
 #include "ofxCvBlobTracker.h"
 
+class Blob: public ofVec3f {
+public:
+	static float xySmoothing;
+	static float zSmoothing;
+	Blob(ofVec3f coords = ofVec3f()) {
+		this->x = coords.x;
+		this->y = coords.y;
+		this->z = coords.z;
 
-class testApp : public ofBaseApp, public ofxCvBlobListener {
+	}
+	
+	void update(ofVec3f coords) {
+		this->x = ofLerp(coords.x, this->x, xySmoothing);
+		this->y = ofLerp(coords.y, this->y, xySmoothing);
+		this->z = ofLerp(coords.z, this->z, zSmoothing);
+		
+	}
+};
+
+class testApp : public ofBaseApp, public ofxCvBlobListener, public xmlgui::Listener {
 
 public:
 	void setup();
@@ -17,6 +35,7 @@ public:
 	void update();
 	void draw();
 
+	void controlChanged(xmlgui::Control *ctrl);
 	void keyPressed  (int key);
 	void keyReleased(int key);
 	void mouseMoved(int x, int y );
@@ -29,6 +48,9 @@ public:
 	
 	ofxKinect kinect;
 	ofxCvGrayscaleImage depthImg;
+	ofxCvGrayscaleImage rangeScaledImg;
+	ofxCvGrayscaleImage maskedImg;
+	ofxCvGrayscaleImage bgImg;
 	ofxCvContourFinder contourFinder;
 	ofxCvBlobTracker blobTracker;
 	
@@ -54,6 +76,16 @@ public:
     void blobOff( int x, int y, int id, int order );
 
 	ofVec3f getBlobCoords(ofxCvTrackedBlob &blob);
+	float getBlobSize(ofxCvTrackedBlob &blob);
 	void normalizeBlobCoords(ofVec3f &blob);
-	map<int,ofVec3f> blobs;
+	map<int,Blob> blobs;
+	int viewMode;
+	bool drawBlobs;
+	float blurSize;
+	float blurIterations;
+	bool erode;
+	bool dilate;
+	bool accumulateBackground;
+	int backgroundAccumulationCount;
+	float backgroundHysteresis;
 };

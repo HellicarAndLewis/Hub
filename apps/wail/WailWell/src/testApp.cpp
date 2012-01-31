@@ -11,21 +11,48 @@
 // to the "WailWall" app.
 //
 
+enum {
+	VIEWMODE_RAW,
+	VIEWMODE_BG,
+	VIEWMODE_RANGE_SCALE,
+	VIEWMODE_MASKED
+};
+
+int KINECT_WIDTH;
+int KINECT_HEIGHT;
+int KINECT_VIEW_OFFSET = 10;
+
+float Blob::xySmoothing = 0.3;
+float Blob::zSmoothing = 0.4;	
 
 //--------------------------------------------------------------
 void testApp::setup(){
-	
+	viewMode = VIEWMODE_RAW;
 	wallOsc.setup("localhost", 1234);
 	soundOsc.setup("localhost", 2468);
-	
+	blurSize = 0;
+	blurIterations = 0;
 	waterThreshold = 10;
 	maxWaterDepth = 255;
 	minBlobSize = 10;
 	maxBlobSize = 200;
+	
+	accumulateBackground = false;
+	backgroundAccumulationCount = 0;
+	
+	drawBlobs = true;
+	erode = false;
+	dilate = false;
 	kinect.init();
 	kinect.open();
 	kinect.setUseTexture(false);
-	depthImg.allocate(kinect.getWidth(), kinect.getHeight());
+	KINECT_WIDTH = kinect.getWidth();
+	KINECT_HEIGHT = kinect.getHeight();
+	depthImg.allocate(KINECT_WIDTH, KINECT_HEIGHT);
+	rangeScaledImg.allocate(KINECT_WIDTH, KINECT_HEIGHT);
+	maskedImg.allocate(KINECT_WIDTH, KINECT_HEIGHT);
+	bgImg.allocate(KINECT_WIDTH, KINECT_HEIGHT);
+	bgImg.set(0);
 	
 	blobTracker.setListener(this);
 	ofSetFrameRate(30);
@@ -37,22 +64,43 @@ void testApp::setup(){
 	
 	//gui.setup();
 	//gui.addDrawable("Depth", depthImg);
-	gui.addSlider("Water Surface Level", waterThreshold, 0, 255);
-	gui.addSlider("Maximum Water Depth", maxWaterDepth, 0, 255);
-	gui.addSlider("Minimum Blob Size", minBlobSize, 10, 320);
-	gui.addSlider("Maximum Blob Size", maxBlobSize, 320, 640);
+	gui.setWidth(250);
+	gui.addSegmented("View", viewMode, "RAW|BACKGROUND|RANGE SCALE|MASKED");
+	gui.addSlider("Blur Size", blurSize, 0, 3)->stepped = true;
+	gui.addSlider("Blur Iterations", blurIterations, 0, 3)->stepped = true;
+	gui.addToggle("Erode Image", erode);
+	gui.addToggle("Dilate Image", dilate);
+	gui.addPushButton("Accumulate Background")->width = 150;
+	gui.addSlider("Background Hysteresis", backgroundHysteresis, 0, 50)->stepped = true;
+	gui.addColumn();
+	gui.addToggle("Draw Blobs", drawBlobs);
+	gui.addSlider("Water Surface Level", waterThreshold, 160, 255)->stepped = true;
+	gui.addSlider("Maximum Water Depth", maxWaterDepth, 160, 255)->stepped = true;
+	gui.addSlider("Minimum Blob Size", minBlobSize, 10, KINECT_WIDTH/2)->stepped = true;
+	gui.addSlider("Maximum Blob Size", maxBlobSize, KINECT_WIDTH/2, KINECT_WIDTH)->stepped = true;
+	gui.addSlider("Blob XY Smoothing", Blob::xySmoothing, 0, 1);
+	gui.addSlider("Blob Z Smoothing", Blob::zSmoothing, 0, 1);
 	gui.setEnabled(true);
  
 	gui.loadSettings("wailwell.xml");
 	
 	gui.position(10, 510);
+	gui.addListener(this);
+}
+
+void testApp::controlChanged(xmlgui::Control *ctrl) {
+	if(ctrl->id=="Accumulate Background") {
+		accumulateBackground = true;
+		backgroundAccumulationCount = 0;
+		bgImg.set(0);
+	}
 }
 void testApp::setupMask() {
 	// defaults for mask
-	mask[0] = ofVec2f(320, 50);
-	mask[1] = ofVec2f(590, 240);
-	mask[2] = ofVec2f(320, 430);
-	mask[3] = ofVec2f(50, 240);
+	mask[0] = ofVec2f(KINECT_WIDTH/2, 50);
+	mask[1] = ofVec2f(KINECT_WIDTH-50, KINECT_HEIGHT/2);
+	mask[2] = ofVec2f(KINECT_WIDTH/2, KINECT_HEIGHT-50);
+	mask[3] = ofVec2f(50, KINECT_HEIGHT/2);
 	dragger = NULL;
 	
 	ofxXmlSettings xml;
@@ -61,6 +109,10 @@ void testApp::setupMask() {
 	int numPoints = MIN(NUM_MASK_POINTS, xml.getNumTags("point"));
 	for(int i = 0; i < numPoints; i++) {
 		mask[i] = ofVec2f(xml.getAttribute("point", "x", 0.0, i), xml.getAttribute("point", "y", 0.0, i));
+		if(mask[i].x<0) mask[i].x = 0;
+		if(mask[i].y<0) mask[i].y = 0;
+		if(mask[i].x>KINECT_WIDTH) mask[i].x = KINECT_WIDTH;
+		if(mask[i].y>KINECT_HEIGHT) mask[i].y = KINECT_HEIGHT;
 	}
 	
 }
@@ -88,28 +140,70 @@ void testApp::update(){
 	kinect.update();
 	if(kinect.isFrameNew()) {
 		float startTime = ofGetElapsedTimef();
-		depthImg.setFromPixels(kinect.getDepthPixels(),640,480);
+		depthImg.setFromPixels(kinect.getDepthPixels(),KINECT_WIDTH,KINECT_HEIGHT);
 		
 		
+		rangeScaledImg = depthImg;
 		// threshold anything too close to the camera
-		cvThreshold(depthImg.getCvImage(), depthImg.getCvImage(), maxWaterDepth, 255, CV_THRESH_TOZERO_INV);
-		depthImg.flagImageChanged();
+		cvThreshold(rangeScaledImg.getCvImage(), rangeScaledImg.getCvImage(), maxWaterDepth, 255, CV_THRESH_TOZERO_INV);
+		rangeScaledImg.flagImageChanged();
 		
 		// threshold anything too far away from the camera - i.e. the surface of the water
-		cvThreshold(depthImg.getCvImage(), depthImg.getCvImage(), waterThreshold, 255, CV_THRESH_TOZERO);
-		depthImg.flagImageChanged();
+		cvThreshold(rangeScaledImg.getCvImage(), rangeScaledImg.getCvImage(), waterThreshold, 255, CV_THRESH_TOZERO);
+		rangeScaledImg.flagImageChanged();
+		
+		float scale = 255/(maxWaterDepth-waterThreshold);
+		cvConvertScale( rangeScaledImg.getCvImage(), rangeScaledImg.getCvImage(), scale, -(waterThreshold*scale));
+	
+		rangeScaledImg.flagImageChanged();
+		
+		
+		for(int i = 0; i < blurIterations; i++) {
+			rangeScaledImg.blur(2*blurSize+1);
+		}
+		if(erode) {
+			rangeScaledImg.erode();
+		}
+		if(dilate) {
+			rangeScaledImg.dilate();
+		}
 		
 		
 		
-		//--------------------------------------------------------------------------------
-			// map from min1-max1 to min2-max2
-			float scale = 255/(maxWaterDepth-waterThreshold);
-			cvConvertScale( depthImg.getCvImage(), depthImg.getCvImage(), scale, -(waterThreshold*scale));
+		if(accumulateBackground) {
+			cvMax(bgImg.getCvImage(), rangeScaledImg.getCvImage(), bgImg.getCvImage());
+			bgImg.flagImageChanged();
+			
+			
+			backgroundAccumulationCount++;
+			if(backgroundAccumulationCount>100) {
+				accumulateBackground = false;
+				backgroundAccumulationCount = 0;
+			}
+		}
 		
 		
+		unsigned char *fgPix = rangeScaledImg.getPixels();
+		unsigned char *bgPix = bgImg.getPixels();
 		
-//		depthImg.rangeMap(waterThreshold, maxWaterDepth, 0, 255);
-		depthImg.flagImageChanged();
+		int numPix = KINECT_WIDTH * KINECT_HEIGHT;
+		
+		for(int i = 0; i < numPix; i++) {
+			if(fgPix[i]<=bgPix[i]+backgroundHysteresis) {
+				fgPix[i] = 0;
+			}
+		}
+		
+		rangeScaledImg.setFromPixels(fgPix, KINECT_WIDTH, KINECT_HEIGHT);
+		// work out background
+		/*
+		 if(fgPix>bgPix) outPix = fgPix;
+		 else outPix = 0;
+		 
+		 */
+		
+		maskedImg = rangeScaledImg;
+		
 		CvPoint points[NUM_MASK_POINTS];
 		for(int i = 0; i < NUM_MASK_POINTS; i++) {
 			points[i] = cvPoint(mask[i].x, mask[i].y);
@@ -118,9 +212,9 @@ void testApp::update(){
 		
 		CvPoint fill[4];
 		fill[0] = cvPoint(0, 0);
-		fill[1] = cvPoint(640, 0);
-		fill[2] = cvPoint(640, 480);
-		fill[3] = cvPoint(0, 480);
+		fill[1] = cvPoint(KINECT_WIDTH, 0);
+		fill[2] = cvPoint(KINECT_WIDTH, KINECT_HEIGHT);
+		fill[3] = cvPoint(0, KINECT_HEIGHT);
 		
 		CvPoint *allPoints[2];
 		allPoints[0] = points;
@@ -132,13 +226,13 @@ void testApp::update(){
 		
 		// mask out the bit we're interested in
 		cvFillPoly(
-				   depthImg.getCvImage(), allPoints,
+				   maskedImg.getCvImage(), allPoints,
 				   numPoints,
 				   2, cvScalar(0)
 				   );
-		depthImg.flagImageChanged();
+		maskedImg.flagImageChanged();
 		
-		contourFinder.findContours(depthImg, minBlobSize*minBlobSize, maxBlobSize*maxBlobSize, 20, false);
+		contourFinder.findContours(maskedImg, minBlobSize*minBlobSize, maxBlobSize*maxBlobSize, 20, false);
 		blobTracker.trackBlobs(contourFinder.blobs);
 		lastVisionCalculationDuration = ofGetElapsedTimef() - startTime;
 	}
@@ -150,44 +244,69 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	ofBackground(0);
+	ofBackground(22, 33, 44);
 	
 	glPushMatrix();
 	{
-		glTranslatef(10, 10, 0);
+		glTranslatef(KINECT_VIEW_OFFSET, KINECT_VIEW_OFFSET, 0);
 	
 		ofSetHexColor(0xFFFFFF);
-		kinect.drawDepth(0, 0, ofGetWidth(), ofGetHeight());
-		depthImg.draw(0, 0, 640, 480);
+
+		if(viewMode==VIEWMODE_RAW) {
+			depthImg.draw(0, 0, KINECT_WIDTH, KINECT_HEIGHT);
+		} else if(viewMode==VIEWMODE_BG) {
+			bgImg.draw(0, 0, KINECT_WIDTH, KINECT_HEIGHT);
+		} else if(viewMode==VIEWMODE_RANGE_SCALE) {
+			rangeScaledImg.draw(0, 0, KINECT_WIDTH, KINECT_HEIGHT);
+		} else if(viewMode==VIEWMODE_MASKED) {
+			maskedImg.draw(0, 0, KINECT_WIDTH, KINECT_HEIGHT);
+		}
+		
 		//contourFinder.draw(0, 0);
 		ofNoFill();
-		ofRect(10, 10, 640, 480);
+		ofRect(0, 0, KINECT_WIDTH, KINECT_HEIGHT);
 		ofFill();
-		blobTracker.draw(0, 0);
+		if(drawBlobs) blobTracker.draw(0, 0);
 		
 		
 		
+		glBegin(GL_LINE_LOOP);
 		for(int i = 0; i < NUM_MASK_POINTS; i++) {
-			if(dragger==&mask[i]) {
-				ofSetHexColor(0x00FF00);
-			} else {
-				ofSetHexColor(0xFF0000);
-			}
-			ofRect(mask[i].x-1, mask[i].y-1, 2, 2);
+			glVertex2f(mask[i].x, mask[i].y);
 		}
+		glEnd();
+		for(int i = 0; i < NUM_MASK_POINTS; i++) {
+			
+			ofFill();
+			if(dragger==&mask[i]) glColor4f(0, 1, 0, 0.5);
+			else glColor4f(1, 0, 0, 0.5);
+			ofRect(mask[i].x-2, mask[i].y-2, 4, 4);
+			
+			ofNoFill();
+			if(dragger==&mask[i]) glColor4f(0, 1, 0, 1);
+			else glColor4f(1, 0, 0, 1);
+			ofRect(mask[i].x-2, mask[i].y-2, 4, 4);
+			
+		}
+		ofFill();
 	
 
-		ofSetHexColor(0x009900);
-		glPushMatrix();
-		{
-			glScalef(640, 480, 1);
-			for(map<int,ofVec3f>::iterator it = blobs.begin();
+
+		//glPushMatrix();
+		//{
+		//	glScalef(640, 480, 1);
+			for(map<int,Blob>::iterator it = blobs.begin();
 				it != blobs.end(); 
 				it++) {
-				
-				ofEllipse((*it).second.x, (*it).second.y, 5.f/640.f, 5.f/480.f);
+				ofVec3f pos = (*it).second * ofVec3f(KINECT_WIDTH, KINECT_HEIGHT);
+				ofSetHexColor(0x0000FF);
+				ofCircle(pos, 8);
+				ofSetHexColor(0x009900);
+				ofLine(pos.x - 5, pos.y - 5, pos.x + 5, pos.y + 5);
+				ofLine(pos.x - 5, pos.y + 5, pos.x + 5, pos.y - 5);
+//				ofEllipse((*it).second.x, (*it).second.y, 10.f/640.f, 10.f/480.f);
 			}
-		}
+		//}
 		glPopMatrix();
 	
 	}
@@ -209,7 +328,7 @@ void testApp::keyReleased(int key){
 
 //--------------------------------------------------------------
 void testApp::mouseMoved(int x, int y ){
-	ofVec2f mouse(x-10, y-10);
+	ofVec2f mouse(x-KINECT_VIEW_OFFSET, y-KINECT_VIEW_OFFSET);
 	for(int i = 0; i < NUM_MASK_POINTS; i++) {
 		if(mask[i].distanceSquared(mouse)<100) {
 			dragger = &mask[i];
@@ -221,19 +340,27 @@ void testApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
-	ofVec2f mouse(x-10, y-10);
+	ofVec2f mouse(x-KINECT_VIEW_OFFSET, y-KINECT_VIEW_OFFSET);
 	if(dragger!=NULL) {
 		dragger->x = mouse.x;
 		dragger->y = mouse.y;
+		if(dragger->x<0) dragger->x = 0;
+		if(dragger->y<0) dragger->y = 0;
+		if(dragger->x>KINECT_WIDTH) dragger->x = KINECT_WIDTH;
+		if(dragger->y>KINECT_HEIGHT) dragger->y = KINECT_HEIGHT;
 	}
 }
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
-	ofVec2f mouse(x-10, y-10);
+	ofVec2f mouse(x-KINECT_VIEW_OFFSET, y-KINECT_VIEW_OFFSET);
 	if(dragger!=NULL) {
 		dragger->x = mouse.x;
 		dragger->y = mouse.y;
+		if(dragger->x<0) dragger->x = 0;
+		if(dragger->y<0) dragger->y = 0;
+		if(dragger->x>KINECT_WIDTH) dragger->x = KINECT_WIDTH;
+		if(dragger->y>KINECT_HEIGHT) dragger->y = KINECT_HEIGHT;
 	}
 }
 
@@ -267,43 +394,65 @@ ofVec3f testApp::getBlobCoords(ofxCvTrackedBlob &blob) {
 				&minVal, &maxVal, NULL, &maxLoc);//,blobMask);
 	depthImg.resetROI();
 	
-	return ofVec3f((float)(blob.boundingRect.x + maxLoc.x), (float)(blob.boundingRect.y + maxLoc.y), (float)maxVal);
+	
+	// this was was the first iteration of the algorithm, taking the x, y and z coordinates from 
+	// the max location, but really we want to use the x and y from the centroid, and the z from the max location
+	//return ofVec3f((float)(blob.boundingRect.x + maxLoc.x), (float)(blob.boundingRect.y + maxLoc.y), (float)maxVal);
+	
+	return ofVec3f(blob.centroid.x, blob.centroid.y, (float) maxVal);
+}
+
+
+float testApp::getBlobSize(ofxCvTrackedBlob &blob) {
+	return (blob.boundingRect.width/KINECT_WIDTH + blob.boundingRect.height/KINECT_HEIGHT)*0.5;
 }
 
 void testApp::normalizeBlobCoords(ofVec3f &blob) {
-	blob.x /= 640;
-	blob.y /= 480;
+	blob.x /= KINECT_WIDTH;
+	blob.y /= KINECT_HEIGHT;
 	blob.z /= 255;
 }
 
 
 // callbacks for blob listener
 void testApp::blobOn( int x, int y, int id, int order ) {
-	ofVec3f blobCoords = getBlobCoords(blobTracker.getById(id));
+	ofxCvTrackedBlob &b = blobTracker.getById(id);
+	ofVec3f blobCoords = getBlobCoords(b);
 	normalizeBlobCoords(blobCoords);
 	
-	blobs[id] = blobCoords;
+	blobs[id] = Blob(blobCoords);
 
 	ofxOscMessage msg;
 	msg.setAddress("/touch/down");
 	msg.addIntArg(id);
-	msg.addFloatArg(blobCoords.x);
-	msg.addFloatArg(blobCoords.y);
-	msg.addFloatArg(blobCoords.z);
+	msg.addFloatArg(blobs[id].x);
+	msg.addFloatArg(blobs[id].y);
+	msg.addFloatArg(blobs[id].z);
+	msg.addFloatArg(getBlobSize(b));
 	wallOsc.sendMessage(msg);
 	soundOsc.sendMessage(msg);
 }
 
 void testApp::blobMoved( int x, int y, int id, int order ) {
-	ofVec3f blobCoords = getBlobCoords(blobTracker.getById(id));
+	ofxCvTrackedBlob &b = blobTracker.getById(id);
+	ofVec3f blobCoords = getBlobCoords(b);
 	normalizeBlobCoords(blobCoords);
-	blobs[id] = blobCoords;
+	if(blobs.find(id)!=blobs.end()) {
+		blobs[id].update(blobCoords);
+	} else {
+		// if we don't already have this blob 
+		// (i.e. if the blobtracker has a bug)
+		// send the blob to blobOn and get out
+		blobOn(x, y, id, order);
+		return;
+	}
 	ofxOscMessage msg;
 	msg.setAddress("/touch/moved");
 	msg.addIntArg(id);
-	msg.addFloatArg(blobCoords.x);
-	msg.addFloatArg(blobCoords.y);
-	msg.addFloatArg(blobCoords.z);
+	msg.addFloatArg(blobs[id].x);
+	msg.addFloatArg(blobs[id].y);
+	msg.addFloatArg(blobs[id].z);
+	msg.addFloatArg(getBlobSize(b));
 	wallOsc.sendMessage(msg);
 	soundOsc.sendMessage(msg);
 }

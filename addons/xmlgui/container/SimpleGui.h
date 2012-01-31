@@ -9,11 +9,12 @@
 #include "ofGuiEventDispatcher.h"
 #include "Drawable.h"
 
-#define SIMPLE_GUI_WIDTH 150
+//#define SIMPLE_GUI_WIDTH 150
 
 namespace xmlgui {
 	class SimpleGui: public xmlgui::Container, public xmlgui::Listener {
 	public:
+		
 		SimpleGui(): xmlgui::Container() {
 			addListener(this);
 			setLayoutType(xmlgui::LayoutType_vertical);
@@ -21,6 +22,7 @@ namespace xmlgui {
 			y = 20;
 			mustAddNewColumn = false;
 			isSetup = false;
+			SIMPLE_GUI_WIDTH = 150;
 		}
 		virtual void setup() {
 			events.setup(this);
@@ -189,7 +191,7 @@ namespace xmlgui {
 				// move the last added item onto a new column
 				if(children.size()>0) {
 					children.back()->y = 0;
-					children.back()->x = children[children.size()-2]->x + children[children.size()-2]->width + AUTO_LAYOUT_PADDING;
+					children.back()->x = children[children.size()-2]->x + SIMPLE_GUI_WIDTH + AUTO_LAYOUT_PADDING;
 				}
 				mustAddNewColumn = false;
 			}
@@ -199,13 +201,22 @@ namespace xmlgui {
 		}
 		xmlgui::ofGuiEventDispatcher events;
 		
-		bool enabled;
-		bool mustAddNewColumn;
-		bool isSetup;
-		string settingsFile;
+		
 			
 		void toggle() {
 			setEnabled(!enabled);
 		}
+		
+		// this must be called before adding controls!
+		void setWidth(float width) {
+			SIMPLE_GUI_WIDTH = width;
+		}
+		
+	private:
+		bool enabled;
+		bool mustAddNewColumn;
+		bool isSetup;
+		string settingsFile;
+		float SIMPLE_GUI_WIDTH;
 	};
 };

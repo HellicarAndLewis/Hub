@@ -26,9 +26,9 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 	
-	virtual void touchDown(int id, ofVec3f touch);
-	virtual void touchMoved(int id, ofVec3f touch);
-	virtual void touchUp(int id);
+	virtual void touchDown(const KinectTouch &touch);
+	virtual void touchMoved(const KinectTouch &touch);
+	virtual void touchUp(const KinectTouch &touch);
 	
 	
 	ofxOscReceiver soundOsc;
