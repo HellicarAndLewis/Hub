@@ -48,3 +48,13 @@ void ofxWWRenderer::render(){
 ofFbo& ofxWWRenderer::getFbo(){
 	return renderTarget;
 }
+
+void ofxWWRenderer::touchDown(const KinectTouch &touch) {
+	
+}
+void ofxWWRenderer::touchMoved(const KinectTouch &touch) {
+	
+}
+void ofxWWRenderer::touchUp(const KinectTouch &touch) {
+	
+}

@@ -10,29 +10,39 @@
  *    \  \:\        \  \:\         |  |:/       \  \::/       \  \::/        |  |:|   
  *     \__\/         \__\/         |__|/         \__\/         \__\/         |__|/   
  *
- *  Description: Represents a touch made by a hand in a kinect. It's in 3d
+ *  Description: Wraps ofxOsc and our defined protocol to provide a listener pattern
+ *               using KinectTouchListener. 
+ *
+ *               Call setup(<port>), then setListener(<your listener>)
+ *               then every frame call update()
+ *      
+ *               Depends on ofxOsc.
  *				 
- *  KinectTouch.h, created by Marek Bereza on 31/01/2012.
+ *  KinectTouchReceiver.h, created by Marek Bereza on 30/01/2012.
  */
+#include "KinectTouchListener.h"
+#include "ofxOsc.h"
 
 
-#include "ofMain.h"
+class KinectTouchReceiver {
 
-/**
- * inherits from ofVec3f so you can use x, y and z
- */
-class KinectTouch: public ofVec3f {
-public:	
-	// the persistent ID
-	int id;
+public:
+	KinectTouchReceiver();
 	
-	// current velocity - should be 0 on touchDown
-	ofVec3f vel;
+	// call this in your testApp::setup() with the desired OSC port
+	void setup(int port);
 	
-	// the normalized width + normalized height / 2 
-	// gives you a rough indication of size of blob.
-	// should go from 0-1 - 1 is the whole kinect
-	// field of view, so blobs probably won't be much
-	// bigger than 0.1
-	float size;
+	// add yourself as a listener (implementing the KinectTouchListener interface)
+	void setListener(KinectTouchListener *listener);
+	
+	
+	// call this every testApp::update() to receive KinectTouchListner events.
+	void update();
+	
+private:
+	ofxOscReceiver osc;
+	KinectTouchListener *listener;
+	map<int,KinectTouch> blobs;
 };
+
+

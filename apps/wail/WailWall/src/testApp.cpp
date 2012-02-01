@@ -23,6 +23,9 @@ void testApp::setup(){
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
 	
+	touchReceiver.setup(1234);
+	touchReceiver.setListener(this);
+	
 	screenSettingsFile = "DisplayLayout.xml";
 	
 	renderer.setup(1920, 1080);
@@ -46,6 +49,8 @@ void testApp::exit() {
 
 //--------------------------------------------------------------
 void testApp::update(){
+	
+	touchReceiver.update();
 	
 	renderer.update();
 	renderer.render();
@@ -176,4 +181,14 @@ void testApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void testApp::dragEvent(ofDragInfo dragInfo){ 
 
+}
+
+void testApp::touchDown(const KinectTouch &touch) {
+	renderer.touchDown(touch);
+}
+void testApp::touchMoved(const KinectTouch &touch) {
+	renderer.touchMoved(touch);
+}
+void testApp::touchUp(const KinectTouch &touch) {
+	renderer.touchUp(touch);
 }
