@@ -61,7 +61,9 @@ ofxMPMFluid::ofxMPMFluid()
 	bDoObstacles(true),
 	elapsed(0.0),
 	scaleFactor(1.0),
-	smoothing(1.0)
+	forceScale(1.0),
+	smoothing(1.0),
+	historyLevel(1)
 {
 	//
 }
@@ -91,6 +93,13 @@ void ofxMPMFluid::setup(int maxParticles){
 	
 	//TODO: JG add and remove obistacles through API
 	obstacles.push_back( new ofxMPMObstacle(gridSizeX * 0.75, gridSizeY * 0.75, gridSizeX * 0.075) );
+}
+
+void ofxMPMFluid::applyForce(ofVec2f pos, ofVec2f vel){
+	MPMForce f;
+	f.pos = pos;
+	f.vel = vel;
+	forces.push_back( f ); 
 }
 
 void ofxMPMFluid::update(){
@@ -449,19 +458,28 @@ void ofxMPMFluid::update(){
 		}
 		
 		p->v += gravity;
-		//if (isMouseDragging) {
-		if (ofGetMousePressed(0)) {
-			float vx = abs(p->x - ofGetMouseX()/scaleFactor);
-			float vy = abs(p->y - ofGetMouseY()/scaleFactor);
-			float mdx = (ofGetMouseX() - ofGetPreviousMouseX())/scaleFactor;
-			float mdy = (ofGetMouseY() - ofGetPreviousMouseY())/scaleFactor;
-			if (vx < 10.0F && vy < 10.0F) {
+
+//		if (ofGetMousePressed(0)) {
+		for(int i = 0; i < forces.size(); i++){
+
+			float vx = MIN(abs(p->x - forces[i].pos.x * forceScale), 10.f);
+			float vy = MIN(abs(p->y - forces[i].pos.y * forceScale), 10.f);
+			float mdx = forces[i].vel.x * forceScale;
+			float mdy = forces[i].vel.y * forceScale;
+//			float _vx = abs(p->x - ofGetMouseX()/scaleFactor);
+//			float _vy = abs(p->y - ofGetMouseY()/scaleFactor);
+//			float _mdx = (ofGetMouseX() - ofGetPreviousMouseX())/scaleFactor;
+//			float _mdy = (ofGetMouseY() - ofGetPreviousMouseY())/scaleFactor;
+//			cout << "mouse would be " << _vx << " " << _vy << " " << _mdx << " " << _mdy << endl;
+//			cout << "force is be " << vx << " " << vy << " " << mdx << " " << mdy << endl;
+//			cout << endl;
+			if (vx <= 10.0F && vy <= 10.0F) {
 				float weight = (1.0F - vx / 10.0F) * (1.0F - vy / 10.0F);
 				p->u += weight * (mdx - p->u);
 				p->v += weight * (mdy - p->v);
 			}
 		}
-		
+				
 		// COLLISIONS-2
 		// Plus, an opportunity to add randomness when accounting for wall collisions. 
 		float xf = p->x + p->u;
@@ -492,7 +510,9 @@ void ofxMPMFluid::update(){
 			}
 		}
 	}
-	
+		
+
+
 	for (int ni=0; ni<numActiveNodes; ni++) { 
 		ofxMPMNode *n = activeNodes[ni]; 
 		if (n->m > 0.0F) {
@@ -546,10 +566,12 @@ void ofxMPMFluid::update(){
 	// Timing: in case you're curious about CPU consumption, uncomment this:
 	// printf("Elapsed = %d	%d	%d	%d	%f\n", dt0, dt1, dt2, dt3, elapsed); 
 	
+	forces.clear();	
 }
 
 void ofxMPMFluid::draw(){
 	
+	ofPushStyle();
 	// These improve the appearance of small lines and/or points.
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
@@ -568,7 +590,6 @@ void ofxMPMFluid::draw(){
 	// Draw the active particles as a short line, 
 	// using their velocity for their length. 
 	vector<ofVec2f> verts;
-
 	for (int ip=0; ip<numParticles; ip++) {
 		ofxMPMParticle* p = particles[ip];
 		verts.push_back(ofVec2f(p->x, p->y));
@@ -578,7 +599,9 @@ void ofxMPMFluid::draw(){
 	glVertexPointer(2, GL_FLOAT, 0, &(verts[0].x));
 	glDrawArrays(GL_LINES, 0, verts.size());
 	glDisableClientState(GL_VERTEX_ARRAY);
+	
 	ofPopMatrix();
+	ofPopStyle();
 }
 
 vector<ofxMPMParticle*>& ofxMPMFluid::getParticles(){

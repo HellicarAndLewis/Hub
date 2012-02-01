@@ -20,3 +20,8 @@ void ofxWWTweetManager::setup(){
 void ofxWWTweetManager::update(){
 	
 }
+
+void ofxWWTweetManager::renderTweets(){
+}
+void ofxWWTweetManager::renderSearchTerms(){
+}

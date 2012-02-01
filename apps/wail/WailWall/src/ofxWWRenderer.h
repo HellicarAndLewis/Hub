@@ -24,10 +24,15 @@ class ofxWWRenderer: public KinectTouchListener {
 	ofFbo& getFbo();
 
 	// touch stuff
+	//set by the testApp
+	map<int,KinectTouch>* blobs;
 	void touchDown(const KinectTouch &touch);
 	void touchMoved(const KinectTouch &touch);
 	void touchUp(const KinectTouch &touch);
 
+	//controlled through the guy
+	float layerBarrierZ;
+	float layerBarrierWidth;
 	
 	
   protected:
@@ -38,5 +43,9 @@ class ofxWWRenderer: public KinectTouchListener {
 	
 	ofxMPMFluid fluid;
 	ofFbo renderTarget;
+
+	//used as a map into the fluid sim
+	ofImage colorField;
 	
+	float layer1Opacity; //this is smoothed
 };

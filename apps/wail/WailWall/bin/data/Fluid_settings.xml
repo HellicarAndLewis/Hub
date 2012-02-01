@@ -1,11 +1,27 @@
 <controls>
+    <SliderFloat_Scale_Factor>
+        <name>Scale Factor</name>
+        <value>7.165000</value>
+    </SliderFloat_Scale_Factor>
+    <SliderFloat_OffsetX>
+        <name>OffsetX</name>
+        <value>-196.000000</value>
+    </SliderFloat_OffsetX>
+    <SliderFloat_OffsetY>
+        <name>OffsetY</name>
+        <value>-198.000000</value>
+    </SliderFloat_OffsetY>
+    <SliderFloat_Force_Scale>
+        <name>Force Scale</name>
+        <value>200.000000</value>
+    </SliderFloat_Force_Scale>
     <SliderInt_Particles>
         <name>Particles</name>
-        <value>53965</value>
+        <value>58914</value>
     </SliderInt_Particles>
     <SliderFloat_Density>
         <name>Density</name>
-        <value>5.000000</value>
+        <value>1.500000</value>
     </SliderFloat_Density>
     <SliderFloat_Stiffness>
         <name>Stiffness</name>
@@ -21,7 +37,7 @@
     </SliderFloat_Elasticity>
     <SliderFloat_Viscosity>
         <name>Viscosity</name>
-        <value>1.000000</value>
+        <value>2.520000</value>
     </SliderFloat_Viscosity>
     <SliderFloat_Yield_Rate>
         <name>Yield Rate</name>
@@ -29,11 +45,11 @@
     </SliderFloat_Yield_Rate>
     <SliderFloat_Gravity>
         <name>Gravity</name>
-        <value>0.002000</value>
+        <value>0.001200</value>
     </SliderFloat_Gravity>
     <SliderFloat_Smoothing>
         <name>Smoothing</name>
-        <value>1.000000</value>
+        <value>0.285000</value>
     </SliderFloat_Smoothing>
     <Toggle_Do_Obstacles>
         <name>Do Obstacles</name>

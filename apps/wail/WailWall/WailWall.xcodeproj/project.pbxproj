@@ -377,14 +377,14 @@
 		A621C4BE14D73342008AA7F0 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				A621C4BF14D73342008AA7F0 /* ofxMPMFluid.cpp */,
 				A621C4C014D73342008AA7F0 /* ofxMPMFluid.h */,
-				A621C4C114D73342008AA7F0 /* ofxMPMNode.cpp */,
+				A621C4BF14D73342008AA7F0 /* ofxMPMFluid.cpp */,
 				A621C4C214D73342008AA7F0 /* ofxMPMNode.h */,
-				A621C4C314D73342008AA7F0 /* ofxMPMObstacle.cpp */,
+				A621C4C114D73342008AA7F0 /* ofxMPMNode.cpp */,
 				A621C4C414D73342008AA7F0 /* ofxMPMObstacle.h */,
-				A621C4C514D73342008AA7F0 /* ofxMPMParticle.cpp */,
+				A621C4C314D73342008AA7F0 /* ofxMPMObstacle.cpp */,
 				A621C4C614D73342008AA7F0 /* ofxMPMParticle.h */,
+				A621C4C514D73342008AA7F0 /* ofxMPMParticle.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";

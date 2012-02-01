@@ -15,6 +15,8 @@ class ofxWWTweet{
 	ofxWWTweet();
 	void update();
 	
+	string text;
+	
 	ofVec2f pos;
 	float scale;
 	float opacity;	

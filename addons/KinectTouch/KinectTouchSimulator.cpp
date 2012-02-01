@@ -46,6 +46,7 @@ void KinectTouchSimulator::mousePressed(int x, int y) {
 }
 
 void KinectTouchSimulator::mouseDragged(int x, int y) {
+
 	if(!enabled || listener==NULL) return;
 	
 	
@@ -59,7 +60,7 @@ void KinectTouchSimulator::mouseDragged(int x, int y) {
 	touch.vel.z = touch.z - oldTouch.z;
 	touch.size = 0.1;
 	listener->touchMoved(touch);	
-	
+
 }
 
 void KinectTouchSimulator::mouseReleased(int x, int y) {
