@@ -23,6 +23,12 @@ void testApp::setup(){
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
 	
+	// touch stuff
+	touchReceiver.setup(1234);
+	touchReceiver.setListener(this);
+	simulator.setEnabled(false);
+	simulator.setListener(this);
+	
 	screenSettingsFile = "DisplayLayout.xml";
 	
 	renderer.setup(1920, 1080);
@@ -32,7 +38,7 @@ void testApp::setup(){
 	gui.addToggle("Generate Screen Layout", generateScreens);
 	gui.addToggle("Load Screens File", shouldLoadScreens);
 	gui.addToggle("Save Screens File", shouldSaveScreens);
-	
+
 	gui.loadFromXML();
 	gui.setAutoSave(true);
 
@@ -46,6 +52,8 @@ void testApp::exit() {
 
 //--------------------------------------------------------------
 void testApp::update(){
+	
+	touchReceiver.update();
 	
 	renderer.update();
 	renderer.render();
@@ -91,6 +99,12 @@ void testApp::draw(){
 	renderer.getFbo().getTextureReference().draw(screenManager.sourceRect);
 	screenManager.renderScreens();
 
+	
+	/*
+	ofSetHexColor(0x0000FF);
+	for(map<int,KinectTouch>::iterator it = blobs.begin(); it != blobs.end(); it++) {
+		ofCircle((*it).second.x*ofGetWidth(), (*it).second.y*ofGetHeight(), 10, 10);
+	}*/
 	gui.draw();
 }
 
@@ -114,6 +128,10 @@ void testApp::keyPressed(int key){
 			
 		case 's': {
 			shouldSaveScreens = true;
+			break;
+		}
+		case 'm': {
+			simulator.setEnabled(!simulator.getEnabled());
 			break;
 		}
 			
@@ -142,6 +160,7 @@ void testApp::mouseDragged(int x, int y, int button){
 		screenManager.destRect.height = y - screenManager.destRect.y;
 	
 	}
+	simulator.mouseDragged(x, y);
 }
 
 //--------------------------------------------------------------
@@ -157,10 +176,12 @@ void testApp::mousePressed(int x, int y, int button){
 	else {
 		//test selections
 	}
+	simulator.mousePressed(x, y);
 }
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
+	simulator.mouseReleased(x, y);
 }
 
 //--------------------------------------------------------------
@@ -176,4 +197,19 @@ void testApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void testApp::dragEvent(ofDragInfo dragInfo){ 
 
+}
+
+void testApp::touchDown(const KinectTouch &touch) {
+	renderer.touchDown(touch);
+	blobs[touch.id] = touch;
+}
+void testApp::touchMoved(const KinectTouch &touch) {
+	renderer.touchMoved(touch);
+	blobs[touch.id] = touch;
+}
+void testApp::touchUp(const KinectTouch &touch) {
+	renderer.touchUp(touch);
+	if(blobs.find(touch.id)!=blobs.end()) {
+		blobs.erase(touch.id);
+	}
 }

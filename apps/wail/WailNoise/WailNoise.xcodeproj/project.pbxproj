@@ -24,6 +24,7 @@
 		E4C2424810CC5A17004149E2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C2424510CC5A17004149E2 /* Cocoa.framework */; };
 		E4C2424910CC5A17004149E2 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C2424610CC5A17004149E2 /* IOKit.framework */; };
 		E4EB6799138ADC1D00A09F29 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
+		EA05662114D958D0009282B0 /* KinectTouchReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA05662014D958D0009282B0 /* KinectTouchReceiver.cpp */; };
 		EA8E87CD14C492EE00940115 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA8E87AA14C492ED00940115 /* tinyxml.cpp */; };
 		EA8E87CE14C492EE00940115 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA8E87AC14C492ED00940115 /* tinyxmlerror.cpp */; };
 		EA8E87CF14C492EE00940115 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA8E87AD14C492ED00940115 /* tinyxmlparser.cpp */; };
@@ -102,7 +103,10 @@
 		E4C2424610CC5A17004149E2 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
 		E4EB691F138AFCF100A09F29 /* CoreOF.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = CoreOF.xcconfig; path = ../../../libs/openFrameworksCompiled/project/osx/CoreOF.xcconfig; sourceTree = SOURCE_ROOT; };
 		E4EB6923138AFD0F00A09F29 /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
-		EA0565B714D85751009282B0 /* KinectTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KinectTouch.h; sourceTree = "<group>"; };
+		EA05661D14D958B9009282B0 /* KinectTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KinectTouch.h; sourceTree = "<group>"; };
+		EA05661E14D958B9009282B0 /* KinectTouchListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KinectTouchListener.h; sourceTree = "<group>"; };
+		EA05661F14D958B9009282B0 /* KinectTouchReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KinectTouchReceiver.h; sourceTree = "<group>"; };
+		EA05662014D958D0009282B0 /* KinectTouchReceiver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KinectTouchReceiver.cpp; sourceTree = "<group>"; };
 		EA4CBCB314D6AD1500684485 /* SimpleGui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleGui.h; sourceTree = "<group>"; };
 		EA4CBCB514D6AD1500684485 /* ColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPicker.h; sourceTree = "<group>"; };
 		EA4CBCB614D6AD1500684485 /* Contour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Contour.h; sourceTree = "<group>"; };
@@ -200,8 +204,6 @@
 		EAC8156014D703B800595518 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		EAC8156714D705F400595518 /* Slosh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Slosh.cpp; sourceTree = "<group>"; };
 		EAC8156814D705F400595518 /* Slosh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Slosh.h; sourceTree = "<group>"; };
-		EAC8157914D70F5B00595518 /* KinectTouchListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KinectTouchListener.h; sourceTree = "<group>"; };
-		EAC8157A14D70FD800595518 /* KinectTouchReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KinectTouchReceiver.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -290,6 +292,7 @@
 			isa = PBXGroup;
 			children = (
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
+				EA05661C14D958B9009282B0 /* KinectTouch */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
@@ -306,9 +309,6 @@
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
-				EAC8157A14D70FD800595518 /* KinectTouchReceiver.h */,
-				EAC8157914D70F5B00595518 /* KinectTouchListener.h */,
-				EA0565B714D85751009282B0 /* KinectTouch.h */,
 				A69C743B14D6470B00C0EABC /* ofModifiers.h */,
 			);
 			path = src;
@@ -321,6 +321,18 @@
 				E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */,
 			);
 			name = openFrameworks;
+			sourceTree = "<group>";
+		};
+		EA05661C14D958B9009282B0 /* KinectTouch */ = {
+			isa = PBXGroup;
+			children = (
+				EA05661D14D958B9009282B0 /* KinectTouch.h */,
+				EA05661E14D958B9009282B0 /* KinectTouchListener.h */,
+				EA05661F14D958B9009282B0 /* KinectTouchReceiver.h */,
+				EA05662014D958D0009282B0 /* KinectTouchReceiver.cpp */,
+			);
+			name = KinectTouch;
+			path = ../../../addons/KinectTouch;
 			sourceTree = "<group>";
 		};
 		EA4CBCB114D6AD1500684485 /* xmlgui */ = {
@@ -686,6 +698,7 @@
 				EAC8156514D703B800595518 /* OneShot.cpp in Sources */,
 				EAC8156614D703B800595518 /* Personality.cpp in Sources */,
 				EAC8156914D705F400595518 /* Slosh.cpp in Sources */,
+				EA05662114D958D0009282B0 /* KinectTouchReceiver.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

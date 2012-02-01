@@ -10,23 +10,39 @@
  *    \  \:\        \  \:\         |  |:/       \  \::/       \  \::/        |  |:|   
  *     \__\/         \__\/         |__|/         \__\/         \__\/         |__|/   
  *
- *  Description: Interface for listening to blobs over OSC
+ *  Description: Wraps ofxOsc and our defined protocol to provide a listener pattern
+ *               using KinectTouchListener. 
+ *
+ *               Call setup(<port>), then setListener(<your listener>)
+ *               then every frame call update()
+ *      
+ *               Depends on ofxOsc.
  *				 
- *  KinectTouchListener.h, created by Marek Bereza on 30/01/2012.
+ *  KinectTouchReceiver.h, created by Marek Bereza on 30/01/2012.
  */
+#include "KinectTouchListener.h"
+#include "ofxOsc.h"
 
-#include "ofMain.h"
-#include "KinectTouch.h"
 
-/**
- * You need to inherit from this to listen to kinects
- */
-class KinectTouchListener {
+class KinectTouchReceiver {
+
 public:
-	virtual void touchDown(const KinectTouch &touch) {}
-	virtual void touchMoved(const KinectTouch &touch) {}
-	virtual void touchUp(const KinectTouch &touch) {}
+	KinectTouchReceiver();
+	
+	// call this in your testApp::setup() with the desired OSC port
+	void setup(int port);
+	
+	// add yourself as a listener (implementing the KinectTouchListener interface)
+	void setListener(KinectTouchListener *listener);
+	
+	
+	// call this every testApp::update() to receive KinectTouchListner events.
+	void update();
+	
+private:
+	ofxOscReceiver osc;
+	KinectTouchListener *listener;
+	map<int,KinectTouch> blobs;
 };
-
 
 

@@ -4,8 +4,10 @@
 #include "ofxOsc.h"
 #include "ofxWWScreenManager.h"
 #include "ofxWWRenderer.h"
+#include "KinectTouchReceiver.h"
+#include "KinectTouchSimulator.h"
 
-class testApp : public ofBaseApp{
+class testApp : public ofBaseApp, public KinectTouchListener {
 
 public:
 	void setup();
@@ -24,8 +26,14 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 	
-	ofxOscReceiver visionOsc;
-
+	// touch stuff
+	KinectTouchReceiver touchReceiver;
+	void touchDown(const KinectTouch &touch);
+	void touchMoved(const KinectTouch &touch);
+	void touchUp(const KinectTouch &touch);
+	KinectTouchSimulator simulator;
+	map<int,KinectTouch> blobs;
+	
 	//one for each triplehead output
 	ofxWWScreenManager screenManager;
 	ofxWWRenderer renderer;
@@ -35,4 +43,5 @@ public:
 	bool generateScreens;
 	bool shouldLoadScreens;
 	bool shouldSaveScreens;
+	
 };
