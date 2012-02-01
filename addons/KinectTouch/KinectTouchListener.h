@@ -15,6 +15,8 @@
  *  KinectTouchListener.h, created by Marek Bereza on 30/01/2012.
  */
 
+#pragma once
+
 #include "ofMain.h"
 #include "KinectTouch.h"
 
