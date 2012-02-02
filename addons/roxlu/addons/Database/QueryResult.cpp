@@ -13,6 +13,9 @@ QueryResult::QueryResult(Database& db)
 }
 
 QueryResult& QueryResult::operator=(const QueryResult& other) {
+	if(this == &other) {
+		return *this;
+	}
 	//printf("copy query: %p", other.stmt);
 	db = other.db;
 	stmt = other.stmt;
@@ -20,6 +23,12 @@ QueryResult& QueryResult::operator=(const QueryResult& other) {
 	row_index = other.row_index;
 	last_result = other.last_result;
 	return *this;
+}
+
+QueryResult::QueryResult(const QueryResult& other) 
+	:db(other.db)
+{
+	*this = other;
 }
 
 QueryResult::~QueryResult() {

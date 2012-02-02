@@ -10,7 +10,6 @@ TwitterApp::~TwitterApp() {
 }
 
 bool TwitterApp::init() {
-	
 	// DATABASE 
 	// --------
 	if(!db.open("twitter.db")) {
@@ -71,7 +70,7 @@ bool TwitterApp::init() {
 	// -------------------------------------------------------------------------
 	*/
 
-	//return true;
+	return true;
 	
 
 	if(!stream.connect(URL_STREAM_USER)) {

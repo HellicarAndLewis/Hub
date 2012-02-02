@@ -17,6 +17,7 @@ class QueryParams {
 public:
 	QueryParams();
 	~QueryParams();
+	QueryParams(const QueryParam& other);
 	QueryParams& operator=(const QueryParams& other);
 	
 	

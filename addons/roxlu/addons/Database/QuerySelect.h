@@ -16,6 +16,7 @@ class QuerySelect : public Query {
 public:
 	QuerySelect(Database& db);
 	QuerySelect(Database& db, const string& selectFields);
+	QuerySelect(const QuerySelect& other);
 	QuerySelect& operator=(const QuerySelect& other);
 	~QuerySelect();
 	

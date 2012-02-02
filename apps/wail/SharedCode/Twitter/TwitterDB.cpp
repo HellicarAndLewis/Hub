@@ -6,6 +6,15 @@ using namespace roxlu;
 namespace rtt = roxlu::twitter::type;
 
 TwitterDB::TwitterDB() {
+
+	printf("==========================================\n");
+	QuerySelect tmp = db.select("test");
+	tmp.use("test", "wathever");
+	QuerySelect tmp_copy = tmp;
+	QuerySelect tmp_copy3 = tmp;
+	printf("==========================================\n");
+//	return false;
+
 }
 
 bool TwitterDB::open(const string& name) {
@@ -192,22 +201,16 @@ bool TwitterDB::getTweetsWithTag(const string& tag, int howMany, vector<rtt::Twe
 		return false;
 	}
 	
-	//bool r = db.select("t_text")
-	
-	QueryResult qr(db);
-	QuerySelect sel = db.select("t_text");
-	sel.toString();
-				sel.from("tweets")
+	QuerySelect sel = db.select("t_text")
+				.from("tweets")
 				.join("tweet_tags on tt_tagid = :tt_tagid and tt_tweetid = t_id")
 				.use("tt_tagid", tag_id);
-//				.execute(qr);
+				
 	if(howMany > 0) {
 		sel.limit(howMany);	
 	}
-	
-	sel.toString();
-	return false;
-	/*
+		
+	QueryResult qr(db);
 	bool r = sel.execute(qr);
 	if(!r) {
 		printf("no tweets found.\n");
@@ -221,17 +224,13 @@ bool TwitterDB::getTweetsWithTag(const string& tag, int howMany, vector<rtt::Twe
 		printf("> %s\n", qr.getString(0).c_str());
 		result.push_back(tweet);
 	}
-//	printf("tag id: %d\n", tag_id);
 	return true;
-	*/
 }
 
 bool TwitterDB::getTagID(const string& tag, int& result) {
-	printf("getTagID for: %s\n", tag.c_str());
 	QueryResult qr(db);
 	bool r = db.select("tag_id")
 				.from("tags")
-				//.where("tag_name = \"NeverTrustAGuyWho\"")
 				.where("tag_name = :tag_name")
 				.use("tag_name", tag)
 				.execute(qr);
@@ -275,6 +274,9 @@ bool TwitterDB::getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& res
 }
 
 bool TwitterDB::getTweetsWithSearchTerm(const string& q, vector<rtt::Tweet>& result) {
+	/* bool getTweetsWithSearchTerm(const string& q, vector<rtt::Tweet>& result);*/
+	QueryResult qr(db);
+	
 	return true;
 }
 

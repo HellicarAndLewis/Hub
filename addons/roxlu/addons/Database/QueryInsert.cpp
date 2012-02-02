@@ -14,7 +14,18 @@ QueryInsert::QueryInsert(Database& db, const string& table)
 {
 }
 
+QueryInsert::QueryInsert(const QueryInsert& other)
+	:Query(other.db)
+{
+	*this = other;
+}
+
+
 QueryInsert& QueryInsert::operator=(const QueryInsert& other) {
+	if(this == &other) {
+		return *this;
+	}	
+	
 	or_clause = other.or_clause;
 	table = other.table;
 	field_values = other.field_values;

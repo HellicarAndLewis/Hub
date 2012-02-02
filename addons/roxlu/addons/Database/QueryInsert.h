@@ -11,6 +11,7 @@ class QueryInsert : public Query {
 public: 
 	QueryInsert(Database& db);
 	QueryInsert(Database& db, const string& table);
+	QueryInsert(const QueryInsert& other);
 	QueryInsert& operator=(const QueryInsert& other);
 	~QueryInsert();	
 	

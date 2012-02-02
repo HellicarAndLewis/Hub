@@ -18,7 +18,17 @@ QueryDelete::QueryDelete(Database& db, const string& fromTable)
 {
 }
 
+QueryDelete::QueryDelete(const QueryDelete& other) 
+	:Query(other.db)
+{
+	*this = other;
+}
+
 QueryDelete& QueryDelete::operator=(const QueryDelete& other) {
+	if(this == &other) {
+		return *this;
+	}
+	
 	where_clause = other.where_clause;
 	field_values = other.field_values;
 	from_table = other.from_table;

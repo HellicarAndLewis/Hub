@@ -8,6 +8,7 @@ QueryParam::QueryParam()
 	,value("")
 	,type(SQL_PARAM_TEXT)														
 {
+	//printf("Created QueryParam %p\n", this);
 }
 
 QueryParam::~QueryParam() {

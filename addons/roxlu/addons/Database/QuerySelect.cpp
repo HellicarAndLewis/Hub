@@ -22,7 +22,17 @@ QuerySelect::QuerySelect(Database& db, const string& selectFields)
 	
 }
 
+QuerySelect::QuerySelect(const QuerySelect& other) 
+	:Query(other.db)
+{
+	*this = other;
+}
+
 QuerySelect& QuerySelect::operator=(const QuerySelect& other) {
+	if(this == &other) {
+		return *this;
+	}
+	printf("Copying QuerySelect\n");
 	select_fields = other.select_fields;
 	from_table = other.from_table;
 	join_clause = other.join_clause;
@@ -92,7 +102,7 @@ string QuerySelect::toString() {
 	}
 	
 	
-	printf("SQL: %s\n" , sql.c_str());
+	//printf("SQL: %s\n" , sql.c_str());
 	return sql;
 	
 }
