@@ -9,10 +9,14 @@
 #pragma once
 
 #include "ofMain.h"
+#include "TwitterApp.h"
 
-class ofxWWTweet{
+class ofxWWTweetParticle {
   public:
-	ofxWWTweet();
+	//copies the data we 
+	ofxWWTweetParticle();
+	
+	void setTweet(rtt::Tweet& tweet);
 	void update();
 	
 	string text;
@@ -20,4 +24,7 @@ class ofxWWTweet{
 	ofVec2f pos;
 	float scale;
 	float opacity;	
+	
+	
+	rtt::Tweet tweet;
 };

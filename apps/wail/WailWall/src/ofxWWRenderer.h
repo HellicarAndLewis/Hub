@@ -10,7 +10,7 @@
 #pragma once
 #include "ofMain.h"
 #include "ofxMPMFluid.h"
-#include "ofxWWTweetManager.h"
+#include "ofxWWTweetParticleManager.h"
 #include "KinectTouchListener.h"
 
 class ofxWWRenderer: public KinectTouchListener {
@@ -35,7 +35,7 @@ class ofxWWRenderer: public KinectTouchListener {
 	float layerBarrierWidth; //controls layer transition fade	
 	
   protected:
-	ofxWWTweetManager tweets;
+	ofxWWTweetParticleManager tweets;
 	
 	//for diffusing the lines over time
 	ofShader blurShader;

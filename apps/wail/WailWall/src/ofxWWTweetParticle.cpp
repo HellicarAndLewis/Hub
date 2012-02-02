@@ -7,5 +7,8 @@
  *
  */
 
-#include "ofxWWTweet.h"
+#include "ofxWWTweetParticle.h"
 
+ofxWWTweetParticle::ofxWWTweetParticle(){
+	
+}
