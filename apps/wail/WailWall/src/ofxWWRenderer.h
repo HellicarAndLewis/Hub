@@ -37,20 +37,32 @@ class ofxWWRenderer: public KinectTouchListener {
   protected:
 	ofxWWTweetManager tweets;
 	
+	//for diffusing the lines over time
+	ofShader blurShader;
+	float blurAmount;
+	float clearSpeed;
+	
 	//for rendering the layers
 	ofShader noiseShader;
 	ofImage permutationImage;
-	float flow;
-	float wobble1;
-	float wobble2;
-	ofVec2f scale;
+	ofVec2f noiseScale;
+	float noiseFlow;
+	float noiseWobbleSpeedX;
+	float noiseWobbleSpeedY;
+	float noiseWobbleAmplitudeX;
+	float noiseWobbleAmplitudeY;
+	
+	//warp distort 
+	ofShader warpShader;
+	float warpAmount;
+	bool justDrawWarpTexture;
 	
 	void renderLiquidField();
 	void renderFirstLayer();
 	void renderSecondLayer();
 	
 	ofVec2f texCoordAtPos(ofImage& image, float x, float y);
-		
+
 	ofxMPMFluid fluid;
 	ofFbo firstLayerAccumulator;
 	ofFbo liquidTarget;

@@ -30,7 +30,19 @@ void ofxWWRenderer::setup(int width, int height){
 	noiseShader.begin();
 	noiseShader.setUniform1f("permTexture", 0);
 	noiseShader.end();
+	
+	blurShader.load("shaders/gaussian_blur");
+	blurShader.begin();
+	blurShader.setUniform1i("tex0", 0);
+	blurShader.end();
+	
+	warpShader.load("shaders/warp_distort");
+	warpShader.begin();
+	warpShader.setUniform1i("base",0);
+	warpShader.setUniform1i("warp",1);
+	warpShader.end();
 
+	justDrawWarpTexture = false;
 }
 
 void ofxWWRenderer::setupGui(){
@@ -39,13 +51,13 @@ void ofxWWRenderer::setupGui(){
 	gui.addSlider("Layer Barrier Z", layerBarrierZ, .25, .75);
 	gui.addSlider("Layer Barrier Width", layerBarrierWidth, 0.05, .25);
 	
-	gui.addPage("Fluid");
-	gui.addSlider("Scale Factor",	fluid.scaleFactor,	1.0, 10.0); 	
-	gui.addSlider("OffsetX",		fluid.offsetX,		-200.0, 0); 	
-	gui.addSlider("OffsetY",		fluid.offsetY,		-200.0, 0); 	
+	gui.addPage("Simulation Scale");
 	gui.addSlider("Force Scale",	fluid.forceScale,	1.0, 200); 
+	gui.addSlider("Zoom",	fluid.scaleFactor,	1.0, 10.0); 	
+	gui.addSlider("Offset X",		fluid.offsetX,		-200.0, 0); 	
+	gui.addSlider("Offset Y",		fluid.offsetY,		-200.0, 0); 	
 	
-
+	gui.addPage("Fluid");
 	gui.addSlider("Particles",		fluid.numParticles,		1000, 100000); 
 	gui.addSlider("Density",		fluid.densitySetting,	0, 30.0);	
 	gui.addSlider("Stiffness",		fluid.stiffness,		0, 2.0);
@@ -55,7 +67,21 @@ void ofxWWRenderer::setupGui(){
 	gui.addSlider("Yield Rate",		fluid.yieldRate,		0, 2.0);
 	gui.addSlider("Gravity",		fluid.gravity,			0, 0.02);
 	gui.addSlider("Smoothing",		fluid.smoothing,		0, 3.0);
-	gui.addToggle("Do Obstacles",	fluid.bDoObstacles); 	
+	gui.addToggle("Do Obstacles",	fluid.bDoObstacles); 
+	
+	gui.addPage("Shader");
+	gui.addSlider("Blur Diffuse", blurAmount, 0, .75);
+	gui.addSlider("Clear Speed", clearSpeed, 0, 15);
+	gui.addSlider("Warp Amount", warpAmount, 0, 75);
+	gui.addSlider("Noise Scale X", noiseScale.x, 50, 500);
+	gui.addSlider("Noise Scale Y", noiseScale.y, 50, 500);
+	gui.addSlider("Noise Flow", noiseFlow, 0, 200);
+	gui.addSlider("Wobble Speed X", noiseWobbleSpeedX, 0, .2);
+	gui.addSlider("Noise Wobble Speed Y", noiseWobbleSpeedY, 0, .2);
+	gui.addSlider("Noise Wobble Amplitude X", noiseWobbleAmplitudeX, 0, 100);
+	gui.addSlider("Noise Wobble Amplitude Y", noiseWobbleAmplitudeY, 0, 100);
+	gui.addToggle("Just Draw Warp", justDrawWarpTexture);
+
 }
 
 void ofxWWRenderer::update(){
@@ -71,11 +97,56 @@ void ofxWWRenderer::render(){
 	renderTarget.begin();
 	ofClear(0);
 	ofEnableAlphaBlending();
+			
+	warpShader.begin();
+	warpShader.setUniform1f("warpScale", warpAmount);
+	//our shader uses two textures, the top layer and the alpha
+	//we can load two textures into a shader using the multi texture coordinate extensions
+	glActiveTexture(GL_TEXTURE0_ARB);
+	firstLayerAccumulator.getTextureReference().bind();
 	
-	liquidTarget.draw(0,0);
-	firstLayerAccumulator.draw(0,0);
-	tweets.renderTweets();	
+	glActiveTexture(GL_TEXTURE1_ARB);
+	liquidTarget.getTextureReference().bind();
+	
+	//draw a quad the size of the frame
+	glBegin(GL_QUADS);
+	
+	//move the mask around with the mouse by modifying the texture coordinates
+	glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, 0);
+	glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, 0);
+	glVertex2f( 0, 0);
+	
+	glMultiTexCoord2d(GL_TEXTURE0_ARB, liquidTarget.getWidth(), 0);
+	glMultiTexCoord2d(GL_TEXTURE1_ARB, liquidTarget.getWidth(), 0);
+	glVertex2f( liquidTarget.getWidth(), 0);
+	
+	glMultiTexCoord2d(GL_TEXTURE0_ARB, liquidTarget.getWidth(), liquidTarget.getHeight());
+	glMultiTexCoord2d(GL_TEXTURE1_ARB, liquidTarget.getWidth(), liquidTarget.getHeight());
+	glVertex2f( liquidTarget.getWidth(), liquidTarget.getHeight());
+	
+	glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, liquidTarget.getHeight());
+	glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, liquidTarget.getHeight());
+	glVertex2f( 0, liquidTarget.getHeight() );
+	
+	glEnd();
+	
+	//deactive and clean up
+	glActiveTexture(GL_TEXTURE1_ARB);
+	liquidTarget.getTextureReference().unbind();
+	
+	glActiveTexture(GL_TEXTURE0_ARB);
+	firstLayerAccumulator.getTextureReference().bind();
+	
+	//liquidTarget.draw(0,0);
+	//firstLayerAccumulator.draw(0,0);
+	//tweets.renderTweets();	
 		
+	warpShader.end();
+	
+	if(justDrawWarpTexture){
+		liquidTarget.draw(0,0);		
+	}
+	
 	renderTarget.end();	
 }
 
@@ -98,6 +169,16 @@ void ofxWWRenderer::renderFirstLayer(){
 	layer1Opacity += (targetOpacity - layer1Opacity) * .05;
 	
 	//render the fluid sim for layer 1
+	blurShader.begin();
+	blurShader.setUniform2f("sampleOffset", 0, blurAmount);
+	firstLayerAccumulator.draw(0,0);
+	blurShader.end();
+
+	blurShader.begin();
+	blurShader.setUniform2f("sampleOffset", blurAmount, 0);
+	firstLayerAccumulator.draw(0,0);
+	blurShader.end();
+	
 	ofPushMatrix();
 	ofTranslate(fluid.offsetX, fluid.offsetY);
 	ofScale(fluid.scaleFactor, fluid.scaleFactor, 1);
@@ -123,10 +204,11 @@ void ofxWWRenderer::renderFirstLayer(){
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
 //	glDisableClientState(GL_COLOR_ARRAY);
-
+	
 	colorField.getTextureReference().unbind();
+	ofPopMatrix();
 
-	ofSetColor(0,0,0, 10);
+	ofSetColor(0,0,0, clearSpeed);
 	ofRect(0, 0, firstLayerAccumulator.getWidth(), firstLayerAccumulator.getHeight());
 	
 	ofPopStyle();
@@ -141,10 +223,10 @@ void ofxWWRenderer::renderLiquidField(){
 	
 	noiseShader.begin();
 	
-	noiseShader.setUniform1f("flow", ofGetElapsedTimef()*100);
-	noiseShader.setUniform1f("wobble1", sin(ofGetElapsedTimef()/2.0)*5);
-	noiseShader.setUniform1f("wobble2", sin(ofGetElapsedTimef()/20.0)*5);
-	noiseShader.setUniform2f("scale", 500.0, 200.0);
+	noiseShader.setUniform1f("flow", -ofGetElapsedTimef()*noiseFlow);
+	noiseShader.setUniform1f("wobbleX", sin(ofGetElapsedTimef()*noiseWobbleSpeedX) * noiseWobbleAmplitudeX);
+	noiseShader.setUniform1f("wobbleY", sin(ofGetElapsedTimef()*noiseWobbleSpeedY) * noiseWobbleAmplitudeY);
+	noiseShader.setUniform2f("scale", noiseScale.x, noiseScale.y);
 	
 	permutationImage.getTextureReference().bind();
 	
