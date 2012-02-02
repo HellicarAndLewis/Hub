@@ -30,7 +30,6 @@ void ofxWWTweetParticleManager::setup(){
 	}
 	
 	twitter.addListener(this, &ofxWWTweetParticleManager::onNewSearchTerm);
-	
 }
 
 void ofxWWTweetParticleManager::update(){
