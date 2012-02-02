@@ -32,20 +32,34 @@ class ofxWWRenderer: public KinectTouchListener {
 
 	//controlled through the guy
 	float layerBarrierZ;
-	float layerBarrierWidth;
-	
+	float layerBarrierWidth; //controls layer transition fade	
 	
   protected:
 	ofxWWTweetManager tweets;
 	
+	//for rendering the layers
+	ofShader noiseShader;
+	ofImage permutationImage;
+	float flow;
+	float wobble1;
+	float wobble2;
+	ofVec2f scale;
+	
+	void renderLiquidField();
 	void renderFirstLayer();
 	void renderSecondLayer();
 	
+	ofVec2f texCoordAtPos(ofImage& image, float x, float y);
+		
 	ofxMPMFluid fluid;
+	ofFbo firstLayerAccumulator;
+	ofFbo liquidTarget;
 	ofFbo renderTarget;
 
 	//used as a map into the fluid sim
 	ofImage colorField;
 	
 	float layer1Opacity; //this is smoothed
+	
+	
 };

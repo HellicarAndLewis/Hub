@@ -462,8 +462,8 @@ void ofxMPMFluid::update(){
 //		if (ofGetMousePressed(0)) {
 		for(int i = 0; i < forces.size(); i++){
 
-			float vx = MIN(abs(p->x - forces[i].pos.x * forceScale), 10.f);
-			float vy = MIN(abs(p->y - forces[i].pos.y * forceScale), 10.f);
+			float vx = MIN(abs(p->x - forces[i].pos.x*gridSizeY), 10.f);
+			float vy = MIN(abs(p->y - forces[i].pos.y*gridSizeY), 10.f);
 			float mdx = forces[i].vel.x * forceScale;
 			float mdy = forces[i].vel.y * forceScale;
 //			float _vx = abs(p->x - ofGetMouseX()/scaleFactor);
