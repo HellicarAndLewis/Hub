@@ -14,6 +14,7 @@ bool TwitterDB::open(const string& name) {
 }
 
 bool TwitterDB::createTables() {
+
 	// TWEETS
 	bool result = db.query(
 		"CREATE TABLE IF NOT EXISTS tweets( "					\
@@ -83,7 +84,7 @@ bool TwitterDB::createTables() {
 // TWEETS
 // -----------------------------------------------------------------------------
 bool TwitterDB::insertTweet(const rtt::Tweet& tweet) {
-	printf("> %s\n", tweet.text.c_str());
+	//printf("> %s\n", tweet.text.c_str());
 	// get ids for new tags.
 	
 	db.beginTransaction();
