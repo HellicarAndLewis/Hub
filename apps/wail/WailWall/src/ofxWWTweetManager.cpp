@@ -27,14 +27,15 @@ void ofxWWTweetManager::setup(){
 	twitter.track("TolimaDay");	
 	twitter.track("love");
 	
+	twitter.addListener(this, &ofxWWTweetManager::onNewSearchTerm);
 	if(!twitter.connect()) {
 		printf("Error: cannot connect to twitter stream.\n");
 	}
 	
 }
 
-void ofxWWTweetManager::onNewSearchTerm(const string& term) {
-	printf("Yay I got a new search term: %s\n", term.c_str());
+void ofxWWTweetManager::onNewSearchTerm(TwitterAppEvent& event) {
+	printf("Yay I got a new search term: %s\n", event.search_term.c_str());
 }
 
 void ofxWWTweetManager::update(){

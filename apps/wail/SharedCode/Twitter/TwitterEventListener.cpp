@@ -32,9 +32,10 @@ void TwitterEventListener::onStatusUpdate(const rtt::Tweet& tweet) {
 				// tokenize
 				std::istringstream ss(tweet.getText());
 				string token;
+				ss >> token;
 				while(ss.good()) {
 					ss >> token;
-					printf(":: token: %s\n", token.c_str());
+					twitter_app.onNewSearchTerm(tweet, token);
 				}
 			}
 		}

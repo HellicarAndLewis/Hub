@@ -1,5 +1,7 @@
 #include "TwitterApp.h"
 
+ofEvent<TwitterAppEvent> twitter_app_dispatcher;
+
 TwitterApp::TwitterApp()
 	:stream(twitter)
 	,twitter_listener(*this)
@@ -15,8 +17,8 @@ bool TwitterApp::initDB(){
 	// TWITTER
 	// --------
 	printf("initializeing twitter\n");
-//	twitter.setTwitterUsername("dewarshub");
-//	twitter.setTwitterPassword("HUB2012hub#");
+	//twitter.setTwitterUsername("dewarshub");
+	//twitter.setTwitterPassword("HUB2012hub#");
 	twitter.setConsumerKey("5cL1KRDQzcnGo8ZOaAz0g");
 	twitter.setConsumerSecret("e4X9dtxkgmpkRlr9arhOfNe7tTezWad2bmCUNvPtBvQ");
 	
@@ -41,11 +43,6 @@ bool TwitterApp::initDB(){
 		printf("Error: Cannot create database.\n");
 		//return false;
 	}
-//	return true;
-	vector<rtt::Tweet> tweets;
-	getTweetsWithSearchTerm("love",100, 1000, tweets);
-	//exit(0);
-
 	return true;
 }
 
@@ -61,6 +58,30 @@ bool TwitterApp::connect(){
 	
 	return true;
 	
+}
+
+void TwitterApp::addDefaultListener(){
+	addCustomListener(twitter_listener);
+}
+
+void TwitterApp::addCustomListener(rt::IEventListener& listener){
+	twitter.addEventListener(listener);
+}
+
+void TwitterApp::onNewSearchTerm(rtt::Tweet tweet, const string& term) {
+	TwitterAppEvent ev(tweet, term);
+	ofNotifyEvent(twitter_app_dispatcher, ev);
+}
+
+void TwitterApp::update() {	
+	if(stream.isConnected()) {
+		stream.update();
+	}
+}
+
+// get the list of people to follow, separated by comma
+bool TwitterApp::getFollowers(vector<string>& result) {
+	return db.getFollowers(result);
 }
 
 //bool TwitterApp::init() {
@@ -102,24 +123,3 @@ bool TwitterApp::connect(){
 //	return true;
 	
 //}
-
-//twitter.addEventListener(twitter_listener);
-void TwitterApp::addDefaultListener(){
-	addCustomListener(twitter_listener);
-}
-
-void TwitterApp::addCustomListener(rt::IEventListener& listener){
-	twitter.addEventListener(listener);
-}
-
-void TwitterApp::update() {	
-	if(stream.isConnected()) {
-		stream.update();
-	}
-}
-
-// get the list of people to follow, separated by comma
-bool TwitterApp::getFollowers(vector<string>& result) {
-	return db.getFollowers(result);
-}
-
