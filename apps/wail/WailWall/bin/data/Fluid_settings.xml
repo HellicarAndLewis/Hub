@@ -17,7 +17,7 @@
     </SliderFloat_Bulk_Viscosity>
     <SliderFloat_Elasticity>
         <name>Elasticity</name>
-        <value>4.000000</value>
+        <value>2.100000</value>
     </SliderFloat_Elasticity>
     <SliderFloat_Viscosity>
         <name>Viscosity</name>

@@ -66,12 +66,11 @@ bool Stream::connect(const string& streamURL) {
 		printf("Error: cannot create easy handle.\n");
 		return false;
 	}
-	
-	/*
+
 	string userpass = twitter.getTwitterUsername() +":" +twitter.getTwitterPassword();
 	curl_easy_setopt(curl, CURLOPT_USERPWD, NULL); 
 	curl_easy_setopt(curl, CURLOPT_USERPWD, userpass.c_str());
-	*/
+
 	
 	// set url
 	r = curl_easy_setopt(curl, CURLOPT_URL, use_url.c_str());

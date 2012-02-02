@@ -35,7 +35,7 @@ class ofxWWRenderer: public KinectTouchListener {
 	float layerBarrierWidth; //controls layer transition fade	
 	
   protected:
-	ofxWWTweetParticleManager tweets;
+	ofxWWTweetParticleManager tweets;	
 	
 	//for diffusing the lines over time
 	ofShader blurShader;

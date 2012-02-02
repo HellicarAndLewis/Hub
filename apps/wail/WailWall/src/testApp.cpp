@@ -52,7 +52,6 @@ void testApp::exit() {
 
 //--------------------------------------------------------------
 void testApp::update(){
-	
 	touchReceiver.update();
 	
 	renderer.update();
@@ -77,6 +76,7 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
+	return;
 	ofBackground(0);
 	
 	//draw preview rects
