@@ -11,8 +11,9 @@
 #include "ofMain.h"
 #include "ofxWWTweet.h"
 #include "ofxWWSearchTerm.h"
+#include "TwitterApp.h"
 
-class ofxWWTweetManager {
+class ofxWWTweetManager : public roxlu::twitter::IEventListener {
   public:
 	ofxWWTweetManager();
 	void setup();
@@ -20,7 +21,13 @@ class ofxWWTweetManager {
 	void renderTweets();
 	void renderSearchTerms();
 	
+	void onStatusUpdate(const rtt::Tweet& tweet);
+	void onStatusDestroy(const rtt::StatusDestroy& destroy);
+	void onStreamEvent(const rtt::StreamEvent& event);
+	
   protected:
 	vector<ofxWWTweet*> tweets;
 	vector<ofxWWSearchTerm*> searchTerms;
+	
+	TwitterApp twitter;
 };

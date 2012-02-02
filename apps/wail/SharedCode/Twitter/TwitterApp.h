@@ -4,6 +4,7 @@
 #include "ofMain.h"
 #include "Twitter.h"
 #include "TwitterDB.h"
+#include "IEventListener.h"
 #include "TwitterEventListener.h"
 
 namespace rtt = roxlu::twitter::type;
@@ -14,7 +15,12 @@ class TwitterApp {
 public:
 	TwitterApp();
 	~TwitterApp();
-	bool init();
+	
+	//bool init();
+	bool initDB();
+	void track(string trackingString);
+	bool connect();
+	
 	void update();	
 	
 	TwitterDB& getDB();
@@ -24,6 +30,9 @@ public:
 	bool getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result);
 	bool getTweetsWithSearchTerm(const string& q, vector<rtt::Tweet>& result);
 
+	void addDefaultListener();
+	void addCustomListener(rt::IEventListener& listener);
+	
 private:
 	rt::Twitter twitter;
 	rt::Stream	stream;

@@ -2,8 +2,21 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
-	if(!twitter_app.init()) {
-		printf("Error: cannot initialize twitter app.\n");
+	if(!twitter_app.initDB()){
+		printf("Error: cannot initialize twitter db.\n");
+		exit();
+	}
+	
+	twitter_app.addDefaultListener();
+	
+	// What do you want to track?
+	twitter_app.track("ItsFunnyHow");
+	twitter_app.track("NeverTrustAGuyWho");
+	twitter_app.track("TolimaDay");
+	twitter_app.track("love");
+	
+	if(!twitter_app.connect()) {
+		printf("Error: cannot connect to twitter stream.\n");
 		exit();
 	}
 	

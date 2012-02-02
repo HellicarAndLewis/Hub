@@ -9,7 +9,7 @@ TwitterApp::TwitterApp()
 TwitterApp::~TwitterApp() {
 }
 
-bool TwitterApp::init() {
+bool TwitterApp::initDB(){
 	// DATABASE 
 	// --------
 	if(!db.open("twitter.db")) {
@@ -37,24 +37,40 @@ bool TwitterApp::init() {
         twitter.accessToken();
         twitter.saveTokens(token_file);
 	}
-	twitter.addEventListener(twitter_listener);
-	
+		
+	return true;
+}
 
-	// What do you want to track?
-	stream.track("ItsFunnyHow");
-	stream.track("NeverTrustAGuyWho");
-	stream.track("TolimaDay");
-	stream.track("love");
-	
-	
-	// testing queries
-	// -------------------------------------------------------------------------
-	// get tweets with tag...
-	
-	vector<rtt::Tweet> tweets;
-	if(getTweetsWithTag("NeverTrustAGuyWho",10, tweets)) {
-		printf("found: %d!", tweets.size());
+void TwitterApp::track(string trackingString){
+	stream.track(trackingString);
+}
+
+bool TwitterApp::connect(){
+	if(!stream.connect(URL_STREAM_USER)) {
+		printf("Error: cannot connect to user stream.\n");
+		return false;
 	}
+	
+	return true;
+	
+}
+
+//bool TwitterApp::init() {
+	// What do you want to track?
+	//	stream.track("ItsFunnyHow");
+	//	stream.track("NeverTrustAGuyWho");
+	//	stream.track("TolimaDay");
+	//	stream.track("love");
+	
+	
+//	// testing queries
+//	// -------------------------------------------------------------------------
+//	// get tweets with tag...
+//	
+//	vector<rtt::Tweet> tweets;
+//	if(getTweetsWithTag("NeverTrustAGuyWho",10, tweets)) {
+//		printf("found: %d!", tweets.size());
+//	}
 	
 	/*
 	// get tweets newer then 2400 seconds.
@@ -70,16 +86,23 @@ bool TwitterApp::init() {
 	// -------------------------------------------------------------------------
 	*/
 
-	return true;
+//	if(!stream.connect(URL_STREAM_USER)) {
+//		printf("Error: cannot connect to user stream.\n");
+//		return false;
+//	}
+//	
+//	return true;
+	
+//}
 
-	if(!stream.connect(URL_STREAM_USER)) {
-		printf("Error: cannot connect to user stream.\n");
-		return false;
-	}
-
-	return true;
+//twitter.addEventListener(twitter_listener);
+void TwitterApp::addDefaultListener(){
+	addCustomListener(twitter_listener);
 }
 
+void TwitterApp::addCustomListener(rt::IEventListener& listener){
+	twitter.addEventListener(listener);
+}
 
 void TwitterApp::update() {	
 	if(stream.isConnected()) {
