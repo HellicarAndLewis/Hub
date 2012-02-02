@@ -15,8 +15,8 @@ bool TwitterApp::initDB(){
 	// TWITTER
 	// --------
 	printf("initializeing twitter\n");
-	twitter.setTwitterUsername("dewarshub");
-	twitter.setTwitterPassword("HUB2012hub#");
+//	twitter.setTwitterUsername("dewarshub");
+//	twitter.setTwitterPassword("HUB2012hub#");
 	twitter.setConsumerKey("5cL1KRDQzcnGo8ZOaAz0g");
 	twitter.setConsumerSecret("e4X9dtxkgmpkRlr9arhOfNe7tTezWad2bmCUNvPtBvQ");
 	
@@ -41,7 +41,7 @@ bool TwitterApp::initDB(){
 		printf("Error: Cannot create database.\n");
 		//return false;
 	}
-	return true;
+//	return true;
 	vector<rtt::Tweet> tweets;
 	getTweetsWithSearchTerm("love",100, 1000, tweets);
 	//exit(0);
