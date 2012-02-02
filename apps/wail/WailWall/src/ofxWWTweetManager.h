@@ -24,6 +24,7 @@ class ofxWWTweetManager : public roxlu::twitter::IEventListener {
 	void onStatusUpdate(const rtt::Tweet& tweet);
 	void onStatusDestroy(const rtt::StatusDestroy& destroy);
 	void onStreamEvent(const rtt::StreamEvent& event);
+	void onNewSearchTerm(const string& term);
 	
   protected:
 	vector<ofxWWTweet*> tweets;

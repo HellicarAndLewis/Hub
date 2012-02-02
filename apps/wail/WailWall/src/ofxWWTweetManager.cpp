@@ -33,6 +33,10 @@ void ofxWWTweetManager::setup(){
 	
 }
 
+void ofxWWTweetManager::onNewSearchTerm(const string& term) {
+	printf("Yay I got a new search term: %s\n", term.c_str());
+}
+
 void ofxWWTweetManager::update(){
 	twitter.update();
 }
