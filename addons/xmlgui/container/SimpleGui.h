@@ -8,10 +8,12 @@
 #include "PushButton.h"
 #include "ofGuiEventDispatcher.h"
 #include "Drawable.h"
+#include "Panner.h"
 
 //#define SIMPLE_GUI_WIDTH 150
 
 namespace xmlgui {
+	
 	class SimpleGui: public xmlgui::Container, public xmlgui::Listener {
 	public:
 		
@@ -53,9 +55,7 @@ namespace xmlgui {
 		}
 		
 		Drawable *addDrawable(string name, ofBaseDraws &baseDraws) {
-			using namespace xmlgui;
-			Drawable *drawable = (Drawable*)INSTANTIATE("drawable");
-			drawable->name = drawable->id = name;
+			Drawable *drawable = (Drawable*)INSTANTIATE_WITH_ID("drawable", name);
 			drawable->drawable = &baseDraws;
 			drawable->width = SIMPLE_GUI_WIDTH;
 			drawable->height = baseDraws.getHeight()*SIMPLE_GUI_WIDTH/baseDraws.getWidth();
@@ -65,10 +65,7 @@ namespace xmlgui {
 			
 		}
 		Slider *addSlider(string name, float &value, float min, float max) {
-			using namespace xmlgui;
-			Slider *slider = (Slider*)INSTANTIATE("slider");
-			slider->name = name;
-			slider->id = name;
+			Slider *slider = (Slider*)INSTANTIATE_WITH_ID("slider", name);
 			slider->pointToValue(&value);
 			slider->min = min;
 			slider->max = max;
@@ -79,24 +76,31 @@ namespace xmlgui {
 			return slider;
 
 		}
+		
+		Panner *addPanner(string name, float &value, float min, float max) {
+			Panner *slider = (Panner*)INSTANTIATE_WITH_ID("panner", name);
+			slider->min = min;
+			slider->max = max;
+			slider->width = SIMPLE_GUI_WIDTH;
+			slider->pointToValue(&value);
+			slider->showValue = true;
+			addChild(slider);
+			columnCheck();
+
+			return slider;
+		}
+		
 		Toggle *addToggle(string name, bool &value) {
-			using namespace xmlgui;
-			Toggle *tog = (Toggle*)INSTANTIATE("toggle");
-			tog->name = name;
-			tog->id = name;
+			Toggle *tog = (Toggle*)INSTANTIATE_WITH_ID("toggle", name);
 			tog->pointToValue(&value);
 			tog->width = tog->height; // make it square
 			addChild(tog);
 			columnCheck();
 			return tog;
-			
 		}
 		
 		PushButton *addPushButton(string name) {
-			using namespace xmlgui;
-			PushButton *tog = (PushButton*)INSTANTIATE("pushbutton");
-			tog->name = name;
-			tog->id = name;
+			PushButton *tog = (PushButton*)INSTANTIATE_WITH_ID("pushbutton", name);
 			tog->width = 80;
 			tog->height = 20;
 			addChild(tog);
@@ -105,10 +109,7 @@ namespace xmlgui {
 			
 		}
 		SegmentedControl *addSegmented(string name, int &value, string options) {
-			using namespace xmlgui;
-			SegmentedControl *seg = (SegmentedControl*)INSTANTIATE("segmented");
-			seg->name = name;
-			seg->id = name;
+			SegmentedControl *seg = (SegmentedControl*)INSTANTIATE_WITH_ID("segmented", name);
 			seg->pointToValue(&value);
 			seg->width = SIMPLE_GUI_WIDTH;
 			seg->options = options;
@@ -119,10 +120,8 @@ namespace xmlgui {
 		}
 		
 		SegmentedControl *addSegmented(string name, int &value, vector<string> options) {
-			using namespace xmlgui;
-			SegmentedControl *seg = (SegmentedControl*)INSTANTIATE("segmented");
-			seg->name = name;
-			seg->id = name;
+			
+			SegmentedControl *seg = (SegmentedControl*)INSTANTIATE_WITH_ID("segmented", name);
 			seg->pointToValue(&value);
 			seg->width = SIMPLE_GUI_WIDTH;
 			seg->opts = options;
@@ -132,10 +131,7 @@ namespace xmlgui {
 		}
 		
 		List *addList(string name, int &value, vector<string> options) {
-			using namespace xmlgui;
-			List *list = (List*)INSTANTIATE("list");
-			list->name = name;
-			list->id = name;
+			List *list = (List*)INSTANTIATE_WITH_ID("list", name);
 			list->pointToValue(&value);
 			list->items = options;
 			list->width = SIMPLE_GUI_WIDTH;

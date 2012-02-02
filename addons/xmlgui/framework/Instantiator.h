@@ -10,6 +10,7 @@
 #include "ofMain.h"
 #include "Control.h"
 #define INSTANTIATE(A) xmlgui::Instantiator::getInstance()->createControl(A)
+#define INSTANTIATE_WITH_ID(A, B) xmlgui::Instantiator::getInstance()->createControlWithIdAndName(A, B)
 typedef xmlgui::Control* (*controlConstructor)();
 
 namespace xmlgui {
@@ -32,6 +33,7 @@ namespace xmlgui {
 			return instance;
 		}
 		Control *createControl(string type);
+		Control *createControlWithIdAndName(string type, string idName);
 		
 	private:
 

@@ -1,5 +1,6 @@
 #include "testApp.h"
 #include "ofxXmlSettings.h"
+#include "contourutils.h"
 
 //
 //
@@ -15,7 +16,8 @@ enum {
 	VIEWMODE_RAW,
 	VIEWMODE_BG,
 	VIEWMODE_RANGE_SCALE,
-	VIEWMODE_MASKED
+	VIEWMODE_MASKED,
+	VIEWMODE_MUTE
 };
 
 int KINECT_WIDTH;
@@ -24,7 +26,7 @@ int KINECT_VIEW_OFFSET = 10;
 
 float Blob::xySmoothing = 0.3;
 float Blob::zSmoothing = 0.4;	
-
+bool isFullscreen = false;
 //--------------------------------------------------------------
 void testApp::setup(){
 	viewMode = VIEWMODE_RAW;
@@ -36,7 +38,8 @@ void testApp::setup(){
 	maxWaterDepth = 255;
 	minBlobSize = 10;
 	maxBlobSize = 200;
-	
+	blobRotation = 0;
+	lastTimeRotatedBlobs = -100;
 	accumulateBackground = false;
 	backgroundAccumulationCount = 0;
 	
@@ -65,7 +68,7 @@ void testApp::setup(){
 	//gui.setup();
 	//gui.addDrawable("Depth", depthImg);
 	gui.setWidth(250);
-	gui.addSegmented("View", viewMode, "RAW|BACKGROUND|RANGE SCALE|MASKED");
+	gui.addSegmented("View", viewMode, "RAW|BACKGROUND|RANGE SCALE|MASKED|MUTE");
 	gui.addSlider("Blur Size", blurSize, 0, 3)->stepped = true;
 	gui.addSlider("Blur Iterations", blurIterations, 0, 3)->stepped = true;
 	gui.addToggle("Erode Image", erode);
@@ -80,6 +83,7 @@ void testApp::setup(){
 	gui.addSlider("Maximum Blob Size", maxBlobSize, KINECT_WIDTH/2, KINECT_WIDTH)->stepped = true;
 	gui.addSlider("Blob XY Smoothing", Blob::xySmoothing, 0, 1);
 	gui.addSlider("Blob Z Smoothing", Blob::zSmoothing, 0, 1);
+	gui.addPanner("Blob Rotation", blobRotation, -180, 180);
 	gui.setEnabled(true);
  
 	gui.loadSettings("wailwell.xml");
@@ -93,6 +97,8 @@ void testApp::controlChanged(xmlgui::Control *ctrl) {
 		accumulateBackground = true;
 		backgroundAccumulationCount = 0;
 		bgImg.set(0);
+	} else if(ctrl->id=="Blob Rotation") {
+		lastTimeRotatedBlobs = ofGetElapsedTimef();
 	}
 }
 void testApp::setupMask() {
@@ -233,6 +239,38 @@ void testApp::update(){
 		maskedImg.flagImageChanged();
 		
 		contourFinder.findContours(maskedImg, minBlobSize*minBlobSize, maxBlobSize*maxBlobSize, 20, false);
+		
+
+		// compare each blob against the other and eradicate any blobs that are too close to eachother
+		if(blobs.size()>0) {
+			for(int i = 0; i < contourFinder.blobs.size(); i++) {
+				for(int j = i+1; j < contourFinder.blobs.size(); j++) {
+					float dist = tricks::math::getClosestDistanceBetweenTwoContours(
+												contourFinder.blobs[i].pts, 
+												contourFinder.blobs[j].pts, 3);
+
+					// find which one is closest to any other blob and delete the other one
+					if(dist<10) {
+						float distToI = FLT_MAX;
+						float distToJ = FLT_MAX;
+						for(map<int,Blob>::iterator it = blobs.begin(); it!=blobs.end(); it++) {
+							
+							distToI = MIN(distToI, (*it).second.distanceSquared(ofVec2f(contourFinder.blobs[i].centroid)));
+							distToJ = MIN(distToJ, (*it).second.distanceSquared(ofVec2f(contourFinder.blobs[j].centroid)));
+						}
+						if(distToI<distToJ) {
+							// delete the jth one
+							contourFinder.blobs.erase(contourFinder.blobs.begin() + j);
+							j--;
+						} else {
+							// delete the ith one
+							contourFinder.blobs.erase(contourFinder.blobs.begin() + i);
+							
+						}
+					}
+				}
+			}
+		}
 		blobTracker.trackBlobs(contourFinder.blobs);
 		lastVisionCalculationDuration = ofGetElapsedTimef() - startTime;
 	}
@@ -248,8 +286,12 @@ void testApp::draw(){
 	
 	glPushMatrix();
 	{
-		glTranslatef(KINECT_VIEW_OFFSET, KINECT_VIEW_OFFSET, 0);
-	
+		if(isFullscreen) {
+			glScalef((float)ofGetWidth()/(float)KINECT_WIDTH, (float)ofGetHeight()/(float)KINECT_HEIGHT, 1);
+		} else {
+			glTranslatef(KINECT_VIEW_OFFSET, KINECT_VIEW_OFFSET, 0);
+		}
+		
 		ofSetHexColor(0xFFFFFF);
 
 		if(viewMode==VIEWMODE_RAW) {
@@ -260,6 +302,8 @@ void testApp::draw(){
 			rangeScaledImg.draw(0, 0, KINECT_WIDTH, KINECT_HEIGHT);
 		} else if(viewMode==VIEWMODE_MASKED) {
 			maskedImg.draw(0, 0, KINECT_WIDTH, KINECT_HEIGHT);
+		} else if(viewMode==VIEWMODE_MUTE) {
+			// nothing
 		}
 		
 		//contourFinder.draw(0, 0);
@@ -267,7 +311,6 @@ void testApp::draw(){
 		ofRect(0, 0, KINECT_WIDTH, KINECT_HEIGHT);
 		ofFill();
 		if(drawBlobs) blobTracker.draw(0, 0);
-		
 		
 		
 		glBegin(GL_LINE_LOOP);
@@ -307,8 +350,25 @@ void testApp::draw(){
 //				ofEllipse((*it).second.x, (*it).second.y, 10.f/640.f, 10.f/480.f);
 			}
 		//}
-		glPopMatrix();
+		//glPopMatrix();
 	
+	}
+	
+	float t = ofGetElapsedTimef() - lastTimeRotatedBlobs;
+	if(t<2) {
+		float alpha = ofMap(t, 0, 2, 1, 0);
+		glColor4f(0, 0, 1, alpha);
+		glPushMatrix();
+		glTranslatef(KINECT_WIDTH/2, KINECT_HEIGHT/2, 0);
+		glRotatef(blobRotation, 0, 0, 1);
+		ofNoFill();
+		ofRect(-100, -100, 200, 200);
+		ofLine(0, -50, -10, -40);
+		ofLine(0, -50, 10, -40);
+		ofLine(0, 50, 0, -50);
+		ofFill();
+		glPopMatrix();
+		
 	}
 	glPopMatrix();
 	
@@ -318,7 +378,11 @@ void testApp::draw(){
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
-	
+	if(key=='f') {
+		isFullscreen ^= true;
+		ofSetFullscreen(isFullscreen);
+		gui.setEnabled(!isFullscreen);
+	}
 }
 
 //--------------------------------------------------------------
@@ -328,7 +392,12 @@ void testApp::keyReleased(int key){
 
 //--------------------------------------------------------------
 void testApp::mouseMoved(int x, int y ){
-	ofVec2f mouse(x-KINECT_VIEW_OFFSET, y-KINECT_VIEW_OFFSET);
+	ofVec2f mouse;
+	if(isFullscreen) {
+		mouse = ofVec2f(x*KINECT_WIDTH/ofGetWidth(), y*KINECT_HEIGHT/ofGetHeight());
+	} else {
+		mouse = ofVec2f(x-KINECT_VIEW_OFFSET, y-KINECT_VIEW_OFFSET);
+	}
 	for(int i = 0; i < NUM_MASK_POINTS; i++) {
 		if(mask[i].distanceSquared(mouse)<100) {
 			dragger = &mask[i];
@@ -340,7 +409,12 @@ void testApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
-	ofVec2f mouse(x-KINECT_VIEW_OFFSET, y-KINECT_VIEW_OFFSET);
+	ofVec2f mouse;
+	if(isFullscreen) {
+		mouse = ofVec2f(x*KINECT_WIDTH/ofGetWidth(), y*KINECT_HEIGHT/ofGetHeight());
+	} else {
+		mouse = ofVec2f(x-KINECT_VIEW_OFFSET, y-KINECT_VIEW_OFFSET);
+	}
 	if(dragger!=NULL) {
 		dragger->x = mouse.x;
 		dragger->y = mouse.y;
@@ -353,7 +427,12 @@ void testApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
-	ofVec2f mouse(x-KINECT_VIEW_OFFSET, y-KINECT_VIEW_OFFSET);
+	ofVec2f mouse;
+	if(isFullscreen) {
+		mouse = ofVec2f(x*KINECT_WIDTH/ofGetWidth(), y*KINECT_HEIGHT/ofGetHeight());
+	} else {
+		mouse = ofVec2f(x-KINECT_VIEW_OFFSET, y-KINECT_VIEW_OFFSET);
+	}
 	if(dragger!=NULL) {
 		dragger->x = mouse.x;
 		dragger->y = mouse.y;
@@ -383,6 +462,8 @@ void testApp::gotMessage(ofMessage msg){
 void testApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
+
+
 ofVec3f testApp::getBlobCoords(ofxCvTrackedBlob &blob) {
 	double minVal;
 	double maxVal;
@@ -395,11 +476,8 @@ ofVec3f testApp::getBlobCoords(ofxCvTrackedBlob &blob) {
 	depthImg.resetROI();
 	
 	
-	// this was was the first iteration of the algorithm, taking the x, y and z coordinates from 
-	// the max location, but really we want to use the x and y from the centroid, and the z from the max location
-	//return ofVec3f((float)(blob.boundingRect.x + maxLoc.x), (float)(blob.boundingRect.y + maxLoc.y), (float)maxVal);
+	return ofVec3f((float)(blob.boundingRect.x + maxLoc.x), (float)(blob.boundingRect.y + maxLoc.y), (float)maxVal);
 	
-	return ofVec3f(blob.centroid.x, blob.centroid.y, (float) maxVal);
 }
 
 

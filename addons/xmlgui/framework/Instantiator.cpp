@@ -23,3 +23,11 @@ xmlgui::Control *xmlgui::Instantiator::createControl(string type) {
 	}
 }
 
+
+xmlgui::Control *xmlgui::Instantiator::createControlWithIdAndName(string type, string idName) {
+	Control *cc = createControl(type);
+	cc->name = idName;
+	cc->id = idName;
+	return cc;
+}
+

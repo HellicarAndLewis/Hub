@@ -450,6 +450,7 @@ void ofxMPMFluid::update(){
 		
 		p->v += gravity;
 		//if (isMouseDragging) {
+//#ifdef MPM_FLUID_USING_MOUSE
 		if (ofGetMousePressed(0)) {
 			float vx = abs(p->x - ofGetMouseX()/scaleFactor);
 			float vy = abs(p->y - ofGetMouseY()/scaleFactor);
@@ -461,7 +462,7 @@ void ofxMPMFluid::update(){
 				p->v += weight * (mdy - p->v);
 			}
 		}
-		
+//#endif		
 		// COLLISIONS-2
 		// Plus, an opportunity to add randomness when accounting for wall collisions. 
 		float xf = p->x + p->u;

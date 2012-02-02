@@ -70,6 +70,8 @@ public:
 	float minBlobSize;
 	float maxBlobSize;
 	
+	float blobRotation;
+	
 	// callbacks for blob listener
 	void blobOn( int x, int y, int id, int order );
     void blobMoved( int x, int y, int id, int order );
@@ -88,4 +90,7 @@ public:
 	bool accumulateBackground;
 	int backgroundAccumulationCount;
 	float backgroundHysteresis;
+
+	
+	float lastTimeRotatedBlobs;
 };
