@@ -1,4 +1,5 @@
 #include "TwitterApp.h"
+#include "ofxXmlSettings.h"
 
 ofEvent<TwitterAppEvent> twitter_app_dispatcher;
 
@@ -17,10 +18,14 @@ bool TwitterApp::initDB(){
 	// TWITTER
 	// --------
 	printf("initializeing twitter\n");
+	ofxXmlSettings userandpass;
+	if(!userandpass.loadFile("userandpass.xml")){
+		ofSystemAlertDialog("Creat an xml file called userandpass.xml in data/ and add <user>username</user><pass>password</pass> to it");
+	}
 //	twitter.setTwitterUsername("dewarshub");
 //	twitter.setTwitterPassword("HUB2012hub#");
-	twitter.setTwitterUsername("obviousjim");
-	twitter.setTwitterPassword("[TW33t]");
+	twitter.setTwitterUsername(userandpass.getValue("user", "dewarshub"));
+	twitter.setTwitterUsername(userandpass.getValue("pass", "HUB2012hub"));
 	twitter.setConsumerKey("5cL1KRDQzcnGo8ZOaAz0g");
 	twitter.setConsumerSecret("e4X9dtxkgmpkRlr9arhOfNe7tTezWad2bmCUNvPtBvQ");
 	

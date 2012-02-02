@@ -16,6 +16,7 @@ void testApp::setup(){
 	twitter_app.track("TolimaDay");
 	twitter_app.track("love");
 */
+	twitter_app.track("love");
 	if(!twitter_app.connect()) {
 		printf("Error: cannot connect to twitter stream.\n");
 		exit();
