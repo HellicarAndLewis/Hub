@@ -43,5 +43,6 @@ public:
 	bool generateScreens;
 	bool shouldLoadScreens;
 	bool shouldSaveScreens;
-	
+	bool previewScreenLayout;
+
 };

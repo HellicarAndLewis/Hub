@@ -48,6 +48,10 @@
 #include "ofxMPMParticle.h"
 #include "ofxMPMNode.h"
 #include "ofxMPMObstacle.h"
+typedef struct {
+	ofVec2f pos;
+	ofVec2f vel;
+} MPMForce;
 
 class ofxMPMFluid {
   public:
@@ -59,8 +63,16 @@ class ofxMPMFluid {
 	
 	int getGridSizeX();
 	int getGridSizeY();
+
+	//normalized 0-1.0;
+	void applyForce(ofVec2f position, ofVec2f velocity);
 	
+	//drawing params
 	float scaleFactor;	
+	float forceScale;
+	float offsetX;
+	float offsetY;
+	
 	int numParticles;
 	float densitySetting;
 	float stiffness;     
@@ -71,7 +83,9 @@ class ofxMPMFluid {
 	bool  bGradient;	
 	float gravity;
 	bool  bDoObstacles;
-	float smoothing;	
+	float smoothing;
+
+	int historyLevel; //stores where each particle has been for rendering trails
 	
 	vector<ofxMPMParticle*>& getParticles();
 	
@@ -85,5 +99,6 @@ class ofxMPMFluid {
 	int numActiveNodes;
 	
 	vector<ofxMPMObstacle*> obstacles;
-	
+
+	vector<MPMForce> forces;
 };

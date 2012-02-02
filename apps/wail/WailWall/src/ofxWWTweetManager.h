@@ -17,6 +17,8 @@ class ofxWWTweetManager {
 	ofxWWTweetManager();
 	void setup();
 	void update();
+	void renderTweets();
+	void renderSearchTerms();
 	
   protected:
 	vector<ofxWWTweet*> tweets;

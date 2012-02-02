@@ -30,20 +30,20 @@ void testApp::setup(){
 	simulator.setListener(this);
 	
 	screenSettingsFile = "DisplayLayout.xml";
+	screenManager.loadScreens(screenSettingsFile);
+	renderer.setup(screenManager.sourceRect.width, screenManager.sourceRect.height);
 	
-	renderer.setup(1920, 1080);
 	renderer.setupGui();
+	renderer.blobs = &blobs;
 	
 	gui.addPage("Screen Settings");
 	gui.addToggle("Generate Screen Layout", generateScreens);
 	gui.addToggle("Load Screens File", shouldLoadScreens);
 	gui.addToggle("Save Screens File", shouldSaveScreens);
-
+	gui.addToggle("Show Screen Preview", previewScreenLayout);
+	
 	gui.loadFromXML();
 	gui.setAutoSave(true);
-
-	screenManager.loadScreens(screenSettingsFile);
-	
 }
 
 void testApp::exit() {
@@ -92,12 +92,14 @@ void testApp::draw(){
 	ofPopStyle();
 	
 	
-	renderer.getFbo().getTextureReference().bind();
-	screenManager.renderPreview();
-	renderer.getFbo().getTextureReference().unbind();
-	
 	renderer.getFbo().getTextureReference().draw(screenManager.sourceRect);
+	if(previewScreenLayout){
+		screenManager.renderPreview();
+	}
+	
+	renderer.getFbo().getTextureReference().bind();
 	screenManager.renderScreens();
+	renderer.getFbo().getTextureReference().unbind();
 
 	
 	/*
@@ -105,6 +107,7 @@ void testApp::draw(){
 	for(map<int,KinectTouch>::iterator it = blobs.begin(); it != blobs.end(); it++) {
 		ofCircle((*it).second.x*ofGetWidth(), (*it).second.y*ofGetHeight(), 10, 10);
 	}*/
+	
 	gui.draw();
 }
 
@@ -132,6 +135,15 @@ void testApp::keyPressed(int key){
 		}
 		case 'm': {
 			simulator.setEnabled(!simulator.getEnabled());
+			break;
+		}
+			
+		case OF_KEY_LEFT: {
+			gui.prevPage();
+			break;
+		}
+		case OF_KEY_RIGHT: {
+			gui.nextPage();
 			break;
 		}
 			
@@ -202,6 +214,7 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 void testApp::touchDown(const KinectTouch &touch) {
 	renderer.touchDown(touch);
 	blobs[touch.id] = touch;
+	cout << "touch " << endl;
 }
 void testApp::touchMoved(const KinectTouch &touch) {
 	renderer.touchMoved(touch);

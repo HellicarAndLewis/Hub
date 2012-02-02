@@ -48,6 +48,12 @@
 		A683B8E514D5A5A300C3B6F7 /* ofxWWScreenManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A683B8E414D5A5A300C3B6F7 /* ofxWWScreenManager.cpp */; };
 		A683B8F414D5A64A00C3B6F7 /* ofxWWScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A683B8F314D5A64A00C3B6F7 /* ofxWWScreen.cpp */; };
 		A683B91014D5A9A800C3B6F7 /* ofxWWRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A683B90F14D5A9A800C3B6F7 /* ofxWWRenderer.cpp */; };
+		A6FDBDF914D9F46E0003EBE5 /* noise.frag in Sources */ = {isa = PBXBuildFile; fileRef = A6FDBDF714D9F46E0003EBE5 /* noise.frag */; };
+		A6FDBDFA14D9F46E0003EBE5 /* noise.vert in Sources */ = {isa = PBXBuildFile; fileRef = A6FDBDF814D9F46E0003EBE5 /* noise.vert */; };
+		A6FDBF6614DA171E0003EBE5 /* gaussian_blur.frag in Sources */ = {isa = PBXBuildFile; fileRef = A6FDBF6414DA171E0003EBE5 /* gaussian_blur.frag */; };
+		A6FDBF6714DA171E0003EBE5 /* gaussian_blur.vert in Sources */ = {isa = PBXBuildFile; fileRef = A6FDBF6514DA171E0003EBE5 /* gaussian_blur.vert */; };
+		A6FDBFA314DA1C880003EBE5 /* warp_distort.frag in Sources */ = {isa = PBXBuildFile; fileRef = A6FDBFA114DA1C880003EBE5 /* warp_distort.frag */; };
+		A6FDBFA414DA1C880003EBE5 /* warp_distort.vert in Sources */ = {isa = PBXBuildFile; fileRef = A6FDBFA214DA1C880003EBE5 /* warp_distort.vert */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -234,6 +240,21 @@
 		A683B90E14D5A9A800C3B6F7 /* ofxWWRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxWWRenderer.h; sourceTree = "<group>"; };
 		A683B90F14D5A9A800C3B6F7 /* ofxWWRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxWWRenderer.cpp; sourceTree = "<group>"; };
 		A69C743B14D6470B00C0EABC /* ofModifiers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofModifiers.h; sourceTree = "<group>"; };
+		A6FDBDEE14D9F46E0003EBE5 /* color_palette.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = color_palette.png; sourceTree = "<group>"; };
+		A6FDBDEF14D9F46E0003EBE5 /* DisplayLayout.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = DisplayLayout.xml; sourceTree = "<group>"; };
+		A6FDBDF014D9F46E0003EBE5 /* Fluid_settings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Fluid_settings.xml; sourceTree = "<group>"; };
+		A6FDBDF114D9F46E0003EBE5 /* Fluid_settings.xml.bak */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Fluid_settings.xml.bak; sourceTree = "<group>"; };
+		A6FDBDF214D9F46E0003EBE5 /* Interaction_settings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Interaction_settings.xml; sourceTree = "<group>"; };
+		A6FDBDF314D9F46E0003EBE5 /* Interaction_settings.xml.bak */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Interaction_settings.xml.bak; sourceTree = "<group>"; };
+		A6FDBDF414D9F46E0003EBE5 /* Screen Settings_settings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Screen Settings_settings.xml"; sourceTree = "<group>"; };
+		A6FDBDF514D9F46E0003EBE5 /* Screen Settings_settings.xml.bak */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Screen Settings_settings.xml.bak"; sourceTree = "<group>"; };
+		A6FDBDF714D9F46E0003EBE5 /* noise.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = noise.frag; sourceTree = "<group>"; };
+		A6FDBDF814D9F46E0003EBE5 /* noise.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = noise.vert; sourceTree = "<group>"; };
+		A6FDBE2E14D9F9310003EBE5 /* permtexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = permtexture.png; sourceTree = "<group>"; };
+		A6FDBF6414DA171E0003EBE5 /* gaussian_blur.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = gaussian_blur.frag; sourceTree = "<group>"; };
+		A6FDBF6514DA171E0003EBE5 /* gaussian_blur.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = gaussian_blur.vert; sourceTree = "<group>"; };
+		A6FDBFA114DA1C880003EBE5 /* warp_distort.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = warp_distort.frag; sourceTree = "<group>"; };
+		A6FDBFA214DA1C880003EBE5 /* warp_distort.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = warp_distort.vert; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
@@ -377,14 +398,14 @@
 		A621C4BE14D73342008AA7F0 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				A621C4BF14D73342008AA7F0 /* ofxMPMFluid.cpp */,
 				A621C4C014D73342008AA7F0 /* ofxMPMFluid.h */,
-				A621C4C114D73342008AA7F0 /* ofxMPMNode.cpp */,
+				A621C4BF14D73342008AA7F0 /* ofxMPMFluid.cpp */,
 				A621C4C214D73342008AA7F0 /* ofxMPMNode.h */,
-				A621C4C314D73342008AA7F0 /* ofxMPMObstacle.cpp */,
+				A621C4C114D73342008AA7F0 /* ofxMPMNode.cpp */,
 				A621C4C414D73342008AA7F0 /* ofxMPMObstacle.h */,
-				A621C4C514D73342008AA7F0 /* ofxMPMParticle.cpp */,
+				A621C4C314D73342008AA7F0 /* ofxMPMObstacle.cpp */,
 				A621C4C614D73342008AA7F0 /* ofxMPMParticle.h */,
+				A621C4C514D73342008AA7F0 /* ofxMPMParticle.cpp */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -582,6 +603,37 @@
 			name = Renderer;
 			sourceTree = "<group>";
 		};
+		A6FDBDED14D9F46E0003EBE5 /* data */ = {
+			isa = PBXGroup;
+			children = (
+				A6FDBDEE14D9F46E0003EBE5 /* color_palette.png */,
+				A6FDBDEF14D9F46E0003EBE5 /* DisplayLayout.xml */,
+				A6FDBDF014D9F46E0003EBE5 /* Fluid_settings.xml */,
+				A6FDBDF114D9F46E0003EBE5 /* Fluid_settings.xml.bak */,
+				A6FDBDF214D9F46E0003EBE5 /* Interaction_settings.xml */,
+				A6FDBDF314D9F46E0003EBE5 /* Interaction_settings.xml.bak */,
+				A6FDBDF414D9F46E0003EBE5 /* Screen Settings_settings.xml */,
+				A6FDBDF514D9F46E0003EBE5 /* Screen Settings_settings.xml.bak */,
+				A6FDBDF614D9F46E0003EBE5 /* shaders */,
+			);
+			name = data;
+			path = bin/data;
+			sourceTree = "<group>";
+		};
+		A6FDBDF614D9F46E0003EBE5 /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				A6FDBE2E14D9F9310003EBE5 /* permtexture.png */,
+				A6FDBFA114DA1C880003EBE5 /* warp_distort.frag */,
+				A6FDBFA214DA1C880003EBE5 /* warp_distort.vert */,
+				A6FDBDF714D9F46E0003EBE5 /* noise.frag */,
+				A6FDBDF814D9F46E0003EBE5 /* noise.vert */,
+				A6FDBF6414DA171E0003EBE5 /* gaussian_blur.frag */,
+				A6FDBF6514DA171E0003EBE5 /* gaussian_blur.vert */,
+			);
+			path = shaders;
+			sourceTree = "<group>";
+		};
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
@@ -644,6 +696,7 @@
 			isa = PBXGroup;
 			children = (
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
+				A6FDBDED14D9F46E0003EBE5 /* data */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
@@ -1055,6 +1108,12 @@
 				A621C65C14D74D1B008AA7F0 /* ofxWWSearchTerm.cpp in Sources */,
 				EA05663614D959B8009282B0 /* KinectTouchReceiver.cpp in Sources */,
 				EA05663914D95EB8009282B0 /* KinectTouchSimulator.cpp in Sources */,
+				A6FDBDF914D9F46E0003EBE5 /* noise.frag in Sources */,
+				A6FDBDFA14D9F46E0003EBE5 /* noise.vert in Sources */,
+				A6FDBF6614DA171E0003EBE5 /* gaussian_blur.frag in Sources */,
+				A6FDBF6714DA171E0003EBE5 /* gaussian_blur.vert in Sources */,
+				A6FDBFA314DA1C880003EBE5 /* warp_distort.frag in Sources */,
+				A6FDBFA414DA1C880003EBE5 /* warp_distort.vert in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
