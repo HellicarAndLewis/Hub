@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		541A1B8314DB165A00F7FE34 /* libsqlite3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 541A1B8214DB165A00F7FE34 /* libsqlite3.a */; };
+		541A1B8514DB290A00F7FE34 /* sqlite3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 541A1B8414DB290900F7FE34 /* sqlite3.a */; };
 		54B4722914D9366700C39CC9 /* Database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54B4718C14D9366600C39CC9 /* Database.cpp */; };
 		54B4722B14D9366700C39CC9 /* Query.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54B4719214D9366600C39CC9 /* Query.cpp */; };
 		54B4722C14D9366700C39CC9 /* QueryInsert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54B4719414D9366600C39CC9 /* QueryInsert.cpp */; };
@@ -91,7 +91,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		541A1B8214DB165A00F7FE34 /* libsqlite3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsqlite3.a; sourceTree = "<group>"; };
+		541A1B8414DB290900F7FE34 /* sqlite3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = sqlite3.a; sourceTree = "<group>"; };
 		54B4718C14D9366600C39CC9 /* Database.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Database.cpp; sourceTree = "<group>"; };
 		54B4718D14D9366600C39CC9 /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
 		54B4719014D9366600C39CC9 /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3.h; sourceTree = "<group>"; };
@@ -288,7 +288,7 @@
 				54B4724514D9366700C39CC9 /* libjansson.a in Frameworks */,
 				54B4724614D9366700C39CC9 /* libcrypto.a in Frameworks */,
 				54B4724714D9366700C39CC9 /* libssl.a in Frameworks */,
-				541A1B8314DB165A00F7FE34 /* libsqlite3.a in Frameworks */,
+				541A1B8514DB290A00F7FE34 /* sqlite3.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,7 +341,7 @@
 		54B4718E14D9366600C39CC9 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				541A1B8214DB165A00F7FE34 /* libsqlite3.a */,
+				541A1B8414DB290900F7FE34 /* sqlite3.a */,
 				54B4719014D9366600C39CC9 /* sqlite3.h */,
 				54B4719114D9366600C39CC9 /* sqlite3ext.h */,
 			);
