@@ -18,6 +18,13 @@ QueryDelete::QueryDelete(Database& db, const string& fromTable)
 {
 }
 
+QueryDelete& QueryDelete::operator=(const QueryDelete& other) {
+	where_clause = other.where_clause;
+	field_values = other.field_values;
+	from_table = other.from_table;
+	return *this;
+}
+
 QueryDelete::~QueryDelete() {
 }
 

@@ -13,6 +13,7 @@ void testApp::setup(){
 
 //--------------------------------------------------------------
 void testApp::update(){
+	ofSetWindowTitle(ofToString(ofGetFrameRate()));
 	twitter_app.update();
 }
 

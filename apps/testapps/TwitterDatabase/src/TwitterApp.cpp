@@ -38,14 +38,44 @@ bool TwitterApp::init() {
         twitter.accessToken();
         twitter.saveTokens(token_file);
 	}
+	twitter.addEventListener(twitter_listener);
+	
 
-	//stream.track("3WordsThatWomenHate");	
+	// What do you want to track?
+	stream.track("ItsFunnyHow");
+	stream.track("NeverTrustAGuyWho");
+	stream.track("TolimaDay");
+	stream.track("love");
+	
+	
+	// testing queries
+	// -------------------------------------------------------------------------
+	// get tweets with tag...
+	/*
+	vector<rtt::Tweet> tweets;
+	if(getTweetsWithTag("NeverTrustAGuyWho",10, tweets)) {
+		printf("found: %d!", tweets.size());
+	}
+	
+	// get tweets newer then 2400 seconds.
+	
+	int now = ofGetElapsedTimeMillis();
+	vector<rtt::Tweet> tweets;
+	if(getTweetsNewerThan(2400,100, tweets)) {
+		printf("found: %zu!", tweets.size());
+	}
+	int done = ofGetElapsedTimeMillis();
+	int diff = done-now;
+	printf("diff: %d\n", diff);
+	// -------------------------------------------------------------------------
+	*/
+	//return true;
+	
+	
 	if(!stream.connect(URL_STREAM_USER)) {
 		printf("Error: cannot connect to user stream.\n");
 		return false;
 	}
-	
-	twitter.addEventListener(twitter_listener);
 
 	return true;
 }
@@ -61,3 +91,4 @@ void TwitterApp::update() {
 bool TwitterApp::getFollowers(vector<string>& result) {
 	return db.getFollowers(result);
 }
+

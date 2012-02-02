@@ -3,9 +3,12 @@
 #include "ofMain.h"
 #include "Database.h"
 #include "Twitter.h"
+#include <map>
 
 using namespace roxlu;
 namespace rtt = roxlu::twitter::type;
+
+
 
 class testApp : public ofBaseApp{
 
@@ -30,13 +33,13 @@ class testApp : public ofBaseApp{
 		
 		// Using one table to store tweet-tags info
 		void createTablesForTest1();
-		void doTest1();
+		void fillTablesForTest1();
 		void findTest1(vector<rtt::Tweet>& result);
 
 		// Using a *-* table.
 		void createTablesForTest2();
-		void doTest2();
-		
+		void fillTablesForTest2();
+		void findTest2();	
 		vector<string> words;
 
 };

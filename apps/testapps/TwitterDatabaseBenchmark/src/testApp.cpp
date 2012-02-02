@@ -1,7 +1,36 @@
 #include "testApp.h"
 namespace rtt = roxlu::twitter::type;
 
-//--------------------------------------------------------------
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+/*
+
+		Test: how to store "tweets", "tags" and the relationship between both.
+		There are basically two option. 
+		---
+		Option 1) we store tweets in one table
+		and the tags which belongs to the tweet in another table called 
+		tweet_tags. The tweets_tags will contain redundant info.
+		
+		Option 2) using the standard normalized solution. One table for tweets
+		and another for tags, then a third table connects both. 
+		
+		---
+		
+		- Option 2 is way faster!
+		- Make sure to add a index on the fields you're going to use in "where"
+		- Use unix timestamps as integers 
+		- Do not use datetime strings
+		- Do not use order by as it needs to go over the complete result
+		- Use limit when possible
+		
+		------------------------
+
+*/
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 void testApp::setup(){
 	ofBackground(33);
 	
@@ -13,10 +42,29 @@ void testApp::setup(){
 			exit();
 		}
 		
-		createTablesForTest1();
-		vector<rtt::Tweet> found_tweets;
-		//doTest1();
+		// only create and insert once.
+		bool first_run  = false;
+		if(first_run) {
+			createTablesForTest1();
+			vector<rtt::Tweet> found_tweets;
+			fillTablesForTest1();
+		}
+		
 		findTest1(found_tweets);
+	}
+	else if(test == 2) {
+		if(!db.open(ofToDataPath("test2.db")))  {
+			printf("Cannot create db");
+			exit();
+		}
+
+		// only create and insert once.
+		bool first_run  = false;
+		if(first_run) {		
+			createTablesForTest2();
+			fillTablesForTest2();
+		}
+		findTest2();
 	}
 
 }
@@ -42,88 +90,36 @@ void testApp::createTablesForTest1() {
 	
 	// TAGS
 	result = db.query(
-					  "CREATE TABLE IF NOT EXISTS tweet_tags( "				\
-					  " tt_id			INTEGER "							\
-					  ",tt_tag			VARCHAR(50) "						\
+					  "CREATE TABLE IF NOT EXISTS tweet_tags( "						\
+					  " tt_id			INTEGER "									\
+					  ",tt_tag			VARCHAR(50)  "								\
 					  ",PRIMARY KEY(tt_id, tt_tag) "
 					  ");"
 					  );
+
 	
 	if(!result) {
 		printf("cannot create tables for test 1\n");
 		exit();
 	}
+	
+	result = db.query("CREATE INDEX tag_index ON tweet_tags(tt_tag)");
+	if(!result) {
+		printf("cannot create index");
+		exit();
+	}
 }
 
-/*
-Results Inserting/Selecting
--------------------------------------------------------------------------------
-run 1:		tweets: 1.000.000		tweet_tags: 3.498.980 	time: 199308 ms
--------------------------------------------------------------------------------
-> rows found  4820, looped over in  1492
-> rows found  4765, looped over in  1367
-> rows found   781, looped over in  1238
-> rows found   999, looped over in  1464
-> rows found   980, looped over in  1495
-> rows found   691, looped over in  1226
-> rows found  4798, looped over in  1318
-> rows found  4977, looped over in  1390
-> rows found   399, looped over in  1297
-> rows found  4839, looped over in  1415
-> rows found     0, looped over in  1282
-> rows found  4777, looped over in  1448
-> rows found    15, looped over in  1240
-> rows found  4938, looped over in  1317
-> rows found  4944, looped over in  1314
-> rows found  4920, looped over in  1338
-> rows found  4873, looped over in  1360
-> rows found   742, looped over in  1833
-> rows found  1054, looped over in  1655
-> rows found  4790, looped over in  1487
-> rows found  4837, looped over in  1632
-> rows found     0, looped over in  1552
-> rows found   363, looped over in  1411
-> rows found  4923, looped over in  1387
-> rows found    68, looped over in  1316
-> rows found  5028, looped over in  2036
-> rows found  4972, looped over in  1781
-> rows found   593, looped over in  1243
-> rows found  4908, looped over in  1602
-> rows found  4805, looped over in  1350
-> rows found     0, looped over in  1552
-> rows found  4953, looped over in  1495
-> rows found  2004, looped over in  1327
-> rows found  4808, looped over in  1351
-> rows found   365, looped over in  1229
-> rows found  4810, looped over in  1289
-> rows found  4838, looped over in  1343
-> rows found  4788, looped over in  1332
-> rows found   253, looped over in  1366
-> rows found  1226, looped over in  1267
-> rows found  4928, looped over in  1440
-> rows found  4962, looped over in  1442
-> rows found     0, looped over in  1263
-> rows found  4822, looped over in  1309
-> rows found   181, looped over in  1214
-> rows found  4930, looped over in  1298
-> rows found     0, looped over in  1343
-> rows found  4845, looped over in  1501
-> rows found    16, looped over in  1442
-> rows found   176, looped over in  1638
-It took 70736 to loop over  50 tags
--------------------------------------------------------------------------------
-*/
-
-void testApp::doTest1() {
+void testApp::fillTablesForTest1() {
 	int num_tweets = 1000000;
 	int num_tags = 1;
 	vector<rtt::Tweet> tweets;
 	
 	createTweets(num_tweets, tweets);
-	printf("ok :%d\n", tweets.size());
+	db.beginTransaction();
 	int now = ofGetElapsedTimeMillis();
 	int c = tweets.size();
-	db.beginTransaction();
+	
 	for(int i = 0; i < c; ++i) {
 		rtt::Tweet& tweet = tweets[i];
 
@@ -135,7 +131,7 @@ void testApp::doTest1() {
 			.use("t_screen_name", tweet.screen_name)
 			.useTimestamp("t_timestamp")
 			.execute();
-		//printf("> %d\n", db.lastInsertID());
+
 		
 		// insert the tags.
 		// ---------------
@@ -146,8 +142,8 @@ void testApp::doTest1() {
 				.use("tt_tag", tweet.tags[j])
 				.execute();
 		}
-		//printf("> %s\n", tweet.text.c_str());
 	}	
+	
 	db.endTransaction();
 	int done = ofGetElapsedTimeMillis();
 	int diff = done-now;
@@ -164,20 +160,15 @@ void testApp::findTest1(vector<rtt::Tweet>& result) {
 		QueryResult result(db);
 		//  select datetime('now','localtime','+3.5 seconds','+10 minutes');
 		int start = ofGetElapsedTimeMillis();
-		db.select("t_text, t_user_id, t_timestamp,  datetime('now', '-1.5 hours') as test")
+		db.select("t_text, t_user_id, t_timestamp,  datetime('now', '-1.5 hours') as test, tt_tag")
 			.from("tweets")
 			.join("tweet_tags on tt_id = t_id")
-			.where("tt_tag = :tt_tag and t_timestamp > datetime('now', '-1.5 hours')")
-			.limit(100)
-			//.order("t_timestamp DESC")
+			.where("tt_tag = :tt_tag ")
 			.use("tt_tag", word)
 			.execute(result);
 			
 		rows_found = 0;
-		//result.next();
-		
 		while(result.next()) {	
-			printf("%s > %s\n", result.getString(2).c_str(), result.getString(3).c_str());
 			++rows_found;
 		}
 		
@@ -218,11 +209,185 @@ void testApp::createTweets(int num, vector<rtt::Tweet>& result) {
 	}
 }
 
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 void testApp::createTablesForTest2() {
+	// TWEETS
+	bool result = db.query(
+						   "CREATE TABLE IF NOT EXISTS tweets( "					\
+						   " t_id			INTEGER PRIMARY KEY AUTOINCREMENT"		\
+						   ",t_user_id		VARCHAR(50)"							\
+						   ",t_text			INTEGER"								\
+						   ",t_screen_name	VARCHAR(20)"							\
+						   ",t_timestamp	TIMESTAMP"								\	
+						   ",t_longitude	REAL"									\
+						   ",t_latitude	REAL"										\
+						   ");"
+						   );
+	
+	
+	if(!result) {
+		printf("cannot create tables for test 1\n");
+		exit();
+	}
+	
+	result = db.query("CREATE INDEX tweet_timestamp ON tweets(t_timestamp)");
+	if(!result) {
+		printf("cannot create index");
+		exit();
+	}
+
+	
+	// TAGS
+	result = db.query(
+					  "CREATE TABLE IF NOT EXISTS tags( "							\
+					  " tag_id			INTEGER  PRIMARY KEY AUTOINCREMENT"			\
+					  ",tag_tag			VARCHAR(50) UNIQUE "						\
+					  ");"
+					  );
+	
+	if(!result) {
+		printf("cannot create tables for test 1\n");
+		exit();
+	}
+
+	
+	// TWEET_TAGS
+	result = db.query(
+					  "CREATE TABLE IF NOT EXISTS tweet_tags( "				\
+					  " tt_tagid			INTEGER "						\
+					  ",tt_tweetid			INTEGER "						\
+					  ",PRIMARY KEY(tt_tagid, tt_tweetid) "
+					  ");"
+					  );
+	
+	if(!result) {
+		printf("cannot create tables for test 1\n");
+		exit();
+	}
+	
+}
+
+// fills test 2 tables
+// It took 449354 to insert 1000000 queries
+void testApp::fillTablesForTest2() {
+	int word_count = words.size();
+	int num_tweets = 1000000;
+	int num_tags = 1;
+	vector<rtt::Tweet> tweets;
+	
+	
+	// insert tags
+	// -----------
+	map<string, int> tag_to_id;
+	for(int i = 0; i < words.size(); ++i) {
+		db.insert("tags")
+			.use("tag_tag", words[i])
+			.execute();
+		int id = db.lastInsertID();
+		printf("word id: %s = %d\n", words[i].c_str(), id);
+		tag_to_id[words[i]] = id;
+	}
+
+	// Create and insert tweets
+	// ------------------------
+	createTweets(num_tweets, tweets);
+	
+	int now = ofGetElapsedTimeMillis();
+	int c = tweets.size();
+	
+	db.beginTransaction();
+	for(int i = 0; i < c; ++i) {
+		rtt::Tweet& tweet = tweets[i];
+
+		// insert tweet
+		// -------------
+		db.insert("tweets")
+			.use("t_text", tweet.text)
+			.use("t_user_id", tweet.user_id)
+			.use("t_screen_name", tweet.screen_name)
+			.useTimestamp("t_timestamp")
+			//.useDateTime("t_timestamp")
+			.execute();
+			
+		int tweet_id = db.lastInsertID();
+		
+		// insert the tags.
+		// ---------------
+		num_tags = ofRandom(1,5);
+		for(int j = 0; j < num_tags; ++j) {
+			int random_word_id = ofRandom(0, word_count-1);
+			string word = words[random_word_id];
+			int db_word_id = tag_to_id[word];
+			db.insert("tweet_tags")
+				.use("tt_tweetid", tweet_id)
+				.use("tt_tagid", db_word_id)
+				.execute();
+			printf("%d - %d \n", tweet_id, db_word_id);
+		}
+		
+	}	
+	db.endTransaction();
+	
+	int done = ofGetElapsedTimeMillis();
+	int diff = done-now;
+	printf("It took %d to insert %d queries\n", diff, num_tweets);
 }
 
 
-void testApp::doTest2() {
+void testApp::findTest2() {
+	int now = ofGetElapsedTimeMillis();
+	int find_num = 50;
+	int word_count = words.size();
+	int rows_found = 0;
+	bool query_result = false;
+	
+	for(int i = 0; i < find_num; ++i) {
+		// get the tag id
+		string word = words[ofRandom(0,word_count-1)];
+		
+		QueryResult tag_result(db);
+		query_result = db.select("tag_id").from("tags").where("tag_tag = :tag_tag").use("tag_tag", word).execute(tag_result);
+		
+		if(!query_result) {
+			printf("error getting tag id.\n");
+			exit();
+		}
+		tag_result.next();
+		int tag_id = tag_result.getInt(0);
+		
+		
+		// get the tweets which have the found tag
+		int start = ofGetElapsedTimeMillis();
+		QueryResult result(db);
+		query_result = db.select("t_text, t_user_id, t_timestamp,  datetime('now', '-1.5 hours') as test")
+							.from("tweets")
+							.join("tweet_tags on tt_tweetid = t_id and tt_tagid = :tt_tagid")
+							.limit(100)
+							//.order("t_timestamp desc")
+							.where("t_timestamp >  strftime('%s','now') - 1000")
+							.use("tt_tagid", tag_id)
+							.execute(result);
+	
+		if(!query_result) {
+			printf("Error while fetching tweets.\n");
+			continue;
+		}
+	
+		// iterate over found rows.
+		rows_found = 0;
+		while(result.next()) {	
+			++rows_found;
+		}
+		int end = ofGetElapsedTimeMillis();
+		int row_diff = end - start;
+		printf("> rows found %5d, looped over in %5d\n", rows_found, row_diff);
+	}
+	int done = ofGetElapsedTimeMillis();
+	int diff = done-now;
+	printf("It took %d to loop over  %d tags\n",diff, find_num);
+	
 }
 
 //--------------------------------------------------------------
@@ -635,3 +800,188 @@ void testApp::setWords() {
 	words.push_back("scolopendra");
 	words.push_back("scolopendrella");
 }
+
+
+
+/*
+
+TEST 1
+
+Results Inserting/Selecting 
+-------------------------------------------------------------------------------
+run 1:		tweets: 1.000.000		tweet_tags: 3.498.980 	time: 199308 ms
+-------------------------------------------------------------------------------
+> rows found  4820, looped over in  1492
+> rows found  4765, looped over in  1367
+> rows found   781, looped over in  1238
+> rows found   999, looped over in  1464
+> rows found   980, looped over in  1495
+> rows found   691, looped over in  1226
+> rows found  4798, looped over in  1318
+> rows found  4977, looped over in  1390
+> rows found   399, looped over in  1297
+> rows found  4839, looped over in  1415
+> rows found     0, looped over in  1282
+> rows found  4777, looped over in  1448
+> rows found    15, looped over in  1240
+> rows found  4938, looped over in  1317
+> rows found  4944, looped over in  1314
+> rows found  4920, looped over in  1338
+> rows found  4873, looped over in  1360
+> rows found   742, looped over in  1833
+> rows found  1054, looped over in  1655
+> rows found  4790, looped over in  1487
+> rows found  4837, looped over in  1632
+> rows found     0, looped over in  1552
+> rows found   363, looped over in  1411
+> rows found  4923, looped over in  1387
+> rows found    68, looped over in  1316
+> rows found  5028, looped over in  2036
+> rows found  4972, looped over in  1781
+> rows found   593, looped over in  1243
+> rows found  4908, looped over in  1602
+> rows found  4805, looped over in  1350
+> rows found     0, looped over in  1552
+> rows found  4953, looped over in  1495
+> rows found  2004, looped over in  1327
+> rows found  4808, looped over in  1351
+> rows found   365, looped over in  1229
+> rows found  4810, looped over in  1289
+> rows found  4838, looped over in  1343
+> rows found  4788, looped over in  1332
+> rows found   253, looped over in  1366
+> rows found  1226, looped over in  1267
+> rows found  4928, looped over in  1440
+> rows found  4962, looped over in  1442
+> rows found     0, looped over in  1263
+> rows found  4822, looped over in  1309
+> rows found   181, looped over in  1214
+> rows found  4930, looped over in  1298
+> rows found     0, looped over in  1343
+> rows found  4845, looped over in  1501
+> rows found    16, looped over in  1442
+> rows found   176, looped over in  1638
+--------------------------------------------------------------------------------
+> rows found     0, looped over in  1256
+> rows found     0, looped over in  1241
+> rows found     0, looped over in  1253
+> rows found     0, looped over in  1252
+> rows found     0, looped over in  1241
+> rows found     0, looped over in  1222
+> rows found     0, looped over in  1238
+> rows found     0, looped over in  1253
+> rows found     0, looped over in  1243
+> rows found     0, looped over in  1275
+> rows found     0, looped over in  1274
+> rows found     0, looped over in  1239
+> rows found     0, looped over in  1309
+> rows found     0, looped over in  1261
+> rows found     0, looped over in  1383
+> rows found     0, looped over in  1238
+> rows found     0, looped over in  1503
+> rows found     0, looped over in  1231
+> rows found     0, looped over in  1235
+> rows found     0, looped over in  1227
+> rows found     0, looped over in  1230
+> rows found     0, looped over in  1231
+> rows found     0, looped over in  1253
+> rows found     0, looped over in  1657
+> rows found     0, looped over in  1241
+> rows found     0, looped over in  1236
+> rows found     0, looped over in  1252
+> rows found     0, looped over in  1246
+> rows found     0, looped over in  1235
+> rows found     0, looped over in  1229
+> rows found     0, looped over in  1244
+> rows found     0, looped over in  1250
+> rows found     0, looped over in  1249
+> rows found     0, looped over in  1250
+> rows found     0, looped over in  1239
+> rows found     0, looped over in  1256
+> rows found     0, looped over in  1249
+> rows found     0, looped over in  1242
+> rows found     0, looped over in  1245
+> rows found     0, looped over in  1237
+> rows found     0, looped over in  1262
+> rows found     0, looped over in  1236
+> rows found     0, looped over in  1296
+> rows found     0, looped over in  1228
+> rows found     0, looped over in  1231
+> rows found     0, looped over in  1226
+> rows found     0, looped over in  1235
+> rows found     0, looped over in  1333
+> rows found     0, looped over in  1251
+> rows found     0, looped over in  1231
+--------------------------------------------------------------------------------
+It took 70736 to loop over  50 tags
+--------------------------------------------------------------------------------
+
+
+
+
+
+
+
+TEST 2
+--------------------------------------------------------------------------------
+- with index on timestamp
+- using unix epoch timestamps (so no datetime strings)
+- selecting w/o order
+- selecting with: timestamp > some_timestamp: 
+--------------------------------------------------------------------------------
+
+> rows found   100, looped over in     1
+> rows found   100, looped over in     1
+> rows found   100, looped over in    16
+> rows found   100, looped over in     1
+> rows found   100, looped over in     2
+> rows found   100, looped over in     3
+> rows found   100, looped over in     2
+> rows found   100, looped over in     2
+> rows found   100, looped over in     1
+> rows found   100, looped over in     1
+> rows found   100, looped over in     1
+> rows found   100, looped over in     4
+> rows found   100, looped over in     2
+> rows found   100, looped over in     1
+> rows found   100, looped over in    10
+> rows found   100, looped over in     1
+> rows found   100, looped over in     1
+> rows found   100, looped over in    23
+> rows found   100, looped over in     1
+> rows found   100, looped over in     1
+> rows found   100, looped over in     1
+> rows found   100, looped over in     1
+> rows found   100, looped over in     1
+> rows found   100, looped over in     1
+> rows found   100, looped over in     5
+> rows found   100, looped over in     2
+> rows found   100, looped over in    10
+> rows found   100, looped over in     1
+> rows found   100, looped over in     6
+> rows found   100, looped over in     1
+> rows found   100, looped over in     2
+> rows found   100, looped over in     1
+> rows found   100, looped over in     1
+> rows found   100, looped over in     0
+> rows found   100, looped over in    11
+> rows found   100, looped over in     0
+> rows found   100, looped over in     1
+> rows found   100, looped over in     1
+> rows found   100, looped over in     0
+> rows found   100, looped over in     0
+> rows found   100, looped over in     1
+> rows found   100, looped over in     1
+> rows found   100, looped over in     0
+> rows found   100, looped over in     1
+> rows found   100, looped over in     3
+> rows found   100, looped over in     1
+> rows found   100, looped over in     1
+> rows found   100, looped over in     2
+> rows found   100, looped over in     0
+> rows found   100, looped over in     1
+It took 144 to loop over  50 tags
+
+
+
+*/

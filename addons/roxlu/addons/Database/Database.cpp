@@ -83,7 +83,6 @@ bool Database::prepare(const string& sql, sqlite3_stmt** stmt) {
 }
 
 // Bind values in given QueryParams
-// @todo discuss: http://www.sqlite.org/c3ref/bind_blob.html do we need to use SQLITE_SATIC as 5th param
 bool Database::bind(const vector<QueryParam*>& params, sqlite3_stmt** stmt, int queryType) {
 	vector<QueryParam*>::const_iterator it = params.begin();
 	//printf("bind count: %d\n", sqlite3_bind_parameter_count(*stmt));
@@ -109,13 +108,13 @@ bool Database::bind(const vector<QueryParam*>& params, sqlite3_stmt** stmt, int 
 			// TEXT
 			// ---------------
 			case QueryParam::SQL_PARAM_TEXT: {
-				//printf("Bind parameter: %s -  %d\n", qp->getBindName().c_str(), parameter_index);
+				//printf("bind: %s,  %s, %d\n",qp->getBindName().c_str(), qp->getValue().c_str(), parameter_index);
 				int result = sqlite3_bind_text(
 									 *stmt
 									,parameter_index
 									,qp->getValue().c_str()
 									,-1
-									,NULL
+									,SQLITE_TRANSIENT
 								);
 							
 				if(result != SQLITE_OK) {
@@ -124,29 +123,8 @@ bool Database::bind(const vector<QueryParam*>& params, sqlite3_stmt** stmt, int 
 				}
 				break;
 			}
-			
-			// TIMESTAMP
-			// ---------------
-			case QueryParam::SQL_PARAM_TIMESTAMP: {
-				int result = sqlite3_bind_text(
-									*stmt
-									,parameter_index
-									,"now"
-									,-1
-									,NULL
-								);
-				if(result != SQLITE_OK) {
-					printf("bind error with: %s(%d) =  %s\n", qp->getField().c_str(),parameter_index, sqlite3_errmsg(db));
-					return false;
-				}
-				break;
-			}
-			
-			
-			// NOT HANDLED
-			// ---------------
+				
 			default: {
-				printf("Error: cannot bind, type not found: %d\n", qp->getType());
 				break;
 			}
 		}

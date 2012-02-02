@@ -124,6 +124,7 @@ bool Twitter::loadTokens(const string& filePath) {
 
 bool Twitter::removeTokens(const string& filePath) {
 	std::remove(filePath.c_str());
+	return true;
 }
 
 

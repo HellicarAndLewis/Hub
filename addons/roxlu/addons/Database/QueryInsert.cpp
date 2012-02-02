@@ -14,6 +14,13 @@ QueryInsert::QueryInsert(Database& db, const string& table)
 {
 }
 
+QueryInsert& QueryInsert::operator=(const QueryInsert& other) {
+	or_clause = other.or_clause;
+	table = other.table;
+	field_values = other.field_values;
+	return *this;
+}
+
 QueryInsert::~QueryInsert() {
 }
 
@@ -31,7 +38,13 @@ string QueryInsert::toString() {
 		return sql;
 	}
 	
-	sql.append("insert into ");
+	sql.append("insert ");
+	
+	if(or_clause.length()) {
+		sql.append(or_clause);
+	}
+	
+	sql.append(" into ");
 	sql.append(table);
 	sql.append("(");
 	sql.append(fields);
@@ -39,6 +52,7 @@ string QueryInsert::toString() {
 	sql.append(values);
 	sql.append(")");
 	
+	//printf("> %s\n", sql.c_str());
 	return sql;
 }
 

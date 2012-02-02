@@ -15,6 +15,7 @@ class QueryDelete : public Query {
 public:
 	QueryDelete(Database& db);
 	QueryDelete(Database& db, const string& fromTable);
+	QueryDelete& operator=(const QueryDelete& other);
 	~QueryDelete();
 	
 	QueryDelete& from(const string& fromTable);

@@ -27,5 +27,9 @@ vector<rtt::URL*>& Tweet::getURLs() {
 	return urls;
 }
 
+void Tweet::addTag(const string& tag) {
+	tags.push_back(tag);
+}
+
 
 }}} // roxlu::twitter::data
