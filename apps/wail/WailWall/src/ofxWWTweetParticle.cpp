@@ -12,3 +12,7 @@
 ofxWWTweetParticle::ofxWWTweetParticle(){
 	
 }
+
+void ofxWWTweetParticle::setTweet(rtt::Tweet& tweet){
+	
+}
