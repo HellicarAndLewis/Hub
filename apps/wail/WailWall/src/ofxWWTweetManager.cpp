@@ -14,9 +14,46 @@ ofxWWTweetManager::ofxWWTweetManager(){
 }
 
 void ofxWWTweetManager::setup(){
+	if(!twitter.initDB()){
+		printf("Error: cannot initialize twitter db.\n");
+//		exit();
+	}
+	
+	twitter.addDefaultListener();
+	twitter.addCustomListener(*this);
+	
+	// What do you want to track?
+	twitter.track("ItsFunnyHow");
+	twitter.track("NeverTrustAGuyWho");
+	twitter.track("TolimaDay");
+	twitter.track("love");
+	
+	if(!twitter.connect()) {
+		printf("Error: cannot connect to twitter stream.\n");
+//		exit();
+	}
 	
 }
 
 void ofxWWTweetManager::update(){
+	twitter.update();
+}
+
+void ofxWWTweetManager::renderTweets(){
 	
+}
+
+void ofxWWTweetManager::renderSearchTerms(){
+
+}
+
+
+void ofxWWTweetManager::onStatusUpdate(const rtt::Tweet& tweet){
+	cout << "TWEET!" << endl;
+}
+
+void ofxWWTweetManager::onStatusDestroy(const rtt::StatusDestroy& destroy){
+}
+
+void ofxWWTweetManager::onStreamEvent(const rtt::StreamEvent& event){
 }

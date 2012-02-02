@@ -77,6 +77,30 @@ bool JSON::parseStatus(json_t* root, rtt::Tweet& tweet) {
 		string user_id = json_string_value(node);
 		tweet.setUserID(user_id);
 	}
+	
+	// entities
+	node = json_object_get(root, "entities");
+	if(node != NULL && json_is_object(node)) {
+		
+		// get hash tags.
+		json_t* subnode = json_object_get(node, "hashtags");
+		if(subnode != NULL && json_is_array(subnode)) {
+			size_t num = json_array_size(subnode);
+			json_t* val = NULL;
+			for(int i = 0; i < num; ++i) {
+				val = json_array_get(subnode, i);
+				if(val == NULL || !json_is_object(val)) {
+					continue;
+				}
+				json_t* tag = json_object_get(val, "text");
+				if(tag == NULL) {
+					continue;
+				}
+				string tag_text = json_string_value(tag);
+				tweet.tags.push_back(tag_text);
+			}
+		}
+	}
 	return true;	
 }
 
@@ -273,7 +297,7 @@ bool JSON::parseUser(json_t* root, rtt::User& user) {
 void JSON::parse(const string& line) {
 	json_t* root;
 	json_error_t error;
-	printf("--\n");
+//	printf("--\n");
 //	printf("%s\n\n---------------------------------------------------------\n", line.c_str());
 	
 	// load json into jansson

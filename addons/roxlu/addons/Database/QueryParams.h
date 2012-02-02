@@ -17,10 +17,14 @@ class QueryParams {
 public:
 	QueryParams();
 	~QueryParams();
+	QueryParams(const QueryParam& other);
+	QueryParams& operator=(const QueryParams& other);
+	
 	
 	template<typename T>
 	QueryParams& use(const string& fieldName, const T& fieldValue) {
 		QueryParam* qp = new QueryParam();
+		qp->setType(QueryParam::SQL_PARAM_TEXT);
 		qp->use(fieldName, fieldValue);
 		params.push_back(qp);
 		return *this;
@@ -29,9 +33,15 @@ public:
 	QueryParams& useTimestamp(const string& fieldName) {
 		QueryParam* qp = new QueryParam();
 		qp->setType(QueryParam::SQL_PARAM_TIMESTAMP);
-		stringstream ss;
-		ss << "datetime(" << qp->getBindName() << ")";
-		qp->use(fieldName, ss.str());
+		qp->use(fieldName);
+		params.push_back(qp);
+		return *this;
+	}
+	
+	QueryParams& useDateTime(const string& fieldName) {
+		QueryParam* qp = new QueryParam();
+		qp->setType(QueryParam::SQL_PARAM_DATETIME);
+		qp->use(fieldName);
 		params.push_back(qp);
 		return *this;
 	}

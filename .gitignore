@@ -103,5 +103,10 @@ apps/*/*/Release
 apps/*/*/Release_arm7
 apps/*/*/test link
 apps/*/*/obj
-apps/*/*/bin
+#JG removed
+#apps/*/*/bin
 .csettings
+
+
+#simple gui backups
+apps/*/*/bin/data/*.bak

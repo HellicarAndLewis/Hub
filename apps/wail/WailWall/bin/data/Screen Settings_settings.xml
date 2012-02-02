@@ -11,4 +11,8 @@
         <name>Save Screens File</name>
         <value>0</value>
     </Toggle_Save_Screens_File>
+    <Toggle_Show_Screen_Preview>
+        <name>Show Screen Preview</name>
+        <value>0</value>
+    </Toggle_Show_Screen_Preview>
 </controls>

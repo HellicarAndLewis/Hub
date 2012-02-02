@@ -10,6 +10,7 @@ class Database;
 class Query {
 public:
 	Query(Database& db);
+	Query& operator=(const Query& other);
 	~Query();
 	Database& getDB();
 	sqlite3* getSQLite();

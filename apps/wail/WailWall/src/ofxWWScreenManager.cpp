@@ -77,7 +77,7 @@ void ofxWWScreenManager::renderScreens(){
 		positions.push_back( ofVec2f(screens[i].destRect.x,screens[i].destRect.y+screens[i].destRect.height) );
 		
 		//the texture coordinates depend on orientation
-		if(screens[i].orientation == OF_ORIENTATION_DEFAULT){
+		if(true || screens[i].orientation == OF_ORIENTATION_DEFAULT){
 			textureCoords.push_back( ofVec2f(screens[i].sourceRect.x,screens[i].sourceRect.y) );
 			textureCoords.push_back( ofVec2f(screens[i].sourceRect.x+screens[i].sourceRect.width,screens[i].sourceRect.y) );
 			textureCoords.push_back( ofVec2f(screens[i].sourceRect.x+screens[i].sourceRect.width,screens[i].sourceRect.y+screens[i].sourceRect.height) );
@@ -95,6 +95,9 @@ void ofxWWScreenManager::renderScreens(){
 			textureCoords.push_back( ofVec2f(screens[i].sourceRect.x,screens[i].sourceRect.y+screens[i].sourceRect.height) );			
 			textureCoords.push_back( ofVec2f(screens[i].sourceRect.x,screens[i].sourceRect.y) );
 		}		
+		else {
+			ofLogError("Screen orientation is incorrect!");
+		}
 	}
 	
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -115,7 +118,7 @@ void ofxWWScreenManager::renderPreview(){
 	
 	
 	for(int i = 0; i < screens.size(); i++){
-		ofSetColor(255, 255, 0, 120);
+		ofSetColor(255, 255, 255, 120);
 		ofRectangle previewRect(sourceRect.x + screens[i].sourceRect.x, sourceRect.y + screens[i].sourceRect.y, 
 								screens[i].sourceRect.width, screens[i].sourceRect.height);
 		ofRect(previewRect);

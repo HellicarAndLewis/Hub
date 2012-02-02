@@ -1,0 +1,18 @@
+<controls>
+    <SliderFloat_Force_Scale>
+        <name>Force Scale</name>
+        <value>78.610001</value>
+    </SliderFloat_Force_Scale>
+    <SliderFloat_Zoom>
+        <name>Zoom</name>
+        <value>6.445000</value>
+    </SliderFloat_Zoom>
+    <SliderFloat_Offset_X>
+        <name>Offset X</name>
+        <value>-35.000000</value>
+    </SliderFloat_Offset_X>
+    <SliderFloat_Offset_Y>
+        <name>Offset Y</name>
+        <value>-18.799999</value>
+    </SliderFloat_Offset_Y>
+</controls>

@@ -12,10 +12,32 @@ QueryResult::QueryResult(Database& db)
 {
 }
 
-QueryResult::~QueryResult() {
-	if(stmt != NULL && SQLITE_OK != sqlite3_finalize(stmt)) {
-		printf("Error: cannot finalit statement.\n");
+QueryResult& QueryResult::operator=(const QueryResult& other) {
+	if(this == &other) {
+		return *this;
 	}
+	//printf("copy query: %p", other.stmt);
+	db = other.db;
+	stmt = other.stmt;
+	is_ok = other.is_ok;
+	row_index = other.row_index;
+	last_result = other.last_result;
+	return *this;
+}
+
+QueryResult::QueryResult(const QueryResult& other) 
+	:db(other.db)
+{
+	*this = other;
+}
+
+QueryResult::~QueryResult() {
+	// @todo we need to "finalize" the stmt somewhere!!
+	
+	//printf("remove query.... %p\n", stmt);
+//	if(stmt != NULL && SQLITE_OK != sqlite3_finalize(stmt)) {
+//		printf("Error: cannot finalit statement.\n");
+//	}
 }
 
 bool QueryResult::execute(const string& sql, QueryParams& params, int queryType) {
@@ -24,7 +46,7 @@ bool QueryResult::execute(const string& sql, QueryParams& params, int queryType)
 		printf("error: cannot prepare\n");
 		return false;
 	}
-	
+	//printf("db: %p\n", &getDB());
 	if(!getDB().bind(params.getParams(), &stmt, queryType)) {
 		printf("error: cannot bind..\n");
 

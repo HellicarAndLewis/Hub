@@ -18,6 +18,7 @@ struct StatusDestroy {
 	uint64_t user_id;
 };
 
+
 // source for general event.
 struct User {
 	bool contributors_enabled;

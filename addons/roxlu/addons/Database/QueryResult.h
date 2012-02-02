@@ -12,7 +12,10 @@ class Database;
 class QueryResult {
 public:
 	QueryResult(Database& db);
+	QueryResult(const QueryResult& other);
+	QueryResult& operator=(const QueryResult& other);
 	~QueryResult();
+	
 	bool execute(const string& sql, QueryParams& params, int queryType);
 	bool isOK();
 	bool next();
