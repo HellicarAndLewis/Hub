@@ -39,6 +39,7 @@ public:
 	bool prepare(const string& sql, sqlite3_stmt** stmt);
 	bool bind(const vector<QueryParam*>& params, sqlite3_stmt** stmt, int queryType);
 	sqlite3* getDB();
+	void printCompileInfo();
 private:
 	string file;
 	sqlite3* db;

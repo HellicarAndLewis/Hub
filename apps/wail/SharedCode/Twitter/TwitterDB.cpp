@@ -6,15 +6,6 @@ using namespace roxlu;
 namespace rtt = roxlu::twitter::type;
 
 TwitterDB::TwitterDB() {
-
-	printf("==========================================\n");
-	QuerySelect tmp = db.select("test");
-	tmp.use("test", "wathever");
-	QuerySelect tmp_copy = tmp;
-	QuerySelect tmp_copy3 = tmp;
-	printf("==========================================\n");
-//	return false;
-
 }
 
 bool TwitterDB::open(const string& name) {
@@ -25,15 +16,17 @@ bool TwitterDB::open(const string& name) {
 bool TwitterDB::createTables() {
 
 	// Full Text Search (FTS) table for tweet texts
-	bool result = db.query("CREATE VIRTUAL TABLE tweet_texts USING fts4(text, id)");
-	if(!result) {
+	bool result_virtual = db.query("CREATE VIRTUAL TABLE tweet_texts USING fts4(text, id)");
+	if(!result_virtual) {
 		printf("Error: cannot create virtual table.\n");
 		return false;
 	}
 	
+	//db.printCompileInfo();
 
 	// TWEETS
-	result = db.query(
+	// -------------
+	bool result = db.query(
 		"CREATE TABLE IF NOT EXISTS tweets( "					\
 			" t_id			INTEGER PRIMARY KEY AUTOINCREMENT"	\
 			",t_user_id		VARCHAR(50)"						\
@@ -53,6 +46,7 @@ bool TwitterDB::createTables() {
 	result = db.query("CREATE INDEX dx_tweet_timestamp ON tweets(t_timestamp)");
 	
 	// TAGS
+	// -------------
 	result = db.query(
 		  "CREATE TABLE IF NOT EXISTS tags( "								\
 			  "tag_id			INTEGER  PRIMARY KEY AUTOINCREMENT"			\
@@ -63,6 +57,7 @@ bool TwitterDB::createTables() {
 
 	
 	// TWEET <---> TAGS
+	// -------------
 	result = db.query(
 		  "CREATE TABLE IF NOT EXISTS tweet_tags( "					\
 		  	" tt_tagid			INTEGER "							\
@@ -75,7 +70,8 @@ bool TwitterDB::createTables() {
 		return false;
 	}
 	
-	// USERLIST 
+	// USERLIST (experimental)
+	// ------------------------
 	result = db.query(
 		"CREATE TABLE IF NOT EXISTS follow( "
 			"fl_id				INTEGER PRIMARY KEY AUTOINCREMENT "	\
@@ -86,16 +82,6 @@ bool TwitterDB::createTables() {
 	);
 	return true;
 }
-
-/*
-	string text;
-	string tweet_id;
-	string user_id;
-	string screen_name;
-	string avatar;
-	vector<rtt::URL*> urls;
-};
-*/
 
 
 // TWEETS
@@ -118,6 +104,13 @@ bool TwitterDB::insertTweet(const rtt::Tweet& tweet) {
 		return false;
 	}
 	int tweet_id = db.lastInsertID();
+	
+	// insert text into virtual table (FTS) for some superfast searching!
+	result = db.insert("tweet_texts").use("text", tweet.text).use("id", tweet_id).execute();
+	if(!result) {
+		printf("Error: cannot insert into FTS for tweet.\n");
+		return false;
+	}
 	
 	// insert tags
 	vector<string>::const_iterator it = tweet.tags.begin();
@@ -281,40 +274,51 @@ bool TwitterDB::getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& res
 	return true;
 }
 
-bool TwitterDB::getTweetsWithSearchTerm(const string& q, vector<rtt::Tweet>& result) {
-	/* bool getTweetsWithSearchTerm(const string& q, vector<rtt::Tweet>& result);*/
+
+/**
+ * Get a tweet which contains the given search term
+ * 
+ * @param	const string&				The search query
+ *
+ * @param	int							Only return tweets which are younger 
+ *										then this number of seconds.
+ *										
+ * @param	int							How many tweets do you want?
+ *
+ * @param	vector<rtt::Tweet>& [out]	Is filled with tweets
+ */
+bool TwitterDB::getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany, vector<rtt::Tweet>& result) {
+	// create where.
+	stringstream where;
+	where << "text MATCH '";
+	where << q;
+	where << "' AND ";
+	where << "t_timestamp > ((strftime('%s', 'now')) - ";
+	where << youngerThan; 
+	where << ")";
+
+	// join on FTS table
 	QueryResult qr(db);
-//	db.select("t_text")
-//		.from("tweets")
+	int start = ofGetElapsedTimeMillis();
+	bool r = db.select("t_text")
+		.from("tweet_texts")
+		.where(where.str())
+		.join("tweets on t_id = id")
+		.limit(howMany)
+		.execute(qr);
+	
+	if(!r) {
+		printf("Error: cannot execute search query.\n");
+		return false;
+	}
+	
+	while(qr.next()) {
+		rtt::Tweet tweet;
+		tweet.setText(qr.getString(0));
+		result.push_back(tweet);
+	}
+	int end = ofGetElapsedTimeMillis();	
+	int diff = end - start;
+	printf("Searched for %s and found %zu rows in %d ms.\n", q.c_str(), result.size(), diff);
 	return true;
 }
-
-
-/*
-// source for general event.
-struct User {
-	bool contributors_enabled;
-	string name;
-	string id_str;
-	string screen_name;
-	string location;
-	uint64_t statuses_count;
-	uint64_t id;
-};
-
-// target of general event.
-struct TargetObject {
-	string name;
-	string mode;
-	string description;
-	User user;	
-};
-
-// general event: https://dev.twitter.com/docs/streaming-api/user-streams
-struct StreamEvent {
-	User target;					// who is affected (i.e. removed, added) or owns the affected object
-	TargetObject target_object;		// the "changed" object; i.e. a list
-	User source; 					// who initiated the event
-	string event;					// what kind of event.
-};
-*/

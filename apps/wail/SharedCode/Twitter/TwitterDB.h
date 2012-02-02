@@ -24,7 +24,7 @@ public:
 	bool getTagID(const string& tag, int& result);
 	bool getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result);
 	bool getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result);
-	bool getTweetsWithSearchTerm(const string& q, vector<rtt::Tweet>& result);
+	bool getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany, vector<rtt::Tweet>& result);
 
 private:
 	roxlu::Database db;	

@@ -81,9 +81,27 @@ bool JSON::parseStatus(json_t* root, rtt::Tweet& tweet) {
 	// entities
 	node = json_object_get(root, "entities");
 	if(node != NULL && json_is_object(node)) {
+		// get user mentions
+		json_t* subnode = json_object_get(node, "user_mentions");
+		if(subnode != NULL && json_is_array(subnode)) {
+			size_t num = json_array_size(subnode);
+			json_t* val = NULL;
+			for(int i = 0; i < num; ++i) {
+				val = json_array_get(subnode, i);
+				if(val == NULL || !json_is_object(val)) {
+					continue;
+				}
+				json_t* name_node = json_object_get(val, "screen_name");
+				if(name_node == NULL) {
+					continue;
+				}
+				string name_text = json_string_value(name_node);
+				tweet.user_mentions.push_back(name_text);
+			}
+		}
 		
 		// get hash tags.
-		json_t* subnode = json_object_get(node, "hashtags");
+		subnode = json_object_get(node, "hashtags");
 		if(subnode != NULL && json_is_array(subnode)) {
 			size_t num = json_array_size(subnode);
 			json_t* val = NULL;
@@ -100,6 +118,8 @@ bool JSON::parseStatus(json_t* root, rtt::Tweet& tweet) {
 				tweet.tags.push_back(tag_text);
 			}
 		}
+		
+
 	}
 	return true;	
 }

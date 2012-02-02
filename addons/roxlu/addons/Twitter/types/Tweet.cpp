@@ -31,5 +31,8 @@ void Tweet::addTag(const string& tag) {
 	tags.push_back(tag);
 }
 
+void Tweet::addUserMention(const string& screenName) {
+	user_mentions.push_back(screenName);
+}
 
 }}} // roxlu::twitter::data

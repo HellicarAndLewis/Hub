@@ -28,7 +28,7 @@ public:
 	bool getFollowers(vector<string>& result);
 	bool getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result);
 	bool getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result);
-	bool getTweetsWithSearchTerm(const string& q, vector<rtt::Tweet>& result);
+	bool getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany, vector<rtt::Tweet>& result);
 
 	void addDefaultListener();
 	void addCustomListener(rt::IEventListener& listener);
@@ -53,8 +53,8 @@ inline bool TwitterApp::getTweetsNewerThan(int age, int howMany, vector<rtt::Twe
 	return db.getTweetsNewerThan(age, howMany, result);
 }
 
-inline bool TwitterApp::getTweetsWithSearchTerm(const string& q, vector<rtt::Tweet>& result) {
-	return db.getTweetsWithSearchTerm(q, result);
+inline bool TwitterApp::getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany, vector<rtt::Tweet>& result) {
+	return db.getTweetsWithSearchTerm(q, howMany, youngerThan, result);
 }
 
 #endif

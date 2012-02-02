@@ -90,7 +90,7 @@ bool Stream::connect(const string& streamURL) {
 	r = curl_easy_setopt(curl, CURLOPT_WRITEDATA, this);
 	CHECK_CURL_ERROR(r);	
 	
-	//curl_easy_setopt(curl, CURLOPT_VERBOSE, true);
+	curl_easy_setopt(curl, CURLOPT_VERBOSE, true);
 
 	// set the oauth headers.
 	string header = req.getHeader();

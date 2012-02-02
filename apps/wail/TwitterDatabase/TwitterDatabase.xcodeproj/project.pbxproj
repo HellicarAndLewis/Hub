@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		541A1B8314DB165A00F7FE34 /* libsqlite3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 541A1B8214DB165A00F7FE34 /* libsqlite3.a */; };
 		54B4722914D9366700C39CC9 /* Database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54B4718C14D9366600C39CC9 /* Database.cpp */; };
-		54B4722A14D9366700C39CC9 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 54B4718F14D9366600C39CC9 /* sqlite3.c */; };
 		54B4722B14D9366700C39CC9 /* Query.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54B4719214D9366600C39CC9 /* Query.cpp */; };
 		54B4722C14D9366700C39CC9 /* QueryInsert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54B4719414D9366600C39CC9 /* QueryInsert.cpp */; };
 		54B4722D14D9366700C39CC9 /* QueryParam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54B4719614D9366600C39CC9 /* QueryParam.cpp */; };
@@ -91,9 +91,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		541A1B8214DB165A00F7FE34 /* libsqlite3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libsqlite3.a; sourceTree = "<group>"; };
 		54B4718C14D9366600C39CC9 /* Database.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Database.cpp; sourceTree = "<group>"; };
 		54B4718D14D9366600C39CC9 /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
-		54B4718F14D9366600C39CC9 /* sqlite3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sqlite3.c; sourceTree = "<group>"; };
 		54B4719014D9366600C39CC9 /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3.h; sourceTree = "<group>"; };
 		54B4719114D9366600C39CC9 /* sqlite3ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3ext.h; sourceTree = "<group>"; };
 		54B4719214D9366600C39CC9 /* Query.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Query.cpp; sourceTree = "<group>"; };
@@ -288,6 +288,7 @@
 				54B4724514D9366700C39CC9 /* libjansson.a in Frameworks */,
 				54B4724614D9366700C39CC9 /* libcrypto.a in Frameworks */,
 				54B4724714D9366700C39CC9 /* libssl.a in Frameworks */,
+				541A1B8314DB165A00F7FE34 /* libsqlite3.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,7 +341,7 @@
 		54B4718E14D9366600C39CC9 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				54B4718F14D9366600C39CC9 /* sqlite3.c */,
+				541A1B8214DB165A00F7FE34 /* libsqlite3.a */,
 				54B4719014D9366600C39CC9 /* sqlite3.h */,
 				54B4719114D9366600C39CC9 /* sqlite3ext.h */,
 			);
@@ -745,7 +746,6 @@
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* testApp.cpp in Sources */,
 				54B4722914D9366700C39CC9 /* Database.cpp in Sources */,
-				54B4722A14D9366700C39CC9 /* sqlite3.c in Sources */,
 				54B4722B14D9366700C39CC9 /* Query.cpp in Sources */,
 				54B4722C14D9366700C39CC9 /* QueryInsert.cpp in Sources */,
 				54B4722D14D9366700C39CC9 /* QueryParam.cpp in Sources */,
@@ -808,6 +808,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = NO;
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
+				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-DSQLITE_ENABLE_FTS3_PARENTHESIS",
 					"-DSQLITE_ENABLE_FTS3",
@@ -840,6 +841,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = NO;
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
+				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-DSQLITE_ENABLE_FTS3_PARENTHESIS",
 					"-DSQLITE_ENABLE_FTS3",
@@ -942,11 +944,13 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_10)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_11)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_12)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_13)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/src/libs/curl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_10 = "\"$(SRCROOT)/../../../addons/roxlu/libs/curl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_11 = "\"$(SRCROOT)/../../../addons/roxlu/libs/jansson\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_12 = "\"$(SRCROOT)/../../../addons/roxlu/libs/openssl\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_13 = "\"$(SRCROOT)/../../../addons/roxlu/addons/Database/lib\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/src/libs/jansson\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/src/libs/openssl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../libs/curl\"";
@@ -1052,11 +1056,13 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_10)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_11)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_12)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_13)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/src/libs/curl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_10 = "\"$(SRCROOT)/../../../addons/roxlu/libs/curl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_11 = "\"$(SRCROOT)/../../../addons/roxlu/libs/jansson\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_12 = "\"$(SRCROOT)/../../../addons/roxlu/libs/openssl\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_13 = "\"$(SRCROOT)/../../../addons/roxlu/addons/Database/lib\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/src/libs/jansson\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/src/libs/openssl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../libs/curl\"";

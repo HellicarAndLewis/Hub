@@ -10,20 +10,11 @@ TwitterApp::~TwitterApp() {
 }
 
 bool TwitterApp::initDB(){
-	// DATABASE 
-	// --------
-	if(!db.open("twitter.db")) {
-		printf("Error: Cannot open twitter db.\n");
-		return false;
-	}
 	
-	if(!db.createTables()) {
-		printf("Error: Cannot create database.\n");
-		return false;
-	}
-	
+
 	// TWITTER
 	// --------
+	printf("initializeing twitter\n");
 	twitter.setTwitterUsername("dewarshub");
 	twitter.setTwitterPassword("HUB2012hub#");
 	twitter.setConsumerKey("5cL1KRDQzcnGo8ZOaAz0g");
@@ -38,6 +29,23 @@ bool TwitterApp::initDB(){
         twitter.saveTokens(token_file);
 	}
 		
+
+	// DATABASE 
+	// --------
+	if(!db.open("twitter.db")) {
+		printf("Error: Cannot open twitter db.\n");
+		//return false;
+	}
+	
+	if(!db.createTables()) {
+		printf("Error: Cannot create database.\n");
+		//return false;
+	}
+	return true;
+	vector<rtt::Tweet> tweets;
+	getTweetsWithSearchTerm("love",100, 1000, tweets);
+	//exit(0);
+
 	return true;
 }
 
