@@ -37,10 +37,7 @@ bool TwitterApp::initDB(){
         twitter.accessToken();
         twitter.saveTokens(token_file);
 	}
-	
-	//twitter.addEventListener(twitter_listener);
-	addTwitterListener(twitter_listener);
-	
+		
 	return true;
 }
 
@@ -101,8 +98,13 @@ bool TwitterApp::connect(){
 	
 //}
 
-void TwitterApp::addTwitterListener(rt::IEventListener& listener){
-	twitter.addEventListener(twitter_listener);
+//twitter.addEventListener(twitter_listener);
+void TwitterApp::addDefaultListener(){
+	addCustomListener(twitter_listener);
+}
+
+void TwitterApp::addCustomListener(rt::IEventListener& listener){
+	twitter.addEventListener(listener);
 }
 
 void TwitterApp::update() {	

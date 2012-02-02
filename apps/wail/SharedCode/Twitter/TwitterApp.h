@@ -30,7 +30,8 @@ public:
 	bool getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result);
 	bool getTweetsWithSearchTerm(const string& q, vector<rtt::Tweet>& result);
 
-	void addTwitterListener(rt::IEventListener& listener);
+	void addDefaultListener();
+	void addCustomListener(rt::IEventListener& listener);
 	
 private:
 	rt::Twitter twitter;

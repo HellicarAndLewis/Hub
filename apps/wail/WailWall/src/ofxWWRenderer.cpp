@@ -11,6 +11,7 @@
 #include "ofxSimpleGuiToo.h"
 
 void ofxWWRenderer::setup(int width, int height){
+	
 	renderTarget.allocate(width, height, GL_RGB);
 	firstLayerAccumulator.allocate(width, height, GL_RGBA);
 	liquidTarget.allocate(width, height, GL_RGB);
@@ -43,6 +44,8 @@ void ofxWWRenderer::setup(int width, int height){
 	warpShader.end();
 
 	justDrawWarpTexture = false;
+	
+	tweets.setup();
 }
 
 void ofxWWRenderer::setupGui(){
@@ -86,6 +89,7 @@ void ofxWWRenderer::setupGui(){
 
 void ofxWWRenderer::update(){
 	fluid.update();
+	tweets.update();
 }
 
 void ofxWWRenderer::render(){

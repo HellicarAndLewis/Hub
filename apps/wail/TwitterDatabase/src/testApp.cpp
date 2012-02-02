@@ -7,6 +7,8 @@ void testApp::setup(){
 		exit();
 	}
 	
+	twitter_app.addDefaultListener();
+	
 	// What do you want to track?
 	twitter_app.track("ItsFunnyHow");
 	twitter_app.track("NeverTrustAGuyWho");

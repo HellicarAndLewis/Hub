@@ -14,7 +14,25 @@ ofxWWTweetManager::ofxWWTweetManager(){
 }
 
 void ofxWWTweetManager::setup(){
-	twitter.addTwitterListener( *this );
+	if(!twitter.initDB()){
+		printf("Error: cannot initialize twitter db.\n");
+//		exit();
+	}
+	
+	twitter.addDefaultListener();
+	twitter.addCustomListener(*this);
+	
+	// What do you want to track?
+	twitter.track("ItsFunnyHow");
+	twitter.track("NeverTrustAGuyWho");
+	twitter.track("TolimaDay");
+	twitter.track("love");
+	
+	if(!twitter.connect()) {
+		printf("Error: cannot connect to twitter stream.\n");
+//		exit();
+	}
+	
 }
 
 void ofxWWTweetManager::update(){
