@@ -11,7 +11,7 @@ TwitterEventListener::~TwitterEventListener() {
 }
 
 void TwitterEventListener::onStatusUpdate(const rtt::Tweet& tweet) {
-	//printf("text: %s\n", tweet.getText().c_str());
+	printf("text: %s\n", tweet.getText().c_str());
 	twitter_app.getDB().insertTweet(tweet);
 }
 

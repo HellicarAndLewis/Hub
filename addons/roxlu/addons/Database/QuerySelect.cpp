@@ -92,7 +92,7 @@ string QuerySelect::toString() {
 	}
 	
 	
-	//printf("SQL: %s\n" , sql.c_str());
+	printf("SQL: %s\n" , sql.c_str());
 	return sql;
 	
 }

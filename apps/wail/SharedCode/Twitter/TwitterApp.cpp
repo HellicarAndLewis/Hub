@@ -51,12 +51,13 @@ bool TwitterApp::init() {
 	// testing queries
 	// -------------------------------------------------------------------------
 	// get tweets with tag...
-	/*
+	
 	vector<rtt::Tweet> tweets;
 	if(getTweetsWithTag("NeverTrustAGuyWho",10, tweets)) {
 		printf("found: %d!", tweets.size());
 	}
 	
+	/*
 	// get tweets newer then 2400 seconds.
 	
 	int now = ofGetElapsedTimeMillis();
@@ -69,9 +70,10 @@ bool TwitterApp::init() {
 	printf("diff: %d\n", diff);
 	// -------------------------------------------------------------------------
 	*/
+
 	//return true;
 	
-	
+
 	if(!stream.connect(URL_STREAM_USER)) {
 		printf("Error: cannot connect to user stream.\n");
 		return false;
