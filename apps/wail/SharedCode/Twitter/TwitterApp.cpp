@@ -17,8 +17,10 @@ bool TwitterApp::initDB(){
 	// TWITTER
 	// --------
 	printf("initializeing twitter\n");
-	//twitter.setTwitterUsername("dewarshub");
-	//twitter.setTwitterPassword("HUB2012hub#");
+//	twitter.setTwitterUsername("dewarshub");
+//	twitter.setTwitterPassword("HUB2012hub#");
+	twitter.setTwitterUsername("obviousjim");
+	twitter.setTwitterPassword("[TW33t]");
 	twitter.setConsumerKey("5cL1KRDQzcnGo8ZOaAz0g");
 	twitter.setConsumerSecret("e4X9dtxkgmpkRlr9arhOfNe7tTezWad2bmCUNvPtBvQ");
 	

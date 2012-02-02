@@ -10,7 +10,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxWWTweet.h"
+#include "ofxWWTweetParticle.h"
 
 class ofxWWSearchTerm {
   public:
@@ -18,5 +18,5 @@ class ofxWWSearchTerm {
 	ofVec2f pos;
 	float scale;
 	float opacity;
-	vector<ofxWWTweet*> associatedTweets;
+	vector<ofxWWTweetParticle*> associatedTweets;
 };

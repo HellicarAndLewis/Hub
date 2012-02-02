@@ -5,7 +5,7 @@
     </SliderInt_Particles>
     <SliderFloat_Density>
         <name>Density</name>
-        <value>0.000000</value>
+        <value>0.450000</value>
     </SliderFloat_Density>
     <SliderFloat_Stiffness>
         <name>Stiffness</name>
