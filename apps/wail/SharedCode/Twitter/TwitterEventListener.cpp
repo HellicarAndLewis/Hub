@@ -13,7 +13,7 @@ TwitterEventListener::~TwitterEventListener() {
 }
 
 void TwitterEventListener::onStatusUpdate(const rtt::Tweet& tweet) {
-	//printf("text: %s\n", tweet.getText().c_str());
+	printf("> %s\n", tweet.getText().c_str());
 	
 	string search_for = "dewarshub";
 	size_t search_len = search_for.size();
