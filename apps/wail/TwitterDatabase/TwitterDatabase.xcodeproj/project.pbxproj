@@ -809,6 +809,8 @@
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				OTHER_CPLUSPLUSFLAGS = (
+					"-DSQLITE_ENABLE_FTS3_PARENTHESIS",
+					"-DSQLITE_ENABLE_FTS3",
 					"-Wreturn-type",
 					"-D__MACOSX_CORE__",
 					"-lpthread",
@@ -839,6 +841,8 @@
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				OTHER_CPLUSPLUSFLAGS = (
+					"-DSQLITE_ENABLE_FTS3_PARENTHESIS",
+					"-DSQLITE_ENABLE_FTS3",
 					"-Wreturn-type",
 					"-D__MACOSX_CORE__",
 					"-lpthread",

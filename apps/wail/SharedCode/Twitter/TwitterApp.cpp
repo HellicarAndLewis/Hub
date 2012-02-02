@@ -71,7 +71,6 @@ bool TwitterApp::init() {
 	*/
 
 	return true;
-	
 
 	if(!stream.connect(URL_STREAM_USER)) {
 		printf("Error: cannot connect to user stream.\n");

@@ -24,8 +24,16 @@ bool TwitterDB::open(const string& name) {
 
 bool TwitterDB::createTables() {
 
+	// Full Text Search (FTS) table for tweet texts
+	bool result = db.query("CREATE VIRTUAL TABLE tweet_texts USING fts4(text, id)");
+	if(!result) {
+		printf("Error: cannot create virtual table.\n");
+		return false;
+	}
+	
+
 	// TWEETS
-	bool result = db.query(
+	result = db.query(
 		"CREATE TABLE IF NOT EXISTS tweets( "					\
 			" t_id			INTEGER PRIMARY KEY AUTOINCREMENT"	\
 			",t_user_id		VARCHAR(50)"						\
@@ -276,7 +284,8 @@ bool TwitterDB::getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& res
 bool TwitterDB::getTweetsWithSearchTerm(const string& q, vector<rtt::Tweet>& result) {
 	/* bool getTweetsWithSearchTerm(const string& q, vector<rtt::Tweet>& result);*/
 	QueryResult qr(db);
-	
+//	db.select("t_text")
+//		.from("tweets")
 	return true;
 }
 
