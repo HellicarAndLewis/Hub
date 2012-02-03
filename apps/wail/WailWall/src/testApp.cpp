@@ -31,10 +31,10 @@ void testApp::setup(){
 	
 	screenSettingsFile = "DisplayLayout.xml";
 	screenManager.loadScreens(screenSettingsFile);
-	renderer.setup(screenManager.sourceRect.width, screenManager.sourceRect.height);
 	
-	renderer.setupGui();
 	renderer.blobs = &blobs;
+	renderer.setup(screenManager.sourceRect.width, screenManager.sourceRect.height);	
+	renderer.setupGui();
 	
 	gui.addPage("Screen Settings");
 	gui.addToggle("Generate Screen Layout", generateScreens);

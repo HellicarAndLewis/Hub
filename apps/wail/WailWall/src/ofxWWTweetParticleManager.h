@@ -14,6 +14,7 @@
 #include "TwitterApp.h"
 #include "ofxFTGLFont.h"
 #include "ofxMPMFluid.h"
+#include "KinectTouchListener.h"
 
 class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
   public:
@@ -32,6 +33,8 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 
 	//ofxFTGLFont sharedFont;
 	ofxMPMFluid* fluidRef;
+	map<int,KinectTouch>* blobsRef;
+	
 	ofTrueTypeFont sharedFont;
 	ofTrueTypeFont sharedLargeFont;
 	
@@ -60,9 +63,16 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	float wordWrapLength;
 	
 	bool clearTweets;
-	bool generateFakeSearchTerms;
 	
+	bool generateFakeSearchTerms;
+	float searchTermMinDistance;
+	float searchTermMinHoldTime;
+
+
   protected:
+	bool searchTermSelected;
+	int selectedSearchTerm;
+	
 	TwitterApp twitter;
 	vector<ofxWWTweetParticle> tweets;
 	vector<ofxWWSearchTerm> searchTerms;

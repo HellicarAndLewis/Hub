@@ -73,6 +73,8 @@ class ofxWWRenderer: public KinectTouchListener {
 	//used as a map into the fluid sim
 	ofImage colorField;
 	
+	bool drawTouchDebug;
+	
 	float layer1Opacity; //this is smoothed
 	
 	

@@ -1,0 +1,10 @@
+<controls>
+    <SliderFloat_Search_Min_Dist>
+        <name>Search Min Dist</name>
+        <value>50.000000</value>
+    </SliderFloat_Search_Min_Dist>
+    <SliderFloat_Search_Min_Hold_T>
+        <name>Search Min Hold T</name>
+        <value>2.325000</value>
+    </SliderFloat_Search_Min_Hold_T>
+</controls>

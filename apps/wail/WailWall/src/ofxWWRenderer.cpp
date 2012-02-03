@@ -26,6 +26,7 @@ void ofxWWRenderer::setup(int width, int height){
 	fluid.setup(100000);
 	fluid.scaleFactor = 6.4;
 	tweets.fluidRef = &fluid;
+	tweets.blobsRef = blobs;
 	
 	colorField.loadImage("color_palette.png");
 	layer1Opacity = 1.0;
@@ -55,6 +56,7 @@ void ofxWWRenderer::setup(int width, int height){
 void ofxWWRenderer::setupGui(){
 	
 	gui.addPage("Interaction");
+	gui.addToggle("Draw Touch Debug", drawTouchDebug);
 	gui.addSlider("Layer Barrier Z", layerBarrierZ, .25, .75);
 	gui.addSlider("Layer Barrier Width", layerBarrierWidth, 0.05, .25);
 	gui.addToggle("Fake Z", fakeZOnTouch);
@@ -154,9 +156,21 @@ void ofxWWRenderer::render(){
 	warpShader.end();
 
 	tweets.renderTweets();	
-
+	tweets.renderSearchTerms();
+	
 	if(justDrawWarpTexture){
 		liquidTarget.draw(0,0);		
+	}
+	
+	if(drawTouchDebug){
+		ofPushStyle();
+		ofNoFill();
+		ofSetColor(0, 255, 0);
+		map<int,KinectTouch>::iterator it;
+		for(it = blobs->begin(); it != blobs->end(); it++){
+			ofCircle(it->second.x*liquidTarget.getWidth(), it->second.y*liquidTarget.getHeight(), 10);
+		}
+		ofPopStyle();
 	}
 	
 	renderTarget.end();	

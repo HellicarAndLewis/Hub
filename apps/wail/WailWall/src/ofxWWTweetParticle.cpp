@@ -104,7 +104,5 @@ void ofxWWTweetParticle::draw(){
 	
 	ofSetColor(255, 255, 255, opacity*255);
 	manager->sharedFont.drawString(wordWrappedTweet, pos.x + userNameWidth + manager->userNameXPad, pos.y);
-	
-	//ofDrawBitmapString(tweet.getText(), pos);
 	ofPopStyle();
 }
