@@ -1,7 +1,7 @@
 <controls>
     <SliderInt_Particles>
         <name>Particles</name>
-        <value>44560</value>
+        <value>100000</value>
     </SliderInt_Particles>
     <SliderFloat_Density>
         <name>Density</name>

@@ -142,31 +142,16 @@ void ofxWWTweetParticleManager::update(){
 				ofVec2f awayFromOther = (tweets[i].pos - tweets[j].pos);
 				float distance = awayFromOther.length();
 				awayFromOther.normalize();
-				if(distance < tweetRepulsionDistance){
+				if(distance < 100.0 && distance >  100 && distance < tweetRepulsionDistance){
 					ofVec2f force = (awayFromOther * (tweetRepulsionDistance - distance) * tweetRepulsionAtten);
 					force.y *= yForceBias;
 					tweets[i].force += force;
-				}
+				}		
 			}
 		}
 	}
-	
 	for(int i = 0; i < tweets.size(); i++){
-		float f =  fluidForceScale * tweetLayerOpacity * tweets[i].deathAttenuation;
-		printf("Fluidforcescale: %f\n", fluidForceScale);
-		printf("TweetLayerOpacity: %f\n", tweetLayerOpacity);
-		printf("DeathAttenuation: %f\n", tweets[i].deathAttenuation);
-		printf("Tweets[i].force.x: %f\n", tweets[i].force.x);
-		printf("Tweets[i].force.y: %f\n", tweets[i].force.y);
-		printf("F: %f\n", f);
-		printf("--------------------------------------------------------\n");
-
-		tweets[i].force.scale(1.4);
-
-		fluidRef->applyForce(
-			tweets[i].pos/ofVec2f(simulationWidth,simulationHeight)
-			,tweets[i].force/(ofVec2f(simulationWidth,simulationHeight)) * f );
-		//fluidRef->applyForce( tweets[i].pos/ofVec2f(simulationWidth,simulationHeight), tweets[i].force/ofVec2f(simulationWidth,simulationHeight) * max(0.1f, fluidForceScale * tweetLayerOpacity * tweets[i].deathAttenuation) );
+		fluidRef->applyForce( tweets[i].pos/ofVec2f(simulationWidth,simulationHeight), tweets[i].force/ofVec2f(simulationWidth,simulationHeight) * fluidForceScale * tweetLayerOpacity * tweets[i].deathAttenuation );
 	}
 	
 	for(int i = 0; i < tweets.size(); i++){
