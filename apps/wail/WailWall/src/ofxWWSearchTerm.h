@@ -17,13 +17,23 @@ class ofxWWSearchTerm {
   public:
 	ofxWWSearchTerm();
 
+	void update();
 	void draw();
 	ofxWWTweetParticleManager* manager;
 
+	ofVec2f closestPoint;
 	ofVec2f pos;
+	
+
+	bool touchPresent;
+	bool highlighted;
+	float holdStartTime;
+	bool selected;
+	bool otherSelected;
+	
 	float scale;
 	float opacity;
-	bool tweetsGenerated;
+	
 	string term;
-	vector<ofxWWTweetParticle> associatedTweets;
+	//vector<ofxWWTweetParticle> associatedTweets;
 };

@@ -59,8 +59,11 @@ void ofxWWTweetParticleManager::setupGui(){
 	gui.addSlider("Fluid Force Scale", fluidForceScale, 1., 100.);
 	
 	gui.addPage("Search Terms");
-	gui.addToggle("Gen Fake Terms", generateFakeSearchTerms);
-	
+//	gui.addToggle("Gen Fake Terms", generateFakeSearchTerms);
+	gui.addSlider("Search Min Dist", searchTermMinDistance, 50, 500);
+	gui.addSlider("Search Min Hold T", searchTermMinHoldTime, .5, 3.0);
+
+	generateFakeSearchTerms = true;
 }
 
 
@@ -157,33 +160,33 @@ void ofxWWTweetParticleManager::update(){
 	}
 	//////////////
 	
-	//ANIMATE SEARCH TERMS
-	
-	
-	
-}
-
-void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
-	printf("Yay I got a new search term: %s\n", event.search_term.c_str());
-	
-	ofxWWSearchTerm searchTerm;
-	int tries = 0;
-	ofVec2f pos;
-	bool validPosFound = true;
-	do {
-		pos = ofVec2f(ofRandom(simulationWidth-wordWrapLength/2.), ofRandom(simulationHeight));
-		for(int i = 0; i < searchTerms.size(); i++){
-			if (searchTerm.pos.distance(pos) < 150) {
-				validPosFound = false;
-				break;
-			}
+	searchTermSelected = false;
+	selectedSearchTerm = -1;
+	for(int i = 0; i < searchTerms.size(); i++){
+		if(searchTerms[i].selected){
+			searchTermSelected = true;
+			selectedSearchTerm = i;
+			break;
 		}
-	} while (!validPosFound && tries++ < 100);
-	searchTerm.term = event.search_term;
-	searchTerm.pos = pos;
-
-	searchTerms.push_back( searchTerm );
+	}
 	
+	if(!searchTermSelected){	
+		for(int i = 0; i < searchTerms.size(); i++){
+			float closestDistance = 99999;
+			map<int,KinectTouch>::iterator it;
+			for(it = blobsRef->begin(); it != blobsRef->end(); it++){
+				ofVec2f point = ofVec2f(it->second.x*simulationWidth, it->second.y*simulationHeight);
+				float distance = point.distanceSquared(searchTerms[i].pos);
+				if(distance < closestDistance){
+					closestDistance = distance;
+					searchTerms[i].closestPoint = point;
+				}
+				searchTerms[i].touchPresent = true;
+			}
+			
+			searchTerms[i].update();
+		}
+	}	
 }
 
 void ofxWWTweetParticleManager::renderTweets(){
@@ -193,21 +196,44 @@ void ofxWWTweetParticleManager::renderTweets(){
 }
 
 void ofxWWTweetParticleManager::renderSearchTerms(){	
-	for(int i = 0; i < tweets.size(); i++){
-		searchTerms[i].draw();
+	for(int i = 0; i < searchTerms.size(); i++){
+		if( !searchTermSelected || (searchTermSelected && i == selectedSearchTerm) ){
+			searchTerms[i].draw();
+		}
 	}	
 }
 
-
 void ofxWWTweetParticleManager::onStatusUpdate(const rtt::Tweet& tweet){
 	ofxWWTweetParticle tweetParticle;
-
 	tweetParticle.manager = this;
 	tweetParticle.pos = ofVec2f(ofRandom(simulationWidth-wordWrapLength), ofRandom(simulationHeight));
 	tweetParticle.setTweet(tweet);
-	tweets.push_back( tweetParticle );
-	
+	tweets.push_back( tweetParticle );	
 	cout << "added tweet " << tweets.size() << " text is " << tweet.getText() << endl;
+}
+
+void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
+	printf("Yay I got a new search term: %s\n", event.search_term.c_str());
+	
+	ofxWWSearchTerm searchTerm;
+	int tries = 0;
+	ofVec2f pos;
+	bool validPosFound;
+	do {
+		validPosFound = true;
+		pos = ofVec2f(ofRandom(simulationWidth-wordWrapLength/2.), ofRandom(simulationHeight));
+		for(int i = 0; i < searchTerms.size(); i++){
+			if (searchTerm.pos.distance(pos) < 400) {
+				validPosFound = false;
+				break;
+			}
+		}
+	} while (!validPosFound && tries++ < 100);
+	searchTerm.manager = this;
+	searchTerm.term = event.search_term;
+	searchTerm.pos = pos;
+	
+	searchTerms.push_back( searchTerm );	
 }
 
 void ofxWWTweetParticleManager::onStatusDestroy(const rtt::StatusDestroy& destroy){

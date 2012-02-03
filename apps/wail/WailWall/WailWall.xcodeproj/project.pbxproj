@@ -766,8 +766,8 @@
 		A621C64414D74BD5008AA7F0 /* Twitter */ = {
 			isa = PBXGroup;
 			children = (
-				A6AF015114DAF02B006816A8 /* Visuals */,
 				A6AF015014DAF026006816A8 /* App */,
+				A6AF015114DAF02B006816A8 /* Visuals */,
 			);
 			name = Twitter;
 			sourceTree = "<group>";
