@@ -808,10 +808,10 @@
 		A6AF015114DAF02B006816A8 /* Visuals */ = {
 			isa = PBXGroup;
 			children = (
-				A621C59714D74819008AA7F0 /* ofxWWTweetParticleManager.h */,
-				A621C59814D74819008AA7F0 /* ofxWWTweetParticleManager.cpp */,
 				A621C65714D74D0F008AA7F0 /* ofxWWTweetParticle.h */,
 				A621C65814D74D0F008AA7F0 /* ofxWWTweetParticle.cpp */,
+				A621C59714D74819008AA7F0 /* ofxWWTweetParticleManager.h */,
+				A621C59814D74819008AA7F0 /* ofxWWTweetParticleManager.cpp */,
 				A621C65A14D74D1B008AA7F0 /* ofxWWSearchTerm.h */,
 				A621C65B14D74D1B008AA7F0 /* ofxWWSearchTerm.cpp */,
 			);

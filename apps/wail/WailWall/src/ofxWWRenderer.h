@@ -30,9 +30,11 @@ class ofxWWRenderer: public KinectTouchListener {
 	void touchMoved(const KinectTouch &touch);
 	void touchUp(const KinectTouch &touch);
 
-	//controlled through the guy
+	//controlled through the gui
 	float layerBarrierZ;
 	float layerBarrierWidth; //controls layer transition fade	
+	bool fakeZOnTouch;
+	float fakeZLevel;
 	
   protected:
 	ofxWWTweetParticleManager tweets;	

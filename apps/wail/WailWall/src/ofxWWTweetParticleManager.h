@@ -12,11 +12,15 @@
 #include "ofxWWTweetParticle.h"
 #include "ofxWWSearchTerm.h"
 #include "TwitterApp.h"
+#include "ofxFTGLFont.h"
+#include "ofxMPMFluid.h"
 
 class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
   public:
 	ofxWWTweetParticleManager();
 	void setup();
+	void setupGui();
+	
 	void update();
 	void renderTweets();
 	void renderSearchTerms();
@@ -26,10 +30,39 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	void onStreamEvent(const rtt::StreamEvent& event);
 	void onNewSearchTerm(TwitterAppEvent& event);
 
+	//ofxFTGLFont sharedFont;
+	ofxMPMFluid* fluidRef;
+	ofTrueTypeFont sharedFont;
+	ofTrueTypeFont sharedLargeFont;
+	
+	float tweetLayerOpacity;
+	
+	float simulationWidth;
+	float simulationHeight;
+	
 	int maxTweets;
+	float startFadeTime;
+	float fadeDuration;
 	
+	float wallRepulsionDistance;
+	float wallRepulsionAtten;
+	float tweetRepulsionDistance;
+	float tweetRepulsionAtten;
+	float fluidForceScale;
+	float yForceBias;
+	
+
+	float twoLineScaleup;
+	float userNameYOffset;
+	float userNameXPad;
+	float twoLineSquish; //todo
+	
+	
+	float fontSize;
+	float wordWrapLength;
+	
+	bool clearTweets;
   protected:
-	
 	TwitterApp twitter;
 	vector<ofxWWTweetParticle> tweets;
 	vector<ofxWWSearchTerm*> searchTerms;

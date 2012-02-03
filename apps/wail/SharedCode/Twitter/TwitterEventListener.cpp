@@ -34,7 +34,7 @@ void TwitterEventListener::onStatusUpdate(const rtt::Tweet& tweet) {
 				string token;
 				ss >> token;
 				while(ss.good()) {
-					ss >> token;
+					ss >> token; 
 					twitter_app.onNewSearchTerm(tweet, token);
 				}
 			}
