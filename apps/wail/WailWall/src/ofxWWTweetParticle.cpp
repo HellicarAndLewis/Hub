@@ -15,6 +15,7 @@ ofxWWTweetParticle::ofxWWTweetParticle(){
 }
 
 void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
+	lastPos = pos;
 	createdTime = ofGetElapsedTimef();
 	this->tweet = tweet;
 	scale = 1.0;
@@ -50,11 +51,13 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 			curWidth += newWidth;
 			wordsPassed++;
 			
-		} while (ss.good());
+		} while(ss.good());
 
 		wordWrappedTweet = lineOne + "\n" + lineTwo;
 		userNameWidth = manager->sharedLargeFont.getStringBoundingBox("@"+tweet.getScreenName(), 0, 0).width;
-
+		totalWidth = userNameWidth + manager->userNameXPad + wrapPoint;
+		totalHeight = MAX(manager->sharedLargeFont.getStringBoundingBox(tweet.getScreenName(), 0, 0).height,
+						  manager->sharedFont.getStringBoundingBox(wordWrappedTweet, 0, 0).height);
 		if(!isTwoLines){
 			ofLogError("ofxWWTwitterParticle -- word wrapped didn't hit two lines ... ");
 		}
@@ -62,10 +65,17 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 	else{
 		wordWrappedTweet = tweet.getText();
 		userNameWidth = manager->sharedFont.getStringBoundingBox("@"+tweet.getScreenName(), 0, 0).width;
+		totalWidth = userNameWidth + manager->userNameXPad + tweetWidth;
+		totalHeight = manager->sharedFont.getStringBoundingBox("@"+tweet.getScreenName(), 0, 0).height;
 	}	
 }
 
 void ofxWWTweetParticle::update(){
+	
+	lastPos = pos;
+	pos += force;
+	force = ofVec2f(0,0);
+	
 	opacity = ofMap(ofGetElapsedTimef(), createdTime+5, createdTime+10, 1.0, 0.0, true);
 	if (opacity == 0) {
 		dead = true;

@@ -29,19 +29,25 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	void onStreamEvent(const rtt::StreamEvent& event);
 	void onNewSearchTerm(TwitterAppEvent& event);
 
+	//ofxFTGLFont sharedFont;
+	ofTrueTypeFont sharedFont;
+	ofTrueTypeFont sharedLargeFont;
+	
 	int maxTweets;
 	
 	float simulationWidth;
 	float simulationHeight;
 
+	float wallRepulsionDistance;
+	float wallRepulsionAtten;
+	float tweetRepulsionDistance;
+	float tweetRepulsionAtten;
+	
 	float twoLineScaleup;
 	float userNameYOffset;
 	float userNameXPad;
 	float twoLineSquish; //todo
 	
-	//ofxFTGLFont sharedFont;
-	ofTrueTypeFont sharedFont;
-	ofTrueTypeFont sharedLargeFont;
 	
 	float fontSize;
 	float wordWrapLength;

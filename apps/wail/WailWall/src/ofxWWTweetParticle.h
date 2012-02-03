@@ -26,15 +26,19 @@ class ofxWWTweetParticle {
 
 	//controlled through update
 	ofVec2f pos;
+	ofVec2f lastPos;
+	ofVec2f force;
+	
 	float scale;
 	float opacity;	
 	float createdTime;
 	bool dead;
-		
+	
 	//calculated on set
 	bool isTwoLines;
 	float userNameWidth;
-	ofRectangle boundingBox;	
-	string wordWrappedTweet;
+	float totalWidth;
+	float totalHeight;
 	
+	string wordWrappedTweet;	
 };

@@ -45,6 +45,10 @@ void ofxWWTweetParticleManager::setupGui(){
 	gui.addSlider("User Y Shift", userNameYOffset, -10, 20);
 	gui.addSlider("User X Padding", userNameXPad, -2, 10);
 	gui.addSlider("Two Line Squish", twoLineSquish, .5, 1.0);
+	gui.addSlider("Wall Repulsion Dist", wallRepulsionDistance, 0, 300);
+	gui.addSlider("Wall Repulsion Atten", wallRepulsionAtten, 0, .5);
+	gui.addSlider("Tweet Repulsion Dist", tweetRepulsionDistance, 0, 300);
+	gui.addSlider("Tweet Repulsion Atten", tweetRepulsionAtten, 0, .5);
 	
 	gui.addToggle("Clear Tweets", clearTweets);
 }
@@ -66,6 +70,7 @@ void ofxWWTweetParticleManager::update(){
 	
 	twitter.update();
 	
+	
 	//purge dead tweets
 	for(int i = tweets.size()-1; i >= 0; i--){
 		if(tweets[i].dead){
@@ -75,6 +80,39 @@ void ofxWWTweetParticleManager::update(){
 	
 	if(tweets.size() > maxTweets){
 		tweets.resize(maxTweets);
+	}
+	
+	//apply wall forces
+	for(int i = 0; i < tweets.size(); i++){
+		
+		if (tweets[i].pos.x < wallRepulsionDistance) {
+			tweets[i].force.x += (wallRepulsionDistance - tweets[i].pos.x) * wallRepulsionAtten;
+		}
+		if ((tweets[i].pos.x + tweets[i].totalWidth) > (simulationWidth-wallRepulsionDistance)) {
+			tweets[i].force.x += ( (simulationWidth-wallRepulsionDistance) - (tweets[i].pos.x + tweets[i].totalWidth) ) * wallRepulsionAtten;
+		}
+
+		if (tweets[i].pos.y < wallRepulsionDistance) {
+			tweets[i].force.y += (wallRepulsionDistance - tweets[i].pos.y) * wallRepulsionAtten;
+		}
+		if ((tweets[i].pos.y + tweets[i].totalHeight) > (simulationHeight-wallRepulsionDistance)) {
+			tweets[i].force.y += ( (simulationHeight-wallRepulsionDistance)  - (tweets[i].pos.y + tweets[i].totalHeight)) * wallRepulsionAtten;
+		}
+		
+	}
+	
+	//apply mutual repulsion
+	for(int i = 0; i < tweets.size(); i++){
+		for(int j = 0; j < tweets.size(); j++){
+			if(i != j){
+				ofVec2f awayFromOther = (tweets[i].pos - tweets[j].pos);
+				float distance = awayFromOther.length();
+				awayFromOther.normalize();
+				if(distance < tweetRepulsionDistance){
+					tweets[i].force += (awayFromOther * (tweetRepulsionDistance - distance) * tweetRepulsionAtten);
+				}
+			}
+		}
 	}
 	
 	
@@ -102,7 +140,6 @@ void ofxWWTweetParticleManager::onStatusUpdate(const rtt::Tweet& tweet){
 	ofxWWTweetParticle tweetParticle;
 	tweetParticle.manager = this;
 	tweetParticle.pos = ofVec2f(ofRandom(simulationWidth-wordWrapLength), ofRandom(simulationHeight));
-	
 	tweetParticle.setTweet(tweet);
 	tweets.push_back( tweetParticle );
 	
