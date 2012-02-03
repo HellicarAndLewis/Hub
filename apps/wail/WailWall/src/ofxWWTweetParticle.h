@@ -15,27 +15,26 @@
 class ofxWWTweetParticleManager;
 class ofxWWTweetParticle {
   public:
-	ofxWWTweetParticleManager* manager;
-	
-	//copies the data we 
 	ofxWWTweetParticle();
+
+	ofxWWTweetParticleManager* manager;
+	rtt::Tweet tweet;
 	
 	void setTweet(rtt::Tweet tweet);
 	void update();
 	void draw();
 
-	float wordWrapLength;
-
-	ofRectangle boundingBox;
+	//controlled through update
 	ofVec2f pos;
 	float scale;
 	float opacity;	
 	float createdTime;
 	bool dead;
 		
-//	string lineOne;
-//	string lineTwo;
+	//calculated on set
 	bool isTwoLines;
+	float userNameWidth;
+	ofRectangle boundingBox;	
 	string wordWrappedTweet;
-	rtt::Tweet tweet;
+	
 };

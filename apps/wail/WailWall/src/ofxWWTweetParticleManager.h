@@ -33,9 +33,16 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	
 	float simulationWidth;
 	float simulationHeight;
+
+	float twoLineScaleup;
+	float userNameYOffset;
+	float userNameXPad;
+	float twoLineSquish; //todo
 	
 	//ofxFTGLFont sharedFont;
 	ofTrueTypeFont sharedFont;
+	ofTrueTypeFont sharedLargeFont;
+	
 	float fontSize;
 	float wordWrapLength;
 	

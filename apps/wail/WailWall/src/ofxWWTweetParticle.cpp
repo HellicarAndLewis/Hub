@@ -23,7 +23,7 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 	
 	//split tweet up
 	float tweetWidth = manager->sharedFont.getStringBoundingBox(tweet.getText(), 0, 0).width;
-	if(tweetWidth > wordWrapLength){
+	if(tweetWidth > manager->wordWrapLength){
 		float curWidth = 0;
 		float wrapPoint = tweetWidth/2.0;
 		// tokenize
@@ -52,14 +52,17 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 			
 		} while (ss.good());
 
-		wordWrappedTweet = lineOne;
-		if(isTwoLines){
-			wordWrappedTweet += "\n" + lineTwo;
+		wordWrappedTweet = lineOne + "\n" + lineTwo;
+		userNameWidth = manager->sharedLargeFont.getStringBoundingBox("@"+tweet.getScreenName(), 0, 0).width;
+
+		if(!isTwoLines){
+			ofLogError("ofxWWTwitterParticle -- word wrapped didn't hit two lines ... ");
 		}
 	}
 	else{
 		wordWrappedTweet = tweet.getText();
-	}
+		userNameWidth = manager->sharedFont.getStringBoundingBox("@"+tweet.getScreenName(), 0, 0).width;
+	}	
 }
 
 void ofxWWTweetParticle::update(){
@@ -73,9 +76,14 @@ void ofxWWTweetParticle::draw(){
 	ofPushStyle();
 	ofEnableAlphaBlending();
 	ofSetColor(255, 255, 255, opacity*255);
-	ofRect(pos.x, pos.y, 10, 10);
 	
-	manager->sharedFont.drawString(wordWrappedTweet, pos.x, pos.y);
+	if(isTwoLines){
+		manager->sharedLargeFont.drawString("@"+tweet.getScreenName(), pos.x, pos.y+manager->userNameYOffset);
+	}
+	else{
+		manager->sharedFont.drawString("@"+tweet.getScreenName(), pos.x, pos.y+manager->userNameYOffset);
+	}
+	manager->sharedFont.drawString(wordWrappedTweet, pos.x + userNameWidth + manager->userNameXPad, pos.y);
 	
 	//ofDrawBitmapString(tweet.getText(), pos);
 	ofPopStyle();

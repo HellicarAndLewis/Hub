@@ -36,9 +36,16 @@ void ofxWWTweetParticleManager::setup(){
 
 void ofxWWTweetParticleManager::setupGui(){
 	gui.addPage("Tweet Particles");
+	
 	gui.addSlider("Tweet Font Size", fontSize, 5, 24);
 	gui.addSlider("Word Wrap Length", wordWrapLength, 100, 300);
-	gui.addSlider("Max Tweets", maxTweets, 50, 500);
+	gui.addSlider("Max Tweets", maxTweets, 5, 100);
+
+	gui.addSlider("Two Line Scale", twoLineScaleup, 1.0, 2.0);
+	gui.addSlider("User Y Shift", userNameYOffset, -10, 20);
+	gui.addSlider("User X Padding", userNameXPad, -2, 10);
+	gui.addSlider("Two Line Squish", twoLineSquish, .5, 1.0);
+	
 	gui.addToggle("Clear Tweets", clearTweets);
 }
 
@@ -50,10 +57,11 @@ void ofxWWTweetParticleManager::update(){
 		clearTweets = false;
 	}
 	
-	if(!sharedFont.isLoaded() || fontSize != sharedFont.getSize()){
-		if(!sharedFont.loadFont("fonts/Tahoma.ttf", fontSize, true, true, false)){
+	if(!sharedFont.isLoaded() || fontSize != sharedFont.getSize() || int(fontSize*twoLineScaleup) != sharedLargeFont.getSize()){
+		if(!sharedFont.loadFont("fonts/Tahoma.ttf", fontSize, true, true, false) ||
+		   !sharedLargeFont.loadFont("fonts/Tahoma.ttf", fontSize*twoLineScaleup, true, true, false)){
 			ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load font!");
-		}		
+		}
 	}
 	
 	twitter.update();
@@ -93,7 +101,6 @@ void ofxWWTweetParticleManager::renderSearchTerms(){
 void ofxWWTweetParticleManager::onStatusUpdate(const rtt::Tweet& tweet){
 	ofxWWTweetParticle tweetParticle;
 	tweetParticle.manager = this;
-	tweetParticle.wordWrapLength = wordWrapLength;
 	tweetParticle.pos = ofVec2f(ofRandom(simulationWidth-wordWrapLength), ofRandom(simulationHeight));
 	
 	tweetParticle.setTweet(tweet);
