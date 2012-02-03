@@ -28,12 +28,13 @@ class ofxWWSearchTerm {
 	bool touchPresent;
 	bool highlighted;
 	float holdStartTime;
+	
 	bool selected;
-	bool otherSelected;
+	bool populated;
 	
 	float scale;
 	float opacity;
 	
 	string term;
-	//vector<ofxWWTweetParticle> associatedTweets;
+	vector<ofxWWTweetParticle> associatedTweets;
 };

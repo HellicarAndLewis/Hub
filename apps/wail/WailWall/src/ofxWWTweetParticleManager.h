@@ -73,8 +73,15 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	bool searchTermSelected;
 	int selectedSearchTerm;
 	
+	void updateTweets(vector<ofxWWTweetParticle>& tweetlist, float layerOpacity);
+	
+	ofxWWTweetParticle createParticleForTweet(const rtt::Tweet& tweet);
+	
 	TwitterApp twitter;
 	vector<ofxWWTweetParticle> tweets;
+
 	vector<ofxWWSearchTerm> searchTerms;
+	
+	vector<ofxWWTweetParticle> searchTweets;
 	
 };

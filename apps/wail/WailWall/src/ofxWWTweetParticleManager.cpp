@@ -68,7 +68,7 @@ void ofxWWTweetParticleManager::setupGui(){
 
 
 void ofxWWTweetParticleManager::update(){
-
+	
 	if(clearTweets){
 		tweets.clear();
 		clearTweets = false;
@@ -102,7 +102,6 @@ void ofxWWTweetParticleManager::update(){
 	}
 	
 	twitter.update();
-
 	
 	//purge dead tweets
 	for(int i = tweets.size()-1; i >= 0; i--){
@@ -115,56 +114,35 @@ void ofxWWTweetParticleManager::update(){
 		tweets.resize(maxTweets);
 	}
 	
-	///ANIMATE TWEETS
-	//apply wall forces
-	for(int i = 0; i < tweets.size(); i++){
-		
-		if (tweets[i].pos.x < wallRepulsionDistance) {
-			tweets[i].force.x += (wallRepulsionDistance - tweets[i].pos.x) * wallRepulsionAtten * tweets[i].deathAttenuation;
-		}
-		if ((tweets[i].pos.x + tweets[i].totalWidth) > (simulationWidth-wallRepulsionDistance)) {
-			tweets[i].force.x += ( (simulationWidth-wallRepulsionDistance) - (tweets[i].pos.x + tweets[i].totalWidth) ) * wallRepulsionAtten * tweets[i].deathAttenuation;
-		}
-
-		if (tweets[i].pos.y < wallRepulsionDistance) {
-			tweets[i].force.y += (wallRepulsionDistance - tweets[i].pos.y) * wallRepulsionAtten * tweets[i].deathAttenuation;
-		}
-		if ((tweets[i].pos.y + tweets[i].totalHeight) > (simulationHeight-wallRepulsionDistance)) {
-			tweets[i].force.y += ( (simulationHeight-wallRepulsionDistance)  - (tweets[i].pos.y + tweets[i].totalHeight)) * wallRepulsionAtten * tweets[i].deathAttenuation;
-		}
-		
-	}
-		
-	//apply mutual repulsion
-	for(int i = 0; i < tweets.size(); i++){
-		for(int j = 0; j < tweets.size(); j++){
-			if(i != j){
-				ofVec2f awayFromOther = (tweets[i].pos - tweets[j].pos);
-				float distance = awayFromOther.length();
-				awayFromOther.normalize();
-				if(distance < 100.0 && distance >  100 && distance < tweetRepulsionDistance){
-					ofVec2f force = (awayFromOther * (tweetRepulsionDistance - distance) * tweetRepulsionAtten);
-					force.y *= yForceBias;
-					tweets[i].force += force;
-				}		
-			}
-		}
-	}
-	for(int i = 0; i < tweets.size(); i++){
-		fluidRef->applyForce( tweets[i].pos/ofVec2f(simulationWidth,simulationHeight), tweets[i].force/ofVec2f(simulationWidth,simulationHeight) * fluidForceScale * tweetLayerOpacity * tweets[i].deathAttenuation );
-	}
-	
-	for(int i = 0; i < tweets.size(); i++){
-		tweets[i].update();
-	}
 	//////////////
-	
 	searchTermSelected = false;
 	selectedSearchTerm = -1;
 	for(int i = 0; i < searchTerms.size(); i++){
 		if(searchTerms[i].selected){
 			searchTermSelected = true;
 			selectedSearchTerm = i;
+			if(!searchTerms[i].populated){
+				//TODO: Run Real Query
+				vector<rtt::Tweet> result;
+				searchTweets.clear();
+				twitter.getTweetsNewerThan(1000000, 25, result);
+				cout << "query returned " << result.size() << " results " << endl;
+				if(result.size() != 0){
+					for(int t = 0; t < result.size(); t++){
+						ofxWWTweetParticle tweetParticle = createParticleForTweet(result[t]);
+						tweetParticle.isSearchTweet = true;
+						searchTweets.push_back( tweetParticle );
+					}
+				}
+				//THIS IS A HACK BC QUERY SOMETIMES RETURNS 0
+				else {
+					for(int t = 0; t < MIN(15, tweets.size()); t++){
+						searchTweets.push_back( tweets[i] );
+						searchTweets[i].createdTime = ofGetElapsedTimef() + ofRandom(2);
+					}
+				}
+				searchTerms[i].populated = true;
+			}
 			break;
 		}
 	}
@@ -186,11 +164,83 @@ void ofxWWTweetParticleManager::update(){
 			searchTerms[i].update();
 		}
 	}	
+	
+	if(searchTermSelected){
+		updateTweets(searchTweets, 1.0);
+	}
+	
+	if(tweetLayerOpacity > 0){
+		updateTweets(tweets, tweetLayerOpacity);
+	}
+}
+
+void ofxWWTweetParticleManager::updateTweets(vector<ofxWWTweetParticle>& tweetlist, float layerOpacity){
+	
+	///ANIMATE tweetlist
+	//apply wall forces
+	for(int i = 0; i < tweetlist.size(); i++){
+		
+		if (tweetlist[i].pos.x < wallRepulsionDistance) {
+			tweetlist[i].force.x += (wallRepulsionDistance - tweetlist[i].pos.x) * wallRepulsionAtten * tweetlist[i].deathAttenuation;
+		}
+		if ((tweetlist[i].pos.x + tweetlist[i].totalWidth) > (simulationWidth-wallRepulsionDistance)) {
+			tweetlist[i].force.x += ( (simulationWidth-wallRepulsionDistance) - (tweetlist[i].pos.x + tweetlist[i].totalWidth) ) * wallRepulsionAtten * tweetlist[i].deathAttenuation;
+		}
+		
+		if (tweetlist[i].pos.y < wallRepulsionDistance) {
+			tweetlist[i].force.y += (wallRepulsionDistance - tweetlist[i].pos.y) * wallRepulsionAtten * tweetlist[i].deathAttenuation;
+		}
+		if ((tweetlist[i].pos.y + tweetlist[i].totalHeight) > (simulationHeight-wallRepulsionDistance)) {
+			tweetlist[i].force.y += ( (simulationHeight-wallRepulsionDistance)  - (tweetlist[i].pos.y + tweetlist[i].totalHeight)) * wallRepulsionAtten * tweetlist[i].deathAttenuation;
+		}
+		
+	}
+	
+	//apply mutual repulsion
+	for(int i = 0; i < tweetlist.size(); i++){
+		tweetlist[i].force = ofVec2f(0,0);
+		for(int j = 0; j < tweetlist.size(); j++){
+			if(i != j){
+				ofVec2f awayFromOther = (tweetlist[i].pos - tweetlist[j].pos);
+				float distance = awayFromOther.length();
+				awayFromOther.normalize();
+				if(distance < tweetRepulsionDistance){
+					ofVec2f force = (awayFromOther * ((tweetRepulsionDistance - distance) * tweetRepulsionAtten));
+					force.y *= yForceBias;
+					tweetlist[i].force += force;
+				}
+			}
+		}
+	}
+	
+	for(int i = 0; i < tweetlist.size(); i++){
+		/*
+		 printf("Fluidforcescale: %f\n", fluidForceScale);
+		 printf("TweetLayerOpacity: %f\n", tweetLayerOpacity);
+		 printf("DeathAttenuation: %f\n", tweetlist[i].deathAttenuation);
+		 printf("tweetlist[i].force.x: %f\n", tweetlist[i].force.x);
+		 printf("tweetlist[i].force.y: %f\n", tweetlist[i].force.y);
+		 printf("--------------------------------------------------------\n");		
+		 */
+		fluidRef->applyForce( tweetlist[i].pos/ofVec2f(simulationWidth,simulationHeight), tweetlist[i].force/ofVec2f(simulationWidth,simulationHeight) * fluidForceScale * layerOpacity * tweetlist[i].deathAttenuation );
+	}
+	
+	for(int i = 0; i < tweetlist.size(); i++){
+		tweetlist[i].update();
+	}
+	
 }
 
 void ofxWWTweetParticleManager::renderTweets(){
-	for(int i = 0; i < tweets.size(); i++){
-		tweets[i].draw();
+	if(searchTermSelected){
+		for(int i = 0; i < searchTweets.size(); i++){
+			searchTweets[i].draw();
+		}		
+	}
+	else{
+		for(int i = 0; i < tweets.size(); i++){
+			tweets[i].draw();
+		}
 	}
 }
 
@@ -200,17 +250,24 @@ void ofxWWTweetParticleManager::renderSearchTerms(){
 			searchTerms[i].draw();
 		}
 	}	
+	
 }
 
 void ofxWWTweetParticleManager::onStatusUpdate(const rtt::Tweet& tweet){
+	ofxWWTweetParticle tweetParticle = createParticleForTweet(tweet);
+	tweets.push_back( tweetParticle );	
+	
+	cout << "added tweet " << tweets.size() << " text is " << tweet.getText() << endl;
+}
+
+ofxWWTweetParticle ofxWWTweetParticleManager::createParticleForTweet(const rtt::Tweet& tweet){
 	ofxWWTweetParticle tweetParticle;
 	tweetParticle.manager = this;
 	tweetParticle.pos = ofVec2f(ofRandom(simulationWidth-wordWrapLength), ofRandom(simulationHeight));
 	tweetParticle.setTweet(tweet);
-	tweets.push_back( tweetParticle );	
-	cout << "added tweet " << tweets.size() << " text is " << tweet.getText() << endl;
+	return tweetParticle;
 }
-
+					
 void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
 	printf("Yay I got a new search term: %s\n", event.search_term.c_str());
 	
