@@ -11,20 +11,31 @@
 #include "ofMain.h"
 #include "TwitterApp.h"
 
+
+class ofxWWTweetParticleManager;
 class ofxWWTweetParticle {
   public:
+	ofxWWTweetParticleManager* manager;
+	
 	//copies the data we 
 	ofxWWTweetParticle();
 	
-	void setTweet(rtt::Tweet& tweet);
+	void setTweet(rtt::Tweet tweet);
 	void update();
-	
-	string text;
-	
+	void draw();
+
+	float wordWrapLength;
+
+	ofRectangle boundingBox;
 	ofVec2f pos;
 	float scale;
 	float opacity;	
-	
-	
+	float createdTime;
+	bool dead;
+		
+//	string lineOne;
+//	string lineTwo;
+	bool isTwoLines;
+	string wordWrappedTweet;
 	rtt::Tweet tweet;
 };

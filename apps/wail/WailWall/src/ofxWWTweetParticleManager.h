@@ -12,11 +12,14 @@
 #include "ofxWWTweetParticle.h"
 #include "ofxWWSearchTerm.h"
 #include "TwitterApp.h"
+#include "ofxFTGLFont.h"
 
 class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
   public:
 	ofxWWTweetParticleManager();
 	void setup();
+	void setupGui();
+	
 	void update();
 	void renderTweets();
 	void renderSearchTerms();
@@ -28,8 +31,16 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 
 	int maxTweets;
 	
-  protected:
+	float simulationWidth;
+	float simulationHeight;
 	
+	//ofxFTGLFont sharedFont;
+	ofTrueTypeFont sharedFont;
+	float fontSize;
+	float wordWrapLength;
+	
+	bool clearTweets;
+  protected:
 	TwitterApp twitter;
 	vector<ofxWWTweetParticle> tweets;
 	vector<ofxWWSearchTerm*> searchTerms;
