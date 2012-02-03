@@ -9,7 +9,7 @@ ofxCvBlobTracker::ofxCvBlobTracker() {
 	extraIDs = 0;
 	reject_distance_threshold = 150;
 	minimumDisplacementThreshold = 2.0f;
-	ghost_frames = 2;
+	ghost_frames = 3;
 }
 
 

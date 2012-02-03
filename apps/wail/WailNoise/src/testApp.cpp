@@ -43,8 +43,10 @@ void testApp::setup(){
 	audio::play(bgLoopPlayer);
 	ofSoundStreamSetup(2, 0, 44100, 512, 1);
 
+	glEnable(GL_DEPTH_TEST);
+	ofEnableAlphaBlending();
 	//ofSoundStreamStart();
-	
+	//ofDisableSetupScreen();
 }
 
 void testApp::audioOut(float * output, int bufferSize, int nChannels) {
@@ -66,7 +68,75 @@ void testApp::update(){
 void testApp::draw(){
 	ofBackground(0);
 	ofSetHexColor(0xFFFFFF);
-	ofDrawBitmapString("WAILNOISE", 10, 20);
+	glPushMatrix();
+	glTranslatef(ofGetWidth()/2, ofGetHeight()/2, 0);
+	glScalef(ofGetHeight()/2, ofGetHeight()/2, 1);
+	//glTranslatef(0.5, 0.5, 0.5);
+	glRotatef(mouseX, 0, 1, 0);
+	glRotatef(mouseY, 1, 0, 0);
+	glTranslatef(-0.5, -0.5, -0.5);	
+	ofEnableAlphaBlending();
+	glColor4f(0, 0.1, 0.2 , 0.5);
+	glBegin(GL_QUADS);
+	glVertex3f(0, 0, 0);
+	glVertex3f(1, 0, 0);
+	glVertex3f(1, 1, 0);
+	glVertex3f(0, 1, 0);
+	glEnd();
+	
+	glColor4f(1, 1, 1, 1);
+	
+	glBegin(GL_LINES);
+	glVertex3f(0, 0, 0);
+	glVertex3f(1, 0, 0);
+	
+	glVertex3f(0, 0, 0);
+	glVertex3f(0, 1, 0);
+	
+	glVertex3f(0, 0, 0);
+	glVertex3f(0, 0, 1);
+	
+	glVertex3f(1, 1, 0);
+	glVertex3f(0, 1, 0);
+	
+	glVertex3f(1, 1, 0);
+	glVertex3f(1, 0, 0);
+	
+	glVertex3f(1, 1, 0);
+	glVertex3f(1, 1, 1);
+	
+	glVertex3f(0, 1, 1);
+	glVertex3f(1, 1, 1);
+	
+	glVertex3f(0, 1, 1);
+	glVertex3f(0, 0, 1);
+	
+	glVertex3f(0, 1, 1);
+	glVertex3f(0, 1, 0);
+	
+	glVertex3f(1, 0, 1);
+	glVertex3f(1, 1, 1);
+	
+	glVertex3f(1, 0, 1);
+	glVertex3f(0, 0, 1);
+	
+	glVertex3f(1, 0, 1);
+	glVertex3f(1, 0, 0);
+	
+	
+	glEnd();
+
+//	glBegin(GL_POINTS);
+//	glPointSize(3);
+	glColor3f(1, 0, 0);
+	for(map<int,ofVec3f>::iterator it = blobs.begin(); it != blobs.end(); it++) {
+		ofSphere((*it).second, 0.03);
+	}
+//	glEnd();
+	glPopMatrix();
+	
+
+	
 
 }
 
@@ -115,13 +185,17 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 }
 
 void testApp::touchDown(const KinectTouch &touch) {
+	blobs[touch.id] = ofVec3f(touch.x, touch.y, touch.z);
 	drop.trigger(ofVec3f(ofClamp(touch.x, 0, 1), 0, 0));
 }
 
 void testApp::touchMoved(const KinectTouch &touch) {
+	blobs[touch.id] = ofVec3f(touch.x, touch.y, touch.z);
 	slosh.trigger(ofVec3f(ofClamp(touch.x, 0, 1), 0, 0));
 }
 
 void testApp::touchUp(const KinectTouch &touch) {
-	
+	if(blobs.find(touch.id)!=blobs.end()) {
+		blobs.erase(touch.id);
+	}
 }

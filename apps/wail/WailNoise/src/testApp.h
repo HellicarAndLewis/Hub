@@ -40,6 +40,7 @@ public:
 	virtual void audioOut(float *outs, int buffSize, int numChannels);
 	Slosh slosh;
 	Slosh drop;
+	
 	audio::PlayerRef bgLoopPlayer;
 };
 

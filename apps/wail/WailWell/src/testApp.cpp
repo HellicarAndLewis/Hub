@@ -265,7 +265,8 @@ void testApp::update(){
 						} else {
 							// delete the ith one
 							contourFinder.blobs.erase(contourFinder.blobs.begin() + i);
-							
+							i--;
+							break;
 						}
 					}
 				}
@@ -470,10 +471,10 @@ ofVec3f testApp::getBlobCoords(ofxCvTrackedBlob &blob) {
 	CvPoint maxLoc;
 
 	
-	depthImg.setROI(blob.boundingRect);
-	cvMinMaxLoc(depthImg.getCvImage(),
+	maskedImg.setROI(blob.boundingRect);
+	cvMinMaxLoc(maskedImg.getCvImage(),
 				&minVal, &maxVal, NULL, &maxLoc);//,blobMask);
-	depthImg.resetROI();
+	maskedImg.resetROI();
 	
 	
 	return ofVec3f((float)(blob.boundingRect.x + maxLoc.x), (float)(blob.boundingRect.y + maxLoc.y), (float)maxVal);
