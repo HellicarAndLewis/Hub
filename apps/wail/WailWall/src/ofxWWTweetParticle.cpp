@@ -62,7 +62,7 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 			ofLogError("ofxWWTwitterParticle -- word wrapped didn't hit two lines ... ");
 		}
 	}
-	else{
+	else {
 		wordWrappedTweet = tweet.getText();
 		userNameWidth = manager->sharedFont.getStringBoundingBox("@"+tweet.getScreenName(), 0, 0).width;
 		totalWidth = userNameWidth + manager->userNameXPad + tweetWidth;

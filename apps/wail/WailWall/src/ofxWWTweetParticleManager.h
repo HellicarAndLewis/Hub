@@ -13,6 +13,7 @@
 #include "ofxWWSearchTerm.h"
 #include "TwitterApp.h"
 #include "ofxFTGLFont.h"
+#include "ofxMPMFluid.h"
 
 class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
   public:
@@ -30,6 +31,7 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	void onNewSearchTerm(TwitterAppEvent& event);
 
 	//ofxFTGLFont sharedFont;
+	ofxMPMFluid* fluidRef;
 	ofTrueTypeFont sharedFont;
 	ofTrueTypeFont sharedLargeFont;
 	
@@ -42,6 +44,8 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	float wallRepulsionAtten;
 	float tweetRepulsionDistance;
 	float tweetRepulsionAtten;
+	float fluidForceScale;
+	float yForceBias;
 	
 	float twoLineScaleup;
 	float userNameYOffset;

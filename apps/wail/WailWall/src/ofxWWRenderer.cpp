@@ -25,6 +25,7 @@ void ofxWWRenderer::setup(int width, int height){
 	
 	fluid.setup(100000);
 	fluid.scaleFactor = 6.4;
+	tweets.fluidRef = &fluid;
 	
 	colorField.loadImage("color_palette.png");
 	layer1Opacity = 1.0;
@@ -272,7 +273,6 @@ void ofxWWRenderer::touchDown(const KinectTouch &touch) {
 }
 
 void ofxWWRenderer::touchMoved(const KinectTouch &touch) {
-	//cout << "applying force " << ofVec2f(touch.x, touch.y) << " " << ofVec2f(touch.vel.x, touch.vel.y) << endl;
 	fluid.applyForce(ofVec2f(touch.x, touch.y), ofVec2f(touch.vel.x, touch.vel.y));
 }
 

@@ -49,7 +49,8 @@ void ofxWWTweetParticleManager::setupGui(){
 	gui.addSlider("Wall Repulsion Atten", wallRepulsionAtten, 0, .5);
 	gui.addSlider("Tweet Repulsion Dist", tweetRepulsionDistance, 0, 300);
 	gui.addSlider("Tweet Repulsion Atten", tweetRepulsionAtten, 0, .5);
-	
+	gui.addSlider("Y Force Bias", yForceBias, 1., 10.);
+	gui.addSlider("Fluid Force Scale", fluidForceScale, 1., 100.);
 	gui.addToggle("Clear Tweets", clearTweets);
 }
 
@@ -109,12 +110,17 @@ void ofxWWTweetParticleManager::update(){
 				float distance = awayFromOther.length();
 				awayFromOther.normalize();
 				if(distance < tweetRepulsionDistance){
-					tweets[i].force += (awayFromOther * (tweetRepulsionDistance - distance) * tweetRepulsionAtten);
+					ofVec2f force = (awayFromOther * (tweetRepulsionDistance - distance) * tweetRepulsionAtten);
+					force.y *= yForceBias;
+					tweets[i].force += force;
 				}
 			}
 		}
 	}
 	
+	for(int i = 0; i < tweets.size(); i++){
+		fluidRef->applyForce( tweets[i].pos/ofVec2f(simulationWidth,simulationHeight), tweets[i].force/ofVec2f(simulationWidth,simulationHeight) * fluidForceScale );
+	}
 	
 	for(int i = 0; i < tweets.size(); i++){
 		tweets[i].update();
