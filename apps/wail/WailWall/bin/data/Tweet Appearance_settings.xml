@@ -1,0 +1,42 @@
+<controls>
+    <SliderFloat_Two_Line_Scale>
+        <name>Two Line Scale</name>
+        <value>2.000000</value>
+    </SliderFloat_Two_Line_Scale>
+    <SliderFloat_User_Y_Shift>
+        <name>User Y Shift</name>
+        <value>7.549999</value>
+    </SliderFloat_User_Y_Shift>
+    <SliderFloat_User_X_Padding>
+        <name>User X Padding</name>
+        <value>9.700001</value>
+    </SliderFloat_User_X_Padding>
+    <SliderFloat_Two_Line_Squish>
+        <name>Two Line Squish</name>
+        <value>0.592500</value>
+    </SliderFloat_Two_Line_Squish>
+    <SliderFloat_Wall_Repulsion_Dist>
+        <name>Wall Repulsion Dist</name>
+        <value>58.499996</value>
+    </SliderFloat_Wall_Repulsion_Dist>
+    <SliderFloat_Wall_Repulsion_Atten>
+        <name>Wall Repulsion Atten</name>
+        <value>0.057500</value>
+    </SliderFloat_Wall_Repulsion_Atten>
+    <SliderFloat_Tweet_Repulsion_Dist>
+        <name>Tweet Repulsion Dist</name>
+        <value>150.000000</value>
+    </SliderFloat_Tweet_Repulsion_Dist>
+    <SliderFloat_Tweet_Repulsion_Atten>
+        <name>Tweet Repulsion Atten</name>
+        <value>0.312500</value>
+    </SliderFloat_Tweet_Repulsion_Atten>
+    <SliderFloat_Y_Force_Bias>
+        <name>Y Force Bias</name>
+        <value>1.000000</value>
+    </SliderFloat_Y_Force_Bias>
+    <SliderFloat_Fluid_Force_Scale>
+        <name>Fluid Force Scale</name>
+        <value>11.395000</value>
+    </SliderFloat_Fluid_Force_Scale>
+</controls>

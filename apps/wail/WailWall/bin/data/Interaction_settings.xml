@@ -7,4 +7,12 @@
         <name>Layer Barrier Width</name>
         <value>0.249800</value>
     </SliderFloat_Layer_Barrier_Width>
+    <Toggle_Fake_Z>
+        <name>Fake Z</name>
+        <value>0</value>
+    </Toggle_Fake_Z>
+    <SliderFloat_Fake_Level>
+        <name>Fake Level</name>
+        <value>0.730000</value>
+    </SliderFloat_Fake_Level>
 </controls>

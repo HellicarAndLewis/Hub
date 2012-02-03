@@ -8,4 +8,13 @@
  */
 
 #include "ofxWWSearchTerm.h"
+#include "ofxWWTweetParticleManager.h"
 
+ofxWWSearchTerm::ofxWWSearchTerm(){
+	tweetsGenerated = false;
+	manager = NULL;
+}
+
+void ofxWWSearchTerm::draw(){
+	manager->sharedLargeFont.drawString(term, pos.x, pos.y);
+}

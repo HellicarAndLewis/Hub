@@ -1,11 +1,11 @@
 <controls>
     <SliderInt_Particles>
         <name>Particles</name>
-        <value>26740</value>
+        <value>44560</value>
     </SliderInt_Particles>
     <SliderFloat_Density>
         <name>Density</name>
-        <value>0.450000</value>
+        <value>0.750000</value>
     </SliderFloat_Density>
     <SliderFloat_Stiffness>
         <name>Stiffness</name>
@@ -17,7 +17,7 @@
     </SliderFloat_Bulk_Viscosity>
     <SliderFloat_Elasticity>
         <name>Elasticity</name>
-        <value>1.740000</value>
+        <value>1.748000</value>
     </SliderFloat_Elasticity>
     <SliderFloat_Viscosity>
         <name>Viscosity</name>
@@ -29,14 +29,14 @@
     </SliderFloat_Yield_Rate>
     <SliderFloat_Gravity>
         <name>Gravity</name>
-        <value>0.000800</value>
+        <value>0.000900</value>
     </SliderFloat_Gravity>
     <SliderFloat_Smoothing>
         <name>Smoothing</name>
-        <value>1.110000</value>
+        <value>0.750000</value>
     </SliderFloat_Smoothing>
     <Toggle_Do_Obstacles>
         <name>Do Obstacles</name>
-        <value>1</value>
+        <value>0</value>
     </Toggle_Do_Obstacles>
 </controls>

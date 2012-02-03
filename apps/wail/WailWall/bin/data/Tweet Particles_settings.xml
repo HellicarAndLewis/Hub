@@ -1,0 +1,66 @@
+<controls>
+    <SliderFloat_Tweet_Font_Size>
+        <name>Tweet Font Size</name>
+        <value>6.900000</value>
+    </SliderFloat_Tweet_Font_Size>
+    <SliderFloat_Word_Wrap_Length>
+        <name>Word Wrap Length</name>
+        <value>198.000000</value>
+    </SliderFloat_Word_Wrap_Length>
+    <SliderInt_Max_Tweets>
+        <name>Max Tweets</name>
+        <value>25</value>
+    </SliderInt_Max_Tweets>
+    <SliderFloat_Start_Fade_Time>
+        <name>Start Fade Time</name>
+        <value>5.080000</value>
+    </SliderFloat_Start_Fade_Time>
+    <SliderFloat_Fade_Duration>
+        <name>Fade Duration</name>
+        <value>8.880000</value>
+    </SliderFloat_Fade_Duration>
+    <SliderFloat_Two_Line_Scale>
+        <name>Two Line Scale</name>
+        <value>2.000000</value>
+    </SliderFloat_Two_Line_Scale>
+    <SliderFloat_User_Y_Shift>
+        <name>User Y Shift</name>
+        <value>7.699999</value>
+    </SliderFloat_User_Y_Shift>
+    <SliderFloat_User_X_Padding>
+        <name>User X Padding</name>
+        <value>6.700001</value>
+    </SliderFloat_User_X_Padding>
+    <SliderFloat_Two_Line_Squish>
+        <name>Two Line Squish</name>
+        <value>0.500000</value>
+    </SliderFloat_Two_Line_Squish>
+    <SliderFloat_Wall_Repulsion_Dist>
+        <name>Wall Repulsion Dist</name>
+        <value>111.000000</value>
+    </SliderFloat_Wall_Repulsion_Dist>
+    <SliderFloat_Wall_Repulsion_Atten>
+        <name>Wall Repulsion Atten</name>
+        <value>0.392500</value>
+    </SliderFloat_Wall_Repulsion_Atten>
+    <SliderFloat_Tweet_Repulsion_Dist>
+        <name>Tweet Repulsion Dist</name>
+        <value>300.000000</value>
+    </SliderFloat_Tweet_Repulsion_Dist>
+    <SliderFloat_Tweet_Repulsion_Atten>
+        <name>Tweet Repulsion Atten</name>
+        <value>0.015000</value>
+    </SliderFloat_Tweet_Repulsion_Atten>
+    <SliderFloat_Y_Force_Bias>
+        <name>Y Force Bias</name>
+        <value>3.025000</value>
+    </SliderFloat_Y_Force_Bias>
+    <SliderFloat_Fluid_Force_Scale>
+        <name>Fluid Force Scale</name>
+        <value>1.990000</value>
+    </SliderFloat_Fluid_Force_Scale>
+    <Toggle_Clear_Tweets>
+        <name>Clear Tweets</name>
+        <value>0</value>
+    </Toggle_Clear_Tweets>
+</controls>

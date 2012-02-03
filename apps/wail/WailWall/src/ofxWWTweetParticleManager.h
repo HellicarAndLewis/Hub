@@ -50,21 +50,21 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	float tweetRepulsionAtten;
 	float fluidForceScale;
 	float yForceBias;
-	
 
 	float twoLineScaleup;
 	float userNameYOffset;
 	float userNameXPad;
 	float twoLineSquish; //todo
 	
-	
 	float fontSize;
 	float wordWrapLength;
 	
 	bool clearTweets;
+	bool generateFakeSearchTerms;
+	
   protected:
 	TwitterApp twitter;
 	vector<ofxWWTweetParticle> tweets;
-	vector<ofxWWSearchTerm*> searchTerms;
+	vector<ofxWWSearchTerm> searchTerms;
 	
 };

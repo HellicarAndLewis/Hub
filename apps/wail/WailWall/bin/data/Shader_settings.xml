@@ -37,7 +37,7 @@
     </SliderFloat_Noise_Wobble_Amplitude_X>
     <SliderFloat_Noise_Wobble_Amplitude_Y>
         <name>Noise Wobble Amplitude Y</name>
-        <value>24.500000</value>
+        <value>24.400000</value>
     </SliderFloat_Noise_Wobble_Amplitude_Y>
     <Toggle_Just_Draw_Warp>
         <name>Just Draw Warp</name>

@@ -36,15 +36,17 @@ void ofxWWTweetParticleManager::setup(){
 }
 
 void ofxWWTweetParticleManager::setupGui(){
-	gui.addPage("Tweet Particles");
 	
+	gui.addPage("Tweet Lifecycle");
 	gui.addSlider("Tweet Font Size", fontSize, 5, 24);
 	gui.addSlider("Word Wrap Length", wordWrapLength, 100, 300);
-	
 	gui.addSlider("Max Tweets", maxTweets, 5, 100);
 	gui.addSlider("Start Fade Time", startFadeTime, 2, 10);
 	gui.addSlider("Fade Duration", fadeDuration, 2, 10);
+	gui.addToggle("Clear Tweets", clearTweets);
+
 	
+	gui.addPage("Tweet Appearance");
 	gui.addSlider("Two Line Scale", twoLineScaleup, 1.0, 2.0);
 	gui.addSlider("User Y Shift", userNameYOffset, -10, 20);
 	gui.addSlider("User X Padding", userNameXPad, -2, 10);
@@ -54,9 +56,11 @@ void ofxWWTweetParticleManager::setupGui(){
 	gui.addSlider("Tweet Repulsion Dist", tweetRepulsionDistance, 0, 300);
 	gui.addSlider("Tweet Repulsion Atten", tweetRepulsionAtten, 0, .5);
 	gui.addSlider("Y Force Bias", yForceBias, 1., 10.);
-
 	gui.addSlider("Fluid Force Scale", fluidForceScale, 1., 100.);
-	gui.addToggle("Clear Tweets", clearTweets);
+	
+	gui.addPage("Search Terms");
+	gui.addToggle("Gen Fake Terms", generateFakeSearchTerms);
+	
 }
 
 
@@ -66,6 +70,26 @@ void ofxWWTweetParticleManager::update(){
 		tweets.clear();
 		clearTweets = false;
 	}
+	
+	//////////////////JUST FOR TESTING SEARCH TERMS BEFORE ITS IMPLEMENTED FULLY
+	if(generateFakeSearchTerms){
+		vector<string> fakeTerms;
+		fakeTerms.push_back("DESIGN");
+		fakeTerms.push_back("ECONOMICS");
+		fakeTerms.push_back("INTERNET");
+		fakeTerms.push_back("GENETICS");
+		fakeTerms.push_back("EDUCATION");
+		fakeTerms.push_back("SUSTAINABILITY");
+		fakeTerms.push_back("OPENFRAMEWORKS");
+		fakeTerms.push_back("GREEN");
+		fakeTerms.push_back("INNOVATION");
+		fakeTerms.push_back("GOOGLE");
+		fakeTerms.push_back("INTELLIGENCE");
+		
+		twitter.populateFakeSearchTerms(fakeTerms);
+		generateFakeSearchTerms = false;
+	}
+	//////////////////END TESTING
 	
 	if(!sharedFont.isLoaded() || fontSize != sharedFont.getSize() || int(fontSize*twoLineScaleup) != sharedLargeFont.getSize()){
 		if(!sharedFont.loadFont("fonts/Tahoma.ttf", fontSize, true, true, false) ||
@@ -88,6 +112,7 @@ void ofxWWTweetParticleManager::update(){
 		tweets.resize(maxTweets);
 	}
 	
+	///ANIMATE TWEETS
 	//apply wall forces
 	for(int i = 0; i < tweets.size(); i++){
 		
@@ -122,7 +147,7 @@ void ofxWWTweetParticleManager::update(){
 			}
 		}
 	}
-	
+		
 	for(int i = 0; i < tweets.size(); i++){
 		fluidRef->applyForce( tweets[i].pos/ofVec2f(simulationWidth,simulationHeight), tweets[i].force/ofVec2f(simulationWidth,simulationHeight) * fluidForceScale * tweetLayerOpacity * tweets[i].deathAttenuation );
 	}
@@ -130,10 +155,35 @@ void ofxWWTweetParticleManager::update(){
 	for(int i = 0; i < tweets.size(); i++){
 		tweets[i].update();
 	}
+	//////////////
+	
+	//ANIMATE SEARCH TERMS
+	
+	
+	
 }
 
 void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
 	printf("Yay I got a new search term: %s\n", event.search_term.c_str());
+	
+	ofxWWSearchTerm searchTerm;
+	int tries = 0;
+	ofVec2f pos;
+	bool validPosFound = true;
+	do {
+		pos = ofVec2f(ofRandom(simulationWidth-wordWrapLength/2.), ofRandom(simulationHeight));
+		for(int i = 0; i < searchTerms.size(); i++){
+			if (searchTerm.pos.distance(pos) < 150) {
+				validPosFound = false;
+				break;
+			}
+		}
+	} while (!validPosFound && tries++ < 100);
+	searchTerm.term = event.search_term;
+	searchTerm.pos = pos;
+
+	searchTerms.push_back( searchTerm );
+	
 }
 
 void ofxWWTweetParticleManager::renderTweets(){
@@ -142,8 +192,10 @@ void ofxWWTweetParticleManager::renderTweets(){
 	}
 }
 
-void ofxWWTweetParticleManager::renderSearchTerms(){
-	
+void ofxWWTweetParticleManager::renderSearchTerms(){	
+	for(int i = 0; i < tweets.size(); i++){
+		searchTerms[i].draw();
+	}	
 }
 
 

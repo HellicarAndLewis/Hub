@@ -12,11 +12,18 @@
 #include "ofMain.h"
 #include "ofxWWTweetParticle.h"
 
+class ofxWWTweetParticleManager;
 class ofxWWSearchTerm {
   public:
 	ofxWWSearchTerm();
+
+	void draw();
+	ofxWWTweetParticleManager* manager;
+
 	ofVec2f pos;
 	float scale;
 	float opacity;
-	vector<ofxWWTweetParticle*> associatedTweets;
+	bool tweetsGenerated;
+	string term;
+	vector<ofxWWTweetParticle> associatedTweets;
 };

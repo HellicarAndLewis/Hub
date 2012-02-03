@@ -20,7 +20,7 @@ bool TwitterApp::initDB(){
 	printf("initializeing twitter\n");
 	ofxXmlSettings userandpass;
 	if(!userandpass.loadFile("userandpass.xml")){
-		ofSystemAlertDialog("Creat an xml file called userandpass.xml in data/ and add <user>username</user><pass>password</pass> to it");
+		ofSystemAlertDialog("Create an xml file called userandpass.xml in data/ and add <user>username</user><pass>password</pass> to it");
 	}
 	printf("%s\n", userandpass.getValue("user", "dewarshub").c_str());
 	printf("'%s'\n", userandpass.getValue("pass", "HUB2012hub").c_str());
@@ -77,6 +77,13 @@ void TwitterApp::addDefaultListener(){
 
 void TwitterApp::addCustomListener(rt::IEventListener& listener){
 	twitter.addEventListener(listener);
+}
+
+void TwitterApp::populateFakeSearchTerms(vector<string> fakeTerms){
+	rtt::Tweet fakeTweek;
+	for(int i = 0; i < fakeTerms.size(); i++){
+		onNewSearchTerm(fakeTweek, fakeTerms[i]);
+	}
 }
 
 void TwitterApp::onNewSearchTerm(rtt::Tweet tweet, const string& term) {
