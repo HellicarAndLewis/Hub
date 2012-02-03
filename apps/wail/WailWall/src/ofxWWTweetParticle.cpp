@@ -79,28 +79,31 @@ void ofxWWTweetParticle::update(){
 	
 	//birth attenuation just to stop snapping on
 	opacity = ofMap(ofGetElapsedTimef(), createdTime, createdTime+.5, .0, 1.0, true);
-	//death attenuation
-	deathAttenuation = ofMap(ofGetElapsedTimef(), createdTime+manager->startFadeTime, createdTime+manager->startFadeTime+manager->fadeDuration, 1.0, 0.0, true);
-	opacity *= deathAttenuation;
-	
 	//interaction tweet layer attenuation
 	if(isSearchTweet){
 		opacity *= (1-manager->tweetLayerOpacity);
 	}
 	else{
+		//death attenuation
+		deathAttenuation = ofMap(ofGetElapsedTimef(), createdTime+manager->startFadeTime, createdTime+manager->startFadeTime+manager->fadeDuration, 1.0, 0.0, true);
+		opacity *= deathAttenuation;
 		opacity *= manager->tweetLayerOpacity;
+		if(deathAttenuation == 0) {
+			dead = true;
+		}
 	}
 	
-	if (!isSearchTweet && deathAttenuation == 0) {
-		dead = true;
-	}
 }
 
 void ofxWWTweetParticle::draw(){
 	ofPushStyle();
 	ofEnableAlphaBlending();
-
-	ofSetColor(ofColor::fromHex(0xe6ab38, opacity*255));
+	if(isSearchTweet){
+		ofSetColor(ofColor::fromHex(0x4051dc, opacity*255));
+	}
+	else{
+		ofSetColor(ofColor::fromHex(0xe6ab38, opacity*255));
+	}
 	
 	if(isTwoLines){
 		manager->sharedLargeFont.drawString("@"+tweet.getScreenName(), pos.x, pos.y+manager->userNameYOffset);

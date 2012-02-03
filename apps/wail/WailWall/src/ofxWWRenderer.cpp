@@ -299,7 +299,7 @@ void ofxWWRenderer::touchMoved(const KinectTouch &touch) {
 }
 
 void ofxWWRenderer::touchUp(const KinectTouch &touch) {
-	
+	tweets.resetTouches();
 }
 
 ofVec2f ofxWWRenderer::texCoordAtPos(ofImage& image, float x, float y){

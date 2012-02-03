@@ -119,6 +119,7 @@ void ofxWWTweetParticleManager::update(){
 	selectedSearchTerm = -1;
 	for(int i = 0; i < searchTerms.size(); i++){
 		if(searchTerms[i].selected){
+			cout << " search term selected " << endl;
 			searchTermSelected = true;
 			selectedSearchTerm = i;
 			if(!searchTerms[i].populated){
@@ -149,6 +150,7 @@ void ofxWWTweetParticleManager::update(){
 	
 	if(!searchTermSelected){	
 		for(int i = 0; i < searchTerms.size(); i++){
+			searchTerms[i].touchPresent = false;
 			float closestDistance = 99999;
 			map<int,KinectTouch>::iterator it;
 			for(it = blobsRef->begin(); it != blobsRef->end(); it++){
@@ -160,7 +162,6 @@ void ofxWWTweetParticleManager::update(){
 				}
 				searchTerms[i].touchPresent = true;
 			}
-			
 			searchTerms[i].update();
 		}
 	}	
@@ -297,3 +298,15 @@ void ofxWWTweetParticleManager::onStatusDestroy(const rtt::StatusDestroy& destro
 
 void ofxWWTweetParticleManager::onStreamEvent(const rtt::StreamEvent& event){
 }
+
+//JG HACKY WAY OUT, need to fix this
+void ofxWWTweetParticleManager::resetTouches(){
+	
+
+	for(int i = 0; i < searchTerms.size(); i++){
+		searchTerms[i].selected = false;
+	}
+	
+	searchTweets.clear();
+}
+

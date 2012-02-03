@@ -26,6 +26,7 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	void renderTweets();
 	void renderSearchTerms();
 	
+	void resetTouches();
 	void onStatusUpdate(const rtt::Tweet& tweet);
 	void onStatusDestroy(const rtt::StatusDestroy& destroy);
 	void onStreamEvent(const rtt::StreamEvent& event);

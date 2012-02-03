@@ -20,6 +20,7 @@ void ofxWWSearchTerm::update(){
 	if(!touchPresent){
 		opacity = 0;
 		highlighted = false;
+		selected = false;
 	}
 	else if(selected){
 		opacity = 1.0;
