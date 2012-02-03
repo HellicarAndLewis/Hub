@@ -65,7 +65,7 @@ void ofxWWTweetParticleManager::setupGui(){
 
 
 void ofxWWTweetParticleManager::update(){
-	
+
 	if(clearTweets){
 		tweets.clear();
 		clearTweets = false;
@@ -99,7 +99,7 @@ void ofxWWTweetParticleManager::update(){
 	}
 	
 	twitter.update();
-	
+
 	
 	//purge dead tweets
 	for(int i = tweets.size()-1; i >= 0; i--){
@@ -131,7 +131,7 @@ void ofxWWTweetParticleManager::update(){
 		}
 		
 	}
-	
+		
 	//apply mutual repulsion
 	for(int i = 0; i < tweets.size(); i++){
 		for(int j = 0; j < tweets.size(); j++){
@@ -147,9 +147,23 @@ void ofxWWTweetParticleManager::update(){
 			}
 		}
 	}
-		
+	
 	for(int i = 0; i < tweets.size(); i++){
-		fluidRef->applyForce( tweets[i].pos/ofVec2f(simulationWidth,simulationHeight), tweets[i].force/ofVec2f(simulationWidth,simulationHeight) * fluidForceScale * tweetLayerOpacity * tweets[i].deathAttenuation );
+		float f =  fluidForceScale * tweetLayerOpacity * tweets[i].deathAttenuation;
+		printf("Fluidforcescale: %f\n", fluidForceScale);
+		printf("TweetLayerOpacity: %f\n", tweetLayerOpacity);
+		printf("DeathAttenuation: %f\n", tweets[i].deathAttenuation);
+		printf("Tweets[i].force.x: %f\n", tweets[i].force.x);
+		printf("Tweets[i].force.y: %f\n", tweets[i].force.y);
+		printf("F: %f\n", f);
+		printf("--------------------------------------------------------\n");
+
+		tweets[i].force.scale(1.4);
+
+		fluidRef->applyForce(
+			tweets[i].pos/ofVec2f(simulationWidth,simulationHeight)
+			,tweets[i].force/(ofVec2f(simulationWidth,simulationHeight)) * f );
+		//fluidRef->applyForce( tweets[i].pos/ofVec2f(simulationWidth,simulationHeight), tweets[i].force/ofVec2f(simulationWidth,simulationHeight) * max(0.1f, fluidForceScale * tweetLayerOpacity * tweets[i].deathAttenuation) );
 	}
 	
 	for(int i = 0; i < tweets.size(); i++){

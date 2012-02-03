@@ -33,7 +33,7 @@
     </SliderFloat_Tweet_Repulsion_Atten>
     <SliderFloat_Y_Force_Bias>
         <name>Y Force Bias</name>
-        <value>1.000000</value>
+        <value>3.250000</value>
     </SliderFloat_Y_Force_Bias>
     <SliderFloat_Fluid_Force_Scale>
         <name>Fluid Force Scale</name>
