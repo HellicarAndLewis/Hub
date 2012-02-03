@@ -22,14 +22,18 @@ bool TwitterApp::initDB(){
 	if(!userandpass.loadFile("userandpass.xml")){
 		ofSystemAlertDialog("Creat an xml file called userandpass.xml in data/ and add <user>username</user><pass>password</pass> to it");
 	}
+	printf("%s\n", userandpass.getValue("user", "dewarshub").c_str());
+	printf("'%s'\n", userandpass.getValue("pass", "HUB2012hub").c_str());
+	
 //	twitter.setTwitterUsername("dewarshub");
 //	twitter.setTwitterPassword("HUB2012hub#");
 	twitter.setTwitterUsername(userandpass.getValue("user", "dewarshub"));
-	twitter.setTwitterUsername(userandpass.getValue("pass", "HUB2012hub"));
+	twitter.setTwitterPassword(userandpass.getValue("pass", "HUB2012hub"));
 	twitter.setConsumerKey("5cL1KRDQzcnGo8ZOaAz0g");
 	twitter.setConsumerSecret("e4X9dtxkgmpkRlr9arhOfNe7tTezWad2bmCUNvPtBvQ");
 	
 	string token_file = ofToDataPath("twitter.txt", true);
+	//twitter.removeTokens(token_file);
 	if(!twitter.loadTokens(token_file)) {
         string auth_url;
         twitter.requestToken(auth_url);

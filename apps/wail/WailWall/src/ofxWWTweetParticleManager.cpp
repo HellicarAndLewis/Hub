@@ -52,7 +52,7 @@ void ofxWWTweetParticleManager::renderSearchTerms(){
 void ofxWWTweetParticleManager::onStatusUpdate(const rtt::Tweet& tweet){
 	ofxWWTweetParticle tweetParticle;
 	tweetParticle.tweet = tweet;
-	cout << "TWEET" << endl;
+	cout << "TWEET: " << tweet.getText() << endl;
 }
 
 void ofxWWTweetParticleManager::onStatusDestroy(const rtt::StatusDestroy& destroy){

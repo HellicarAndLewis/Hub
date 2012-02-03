@@ -67,9 +67,9 @@ bool Stream::connect(const string& streamURL) {
 		return false;
 	}
 
-	string userpass = twitter.getTwitterUsername() +":" +twitter.getTwitterPassword();
-	curl_easy_setopt(curl, CURLOPT_USERPWD, NULL); 
-	curl_easy_setopt(curl, CURLOPT_USERPWD, userpass.c_str());
+	//string userpass = twitter.getTwitterUsername() +":" +twitter.getTwitterPassword();
+	//curl_easy_setopt(curl, CURLOPT_USERPWD, NULL); 
+	//curl_easy_setopt(curl, CURLOPT_USERPWD, userpass.c_str());
 
 	
 	// set url
@@ -88,7 +88,7 @@ bool Stream::connect(const string& streamURL) {
 	r = curl_easy_setopt(curl, CURLOPT_WRITEDATA, this);
 	CHECK_CURL_ERROR(r);	
 	
-	curl_easy_setopt(curl, CURLOPT_VERBOSE, true);
+	//curl_easy_setopt(curl, CURLOPT_VERBOSE, true);
 
 	// set the oauth headers.
 	string header = req.getHeader();
