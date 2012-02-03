@@ -1,11 +1,11 @@
 <controls>
     <SliderInt_Particles>
         <name>Particles</name>
-        <value>100000</value>
+        <value>52974</value>
     </SliderInt_Particles>
     <SliderFloat_Density>
         <name>Density</name>
-        <value>0.750000</value>
+        <value>0.300000</value>
     </SliderFloat_Density>
     <SliderFloat_Stiffness>
         <name>Stiffness</name>

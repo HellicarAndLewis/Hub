@@ -1,7 +1,7 @@
 <controls>
     <SliderFloat_Blur_Diffuse>
         <name>Blur Diffuse</name>
-        <value>0.468750</value>
+        <value>0.468000</value>
     </SliderFloat_Blur_Diffuse>
     <SliderFloat_Clear_Speed>
         <name>Clear Speed</name>

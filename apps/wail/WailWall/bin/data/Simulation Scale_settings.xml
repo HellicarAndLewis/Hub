@@ -1,11 +1,11 @@
 <controls>
     <SliderFloat_Force_Scale>
         <name>Force Scale</name>
-        <value>95.525002</value>
+        <value>54.730003</value>
     </SliderFloat_Force_Scale>
     <SliderFloat_Zoom>
         <name>Zoom</name>
-        <value>5.365000</value>
+        <value>9.964000</value>
     </SliderFloat_Zoom>
     <SliderFloat_Offset_X>
         <name>Offset X</name>

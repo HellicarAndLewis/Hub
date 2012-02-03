@@ -1,11 +1,11 @@
 <controls>
     <SliderFloat_Tweet_Font_Size>
         <name>Tweet Font Size</name>
-        <value>6.805000</value>
+        <value>9.465000</value>
     </SliderFloat_Tweet_Font_Size>
     <SliderFloat_Word_Wrap_Length>
         <name>Word Wrap Length</name>
-        <value>219.000000</value>
+        <value>218.800003</value>
     </SliderFloat_Word_Wrap_Length>
     <SliderInt_Max_Tweets>
         <name>Max Tweets</name>
