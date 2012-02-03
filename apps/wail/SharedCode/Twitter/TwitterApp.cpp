@@ -86,6 +86,10 @@ void TwitterApp::populateFakeSearchTerms(vector<string> fakeTerms){
 	}
 }
 
+bool TwitterApp::getFakeTweetsWithSearchTerm(vector<rtt::Tweet>& result){
+	
+}
+
 void TwitterApp::onNewSearchTerm(rtt::Tweet tweet, const string& term) {
 	TwitterAppEvent ev(tweet, term);
 	ofNotifyEvent(twitter_app_dispatcher, ev);

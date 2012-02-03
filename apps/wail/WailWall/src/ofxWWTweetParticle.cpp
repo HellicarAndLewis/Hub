@@ -12,6 +12,7 @@
 ofxWWTweetParticle::ofxWWTweetParticle(){
 	manager = NULL;
 	isTwoLines = false;
+	isSearchTweet = false;
 }
 
 void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
@@ -83,8 +84,14 @@ void ofxWWTweetParticle::update(){
 	opacity *= deathAttenuation;
 	
 	//interaction tweet layer attenuation
-	opacity *= manager->tweetLayerOpacity;
-	if (deathAttenuation == 0) {
+	if(isSearchTweet){
+		opacity *= (1-manager->tweetLayerOpacity);
+	}
+	else{
+		opacity *= manager->tweetLayerOpacity;
+	}
+	
+	if (!isSearchTweet && deathAttenuation == 0) {
 		dead = true;
 	}
 }

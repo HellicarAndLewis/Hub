@@ -42,7 +42,6 @@ void ofxWWSearchTerm::update(){
 		
 		if(highlighted && (ofGetElapsedTimef() - holdStartTime) > manager->searchTermMinHoldTime){
 			selected = true;
-			//TODO: RUN QUERY!!
 		} 		
 	}
 }

@@ -41,5 +41,7 @@ class ofxWWTweetParticle {
 	float totalWidth;
 	float totalHeight;
 	
+	bool isSearchTweet;
+	
 	string wordWrappedTweet;	
 };
