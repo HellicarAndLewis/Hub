@@ -76,8 +76,15 @@ void ofxWWTweetParticle::update(){
 	pos += force;
 	force = ofVec2f(0,0);
 	
-	opacity = ofMap(ofGetElapsedTimef(), createdTime+5, createdTime+10, 1.0, 0.0, true);
-	if (opacity == 0) {
+	//birth attenuation just to stop snapping on
+	opacity = ofMap(ofGetElapsedTimef(), createdTime, createdTime+.5, .0, 1.0, true);
+	//death attenuation
+	deathAttenuation = ofMap(ofGetElapsedTimef(), createdTime+manager->startFadeTime, createdTime+manager->startFadeTime+manager->fadeDuration, 1.0, 0.0, true);
+	opacity *= deathAttenuation;
+	
+	//interaction tweet layer attenuation
+	opacity *= manager->tweetLayerOpacity;
+	if (deathAttenuation == 0) {
 		dead = true;
 	}
 }
@@ -85,7 +92,8 @@ void ofxWWTweetParticle::update(){
 void ofxWWTweetParticle::draw(){
 	ofPushStyle();
 	ofEnableAlphaBlending();
-	ofSetColor(255, 255, 255, opacity*255);
+
+	ofSetColor(ofColor::fromHex(0xe6ab38, opacity*255));
 	
 	if(isTwoLines){
 		manager->sharedLargeFont.drawString("@"+tweet.getScreenName(), pos.x, pos.y+manager->userNameYOffset);
@@ -93,6 +101,8 @@ void ofxWWTweetParticle::draw(){
 	else{
 		manager->sharedFont.drawString("@"+tweet.getScreenName(), pos.x, pos.y+manager->userNameYOffset);
 	}
+	
+	ofSetColor(255, 255, 255, opacity*255);
 	manager->sharedFont.drawString(wordWrappedTweet, pos.x + userNameWidth + manager->userNameXPad, pos.y);
 	
 	//ofDrawBitmapString(tweet.getText(), pos);

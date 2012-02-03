@@ -24,7 +24,8 @@ void ofxWWTweetParticleManager::setup(){
 	twitter.addCustomListener(*this);
 	
 	// What do you want to track?
-	twitter.track("love");
+	//twitter.track("love");
+	twitter.track("usa");
 	
 	if(!twitter.connect()) {
 		printf("Error: cannot connect to twitter stream.\n");
@@ -39,8 +40,11 @@ void ofxWWTweetParticleManager::setupGui(){
 	
 	gui.addSlider("Tweet Font Size", fontSize, 5, 24);
 	gui.addSlider("Word Wrap Length", wordWrapLength, 100, 300);
+	
 	gui.addSlider("Max Tweets", maxTweets, 5, 100);
-
+	gui.addSlider("Start Fade Time", startFadeTime, 2, 10);
+	gui.addSlider("Fade Duration", fadeDuration, 2, 10);
+	
 	gui.addSlider("Two Line Scale", twoLineScaleup, 1.0, 2.0);
 	gui.addSlider("User Y Shift", userNameYOffset, -10, 20);
 	gui.addSlider("User X Padding", userNameXPad, -2, 10);
@@ -50,6 +54,7 @@ void ofxWWTweetParticleManager::setupGui(){
 	gui.addSlider("Tweet Repulsion Dist", tweetRepulsionDistance, 0, 300);
 	gui.addSlider("Tweet Repulsion Atten", tweetRepulsionAtten, 0, .5);
 	gui.addSlider("Y Force Bias", yForceBias, 1., 10.);
+
 	gui.addSlider("Fluid Force Scale", fluidForceScale, 1., 100.);
 	gui.addToggle("Clear Tweets", clearTweets);
 }
@@ -87,17 +92,17 @@ void ofxWWTweetParticleManager::update(){
 	for(int i = 0; i < tweets.size(); i++){
 		
 		if (tweets[i].pos.x < wallRepulsionDistance) {
-			tweets[i].force.x += (wallRepulsionDistance - tweets[i].pos.x) * wallRepulsionAtten;
+			tweets[i].force.x += (wallRepulsionDistance - tweets[i].pos.x) * wallRepulsionAtten * tweets[i].deathAttenuation;
 		}
 		if ((tweets[i].pos.x + tweets[i].totalWidth) > (simulationWidth-wallRepulsionDistance)) {
-			tweets[i].force.x += ( (simulationWidth-wallRepulsionDistance) - (tweets[i].pos.x + tweets[i].totalWidth) ) * wallRepulsionAtten;
+			tweets[i].force.x += ( (simulationWidth-wallRepulsionDistance) - (tweets[i].pos.x + tweets[i].totalWidth) ) * wallRepulsionAtten * tweets[i].deathAttenuation;
 		}
 
 		if (tweets[i].pos.y < wallRepulsionDistance) {
-			tweets[i].force.y += (wallRepulsionDistance - tweets[i].pos.y) * wallRepulsionAtten;
+			tweets[i].force.y += (wallRepulsionDistance - tweets[i].pos.y) * wallRepulsionAtten * tweets[i].deathAttenuation;
 		}
 		if ((tweets[i].pos.y + tweets[i].totalHeight) > (simulationHeight-wallRepulsionDistance)) {
-			tweets[i].force.y += ( (simulationHeight-wallRepulsionDistance)  - (tweets[i].pos.y + tweets[i].totalHeight)) * wallRepulsionAtten;
+			tweets[i].force.y += ( (simulationHeight-wallRepulsionDistance)  - (tweets[i].pos.y + tweets[i].totalHeight)) * wallRepulsionAtten * tweets[i].deathAttenuation;
 		}
 		
 	}
@@ -119,7 +124,7 @@ void ofxWWTweetParticleManager::update(){
 	}
 	
 	for(int i = 0; i < tweets.size(); i++){
-		fluidRef->applyForce( tweets[i].pos/ofVec2f(simulationWidth,simulationHeight), tweets[i].force/ofVec2f(simulationWidth,simulationHeight) * fluidForceScale );
+		fluidRef->applyForce( tweets[i].pos/ofVec2f(simulationWidth,simulationHeight), tweets[i].force/ofVec2f(simulationWidth,simulationHeight) * fluidForceScale * tweetLayerOpacity * tweets[i].deathAttenuation );
 	}
 	
 	for(int i = 0; i < tweets.size(); i++){

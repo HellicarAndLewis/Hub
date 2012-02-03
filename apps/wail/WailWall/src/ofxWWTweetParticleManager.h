@@ -35,11 +35,15 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	ofTrueTypeFont sharedFont;
 	ofTrueTypeFont sharedLargeFont;
 	
-	int maxTweets;
+	float tweetLayerOpacity;
 	
 	float simulationWidth;
 	float simulationHeight;
-
+	
+	int maxTweets;
+	float startFadeTime;
+	float fadeDuration;
+	
 	float wallRepulsionDistance;
 	float wallRepulsionAtten;
 	float tweetRepulsionDistance;
@@ -47,6 +51,7 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	float fluidForceScale;
 	float yForceBias;
 	
+
 	float twoLineScaleup;
 	float userNameYOffset;
 	float userNameXPad;

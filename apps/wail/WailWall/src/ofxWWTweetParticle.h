@@ -31,6 +31,7 @@ class ofxWWTweetParticle {
 	
 	float scale;
 	float opacity;	
+	float deathAttenuation; //used to fall off wall force
 	float createdTime;
 	bool dead;
 	

@@ -57,6 +57,8 @@ void ofxWWRenderer::setupGui(){
 	gui.addPage("Interaction");
 	gui.addSlider("Layer Barrier Z", layerBarrierZ, .25, .75);
 	gui.addSlider("Layer Barrier Width", layerBarrierWidth, 0.05, .25);
+	gui.addToggle("Fake Z", fakeZOnTouch);
+	gui.addSlider("Fake Level", fakeZLevel, 0.0, 1.0);
 	
 	gui.addPage("Simulation Scale");
 	gui.addSlider("Force Scale",	fluid.forceScale,	1.0, 200); 
@@ -174,9 +176,15 @@ void ofxWWRenderer::renderFirstLayer(){
 		if(it->second.z > maxTouchZ){
 			maxTouchZ = it->second.z;
 		}
+		//dirty fake hack
+		if(fakeZOnTouch){
+			maxTouchZ = fakeZLevel;
+		}		
 	}
+	
 	float targetOpacity = ofMap(maxTouchZ, layerBarrierZ-layerBarrierWidth/2, layerBarrierZ+layerBarrierWidth/2, 1.0, 0.0, true);
 	layer1Opacity += (targetOpacity - layer1Opacity) * .05;
+	tweets.tweetLayerOpacity = layer1Opacity;
 	
 	//render the fluid sim for layer 1
 	blurShader.begin();
