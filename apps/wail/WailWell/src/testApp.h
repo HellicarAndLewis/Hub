@@ -47,10 +47,10 @@ public:
 	void gotMessage(ofMessage msg);
 	
 	ofxKinect kinect;
-	ofxCvGrayscaleImage depthImg;
-	ofxCvGrayscaleImage rangeScaledImg;
-	ofxCvGrayscaleImage maskedImg;
-	ofxCvGrayscaleImage bgImg;
+	ofxCvFloatImage depthImg;
+	ofxCvFloatImage rangeScaledImg;
+	ofxCvFloatImage maskedImg;
+	ofxCvFloatImage bgImg;
 	ofxCvContourFinder contourFinder;
 	ofxCvBlobTracker blobTracker;
 	
@@ -70,7 +70,6 @@ public:
 	float minBlobSize;
 	float maxBlobSize;
 	
-	float blobRotation;
 	
 	// callbacks for blob listener
 	void blobOn( int x, int y, int id, int order );
@@ -90,7 +89,6 @@ public:
 	bool accumulateBackground;
 	int backgroundAccumulationCount;
 	float backgroundHysteresis;
-
-	
-	float lastTimeRotatedBlobs;
+	float xyScaleTop;
+	float xyScaleBottom;
 };

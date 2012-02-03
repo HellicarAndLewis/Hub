@@ -15,6 +15,8 @@
 #include "ofxCvConstants.h"
 #include "ofxCvBlob.h"
 #include "ofxCvGrayscaleImage.h"
+#include "ofxCvFloatImage.h"
+
 #include <algorithm>
 
 class ofxCvContourFinder : public ofBaseDraws {
@@ -31,6 +33,11 @@ class ofxCvContourFinder : public ofBaseDraws {
 	virtual float getWidth() { return _width; };    //set after first findContours call
 	virtual float getHeight() { return _height; };  //set after first findContours call
     
+	virtual int  findContours( ofxCvFloatImage& input,
+							  int minArea, int maxArea,
+							  int nConsidered, bool bFindHoles,
+							  bool bUseApproximation = true);
+	
     virtual int  findContours( ofxCvGrayscaleImage& input,
                                int minArea, int maxArea,
                                int nConsidered, bool bFindHoles,

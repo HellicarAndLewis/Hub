@@ -29,6 +29,10 @@ float Blob::zSmoothing = 0.4;
 bool isFullscreen = false;
 //--------------------------------------------------------------
 void testApp::setup(){
+	
+	xyScaleTop = 1;
+	xyScaleBottom = 1;
+	
 	viewMode = VIEWMODE_RAW;
 	wallOsc.setup("localhost", 1234);
 	soundOsc.setup("localhost", 2468);
@@ -38,8 +42,8 @@ void testApp::setup(){
 	maxWaterDepth = 255;
 	minBlobSize = 10;
 	maxBlobSize = 200;
-	blobRotation = 0;
-	lastTimeRotatedBlobs = -100;
+
+
 	accumulateBackground = false;
 	backgroundAccumulationCount = 0;
 	
@@ -67,23 +71,26 @@ void testApp::setup(){
 	
 	//gui.setup();
 	//gui.addDrawable("Depth", depthImg);
-	gui.setWidth(250);
+	gui.setWidth(206);
 	gui.addSegmented("View", viewMode, "RAW|BACKGROUND|RANGE SCALE|MASKED|MUTE");
 	gui.addSlider("Blur Size", blurSize, 0, 3)->stepped = true;
 	gui.addSlider("Blur Iterations", blurIterations, 0, 3)->stepped = true;
 	gui.addToggle("Erode Image", erode);
 	gui.addToggle("Dilate Image", dilate);
 	gui.addPushButton("Accumulate Background")->width = 150;
-	gui.addSlider("Background Hysteresis", backgroundHysteresis, 0, 50)->stepped = true;
+	gui.addSlider("Background Hysteresis", backgroundHysteresis, 0, 0.1);
 	gui.addColumn();
 	gui.addToggle("Draw Blobs", drawBlobs);
-	gui.addSlider("Water Surface Level", waterThreshold, 160, 255)->stepped = true;
-	gui.addSlider("Maximum Water Depth", maxWaterDepth, 160, 255)->stepped = true;
+	gui.addSlider("Water Surface Level", waterThreshold, 0, 1);//->stepped = true;
+	gui.addSlider("Maximum Water Depth", maxWaterDepth, 0, 1);//->stepped = true;
 	gui.addSlider("Minimum Blob Size", minBlobSize, 10, KINECT_WIDTH/2)->stepped = true;
 	gui.addSlider("Maximum Blob Size", maxBlobSize, KINECT_WIDTH/2, KINECT_WIDTH)->stepped = true;
 	gui.addSlider("Blob XY Smoothing", Blob::xySmoothing, 0, 1);
 	gui.addSlider("Blob Z Smoothing", Blob::zSmoothing, 0, 1);
-	gui.addPanner("Blob Rotation", blobRotation, -180, 180);
+	gui.addColumn();
+	
+	gui.addSlider("Blob xy top frustrum factor", xyScaleTop, 1, 5);
+	gui.addSlider("Blob xy bottom frustrum factor", xyScaleBottom, 1, 5);
 	gui.setEnabled(true);
  
 	gui.loadSettings("wailwell.xml");
@@ -97,8 +104,7 @@ void testApp::controlChanged(xmlgui::Control *ctrl) {
 		accumulateBackground = true;
 		backgroundAccumulationCount = 0;
 		bgImg.set(0);
-	} else if(ctrl->id=="Blob Rotation") {
-		lastTimeRotatedBlobs = ofGetElapsedTimef();
+
 	}
 }
 void testApp::setupMask() {
@@ -146,23 +152,30 @@ void testApp::update(){
 	kinect.update();
 	if(kinect.isFrameNew()) {
 		float startTime = ofGetElapsedTimef();
-		depthImg.setFromPixels(kinect.getDepthPixels(),KINECT_WIDTH,KINECT_HEIGHT);
+		float img[KINECT_WIDTH*KINECT_HEIGHT];
+		float *distPix = kinect.getDistancePixels();
+		for(int i = 0; i < KINECT_WIDTH*KINECT_HEIGHT; i++) {
+			img[i] = ofMap(ofMap(distPix[i], 500, 4000, 1, 0), maxWaterDepth, waterThreshold, 1, 0);
+			if(img[i]>1) img[i] = 0;
+			if(img[i]<0) img[i] = 0;
+		}
+		depthImg.setFromPixels(img,KINECT_WIDTH,KINECT_HEIGHT);
 		
 		
 		rangeScaledImg = depthImg;
-		// threshold anything too close to the camera
-		cvThreshold(rangeScaledImg.getCvImage(), rangeScaledImg.getCvImage(), maxWaterDepth, 255, CV_THRESH_TOZERO_INV);
+		/*// threshold anything too close to the camera
+		cvThreshold(rangeScaledImg.getCvImage(), rangeScaledImg.getCvImage(), maxWaterDepth, 1, CV_THRESH_TOZERO_INV);
 		rangeScaledImg.flagImageChanged();
 		
 		// threshold anything too far away from the camera - i.e. the surface of the water
-		cvThreshold(rangeScaledImg.getCvImage(), rangeScaledImg.getCvImage(), waterThreshold, 255, CV_THRESH_TOZERO);
+		cvThreshold(rangeScaledImg.getCvImage(), rangeScaledImg.getCvImage(), waterThreshold, 1, CV_THRESH_TOZERO);
 		rangeScaledImg.flagImageChanged();
 		
-		float scale = 255/(maxWaterDepth-waterThreshold);
+		float scale = 1/(maxWaterDepth-waterThreshold);
 		cvConvertScale( rangeScaledImg.getCvImage(), rangeScaledImg.getCvImage(), scale, -(waterThreshold*scale));
 	
 		rangeScaledImg.flagImageChanged();
-		
+		*/
 		
 		for(int i = 0; i < blurIterations; i++) {
 			rangeScaledImg.blur(2*blurSize+1);
@@ -189,8 +202,8 @@ void testApp::update(){
 		}
 		
 		
-		unsigned char *fgPix = rangeScaledImg.getPixels();
-		unsigned char *bgPix = bgImg.getPixels();
+		float *fgPix = rangeScaledImg.getPixelsAsFloats();
+		float *bgPix = bgImg.getPixelsAsFloats();
 		
 		int numPix = KINECT_WIDTH * KINECT_HEIGHT;
 		
@@ -201,12 +214,7 @@ void testApp::update(){
 		}
 		
 		rangeScaledImg.setFromPixels(fgPix, KINECT_WIDTH, KINECT_HEIGHT);
-		// work out background
-		/*
-		 if(fgPix>bgPix) outPix = fgPix;
-		 else outPix = 0;
-		 
-		 */
+	
 		
 		maskedImg = rangeScaledImg;
 		
@@ -271,9 +279,12 @@ void testApp::update(){
 					}
 				}
 			}
+		 
 		}
 		blobTracker.trackBlobs(contourFinder.blobs);
-		lastVisionCalculationDuration = ofGetElapsedTimef() - startTime;
+	
+	 lastVisionCalculationDuration = ofGetElapsedTimef() - startTime;
+		 
 	}
 	
 	
@@ -355,22 +366,6 @@ void testApp::draw(){
 	
 	}
 	
-	float t = ofGetElapsedTimef() - lastTimeRotatedBlobs;
-	if(t<2) {
-		float alpha = ofMap(t, 0, 2, 1, 0);
-		glColor4f(0, 0, 1, alpha);
-		glPushMatrix();
-		glTranslatef(KINECT_WIDTH/2, KINECT_HEIGHT/2, 0);
-		glRotatef(blobRotation, 0, 0, 1);
-		ofNoFill();
-		ofRect(-100, -100, 200, 200);
-		ofLine(0, -50, -10, -40);
-		ofLine(0, -50, 10, -40);
-		ofLine(0, 50, 0, -50);
-		ofFill();
-		glPopMatrix();
-		
-	}
 	glPopMatrix();
 	
 	
@@ -489,7 +484,11 @@ float testApp::getBlobSize(ofxCvTrackedBlob &blob) {
 void testApp::normalizeBlobCoords(ofVec3f &blob) {
 	blob.x /= KINECT_WIDTH;
 	blob.y /= KINECT_HEIGHT;
-	blob.z /= 255;
+	// x and y now need to be tapered to work with the frustrum of the camera
+	// this is done by feel with sliders in the gui.
+	
+	// z is already scaled
+	//blob.z /= 255;
 }
 
 
