@@ -12,7 +12,7 @@ public:
 	virtual void onStatusUpdate(const rtt::Tweet& tweet);
 	virtual void onStatusDestroy(const rtt::StatusDestroy& destroy);
 	virtual void onStreamEvent(const rtt::StreamEvent& event);
-	
+
 private:
 	TwitterApp& twitter_app;
 };	

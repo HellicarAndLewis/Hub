@@ -28,9 +28,7 @@ bool Stream::connect(const string& streamURL) {
 	CURLcode r;
 	
 	// create request.
-//	string url = "https://userstream.twitter.com/2/user.json";
 	string url = streamURL;
-	//string url = "https://stream.twitter.com/1/statuses/filter.json";
 	rtp::Collection params;
 	rtc::Request req;
 	req.setURL(url);
@@ -68,10 +66,10 @@ bool Stream::connect(const string& streamURL) {
 		printf("Error: cannot create easy handle.\n");
 		return false;
 	}
-	
-	string userpass = twitter.getTwitterUsername() +":" +twitter.getTwitterPassword();
-	curl_easy_setopt(curl, CURLOPT_USERPWD, NULL); 
-	curl_easy_setopt(curl, CURLOPT_USERPWD, userpass.c_str());
+
+	//string userpass = twitter.getTwitterUsername() +":" +twitter.getTwitterPassword();
+	//curl_easy_setopt(curl, CURLOPT_USERPWD, NULL); 
+	//curl_easy_setopt(curl, CURLOPT_USERPWD, userpass.c_str());
 
 	
 	// set url

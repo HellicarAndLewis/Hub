@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <iostream>
 #include "Twitter.h"
 
 namespace roxlu {
@@ -39,9 +40,22 @@ bool Twitter::requestToken(string& authURL /* out */) {
 // Get pin which authorizes the application.
 // -----------------------------------------
 bool Twitter::handlePin(const string& authURL) {
-
+	printf("\n\n\n");
+	printf("----------------------------------------------------------------\n");
+	printf("Open the following URL in your browser. Then click to authorize\n");
+	printf("this application. Then enter the PIN you see in the browser below.\n");
+	printf("--------------------------------------------------------------------\n");
+	printf("url: %s\n", authURL.c_str());
+	printf("type the pin and press enter:");
+	string pin;
+	getline(std::cin, pin);
+	printf("pin: '%s'\n", pin.c_str());
+	printf("--------------------------------------------------------------------\n");
+	oauth.setPin(pin);
+	return true;
 	// STEP 1: get PIN-wise authorization
 	// -------------------------------------------------------------------------
+	/*
 	string response;
 	rtc::Request req;
 	req.setURL(authURL);
@@ -65,14 +79,21 @@ bool Twitter::handlePin(const string& authURL) {
 		printf("error: cannot get pin html\n");
 		return false;
 	}
-	
 	string pin;
 	if(!rto::Utils::extractPin(response, pin)) {	
 		printf("error: cannot extract pin.\n");
 		return false;
 	}
+	printf("-------------------------------------------------\n");
+	printf("%s\n", response.c_str());
+	printf("-------------------------------------------------\n");
+	printf("token key: %s\n", oauth.getTokenKey().c_str());
+	printf("authenticity_token: %s\n", authenticity_token.c_str());
+	printf("pin: '%s'\n", pin.c_str());
+	exit(0);
 	oauth.setPin(pin);
-	return true;
+	*/
+	//return true;
 }
 
 bool Twitter::accessToken() {

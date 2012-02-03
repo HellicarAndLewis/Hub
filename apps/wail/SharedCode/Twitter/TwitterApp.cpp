@@ -1,4 +1,7 @@
 #include "TwitterApp.h"
+#include "ofxXmlSettings.h"
+
+ofEvent<TwitterAppEvent> twitter_app_dispatcher;
 
 TwitterApp::TwitterApp()
 	:stream(twitter)
@@ -10,26 +13,27 @@ TwitterApp::~TwitterApp() {
 }
 
 bool TwitterApp::initDB(){
-	// DATABASE 
-	// --------
-	if(!db.open("twitter.db")) {
-		printf("Error: Cannot open twitter db.\n");
-		return false;
-	}
 	
-	if(!db.createTables()) {
-		printf("Error: Cannot create database.\n");
-		return false;
-	}
-	
+
 	// TWITTER
 	// --------
-	twitter.setTwitterUsername("dewarshub");
-	twitter.setTwitterPassword("HUB2012hub#");
+	printf("initializeing twitter\n");
+	ofxXmlSettings userandpass;
+	if(!userandpass.loadFile("userandpass.xml")){
+		ofSystemAlertDialog("Create an xml file called userandpass.xml in data/ and add <user>username</user><pass>password</pass> to it");
+	}
+	printf("%s\n", userandpass.getValue("user", "dewarshub").c_str());
+	printf("'%s'\n", userandpass.getValue("pass", "HUB2012hub").c_str());
+	
+//	twitter.setTwitterUsername("dewarshub");
+//	twitter.setTwitterPassword("HUB2012hub#");
+	twitter.setTwitterUsername(userandpass.getValue("user", "dewarshub"));
+	twitter.setTwitterPassword(userandpass.getValue("pass", "HUB2012hub"));
 	twitter.setConsumerKey("5cL1KRDQzcnGo8ZOaAz0g");
 	twitter.setConsumerSecret("e4X9dtxkgmpkRlr9arhOfNe7tTezWad2bmCUNvPtBvQ");
 	
 	string token_file = ofToDataPath("twitter.txt", true);
+	//twitter.removeTokens(token_file);
 	if(!twitter.loadTokens(token_file)) {
         string auth_url;
         twitter.requestToken(auth_url);
@@ -38,6 +42,18 @@ bool TwitterApp::initDB(){
         twitter.saveTokens(token_file);
 	}
 		
+
+	// DATABASE 
+	// --------
+	if(!db.open("twitter.db")) {
+		printf("Error: Cannot open twitter db.\n");
+		//return false;
+	}
+	
+	if(!db.createTables()) {
+		printf("Error: Cannot create database.\n");
+		//return false;
+	}
 	return true;
 }
 
@@ -53,6 +69,41 @@ bool TwitterApp::connect(){
 	
 	return true;
 	
+}
+
+void TwitterApp::addDefaultListener(){
+	addCustomListener(twitter_listener);
+}
+
+void TwitterApp::addCustomListener(rt::IEventListener& listener){
+	twitter.addEventListener(listener);
+}
+
+void TwitterApp::populateFakeSearchTerms(vector<string> fakeTerms){
+	rtt::Tweet fakeTweek;
+	for(int i = 0; i < fakeTerms.size(); i++){
+		onNewSearchTerm(fakeTweek, fakeTerms[i]);
+	}
+}
+
+bool TwitterApp::getFakeTweetsWithSearchTerm(vector<rtt::Tweet>& result){
+	
+}
+
+void TwitterApp::onNewSearchTerm(rtt::Tweet tweet, const string& term) {
+	TwitterAppEvent ev(tweet, term);
+	ofNotifyEvent(twitter_app_dispatcher, ev);
+}
+
+void TwitterApp::update() {	
+	if(stream.isConnected()) {
+		stream.update();
+	}
+}
+
+// get the list of people to follow, separated by comma
+bool TwitterApp::getFollowers(vector<string>& result) {
+	return db.getFollowers(result);
 }
 
 //bool TwitterApp::init() {
@@ -94,24 +145,3 @@ bool TwitterApp::connect(){
 //	return true;
 	
 //}
-
-//twitter.addEventListener(twitter_listener);
-void TwitterApp::addDefaultListener(){
-	addCustomListener(twitter_listener);
-}
-
-void TwitterApp::addCustomListener(rt::IEventListener& listener){
-	twitter.addEventListener(listener);
-}
-
-void TwitterApp::update() {	
-	if(stream.isConnected()) {
-		stream.update();
-	}
-}
-
-// get the list of people to follow, separated by comma
-bool TwitterApp::getFollowers(vector<string>& result) {
-	return db.getFollowers(result);
-}
-

@@ -10,7 +10,7 @@
 #pragma once
 #include "ofMain.h"
 #include "ofxMPMFluid.h"
-#include "ofxWWTweetManager.h"
+#include "ofxWWTweetParticleManager.h"
 #include "KinectTouchListener.h"
 
 class ofxWWRenderer: public KinectTouchListener {
@@ -30,12 +30,14 @@ class ofxWWRenderer: public KinectTouchListener {
 	void touchMoved(const KinectTouch &touch);
 	void touchUp(const KinectTouch &touch);
 
-	//controlled through the guy
+	//controlled through the gui
 	float layerBarrierZ;
 	float layerBarrierWidth; //controls layer transition fade	
+	bool fakeZOnTouch;
+	float fakeZLevel;
 	
   protected:
-	ofxWWTweetManager tweets;
+	ofxWWTweetParticleManager tweets;	
 	
 	//for diffusing the lines over time
 	ofShader blurShader;
@@ -70,6 +72,8 @@ class ofxWWRenderer: public KinectTouchListener {
 
 	//used as a map into the fluid sim
 	ofImage colorField;
+	
+	bool drawTouchDebug;
 	
 	float layer1Opacity; //this is smoothed
 	

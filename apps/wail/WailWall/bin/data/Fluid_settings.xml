@@ -1,15 +1,11 @@
 <controls>
     <SliderInt_Particles>
         <name>Particles</name>
-<<<<<<< HEAD
-        <value>17335</value>
-=======
         <value>26740</value>
->>>>>>> 5a0800b0a6d4f5c96d07cd4d371a05e052a3962e
     </SliderInt_Particles>
     <SliderFloat_Density>
         <name>Density</name>
-        <value>0.000000</value>
+        <value>0.300000</value>
     </SliderFloat_Density>
     <SliderFloat_Stiffness>
         <name>Stiffness</name>
@@ -17,27 +13,15 @@
     </SliderFloat_Stiffness>
     <SliderFloat_Bulk_Viscosity>
         <name>Bulk Viscosity</name>
-<<<<<<< HEAD
-        <value>3.050000</value>
-    </SliderFloat_Bulk_Viscosity>
-    <SliderFloat_Elasticity>
-        <name>Elasticity</name>
-        <value>1.380000</value>
-    </SliderFloat_Elasticity>
-    <SliderFloat_Viscosity>
-        <name>Viscosity</name>
-        <value>4.000000</value>
-=======
         <value>2.950000</value>
     </SliderFloat_Bulk_Viscosity>
     <SliderFloat_Elasticity>
         <name>Elasticity</name>
-        <value>1.740000</value>
+        <value>1.748000</value>
     </SliderFloat_Elasticity>
     <SliderFloat_Viscosity>
         <name>Viscosity</name>
         <value>0.360000</value>
->>>>>>> 5a0800b0a6d4f5c96d07cd4d371a05e052a3962e
     </SliderFloat_Viscosity>
     <SliderFloat_Yield_Rate>
         <name>Yield Rate</name>
@@ -45,18 +29,14 @@
     </SliderFloat_Yield_Rate>
     <SliderFloat_Gravity>
         <name>Gravity</name>
-<<<<<<< HEAD
-        <value>0.000700</value>
-=======
-        <value>0.000800</value>
->>>>>>> 5a0800b0a6d4f5c96d07cd4d371a05e052a3962e
+        <value>0.000900</value>
     </SliderFloat_Gravity>
     <SliderFloat_Smoothing>
         <name>Smoothing</name>
-        <value>1.110000</value>
+        <value>0.750000</value>
     </SliderFloat_Smoothing>
     <Toggle_Do_Obstacles>
         <name>Do Obstacles</name>
-        <value>1</value>
+        <value>0</value>
     </Toggle_Do_Obstacles>
 </controls>

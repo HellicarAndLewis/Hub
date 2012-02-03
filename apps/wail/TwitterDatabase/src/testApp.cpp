@@ -10,18 +10,24 @@ void testApp::setup(){
 	twitter_app.addDefaultListener();
 	
 	// What do you want to track?
+	/*
 	twitter_app.track("ItsFunnyHow");
 	twitter_app.track("NeverTrustAGuyWho");
 	twitter_app.track("TolimaDay");
 	twitter_app.track("love");
-	
+*/
+	twitter_app.track("love");
 	if(!twitter_app.connect()) {
 		printf("Error: cannot connect to twitter stream.\n");
 		exit();
 	}
 	
-/*
-		*/
+	twitter_app.addListener(this, &testApp::onNewSearchTerm);
+}
+
+
+void testApp::onNewSearchTerm(TwitterAppEvent& event) {
+	printf("Yay new search term: %s\n", event.search_term.c_str());
 }
 
 //--------------------------------------------------------------

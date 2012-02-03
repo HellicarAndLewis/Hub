@@ -16,12 +16,17 @@ void ofxWWRenderer::setup(int width, int height){
 	firstLayerAccumulator.allocate(width, height, GL_RGBA);
 	liquidTarget.allocate(width, height, GL_RGB);
 	
+	tweets.simulationWidth = width;
+	tweets.simulationHeight = height;
+	
 	firstLayerAccumulator.begin();
 	ofClear(0);
 	firstLayerAccumulator.end();
 	
 	fluid.setup(100000);
 	fluid.scaleFactor = 6.4;
+	tweets.fluidRef = &fluid;
+	tweets.blobsRef = blobs;
 	
 	colorField.loadImage("color_palette.png");
 	layer1Opacity = 1.0;
@@ -51,8 +56,11 @@ void ofxWWRenderer::setup(int width, int height){
 void ofxWWRenderer::setupGui(){
 	
 	gui.addPage("Interaction");
+	gui.addToggle("Draw Touch Debug", drawTouchDebug);
 	gui.addSlider("Layer Barrier Z", layerBarrierZ, .25, .75);
 	gui.addSlider("Layer Barrier Width", layerBarrierWidth, 0.05, .25);
+	gui.addToggle("Fake Z", fakeZOnTouch);
+	gui.addSlider("Fake Level", fakeZLevel, 0.0, 1.0);
 	
 	gui.addPage("Simulation Scale");
 	gui.addSlider("Force Scale",	fluid.forceScale,	1.0, 200); 
@@ -85,6 +93,7 @@ void ofxWWRenderer::setupGui(){
 	gui.addSlider("Noise Wobble Amplitude Y", noiseWobbleAmplitudeY, 0, 100);
 	gui.addToggle("Just Draw Warp", justDrawWarpTexture);
 
+	tweets.setupGui();
 }
 
 void ofxWWRenderer::update(){
@@ -139,16 +148,29 @@ void ofxWWRenderer::render(){
 	liquidTarget.getTextureReference().unbind();
 	
 	glActiveTexture(GL_TEXTURE0_ARB);
-	firstLayerAccumulator.getTextureReference().bind();
+	firstLayerAccumulator.getTextureReference().unbind();
 	
 	//liquidTarget.draw(0,0);
 	//firstLayerAccumulator.draw(0,0);
-	//tweets.renderTweets();	
 		
 	warpShader.end();
+
+	tweets.renderTweets();	
+	tweets.renderSearchTerms();
 	
 	if(justDrawWarpTexture){
 		liquidTarget.draw(0,0);		
+	}
+	
+	if(drawTouchDebug){
+		ofPushStyle();
+		ofNoFill();
+		ofSetColor(0, 255, 0);
+		map<int,KinectTouch>::iterator it;
+		for(it = blobs->begin(); it != blobs->end(); it++){
+			ofCircle(it->second.x*liquidTarget.getWidth(), it->second.y*liquidTarget.getHeight(), 10);
+		}
+		ofPopStyle();
 	}
 	
 	renderTarget.end();	
@@ -168,9 +190,15 @@ void ofxWWRenderer::renderFirstLayer(){
 		if(it->second.z > maxTouchZ){
 			maxTouchZ = it->second.z;
 		}
+		//dirty fake hack
+		if(fakeZOnTouch){
+			maxTouchZ = fakeZLevel;
+		}		
 	}
+	
 	float targetOpacity = ofMap(maxTouchZ, layerBarrierZ-layerBarrierWidth/2, layerBarrierZ+layerBarrierWidth/2, 1.0, 0.0, true);
 	layer1Opacity += (targetOpacity - layer1Opacity) * .05;
+	tweets.tweetLayerOpacity = layer1Opacity;
 	
 	//render the fluid sim for layer 1
 	blurShader.begin();
@@ -199,7 +227,6 @@ void ofxWWRenderer::renderFirstLayer(){
 	
 	colorField.getTextureReference().bind();
 	
-//	glEnableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glVertexPointer(2, GL_FLOAT, 0, &(verts[0].x));
@@ -207,7 +234,7 @@ void ofxWWRenderer::renderFirstLayer(){
 	glDrawArrays(GL_LINES, 0, verts.size());
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
-//	glDisableClientState(GL_COLOR_ARRAY);
+
 	
 	colorField.getTextureReference().unbind();
 	ofPopMatrix();
@@ -268,12 +295,11 @@ void ofxWWRenderer::touchDown(const KinectTouch &touch) {
 }
 
 void ofxWWRenderer::touchMoved(const KinectTouch &touch) {
-	//cout << "applying force " << ofVec2f(touch.x, touch.y) << " " << ofVec2f(touch.vel.x, touch.vel.y) << endl;
 	fluid.applyForce(ofVec2f(touch.x, touch.y), ofVec2f(touch.vel.x, touch.vel.y));
 }
 
 void ofxWWRenderer::touchUp(const KinectTouch &touch) {
-	
+	tweets.resetTouches();
 }
 
 ofVec2f ofxWWRenderer::texCoordAtPos(ofImage& image, float x, float y){

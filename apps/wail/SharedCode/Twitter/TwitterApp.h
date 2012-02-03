@@ -7,9 +7,24 @@
 #include "IEventListener.h"
 #include "TwitterEventListener.h"
 
+
 namespace rtt = roxlu::twitter::type;
 namespace rt = roxlu::twitter;
 using namespace roxlu;
+
+class TwitterAppEvent { 
+public:
+	TwitterAppEvent(rtt::Tweet tweet,  string searchTerm)
+		:tweet(tweet)
+		,search_term(searchTerm)
+	{
+	}
+	
+	rtt::Tweet tweet;
+	string search_term;
+};
+
+extern ofEvent<TwitterAppEvent> twitter_app_dispatcher;
 
 class TwitterApp {
 public:
@@ -25,13 +40,29 @@ public:
 	
 	TwitterDB& getDB();
 	
+	//single shot to notify a load of fake search terms for testing
+	void populateFakeSearchTerms(vector<string> fakeTerms);
+	
 	bool getFollowers(vector<string>& result);
 	bool getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result);
 	bool getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result);
-	bool getTweetsWithSearchTerm(const string& q, vector<rtt::Tweet>& result);
-
+	bool getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany, vector<rtt::Tweet>& result);
+	
+	bool getFakeTweetsWithSearchTerm(vector<rtt::Tweet>& result);
+	
+	void onNewSearchTerm(rtt::Tweet tweet, const string& term);
+	
 	void addDefaultListener();
 	void addCustomListener(rt::IEventListener& listener);
+	
+	// event listener
+	template <typename ArgumentsType, class ListenerClass>
+	static void addListener(
+			ListenerClass* listener
+			,void (ListenerClass::*listenerMethod)(ArgumentsType&))
+	{
+		ofAddListener(twitter_app_dispatcher, listener, listenerMethod);
+	}
 	
 private:
 	rt::Twitter twitter;
@@ -53,8 +84,8 @@ inline bool TwitterApp::getTweetsNewerThan(int age, int howMany, vector<rtt::Twe
 	return db.getTweetsNewerThan(age, howMany, result);
 }
 
-inline bool TwitterApp::getTweetsWithSearchTerm(const string& q, vector<rtt::Tweet>& result) {
-	return db.getTweetsWithSearchTerm(q, result);
+inline bool TwitterApp::getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany, vector<rtt::Tweet>& result) {
+	return db.getTweetsWithSearchTerm(q, howMany, youngerThan, result);
 }
 
 #endif

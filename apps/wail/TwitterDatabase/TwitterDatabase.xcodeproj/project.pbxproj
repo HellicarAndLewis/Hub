@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		541A1B8514DB290A00F7FE34 /* sqlite3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 541A1B8414DB290900F7FE34 /* sqlite3.a */; };
 		54B4722914D9366700C39CC9 /* Database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54B4718C14D9366600C39CC9 /* Database.cpp */; };
-		54B4722A14D9366700C39CC9 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 54B4718F14D9366600C39CC9 /* sqlite3.c */; };
 		54B4722B14D9366700C39CC9 /* Query.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54B4719214D9366600C39CC9 /* Query.cpp */; };
 		54B4722C14D9366700C39CC9 /* QueryInsert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54B4719414D9366600C39CC9 /* QueryInsert.cpp */; };
 		54B4722D14D9366700C39CC9 /* QueryParam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54B4719614D9366600C39CC9 /* QueryParam.cpp */; };
@@ -41,8 +41,12 @@
 		A6AF012F14DAE4B5006816A8 /* TwitterApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF012914DAE4B5006816A8 /* TwitterApp.cpp */; };
 		A6AF013014DAE4B5006816A8 /* TwitterDB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF012B14DAE4B5006816A8 /* TwitterDB.cpp */; };
 		A6AF013114DAE4B5006816A8 /* TwitterEventListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF012D14DAE4B5006816A8 /* TwitterEventListener.cpp */; };
+		A6AF05A414DB54A6006816A8 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF059D14DB54A6006816A8 /* tinyxml.cpp */; };
+		A6AF05A514DB54A6006816A8 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF059F14DB54A6006816A8 /* tinyxmlerror.cpp */; };
+		A6AF05A614DB54A6006816A8 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF05A014DB54A6006816A8 /* tinyxmlparser.cpp */; };
+		A6AF05A714DB54A6006816A8 /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF05A214DB54A6006816A8 /* ofxXmlSettings.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
-		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
+		E4328149138ABC9F0047C5CB /* openFrameworks.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworks.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
 		E45BE97C0E8CC7DD009D7055 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9720E8CC7DD009D7055 /* ApplicationServices.framework */; };
 		E45BE97D0E8CC7DD009D7055 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9730E8CC7DD009D7055 /* AudioToolbox.framework */; };
@@ -91,9 +95,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		541A1B8414DB290900F7FE34 /* sqlite3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = sqlite3.a; sourceTree = "<group>"; };
 		54B4718C14D9366600C39CC9 /* Database.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Database.cpp; sourceTree = "<group>"; };
 		54B4718D14D9366600C39CC9 /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
-		54B4718F14D9366600C39CC9 /* sqlite3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sqlite3.c; sourceTree = "<group>"; };
 		54B4719014D9366600C39CC9 /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3.h; sourceTree = "<group>"; };
 		54B4719114D9366600C39CC9 /* sqlite3ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3ext.h; sourceTree = "<group>"; };
 		54B4719214D9366600C39CC9 /* Query.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Query.cpp; sourceTree = "<group>"; };
@@ -242,6 +246,13 @@
 		A6AF012C14DAE4B5006816A8 /* TwitterDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterDB.h; sourceTree = "<group>"; };
 		A6AF012D14DAE4B5006816A8 /* TwitterEventListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TwitterEventListener.cpp; sourceTree = "<group>"; };
 		A6AF012E14DAE4B5006816A8 /* TwitterEventListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterEventListener.h; sourceTree = "<group>"; };
+		A6AF059B14DB54A6006816A8 /* install.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = install.xml; sourceTree = "<group>"; };
+		A6AF059D14DB54A6006816A8 /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
+		A6AF059E14DB54A6006816A8 /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
+		A6AF059F14DB54A6006816A8 /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
+		A6AF05A014DB54A6006816A8 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
+		A6AF05A214DB54A6006816A8 /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxXmlSettings.cpp; sourceTree = "<group>"; };
+		A6AF05A314DB54A6006816A8 /* ofxXmlSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxXmlSettings.h; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
@@ -253,7 +264,7 @@
 		E45BE9770E8CC7DD009D7055 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		E45BE9790E8CC7DD009D7055 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		E45BE97A0E8CC7DD009D7055 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
-		E4B69B5B0A3A1756003C02F2 /* TwitterDatabaseDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterDatabaseDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4B69B5B0A3A1756003C02F2 /* TwitterDatabase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterDatabase.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B69E1D0A3A1BDC003C02F2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = testApp.cpp; path = src/testApp.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1F0A3A1BDC003C02F2 /* testApp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = testApp.h; path = src/testApp.h; sourceTree = SOURCE_ROOT; };
@@ -271,7 +282,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4EB6799138ADC1D00A09F29 /* GLUT.framework in Frameworks */,
-				E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */,
+				E4328149138ABC9F0047C5CB /* openFrameworks.a in Frameworks */,
 				E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */,
 				E45BE97C0E8CC7DD009D7055 /* ApplicationServices.framework in Frameworks */,
 				E45BE97D0E8CC7DD009D7055 /* AudioToolbox.framework in Frameworks */,
@@ -288,6 +299,7 @@
 				54B4724514D9366700C39CC9 /* libjansson.a in Frameworks */,
 				54B4724614D9366700C39CC9 /* libcrypto.a in Frameworks */,
 				54B4724714D9366700C39CC9 /* libssl.a in Frameworks */,
+				541A1B8514DB290A00F7FE34 /* sqlite3.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,7 +352,7 @@
 		54B4718E14D9366600C39CC9 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				54B4718F14D9366600C39CC9 /* sqlite3.c */,
+				541A1B8414DB290900F7FE34 /* sqlite3.a */,
 				54B4719014D9366600C39CC9 /* sqlite3.h */,
 				54B4719114D9366600C39CC9 /* sqlite3ext.h */,
 			);
@@ -573,9 +585,41 @@
 			path = ../SharedCode/Twitter;
 			sourceTree = SOURCE_ROOT;
 		};
+		A6AF059A14DB54A6006816A8 /* ofxXmlSettings */ = {
+			isa = PBXGroup;
+			children = (
+				A6AF059B14DB54A6006816A8 /* install.xml */,
+				A6AF059C14DB54A6006816A8 /* libs */,
+				A6AF05A114DB54A6006816A8 /* src */,
+			);
+			name = ofxXmlSettings;
+			path = ../../../addons/ofxXmlSettings;
+			sourceTree = SOURCE_ROOT;
+		};
+		A6AF059C14DB54A6006816A8 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				A6AF059D14DB54A6006816A8 /* tinyxml.cpp */,
+				A6AF059E14DB54A6006816A8 /* tinyxml.h */,
+				A6AF059F14DB54A6006816A8 /* tinyxmlerror.cpp */,
+				A6AF05A014DB54A6006816A8 /* tinyxmlparser.cpp */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		A6AF05A114DB54A6006816A8 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				A6AF05A214DB54A6006816A8 /* ofxXmlSettings.cpp */,
+				A6AF05A314DB54A6006816A8 /* ofxXmlSettings.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				A6AF059A14DB54A6006816A8 /* ofxXmlSettings */,
 				54B4718914D9366600C39CC9 /* roxlu */,
 			);
 			name = addons;
@@ -611,7 +655,7 @@
 		E4328144138ABC890047C5CB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E4328148138ABC890047C5CB /* openFrameworksDebug.a */,
+				E4328148138ABC890047C5CB /* openFrameworks.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -634,7 +678,7 @@
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
 				E45BE5980E8CC70C009D7055 /* frameworks */,
-				E4B69B5B0A3A1756003C02F2 /* TwitterDatabaseDebug.app */,
+				E4B69B5B0A3A1756003C02F2 /* TwitterDatabase.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -677,7 +721,7 @@
 			);
 			name = TwitterDatabase;
 			productName = myOFApp;
-			productReference = E4B69B5B0A3A1756003C02F2 /* TwitterDatabaseDebug.app */;
+			productReference = E4B69B5B0A3A1756003C02F2 /* TwitterDatabase.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -712,10 +756,10 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		E4328148138ABC890047C5CB /* openFrameworksDebug.a */ = {
+		E4328148138ABC890047C5CB /* openFrameworks.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = openFrameworksDebug.a;
+			path = openFrameworks.a;
 			remoteRef = E4328147138ABC890047C5CB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -745,7 +789,6 @@
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* testApp.cpp in Sources */,
 				54B4722914D9366700C39CC9 /* Database.cpp in Sources */,
-				54B4722A14D9366700C39CC9 /* sqlite3.c in Sources */,
 				54B4722B14D9366700C39CC9 /* Query.cpp in Sources */,
 				54B4722C14D9366700C39CC9 /* QueryInsert.cpp in Sources */,
 				54B4722D14D9366700C39CC9 /* QueryParam.cpp in Sources */,
@@ -774,6 +817,10 @@
 				A6AF012F14DAE4B5006816A8 /* TwitterApp.cpp in Sources */,
 				A6AF013014DAE4B5006816A8 /* TwitterDB.cpp in Sources */,
 				A6AF013114DAE4B5006816A8 /* TwitterEventListener.cpp in Sources */,
+				A6AF05A414DB54A6006816A8 /* tinyxml.cpp in Sources */,
+				A6AF05A514DB54A6006816A8 /* tinyxmlerror.cpp in Sources */,
+				A6AF05A614DB54A6006816A8 /* tinyxmlparser.cpp in Sources */,
+				A6AF05A714DB54A6006816A8 /* ofxXmlSettings.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -808,6 +855,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = NO;
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
+				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-DSQLITE_ENABLE_FTS3_PARENTHESIS",
 					"-DSQLITE_ENABLE_FTS3",
@@ -840,6 +888,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = NO;
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
+				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-DSQLITE_ENABLE_FTS3_PARENTHESIS",
 					"-DSQLITE_ENABLE_FTS3",
@@ -942,11 +991,13 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_10)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_11)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_12)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_13)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/src/libs/curl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_10 = "\"$(SRCROOT)/../../../addons/roxlu/libs/curl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_11 = "\"$(SRCROOT)/../../../addons/roxlu/libs/jansson\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_12 = "\"$(SRCROOT)/../../../addons/roxlu/libs/openssl\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_13 = "\"$(SRCROOT)/../../../addons/roxlu/addons/Database/lib\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/src/libs/jansson\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/src/libs/openssl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../libs/curl\"";
@@ -1052,11 +1103,13 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_10)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_11)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_12)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_13)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/src/libs/curl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_10 = "\"$(SRCROOT)/../../../addons/roxlu/libs/curl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_11 = "\"$(SRCROOT)/../../../addons/roxlu/libs/jansson\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_12 = "\"$(SRCROOT)/../../../addons/roxlu/libs/openssl\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_13 = "\"$(SRCROOT)/../../../addons/roxlu/addons/Database/lib\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/src/libs/jansson\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/src/libs/openssl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../libs/curl\"";

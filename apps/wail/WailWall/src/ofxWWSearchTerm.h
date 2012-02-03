@@ -10,13 +10,31 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxWWTweet.h"
+#include "ofxWWTweetParticle.h"
 
+class ofxWWTweetParticleManager;
 class ofxWWSearchTerm {
   public:
 	ofxWWSearchTerm();
+
+	void update();
+	void draw();
+	ofxWWTweetParticleManager* manager;
+
+	ofVec2f closestPoint;
 	ofVec2f pos;
+	
+
+	bool touchPresent;
+	bool highlighted;
+	float holdStartTime;
+	
+	bool selected;
+	bool populated;
+	
 	float scale;
 	float opacity;
-	vector<ofxWWTweet*> associatedTweets;
+	
+	string term;
+	vector<ofxWWTweetParticle> associatedTweets;
 };

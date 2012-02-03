@@ -97,7 +97,7 @@ bool Database::bind(const vector<QueryParam*>& params, sqlite3_stmt** stmt, int 
 			||
 		*/
 		
-		if( queryType == QUERY_DELETE
+		if( queryType == QUERY_DELETE 
 		)
 		{
 			parameter_index += 1; 
@@ -132,6 +132,15 @@ bool Database::bind(const vector<QueryParam*>& params, sqlite3_stmt** stmt, int 
 		++it;
 	}
 	return true;
+}
+
+void Database::printCompileInfo() {
+	sqlite3_stmt* st;
+	if (SQLITE_OK == sqlite3_prepare_v2(db, "PRAGMA compile_options", -1, &st, NULL)) {
+		while (sqlite3_step(st) == SQLITE_ROW) {
+			printf("---- %s\n", sqlite3_column_text(st, 0));
+		}
+	}
 }
 
 } // roxlu 
