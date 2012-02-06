@@ -80,6 +80,8 @@ public:
 	float getBlobSize(ofxCvTrackedBlob &blob);
 	void normalizeBlobCoords(ofVec3f &blob);
 	map<int,Blob> blobs;
+	map<int,ofVec3f> rawBlobs;
+	
 	int viewMode;
 	bool drawBlobs;
 	float blurSize;
@@ -89,6 +91,11 @@ public:
 	bool accumulateBackground;
 	int backgroundAccumulationCount;
 	float backgroundHysteresis;
-	float xyScaleTop;
-	float xyScaleBottom;
+	
+	float xScaleTop;
+	float yScaleTop;
+	float xScaleBottom;
+	float yScaleBottom;
+	bool flipX;
+	bool flipY;
 };

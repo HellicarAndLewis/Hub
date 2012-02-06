@@ -30,8 +30,12 @@ bool isFullscreen = false;
 //--------------------------------------------------------------
 void testApp::setup(){
 	
-	xyScaleTop = 1;
-	xyScaleBottom = 1;
+	xScaleTop = 1;
+	xScaleBottom = 1;
+	yScaleTop = 1;
+	yScaleBottom = 1;
+	flipX = false;
+	flipY = false;
 	
 	viewMode = VIEWMODE_RAW;
 	wallOsc.setup("localhost", 1234);
@@ -89,8 +93,14 @@ void testApp::setup(){
 	gui.addSlider("Blob Z Smoothing", Blob::zSmoothing, 0, 1);
 	gui.addColumn();
 	
-	gui.addSlider("Blob xy top frustrum factor", xyScaleTop, 1, 5);
-	gui.addSlider("Blob xy bottom frustrum factor", xyScaleBottom, 1, 5);
+	gui.addSlider("Blob x top frustrum factor", xScaleTop, 1, 8);
+	gui.addSlider("Blob y top frustrum factor", yScaleTop, 1, 8);
+
+	gui.addSlider("Blob x bottom frustrum factor", xScaleBottom, 1, 8);
+	gui.addSlider("Blob y bottom frustrum factor", yScaleBottom, 1, 8);
+	gui.addToggle("Flip X", flipX);
+	gui.addToggle("Flip Y", flipY);
+
 	gui.setEnabled(true);
  
 	gui.loadSettings("wailwell.xml");
@@ -353,12 +363,21 @@ void testApp::draw(){
 			for(map<int,Blob>::iterator it = blobs.begin();
 				it != blobs.end(); 
 				it++) {
+				
 				ofVec3f pos = (*it).second * ofVec3f(KINECT_WIDTH, KINECT_HEIGHT);
+				ofNoFill();
 				ofSetHexColor(0x0000FF);
 				ofCircle(pos, 8);
 				ofSetHexColor(0x009900);
 				ofLine(pos.x - 5, pos.y - 5, pos.x + 5, pos.y + 5);
 				ofLine(pos.x - 5, pos.y + 5, pos.x + 5, pos.y - 5);
+				ofFill();
+				ofSetHexColor(0x009900);
+				if(rawBlobs.find((*it).first)!=rawBlobs.end()) {
+					ofLine(pos.x, pos.y, rawBlobs[(*it).first].x,rawBlobs[(*it).first].y);
+
+					ofCircle(rawBlobs[(*it).first].x,rawBlobs[(*it).first].y, 5);
+				}
 //				ofEllipse((*it).second.x, (*it).second.y, 10.f/640.f, 10.f/480.f);
 			}
 		//}
@@ -468,11 +487,19 @@ ofVec3f testApp::getBlobCoords(ofxCvTrackedBlob &blob) {
 	
 	maskedImg.setROI(blob.boundingRect);
 	cvMinMaxLoc(maskedImg.getCvImage(),
-				&minVal, &maxVal, NULL, &maxLoc);//,blobMask);
+				&minVal, &maxVal, NULL, &maxLoc);
 	maskedImg.resetROI();
 	
 	
-	return ofVec3f((float)(blob.boundingRect.x + maxLoc.x), (float)(blob.boundingRect.y + maxLoc.y), (float)maxVal);
+
+	ofVec3f coords = ofVec3f((float)(blob.boundingRect.x + maxLoc.x), (float)(blob.boundingRect.y + maxLoc.y), (float)maxVal);
+	
+	// take an average of the centroid and the deepest point (only in x and y axes)
+	// - this should provide some smoothing.
+	coords.x = (coords.x + blob.centroid.x)/2;
+	coords.y = (coords.y + blob.centroid.y)/2;
+	
+	return coords;
 	
 }
 
@@ -488,13 +515,15 @@ void testApp::normalizeBlobCoords(ofVec3f &blob) {
 	// x and y now need to be tapered to work with the frustrum of the camera
 	// this is done by feel with sliders in the gui.
 	
-	float scaleFactor = ofMap(blob.z, 0, 1, xyScaleTop, xyScaleBottom);
+	float scaleFactorX = ofMap(blob.z, 0, 1, xScaleTop, xScaleBottom);
+	float scaleFactorY = ofMap(blob.z, 0, 1, yScaleTop, yScaleBottom);
 	
 	// scale out from the centre
 	ofVec2f newCoord = ofVec2f(blob.x, blob.y) - ofVec2f(0.5, 0.5);
-	newCoord *= scaleFactor;
-	blob.x = newCoord.x + 0.5;
-	blob.y = newCoord.y + 0.5;
+	newCoord *= ofVec2f(scaleFactorX, scaleFactorY);
+	
+	blob.x =  0.5 + newCoord.x*(flipX?-1:1);
+	blob.y =  0.5 + newCoord.y*(flipY?-1:1);
 	
 	// z is already scaled
 }
@@ -503,7 +532,10 @@ void testApp::normalizeBlobCoords(ofVec3f &blob) {
 // callbacks for blob listener
 void testApp::blobOn( int x, int y, int id, int order ) {
 	ofxCvTrackedBlob &b = blobTracker.getById(id);
+	
 	ofVec3f blobCoords = getBlobCoords(b);
+	rawBlobs[id] = blobCoords;
+	
 	normalizeBlobCoords(blobCoords);
 	
 	blobs[id] = Blob(blobCoords);
@@ -522,6 +554,8 @@ void testApp::blobOn( int x, int y, int id, int order ) {
 void testApp::blobMoved( int x, int y, int id, int order ) {
 	ofxCvTrackedBlob &b = blobTracker.getById(id);
 	ofVec3f blobCoords = getBlobCoords(b);
+	rawBlobs[id] = blobCoords;
+	
 	normalizeBlobCoords(blobCoords);
 	if(blobs.find(id)!=blobs.end()) {
 		blobs[id].update(blobCoords);
@@ -545,6 +579,9 @@ void testApp::blobMoved( int x, int y, int id, int order ) {
 void testApp::blobOff( int x, int y, int id, int order ) {
 	if(blobs.find(id)!=blobs.end()) {
 		blobs.erase(id);
+	}
+	if(rawBlobs.find(id)!=rawBlobs.end()) {
+		rawBlobs.erase(id);
 	}
 	
 	ofxOscMessage msg;
