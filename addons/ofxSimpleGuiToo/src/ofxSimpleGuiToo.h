@@ -64,6 +64,7 @@ public:
 	void						drawFocus(float x, float y);
 	
 	
+	void						setDrawOffset(ofPoint drawOffset);
 	void						setDraw(bool b);
 	void						toggleDraw();
 	void						show();		// simply calls setDraw(true);
@@ -110,6 +111,8 @@ protected:
 	bool							doSave;//, doSaveBackup;
 	bool							changePage;
 	int								currentPageIndex;			// 1 based index of page (0 is for global controls)
+	
+	ofPoint							drawOffset;
 	
 	//	ofxXmlSettings					XML;
 	//	string							xmlFilename;

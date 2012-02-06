@@ -1,0 +1,90 @@
+<layout>
+	<!-- this controls the texture size, and is the perceived resolution of the output -->
+	<!-- for this test we are doing 3 1280x1024 display stacked portrait, giving us 1024*3 x 1280 (dev testing numbers) -->
+    <source>
+        <x>0</x>
+        <y>0</y>
+        <width>3072</width>
+        <height>1280</height>
+    </source>
+	<!-- the destination rectangle is where this actually gets displayed on the screen -->
+	<!-- which is our triplehead canvas laid out lengthwise at 3 * 320 x 256 (dev testing numbers) -->
+    <dest>
+        <x>25</x>
+        <y>745</y>
+        <width>960</width>
+        <height>256</height>
+    </dest>
+
+	<!-- 1080p output render -->
+    <preview>
+        <x>25</x> <!-- assuming it's TH2G + Cinema Display to the left of this display -->
+        <y>25</y>
+        <width>1280</width>
+        <height>720</height>
+    </preview>
+
+	<gui>
+		<x>0</x>
+		<y>0</y>
+	</gui>
+	
+	<!-- for this set up we have 3 screens, rotated 90 to the right into portrait mode
+	 		when the displays are stacked on their sides it reconstructs the image -->
+    <screens>
+        <screen>
+			<!-- source is texture coordinates -->
+            <source>
+                <x>0.000000</x>
+                <y>0.000000</y>
+                <width>1024</width>
+                <height>1280</height>
+            </source>
+			<!-- dest is output, 0,0 in relationship to the top left of the destination rectangle -->
+            <dest>
+                <x>0</x>
+                <y>0</y>
+                <width>320</width>
+                <height>256</height>
+            </dest>
+	        <orientation>3</orientation> <!-- 3 is 90 to the right -->
+        </screen>
+
+        <screen>
+			<!-- source is texture coordinates -->
+            <source>
+                <x>1024</x>
+                <y>0.000000</y>
+                <width>1024</width>
+                <height>1280</height>
+            </source>
+			<!-- dest is output, 0,0 in relationship to the top left of the destination rectangle -->
+            <dest>
+                <x>320</x>
+                <y>0</y>
+                <width>320</width>
+                <height>256</height>
+            </dest>
+	        <orientation>3</orientation> <!-- 3 is 90 to the right -->
+        </screen>
+
+        <screen>
+			<!-- source is texture coordinates -->
+            <source>
+                <x>2048</x>
+                <y>0.000000</y>
+                <width>1024</width>
+                <height>1280</height>
+            </source>
+			<!-- dest is output, 0,0 in relationship to the top left of the destination rectangle -->
+            <dest>
+                <x>640</x>
+                <y>0</y>
+                <width>320</width>
+                <height>256</height>
+            </dest>
+	        <orientation>3</orientation> <!-- 3 is 90 to the right -->
+        </screen>
+
+    </screens>
+</layout>
