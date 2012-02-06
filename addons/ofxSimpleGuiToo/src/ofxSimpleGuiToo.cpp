@@ -42,6 +42,7 @@ ofxSimpleGuiToo gui;
 ofxSimpleGuiToo::ofxSimpleGuiToo() {
 	config = NULL;
 	doDefaultKeys = false;
+	drawOffset = ofPoint(0,0);
 }
 
 void ofxSimpleGuiToo::setup() {
@@ -58,7 +59,7 @@ void ofxSimpleGuiToo::setup() {
 	headerPage->addToggle("Auto Save", doAutoSave);
 	headerPage->addButton("Save Settings", doSave);
 	headerPage->addFPSCounter();
-
+	
 	addPage();
 	setAutoSave(true);
 	setAlignRight(false);
@@ -108,6 +109,10 @@ void ofxSimpleGuiToo::setDraw(bool b) {
 		else removeListeners();
 		if(doAutoSave) saveToXML();
 	}
+}
+
+void ofxSimpleGuiToo::setDrawOffset(ofPoint _drawOffset){
+	drawOffset = _drawOffset;
 }
 
 void ofxSimpleGuiToo::show() {
@@ -184,11 +189,11 @@ void ofxSimpleGuiToo::draw() {
 
 	glDisableClientState(GL_COLOR_ARRAY);
 
-	headerPage->draw(0, 0, alignRight);		// this is the header
+	headerPage->draw(drawOffset.x, drawOffset.y, alignRight);		// this is the header
 	ofSetHexColor(config->borderColor);
-	if(alignRight) ofLine(ofGetWidth() - headerPage->width, headerPage->height, headerPage->width, headerPage->height);
-	else ofLine(0, headerPage->height, headerPage->width, headerPage->height);
-	pages[currentPageIndex]->draw(0.0f, headerPage->height, alignRight);
+//	if(alignRight) ofLine(ofGetWidth() - headerPage->width, headerPage->height, headerPage->width, headerPage->height);
+//	else ofLine(drawOffset.x, drawOffset.y + headerPage->height, headerPage->width, headerPage->height);
+	pages[currentPageIndex]->draw(drawOffset.x, drawOffset.y + headerPage->height, alignRight);
 	
 	ofPopStyle();
 }

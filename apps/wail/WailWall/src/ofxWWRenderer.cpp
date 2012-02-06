@@ -64,7 +64,7 @@ void ofxWWRenderer::setupGui(){
 	
 	gui.addPage("Simulation Scale");
 	gui.addSlider("Force Scale",	fluid.forceScale,	1.0, 200); 
-	gui.addSlider("Zoom",	fluid.scaleFactor,	1.0, 10.0); 	
+	gui.addSlider("Zoom",	fluid.scaleFactor,	1.0, 20.0); 	
 	gui.addSlider("Offset X",		fluid.offsetX,		-200.0, 0); 	
 	gui.addSlider("Offset Y",		fluid.offsetY,		-200.0, 0); 	
 	

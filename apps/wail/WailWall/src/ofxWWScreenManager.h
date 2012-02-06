@@ -16,7 +16,6 @@ class ofxWWScreenManager {
   public:
 	ofxWWScreenManager();
 		
-	
 	void generateScreens(int screensWide, int screensTall, ofOrientation orientation = OF_ORIENTATION_DEFAULT);
 
 	void enableEditing();
@@ -33,12 +32,18 @@ class ofxWWScreenManager {
 	
 	//assumes the render texture has been bound
 	void renderScreens();
-	//for this to be accureate, preview rect needs to be the same aspect ratio as the actual destination rectangle
-	void renderPreview();
+	//draw a debug view of how the screens cut up
+	void renderLayout();
+	
+	//get a nicely formatted rectangle for previewing the display texture
+	ofRectangle getRenderPreviewRect();
 	
 	void displayDestinationGui();
-	
-	ofRectangle sourceRect, destRect;	//warning this will override any existing screens
+
+	//the source rect is the size of our FBO
+	//the destination rect is where it gets rendered, split up to work across multiple displays
+	//the preview rect is where it's displayed as a preview for the 1080p output recorder
+	ofRectangle sourceRect, destRect, previewRect;	//warning this will override any existing screens
 	vector<ofxWWScreen> screens;	
 	
   protected:

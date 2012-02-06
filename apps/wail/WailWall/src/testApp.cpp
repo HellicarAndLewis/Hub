@@ -23,27 +23,39 @@ void testApp::setup(){
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
 	
+	generateScreens = false;
+	shouldLoadScreens = false;
+	shouldSaveScreens = false;
+	previewScreenLayout = false;
+	
 	// touch stuff
 	touchReceiver.setup(1234);
 	touchReceiver.setListener(this);
 	simulator.setEnabled(false);
 	simulator.setListener(this);
 	
-	screenSettingsFile = "DisplayLayout.xml";
+	//JOEL: change this to the triplehead layout for your test
+	//screenSettingsFile = "DisplayLayout_triplehead.xml";
+	//DEV is for testing on smaller screens
+	screenSettingsFile = "DisplayLayout_dev.xml";
 	screenManager.loadScreens(screenSettingsFile);
-	
+
+	gui.addToggle("Show Preview Rects", previewScreenLayout);
 	renderer.blobs = &blobs;
 	renderer.setup(screenManager.sourceRect.width, screenManager.sourceRect.height);	
 	renderer.setupGui();
-	
-	gui.addPage("Screen Settings");
-	gui.addToggle("Generate Screen Layout", generateScreens);
-	gui.addToggle("Load Screens File", shouldLoadScreens);
-	gui.addToggle("Save Screens File", shouldSaveScreens);
-	gui.addToggle("Show Screen Preview", previewScreenLayout);
+
+	//JG 2/6/12
+	//Disabled for now since we are hardcoding the screen values
+//	gui.addPage("Screen Settings");
+//	gui.addToggle("Generate Screen Layout", generateScreens);
+//	gui.addToggle("Load Screens File", shouldLoadScreens);
+//	gui.addToggle("Save Screens File", shouldSaveScreens);
 	
 	gui.loadFromXML();
 	gui.setAutoSave(true);
+	
+
 }
 
 void testApp::exit() {
@@ -58,9 +70,10 @@ void testApp::update(){
 	renderer.render();
 	
 	if(generateScreens){
-		generateScreens = false;
-		screenManager.generateScreens(5, 3);
-		screenManager.saveScreens(screenSettingsFile);
+		//danger zone for hand written files
+//		generateScreens = false;
+//		screenManager.generateScreens(5, 3);
+//		screenManager.saveScreens(screenSettingsFile);
 	}
 	
 	if(shouldLoadScreens){
@@ -69,37 +82,40 @@ void testApp::update(){
 	}
 	
 	if(shouldSaveScreens){
-		shouldSaveScreens = false;
-		screenManager.saveScreens(screenSettingsFile);
+		//danger zone for hand written files
+//		shouldSaveScreens = false;
+//		screenManager.saveScreens(screenSettingsFile);
 	}	
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
 	ofBackground(0);
-	
-	//draw preview rects
-	ofPushStyle();
-	ofSetColor(255, 255, 255);
-	ofNoFill();
-	ofDrawBitmapString("Render Texture", screenManager.sourceRect.x+5, screenManager.sourceRect.y-5);
-	ofRect(screenManager.sourceRect);
-
-	ofSetColor(255, 255, 0);
-	ofDrawBitmapString("Display Output", screenManager.destRect.x+5, screenManager.destRect.y-5);
-	ofRect(screenManager.destRect);
-	ofPopStyle();
-	
-	
-	renderer.getFbo().getTextureReference().draw(screenManager.sourceRect);
+	ofRectangle renderPreview = screenManager.getRenderPreviewRect();
+	renderer.getFbo().getTextureReference().draw(renderPreview);
 	if(previewScreenLayout){
-		screenManager.renderPreview();
+//		screenManager.renderLayout();
 	}
 	
 	renderer.getFbo().getTextureReference().bind();
 	screenManager.renderScreens();
 	renderer.getFbo().getTextureReference().unbind();
 
+	if(previewScreenLayout){
+		//draw preview rects
+		ofPushStyle();
+		ofSetColor(255, 255, 255);
+		ofNoFill();
+		ofDrawBitmapString("Preview", screenManager.previewRect.x+5, screenManager.previewRect.y-5);
+		ofRect(screenManager.previewRect);
+		ofSetColor(0, 255, 0);
+		ofRect(renderPreview);
+		
+		ofSetColor(255, 255, 0);
+		ofDrawBitmapString("Display Output", screenManager.destRect.x+5, screenManager.destRect.y-5);
+		ofRect(screenManager.destRect);
+		ofPopStyle();
+	}	
 	
 	/*
 	ofSetHexColor(0x0000FF);
@@ -161,16 +177,17 @@ void testApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
-	if(ofGetKeyPressed('p')){
-		screenManager.sourceRect.width =  x - screenManager.sourceRect.x;
-		screenManager.sourceRect.height = y - screenManager.sourceRect.y;
-	}	
-	
-	if(ofGetKeyPressed('d')){
-		screenManager.destRect.width =  x - screenManager.destRect.x;
-		screenManager.destRect.height = y - screenManager.destRect.y;
-	
-	}
+	//JG: disabling for now, going hard-coded
+//	if(ofGetKeyPressed('p')){
+//		screenManager.sourceRect.width =  x - screenManager.sourceRect.x;
+//		screenManager.sourceRect.height = y - screenManager.sourceRect.y;
+//	}	
+//	
+//	if(ofGetKeyPressed('d')){
+//		screenManager.destRect.width =  x - screenManager.destRect.x;
+//		screenManager.destRect.height = y - screenManager.destRect.y;
+//	
+//	}
 	simulator.mouseDragged(x, y);
 }
 
@@ -187,6 +204,7 @@ void testApp::mousePressed(int x, int y, int button){
 	else {
 		//test selections
 	}
+	
 	simulator.mousePressed(x, y);
 }
 
@@ -213,12 +231,13 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 void testApp::touchDown(const KinectTouch &touch) {
 	renderer.touchDown(touch);
 	blobs[touch.id] = touch;
-	cout << "touch " << endl;
 }
+
 void testApp::touchMoved(const KinectTouch &touch) {
 	renderer.touchMoved(touch);
 	blobs[touch.id] = touch;
 }
+
 void testApp::touchUp(const KinectTouch &touch) {
 	renderer.touchUp(touch);
 	if(blobs.find(touch.id)!=blobs.end()) {

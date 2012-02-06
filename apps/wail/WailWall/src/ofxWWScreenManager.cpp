@@ -9,6 +9,7 @@
 
 #include "ofxWWScreenManager.h"
 #include "ofxXmlSettings.h"
+#include "ofxSimpleGuiToo.h"
 
 ofxWWScreenManager::ofxWWScreenManager(){
 	inited = false;
@@ -71,13 +72,13 @@ void ofxWWScreenManager::renderScreens(){
 	vector<ofVec2f> textureCoords;
 	for(int i = 0; i < screens.size(); i++){
 		//add all the vertices from the rectangle
-		positions.push_back( ofVec2f(screens[i].destRect.x,screens[i].destRect.y) );
-		positions.push_back( ofVec2f(screens[i].destRect.x+screens[i].destRect.width,screens[i].destRect.y) );
-		positions.push_back( ofVec2f(screens[i].destRect.x+screens[i].destRect.width,screens[i].destRect.y+screens[i].destRect.height) );
-		positions.push_back( ofVec2f(screens[i].destRect.x,screens[i].destRect.y+screens[i].destRect.height) );
+		positions.push_back( ofVec2f(destRect.x, destRect.y) + ofVec2f(screens[i].destRect.x,screens[i].destRect.y) );
+		positions.push_back( ofVec2f(destRect.x, destRect.y) + ofVec2f(screens[i].destRect.x+screens[i].destRect.width,screens[i].destRect.y) );
+		positions.push_back( ofVec2f(destRect.x, destRect.y) + ofVec2f(screens[i].destRect.x+screens[i].destRect.width,screens[i].destRect.y+screens[i].destRect.height) );
+		positions.push_back( ofVec2f(destRect.x, destRect.y) + ofVec2f(screens[i].destRect.x,screens[i].destRect.y+screens[i].destRect.height) );
 		
 		//the texture coordinates depend on orientation
-		if(true || screens[i].orientation == OF_ORIENTATION_DEFAULT){
+		if(screens[i].orientation == OF_ORIENTATION_DEFAULT){
 			textureCoords.push_back( ofVec2f(screens[i].sourceRect.x,screens[i].sourceRect.y) );
 			textureCoords.push_back( ofVec2f(screens[i].sourceRect.x+screens[i].sourceRect.width,screens[i].sourceRect.y) );
 			textureCoords.push_back( ofVec2f(screens[i].sourceRect.x+screens[i].sourceRect.width,screens[i].sourceRect.y+screens[i].sourceRect.height) );
@@ -111,30 +112,50 @@ void ofxWWScreenManager::renderScreens(){
 
 }
 
-void ofxWWScreenManager::renderPreview(){
-	
+void ofxWWScreenManager::renderLayout(){
+			
 	ofPushStyle();
 	ofNoFill();
-	
-	
 	for(int i = 0; i < screens.size(); i++){
 		ofSetColor(255, 255, 255, 120);
 		ofRectangle previewRect(sourceRect.x + screens[i].sourceRect.x, sourceRect.y + screens[i].sourceRect.y, 
-								screens[i].sourceRect.width, screens[i].sourceRect.height);
+		screens[i].sourceRect.width, screens[i].sourceRect.height);
 		ofRect(previewRect);
 		string rectString = "r" + ofToString(i) + "\n" + ofToString(screens[i].sourceRect.x, 1) + "," +  ofToString(screens[i].sourceRect.y, 1) + "\n" + ofToString(screens[i].sourceRect.width, 1) + "," + ofToString(screens[i].sourceRect.height, 1) + "";
+		//TODO: ORIENTATION isn't working yet...
 		if(screens[i].orientation == OF_ORIENTATION_90_RIGHT){
 			rectString += "\nR";
 		}
 		else if(screens[i].orientation == OF_ORIENTATION_90_LEFT){
 			rectString += "\nL";
 		}
-		
+
 		ofSetColor(255, 255, 255);
 		ofDrawBitmapString(rectString, previewRect.x+5, previewRect.y+15);
 	}
-	
 	ofPopStyle();
+}
+
+
+ofRectangle ofxWWScreenManager::getRenderPreviewRect(){
+	
+	//calculate a letterboxed preview rectangle based on the source rect compared to the preview rect
+	ofRectangle drawRect;
+	float previewAspect = previewRect.width/previewRect.height;
+	float sourceAspect = sourceRect.width/sourceRect.height;
+	if (sourceAspect < previewAspect) {
+		drawRect.height = previewRect.height;
+		drawRect.width = drawRect.height * sourceAspect;
+		drawRect.y = previewRect.y;
+		drawRect.x = previewRect.x + previewRect.width / 2 - drawRect.width / 2;
+	}
+	else{
+		drawRect.width = previewRect.width;
+		drawRect.height = drawRect.width / sourceAspect;
+		drawRect.x = previewRect.x;
+		drawRect.y = previewRect.y + previewRect.height / 2 - drawRect.height / 2;
+	}
+	return drawRect;
 }
 
 void ofxWWScreenManager::displayDestinationGui(){
@@ -175,6 +196,15 @@ void ofxWWScreenManager::loadScreens(string xmlFile){
 		destRect = ofRectangle(settings.getValue("x", 0), settings.getValue("y", 0), 
 							   settings.getValue("width", 0), settings.getValue("height", 0));				
 		settings.popTag(); //dest
+
+		settings.pushTag("preview");
+		previewRect = ofRectangle(settings.getValue("x", 0), settings.getValue("y", 0), 
+							   settings.getValue("width", 0), settings.getValue("height", 0));				
+		settings.popTag(); //dest
+		
+		settings.pushTag("gui");
+		gui.setDrawOffset(ofPoint(settings.getValue("x", 0),settings.getValue("y", 0))); 
+		settings.popTag(); //gui
 		
 		settings.pushTag("screens");
 		int numScreens = settings.getNumTags("screen");
@@ -225,6 +255,14 @@ void ofxWWScreenManager::saveScreens(string xmlFile){
 	settings.addValue("width", destRect.width);
 	settings.addValue("height", destRect.height);
 	settings.popTag(); //dest
+
+	settings.addTag("preview");
+	settings.pushTag("preview");
+	settings.addValue("x", previewRect.x);
+	settings.addValue("y", previewRect.y);
+	settings.addValue("width", previewRect.width);
+	settings.addValue("height", previewRect.height);
+	settings.popTag(); //dest
 	
 	settings.addTag("screens");
 	settings.pushTag("screens");
@@ -247,10 +285,10 @@ void ofxWWScreenManager::saveScreens(string xmlFile){
 		settings.addValue("width", screens[i].destRect.width);
 		settings.addValue("height", screens[i].destRect.height);
 		settings.popTag(); //dest
-		
-		settings.popTag(); //screen
-		
+
 		settings.addValue("orientation", screens[i].orientation);
+
+		settings.popTag(); //screen		
 	}
 	
 	settings.popTag();//screens

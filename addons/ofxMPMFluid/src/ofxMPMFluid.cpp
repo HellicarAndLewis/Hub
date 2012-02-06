@@ -458,18 +458,20 @@ void ofxMPMFluid::update(){
 		}
 		
 		p->v += gravity;
-<<<<<<< HEAD
-		//if (isMouseDragging) {
-//#ifdef MPM_FLUID_USING_MOUSE
 		if (ofGetMousePressed(0)) {
 			float vx = abs(p->x - ofGetMouseX()/scaleFactor);
 			float vy = abs(p->y - ofGetMouseY()/scaleFactor);
 			float mdx = (ofGetMouseX() - ofGetPreviousMouseX())/scaleFactor;
 			float mdy = (ofGetMouseY() - ofGetPreviousMouseY())/scaleFactor;
 			if (vx < 10.0F && vy < 10.0F) {
-=======
-
-//		if (ofGetMousePressed(0)) {
+				if (vx <= 10.0F && vy <= 10.0F) {
+					float weight = (1.0F - vx / 10.0F) * (1.0F - vy / 10.0F);
+					p->u += weight * (mdx - p->u);
+					p->v += weight * (mdy - p->v);
+				}
+			}
+		}
+		
 		for(int i = 0; i < forces.size(); i++){
 
 			float vx = MIN(abs(p->x - forces[i].pos.x*gridSizeY), 10.f);
@@ -484,17 +486,12 @@ void ofxMPMFluid::update(){
 //			cout << "force is be " << vx << " " << vy << " " << mdx << " " << mdy << endl;
 //			cout << endl;
 			if (vx <= 10.0F && vy <= 10.0F) {
->>>>>>> 5a0800b0a6d4f5c96d07cd4d371a05e052a3962e
 				float weight = (1.0F - vx / 10.0F) * (1.0F - vy / 10.0F);
 				p->u += weight * (mdx - p->u);
 				p->v += weight * (mdy - p->v);
 			}
 		}
-<<<<<<< HEAD
-//#endif		
-=======
 				
->>>>>>> 5a0800b0a6d4f5c96d07cd4d371a05e052a3962e
 		// COLLISIONS-2
 		// Plus, an opportunity to add randomness when accounting for wall collisions. 
 		float xf = p->x + p->u;
