@@ -46,6 +46,7 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 	
+	void setupVision();
 	ofxKinect kinect;
 	ofxCvFloatImage depthImg;
 	ofxCvFloatImage rangeScaledImg;
@@ -56,9 +57,11 @@ public:
 	
 	ofxOscSender wallOsc;
 	ofxOscSender soundOsc;
-	
+	void doVision();
+	void drawKinect();
 	
 	xmlgui::SimpleGui gui;
+	void setupGui();
 	
 	static const int NUM_MASK_POINTS = 4;
 	ofVec2f mask[NUM_MASK_POINTS];
@@ -98,4 +101,16 @@ public:
 	float yScaleBottom;
 	bool flipX;
 	bool flipY;
+	
+	int KINECT_WIDTH;
+	int KINECT_HEIGHT;
+	
+	enum {
+		VIEWMODE_RAW,
+		VIEWMODE_BG,
+		VIEWMODE_RANGE_SCALE,
+		VIEWMODE_MASKED,
+		VIEWMODE_MUTE
+	};
+	
 };

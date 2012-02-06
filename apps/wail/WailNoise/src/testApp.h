@@ -36,7 +36,8 @@ public:
 	
 	xmlgui::SimpleGui gui;
 	
-	map<int,ofVec3f> blobs;
+	ofVec3f rotation;
+	map<int,KinectTouch> blobs;
 	virtual void audioOut(float *outs, int buffSize, int numChannels);
 	Slosh slosh;
 	Slosh drop;

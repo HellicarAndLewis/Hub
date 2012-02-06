@@ -34,6 +34,7 @@
 		EA8E87F514C492F400940115 /* ofxOscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA8E87ED14C492F300940115 /* ofxOscMessage.cpp */; };
 		EA8E87F614C492F400940115 /* ofxOscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA8E87EF14C492F300940115 /* ofxOscReceiver.cpp */; };
 		EA8E87F714C492F400940115 /* ofxOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA8E87F114C492F300940115 /* ofxOscSender.cpp */; };
+		EA96601114E00C7800656E58 /* analysis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA96600F14E00C7800656E58 /* analysis.cpp */; };
 		EAC8152014D6AF2600595518 /* Container.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAC8150F14D6AF2600595518 /* Container.cpp */; };
 		EAC8152114D6AF2600595518 /* Control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAC8151114D6AF2600595518 /* Control.cpp */; };
 		EAC8152214D6AF2600595518 /* Controls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAC8151314D6AF2600595518 /* Controls.cpp */; };
@@ -168,6 +169,8 @@
 		EA8E87F014C492F300940115 /* ofxOscReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscReceiver.h; sourceTree = "<group>"; };
 		EA8E87F114C492F300940115 /* ofxOscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOscSender.cpp; sourceTree = "<group>"; };
 		EA8E87F214C492F300940115 /* ofxOscSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscSender.h; sourceTree = "<group>"; };
+		EA96600F14E00C7800656E58 /* analysis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = analysis.cpp; sourceTree = "<group>"; };
+		EA96601014E00C7800656E58 /* analysis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = analysis.h; sourceTree = "<group>"; };
 		EAC8150F14D6AF2600595518 /* Container.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Container.cpp; sourceTree = "<group>"; };
 		EAC8151014D6AF2600595518 /* Container.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Container.h; sourceTree = "<group>"; };
 		EAC8151114D6AF2600595518 /* Control.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Control.cpp; sourceTree = "<group>"; };
@@ -561,6 +564,8 @@
 				EAC8155114D703B800595518 /* StereoSample.cpp */,
 				EAC8155214D703B800595518 /* StereoSample.h */,
 				EAC8155314D703B800595518 /* WavFile.h */,
+				EA96600F14E00C7800656E58 /* analysis.cpp */,
+				EA96601014E00C7800656E58 /* analysis.h */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -699,6 +704,7 @@
 				EAC8156614D703B800595518 /* Personality.cpp in Sources */,
 				EAC8156914D705F400595518 /* Slosh.cpp in Sources */,
 				EA05662114D958D0009282B0 /* KinectTouchReceiver.cpp in Sources */,
+				EA96601114E00C7800656E58 /* analysis.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

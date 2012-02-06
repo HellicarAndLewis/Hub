@@ -17,8 +17,18 @@
 
 #pragma once
 
-class AudioAnalysis {
-public:
-	
-	
+
+#include "WavFile.h"
+
+namespace tricks {
+	namespace audio {
+		namespace analysis {
+			/**
+			 * Looks at the audio file in windows of "windowSize" and
+			 * returns the volume of the maximum average (abs) window.
+			 */
+			float getMaxAveragePower(WavFile *wav, int windowSize = 256);
+		};
+	};
 };
+

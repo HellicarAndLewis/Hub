@@ -222,6 +222,11 @@ void audio::play(PlayerRef playerId, float timeDelay) {
 }
 
 
+WavFile *audio::getWavFile(SampleRef sampleId) {
+	return audioSystem.audioSamples[sampleId];
+}
+
+
 /**
  * Stops a sample from playing
  */

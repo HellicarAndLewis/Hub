@@ -34,6 +34,7 @@ void KinectTouchReceiver::update() {
 			blobs[id].z = m.getArgAsFloat(3);
 			blobs[id].size = m.getArgAsFloat(4);
 			blobs[id].id = id;
+			blobs[id].age = 0;
 			
 			listener->touchDown(blobs[id]);
 			
@@ -54,15 +55,18 @@ void KinectTouchReceiver::update() {
 			
 			
 			if(!found) {
+				blobs[id].age = 0;
 				blobs[id].vel = 0;
 				listener->touchDown(blobs[id]);
 			} else {
+				blobs[id].age++;
 				listener->touchMoved(blobs[id]);
 			}
 			//printf("%d %f %f %f\n", id, p.x, p.y, p.z);				
 		} else if(m.getAddress()=="/touch/up") {
 			int id = m.getArgAsInt32(0);
 			if(blobs.find(id)!=blobs.end()) {
+				blobs[id].age++;
 				listener->touchUp(blobs[id]);
 				blobs.erase(id);
 			}

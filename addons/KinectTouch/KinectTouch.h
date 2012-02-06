@@ -36,4 +36,7 @@ public:
 	// field of view, so blobs probably won't be much
 	// bigger than 0.1
 	float size;
+	
+	// number of frames active
+	int age;
 };

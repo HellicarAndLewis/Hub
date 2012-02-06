@@ -64,8 +64,6 @@ namespace audio {
 	
 	
 	
-	
-	
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 
 	// INSTANTIATION OF SAMPLES AND PLAYERS
@@ -88,7 +86,7 @@ namespace audio {
 	
 	
 	
-	
+
 	
 	
 	
@@ -229,6 +227,8 @@ namespace audio {
 	// You don't need to know anything beyond here
 	//
     
+	WavFile *getWavFile(SampleRef sampleId);
+	
     SampleRef getSampleByFileName(string file);
     
 	enum CommandType {

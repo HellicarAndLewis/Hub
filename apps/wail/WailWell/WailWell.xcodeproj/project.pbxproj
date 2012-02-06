@@ -49,6 +49,7 @@
 		EA8E886814C4967B00940115 /* ofxCvHaarFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA8E885B14C4967B00940115 /* ofxCvHaarFinder.cpp */; };
 		EA8E886914C4967B00940115 /* ofxCvImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA8E885D14C4967B00940115 /* ofxCvImage.cpp */; };
 		EA8E886A14C4967B00940115 /* ofxCvShortImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA8E886014C4967B00940115 /* ofxCvShortImage.cpp */; };
+		EA96600914E0037D00656E58 /* testAppVision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA96600714E0037D00656E58 /* testAppVision.cpp */; };
 		EAB60DB414D99D5700AF3F6F /* contourutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAB60DB214D99D5700AF3F6F /* contourutils.cpp */; };
 		EAC8152014D6AF2600595518 /* Container.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAC8150F14D6AF2600595518 /* Container.cpp */; };
 		EAC8152114D6AF2600595518 /* Control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAC8151114D6AF2600595518 /* Control.cpp */; };
@@ -312,6 +313,7 @@
 		EA8E886014C4967B00940115 /* ofxCvShortImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCvShortImage.cpp; sourceTree = "<group>"; };
 		EA8E886114C4967B00940115 /* ofxCvShortImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCvShortImage.h; sourceTree = "<group>"; };
 		EA8E886214C4967B00940115 /* ofxOpenCv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOpenCv.h; sourceTree = "<group>"; };
+		EA96600714E0037D00656E58 /* testAppVision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testAppVision.cpp; sourceTree = "<group>"; };
 		EAB60DB214D99D5700AF3F6F /* contourutils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = contourutils.cpp; sourceTree = "<group>"; };
 		EAB60DB314D99D5700AF3F6F /* contourutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = contourutils.h; sourceTree = "<group>"; };
 		EAC8150F14D6AF2600595518 /* Container.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Container.cpp; sourceTree = "<group>"; };
@@ -450,6 +452,7 @@
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
+				EA96600714E0037D00656E58 /* testAppVision.cpp */,
 				A69C743B14D6470B00C0EABC /* ofModifiers.h */,
 			);
 			path = src;
@@ -1366,6 +1369,7 @@
 				EAC8153714D6D82600595518 /* ofxCvCoordWarping.cpp in Sources */,
 				EAC8153914D6D82600595518 /* ofxCvOpticalFlowLK.cpp in Sources */,
 				EAB60DB414D99D5700AF3F6F /* contourutils.cpp in Sources */,
+				EA96600914E0037D00656E58 /* testAppVision.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

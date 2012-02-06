@@ -19,43 +19,25 @@
 
 #include "ofMain.h"
 #include "AudioSystem.h"
-
+#include "analysis.h"
 class Slosh {
 public:
 	float minVol;
 	float maxVol;
 	float probability;
-	Slosh() {
-		minVol = 0.25;
-		maxVol = 0.5;
-		probability = 1;
-	}
 	
-	void setProbability(float probability) {
-		this->probability = probability;
-	}
+	struct SloshSample {
+		audio::SampleRef sample;
+		float volume;
+	};
 	
-	void setVolumeRange(float minVol, float maxVol) {
-		this->minVol = minVol;
-		this->maxVol = maxVol;
-	}
-	void setup(string path, int number) {
-		for(int i = 0; i < number; i++) {
-			string file = string(path) + ofToString(i) + ".wav";
-			samples.push_back(audio::loadSample(ofToDataPath(file)));
-		}
-	}
+	vector<SloshSample> samples;
 	
-	void trigger(ofVec3f p) {
-
-		if(ofRandomuf()<probability) {
-			int r = ofRandom(0, samples.size());
-			audio::PlayerRef ref = audio::createPlayer(samples[r]);
-			audio::setPan(ref, p.x);
-			float vol = ofRandom(minVol, maxVol);
-			audio::setVolume(ref, vol);
-			audio::play(ref);
-		}
-	}
-	vector<audio::SampleRef> samples;
+	
+	Slosh();
+	
+	void setProbability(float probability);	
+	void setVolumeRange(float minVol, float maxVol);
+	void setup(string path, int number);
+	void trigger(ofVec3f p);
 };
