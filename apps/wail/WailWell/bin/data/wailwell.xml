@@ -13,4 +13,6 @@
     <setting id="Maximum Blob Size" value="522.666625977"></setting>
     <setting id="Blob XY Smoothing" value="0.712000012"></setting>
     <setting id="Blob Z Smoothing" value="0.331999987"></setting>
+    <setting id="Blob xy top frustrum factor" value="1.893203855"></setting>
+    <setting id="Blob xy bottom frustrum factor" value="1.563106775"></setting>
 </settings>

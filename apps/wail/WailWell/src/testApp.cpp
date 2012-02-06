@@ -484,11 +484,19 @@ float testApp::getBlobSize(ofxCvTrackedBlob &blob) {
 void testApp::normalizeBlobCoords(ofVec3f &blob) {
 	blob.x /= KINECT_WIDTH;
 	blob.y /= KINECT_HEIGHT;
+	
 	// x and y now need to be tapered to work with the frustrum of the camera
 	// this is done by feel with sliders in the gui.
 	
+	float scaleFactor = ofMap(blob.z, 0, 1, xyScaleTop, xyScaleBottom);
+	
+	// scale out from the centre
+	ofVec2f newCoord = ofVec2f(blob.x, blob.y) - ofVec2f(0.5, 0.5);
+	newCoord *= scaleFactor;
+	blob.x = newCoord.x + 0.5;
+	blob.y = newCoord.y + 0.5;
+	
 	// z is already scaled
-	//blob.z /= 255;
 }
 
 
