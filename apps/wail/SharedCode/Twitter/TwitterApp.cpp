@@ -37,7 +37,6 @@ bool TwitterApp::initDB(){
         twitter.accessToken();
         twitter.saveTokens(token_file);
 	}
-		
 
 	// DATABASE 
 	// --------
@@ -48,6 +47,10 @@ bool TwitterApp::initDB(){
 	if(!db.createTables()) {
 		printf("Error: Cannot create database.\n");
 	}
+	
+	// UPLOADER
+	// --------
+	uploader.startThread();
 	return true;
 }
 
@@ -60,9 +63,7 @@ bool TwitterApp::connect(){
 		printf("Error: cannot connect to user stream.\n");
 		return false;
 	}
-	
 	return true;
-	
 }
 
 void TwitterApp::addDefaultListener(){

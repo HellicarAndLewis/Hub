@@ -24,8 +24,9 @@ void ofxWWTweetParticleManager::setup(){
 	twitter.addCustomListener(*this);
 	
 	// What do you want to track?
-	//twitter.track("love");
-	twitter.track("usa");
+	twitter.track("love");
+	//twitter.track("usa");
+	twitter.track("monkey");
 	
 	if(!twitter.connect()) {
 		printf("Error: cannot connect to twitter stream.\n");
@@ -251,7 +252,6 @@ void ofxWWTweetParticleManager::renderSearchTerms(){
 			searchTerms[i].draw();
 		}
 	}	
-	
 }
 
 void ofxWWTweetParticleManager::onStatusUpdate(const rtt::Tweet& tweet){
@@ -291,6 +291,9 @@ void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
 	searchTerm.pos = pos;
 	
 	searchTerms.push_back( searchTerm );	
+	
+	// @todo using ofSendMessage to test screenshots
+	ofSendMessage("take_screenshot");
 }
 
 void ofxWWTweetParticleManager::onStatusDestroy(const rtt::StatusDestroy& destroy){
@@ -310,3 +313,7 @@ void ofxWWTweetParticleManager::resetTouches(){
 	searchTweets.clear();
 }
 
+// roxlu 02/07
+TwitterApp& ofxWWTweetParticleManager::getTwitterApp() {
+	return twitter;
+}

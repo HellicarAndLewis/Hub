@@ -4,6 +4,7 @@
 #include "ofMain.h"
 #include "Twitter.h"
 #include "TwitterDB.h"
+#include "TwitterPhotoUploader.h"
 #include "IEventListener.h"
 #include "TwitterEventListener.h"
 
@@ -42,16 +43,14 @@ public:
 	
 	//single shot to notify a load of fake search terms for testing
 	void populateFakeSearchTerms(vector<string> fakeTerms);
-	
+
 	bool getFollowers(vector<string>& result);
 	bool getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result);
 	bool getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result);
 	bool getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany, vector<rtt::Tweet>& result);
-	
 	bool getFakeTweetsWithSearchTerm(vector<rtt::Tweet>& result);
-	
 	void onNewSearchTerm(rtt::Tweet tweet, const string& term);
-	
+	void uploadScreenshot(const string& filePath, const string& username, const string& message);
 	void addDefaultListener();
 	void addCustomListener(rt::IEventListener& listener);
 	
@@ -68,6 +67,7 @@ private:
 	rt::Twitter twitter;
 	rt::Stream	stream;
 	TwitterDB db;
+	TwitterPhotoUploader uploader;
 	TwitterEventListener twitter_listener;
 };
 
@@ -86,6 +86,10 @@ inline bool TwitterApp::getTweetsNewerThan(int age, int howMany, vector<rtt::Twe
 
 inline bool TwitterApp::getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany, vector<rtt::Tweet>& result) {
 	return db.getTweetsWithSearchTerm(q, howMany, youngerThan, result);
+}
+
+inline void TwitterApp::uploadScreenshot(const string& filePath, const string& username, const string& message) {
+	uploader.addFile(filePath, username, message);
 }
 
 #endif
