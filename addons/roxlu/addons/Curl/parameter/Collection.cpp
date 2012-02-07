@@ -1,20 +1,48 @@
 #include "Collection.h"
 
 namespace roxlu {
-namespace twitter {
+namespace curl {
 namespace parameter {
 
-namespace rtp = roxlu::twitter::parameter;
+namespace rcp = roxlu::curl::parameter;
 
 Collection::Collection() {
 }
 
 Collection::~Collection() {
+	clear();	
+}
+
+
+Collection::Collection(const Collection& other) {
+	*this = other;
+}
+
+Collection& Collection::operator=(const Collection& other) {
+	clear();
+	*this += other;
+	return *this;
+}
+
+void Collection::clear() {
 	list<Parameter*>::iterator it = params.begin();
 	while(it != params.end()) {
 		delete *it;
 		it = params.erase(it);
-	}	
+	}
+}
+
+bool Collection::removeParameter(const string& name) {
+	list<Parameter*>::iterator it = params.begin();
+	while(it != params.end()) {
+		if((*it)->getName() == name) {
+			delete (*it);
+			params.erase(it);
+			return true;
+		}
+		++it;
+	}
+	return false;
 }
 
 void Collection::print() const {
@@ -27,7 +55,7 @@ void Collection::print() const {
 }
 
 File* Collection::addFile(const string& name, const string& file) {
-	rtp::File* f = new File(name, file);
+	rcp::File* f = new File(name, file);
 	params.push_back(f);
 	return f;
 }
@@ -38,7 +66,7 @@ string Collection::getQueryString() {
 		ps.append("?");
 	}
 	
-	list<rtp::Parameter*>::const_iterator it = params.begin();
+	list<rcp::Parameter*>::const_iterator it = params.begin();
 	while(it != params.end()) {
 		ps.append((*it)->getName());
 		ps.append("=");
@@ -60,7 +88,7 @@ string Collection::getQueryString() {
  * @param	bool			Pass true when you want only parameters 
  *							that are used in the signature.
  */
-list<rtp::Parameter*> Collection::getParameters(bool forSignature) const{
+list<rcp::Parameter*> Collection::getParameters(bool forSignature) const{
 	list<Parameter*> result;
 	list<Parameter*>::const_iterator it = params.begin();
 	while(it != params.end()) {

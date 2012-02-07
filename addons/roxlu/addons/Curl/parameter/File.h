@@ -6,12 +6,12 @@
 #include "Parameter.h"
 
 namespace roxlu {
-namespace twitter {
+namespace curl {
 namespace parameter {
 
-namespace rtp = roxlu::twitter::parameter;
+namespace rcp = roxlu::curl::parameter;
 
-class File : public rtp::Parameter {
+class File : public rcp::Parameter {
 public:	
 	File(const std::string& n, const std::string& filePath);
 	File(File* other);
@@ -33,5 +33,5 @@ inline bool File::operator==(const File& other) const {
 
 
 
-}}} // roxlu::twitter::parameter
+}}} // roxlu::curl::parameter
 #endif

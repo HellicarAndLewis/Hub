@@ -1,15 +1,15 @@
 #include "File.h"
 namespace roxlu {
-namespace twitter {
+namespace curl {
 namespace parameter {
 
-namespace rtp = roxlu::twitter::parameter;
+namespace rcp = roxlu::curl::parameter;
 
 File::File(const std::string& n, const std::string& f)
 	:file_path(f)
 {
 	name = n;
-	type = rtp::Parameter::PARAM_FILE;
+	type = rcp::Parameter::PARAM_FILE;
 }
 
 File::File(File* other) {
@@ -26,4 +26,4 @@ std::string File::getStringValue() {
 	return file_path;
 }
 
-}}}// roxlu::twitter::parameter
+}}}// roxlu::curl::parameter

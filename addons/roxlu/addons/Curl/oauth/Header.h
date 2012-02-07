@@ -5,17 +5,17 @@
 #include "../parameter/Collection.h"
 #include "../parameter/Parameter.h"
 
-namespace rtp = roxlu::twitter::parameter;
+namespace rcp = roxlu::curl::parameter;
 
 namespace roxlu {
-namespace twitter {
+namespace curl {
 namespace oauth {
 
 class Header {
 public:
-	static std::string getHeader(const rtp::Collection& col);
+	static std::string getHeader(const rcp::Collection& col);
 };
 
-}}} // roxlu::twitter::oauth
+}}} // roxlu::curl::oauth
 
 #endif

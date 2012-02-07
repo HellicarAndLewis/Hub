@@ -1,7 +1,7 @@
 #include "Header.h"
 
 namespace roxlu {
-namespace twitter {
+namespace curl {
 namespace oauth {
 
 /**
@@ -10,16 +10,17 @@ namespace oauth {
  * 
  * @see https://dev.twitter.com/docs/auth/creating-signature 
  */
-string Header::getHeader(const rtp::Collection& col) {
+string Header::getHeader(const rcp::Collection& col) {
 	string result;
-	result.assign("Authorization: OAuth ");
+	//result.assign("Authorization: OAuth ");
+	result.assign("OAuth ");
 	list<string> keylist;
-	const list<rtp::Parameter*>& pars = col.getParameters();
+	const list<rcp::Parameter*>& pars = col.getParameters();
 	
 	// create key-value pairs, with quotes.
 	// -------------------------------------
 	{
-		list<rtp::Parameter*>::const_iterator it = pars.begin();
+		list<rcp::Parameter*>::const_iterator it = pars.begin();
 		string varval;
 		while(it != pars.end()) {
 			varval.assign((*it)->getName());

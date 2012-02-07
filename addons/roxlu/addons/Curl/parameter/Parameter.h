@@ -5,7 +5,7 @@
 #include <sstream>
 
 namespace roxlu {
-namespace twitter {
+namespace curl {
 namespace parameter {
 
 /**
@@ -86,5 +86,5 @@ inline bool Parameter::operator==(const Parameter& other) const {
 
 
 
-}}} // roxlu::twitter::parameter
+}}} // roxlu::curl::parameter
 #endif

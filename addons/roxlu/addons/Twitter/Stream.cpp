@@ -1,8 +1,8 @@
 #include "Stream.h"
 #include <sstream>
 
-namespace rtp = roxlu::twitter::parameter;
-namespace rtc = roxlu::twitter::curl;
+namespace rcp = roxlu::curl::parameter;
+namespace rc = roxlu::curl;
 
 namespace roxlu {
 namespace twitter {
@@ -29,8 +29,8 @@ bool Stream::connect(const string& streamURL) {
 	
 	// create request.
 	string url = streamURL;
-	rtp::Collection params;
-	rtc::Request req;
+	rcp::Collection params;
+	rc::Request req;
 	req.setURL(url);
 	req.isGet(true);
 	
@@ -66,11 +66,12 @@ bool Stream::connect(const string& streamURL) {
 		printf("Error: cannot create easy handle.\n");
 		return false;
 	}
-
-	//string userpass = twitter.getTwitterUsername() +":" +twitter.getTwitterPassword();
-	//curl_easy_setopt(curl, CURLOPT_USERPWD, NULL); 
-	//curl_easy_setopt(curl, CURLOPT_USERPWD, userpass.c_str());
-
+	
+	/*
+	string userpass = twitter.getTwitterUsername() +":" +twitter.getTwitterPassword();
+	curl_easy_setopt(curl, CURLOPT_USERPWD, NULL); 
+	curl_easy_setopt(curl, CURLOPT_USERPWD, userpass.c_str());
+	*/
 	
 	// set url
 	r = curl_easy_setopt(curl, CURLOPT_URL, use_url.c_str());
@@ -88,20 +89,21 @@ bool Stream::connect(const string& streamURL) {
 	r = curl_easy_setopt(curl, CURLOPT_WRITEDATA, this);
 	CHECK_CURL_ERROR(r);	
 	
-	//curl_easy_setopt(curl, CURLOPT_VERBOSE, true);
+	curl_easy_setopt(curl, CURLOPT_VERBOSE, true);
 
 	// set the oauth headers.
-	string header = req.getHeader();
-	if(header.length()) {
-		printf("\n\n%s\n\n", header.c_str());
-		curl_header = curl_slist_append(curl_header, header.c_str());
-		if(curl_header) {
-			curl_easy_setopt(curl, CURLOPT_HTTPHEADER ,curl_header);
+	const vector<string>& headers = req.getHeaders();
+	if(headers.size()) {
+		vector<string>::const_iterator it = headers.begin();
+		while(it != headers.end()) {
+			curl_header = curl_slist_append(curl_header, (*it).c_str());
+			if(curl_header == NULL) {
+				printf("Error: stream cannot set header!\n");
+				return false;
+			}
+			++it;
 		}
-		else {
-			printf("Cannot set header!");
-			return false;
-		}
+		curl_easy_setopt(curl, CURLOPT_HTTPHEADER ,curl_header);
 	}	
 	
 	// create multi handle for async io

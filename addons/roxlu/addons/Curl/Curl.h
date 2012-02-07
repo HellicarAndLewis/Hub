@@ -5,19 +5,20 @@
 #define CHECK_CURLM_ERROR(result)	if((result) != CURLM_OK) { printf("Curl multi error: %s.\n", curl_multi_strerror((result))); return false; }
 
 
+#include <vector>
 #include <string>
-#include "../../../libs/curl/curl.h"
-#include "../parameter/Collection.h"
-#include "../parameter/Parameter.h"
-#include "../../../libs/crypto/urlencode.h"
+#include "parameter/Collection.h"
+#include "parameter/Parameter.h"
+#include "../../libs/curl/curl.h"
+#include "../../libs/crypto/urlencode.h"
 
 using std::string;
+using std::vector;
 
 namespace roxlu {
-namespace twitter {
 namespace curl {
 
-namespace rtp = roxlu::twitter::parameter;
+namespace rcp = roxlu::curl::parameter;
 
 class Curl {
 public:
@@ -25,20 +26,21 @@ public:
 	~Curl();
 	bool isInitialized();
 	bool doGet(const string& url);
-	bool doPost(const string& url, const rtp::Collection& params, bool multiPart = false);
+	bool doPost(const string& url, const rcp::Collection& params, bool multiPart = false);
 	void setAuthUsername(const string& username);
 	void setAuthPassword(const string& password);
 	string& getAuthUsername();
 	string& getAuthPassword();
-	void setHeader(const string& header);
+	void addHeader(const string& header);
 	void setVerbose(bool verbose);
-	string createQueryString(const list<rtp::Parameter*>& queryParams); // @todo use Collection::getQueryString
+	string createQueryString(const list<rcp::Parameter*>& queryParams); // @todo use Collection::getQueryString
 	string& getBuffer();
 	string buffer;
 private:
 	void reset(); // clears buffer; sets callback, sets userspass
 	void setCallback();
 	void setUserPass();
+	void setHeaders(struct curl_slist** slist);
 	static size_t callback(char* data, size_t size, size_t nmemb, Curl* twit);
 	
 
@@ -49,8 +51,7 @@ private:
 	bool is_callback_set;
 	string auth_username;
 	string auth_password;
-	
-	//CURLM* curlm; // for now we do not yet use the multi handle... maybe later
+	vector<string> headers;
 };
 
 inline string& Curl::getBuffer() {
@@ -77,5 +78,5 @@ inline string& Curl::getAuthPassword() {
 	return auth_password;
 }
 
-}}} // roxlu::twitter::curl
+}} // roxlu::curl
 #endif

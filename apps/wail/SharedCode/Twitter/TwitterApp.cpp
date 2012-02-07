@@ -17,16 +17,12 @@ bool TwitterApp::initDB(){
 
 	// TWITTER
 	// --------
-	printf("initializeing twitter\n");
+	printf("initializing twitter\n");
 	ofxXmlSettings userandpass;
 	if(!userandpass.loadFile("userandpass.xml")){
 		ofSystemAlertDialog("Create an xml file called userandpass.xml in data/ and add <user>username</user><pass>password</pass> to it");
 	}
-	printf("%s\n", userandpass.getValue("user", "dewarshub").c_str());
-	printf("'%s'\n", userandpass.getValue("pass", "HUB2012hub").c_str());
-	
-//	twitter.setTwitterUsername("dewarshub");
-//	twitter.setTwitterPassword("HUB2012hub#");
+
 	twitter.setTwitterUsername(userandpass.getValue("user", "dewarshub"));
 	twitter.setTwitterPassword(userandpass.getValue("pass", "HUB2012hub"));
 	twitter.setConsumerKey("5cL1KRDQzcnGo8ZOaAz0g");
@@ -47,12 +43,10 @@ bool TwitterApp::initDB(){
 	// --------
 	if(!db.open("twitter.db")) {
 		printf("Error: Cannot open twitter db.\n");
-		//return false;
 	}
 	
 	if(!db.createTables()) {
 		printf("Error: Cannot create database.\n");
-		//return false;
 	}
 	return true;
 }

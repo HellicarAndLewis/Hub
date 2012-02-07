@@ -2,6 +2,10 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
+	ofBackground(33);
+	ofSetFrameRate(60);
+	ofSetVerticalSync(true);
+	
 	if(!twitter_app.initDB()){
 		printf("Error: cannot initialize twitter db.\n");
 		exit();
@@ -23,11 +27,13 @@ void testApp::setup(){
 	}
 	
 	twitter_app.addListener(this, &testApp::onNewSearchTerm);
+	uploader.startThread();
+	take_photo = false;
 }
 
 
 void testApp::onNewSearchTerm(TwitterAppEvent& event) {
-	printf("Yay new search term: %s\n", event.search_term.c_str());
+	//printf("Yay new search term: %s\n", event.search_term.c_str());
 }
 
 //--------------------------------------------------------------
@@ -38,7 +44,20 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-
+	float p = (1.0f + (cos(ofGetElapsedTimef()*2.6) + sin(ofGetElapsedTimef()* 0.5)) * 0.5);
+	float s = 10 + p * 100;
+	ofSetColor(244,p*155,255-p*p*100);
+	ofCircle(ofGetWidth() * 0.5,ofGetHeight()*0.5,s);
+	
+	if(take_photo) {
+		string filename = ofGetTimestampString() +".jpg";
+		ofSaveScreen(filename);
+		//for(int i = 0; i < 5; ++i) {
+			uploader.addFile(ofToDataPath(filename,true), "roxlu", "@dewarscube SEARCH biology");
+			printf("created : %s\n", filename.c_str());
+		//}
+		take_photo = false;
+	}
 }
 
 //--------------------------------------------------------------
@@ -48,7 +67,10 @@ void testApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){
-
+	if(key == ' ') {
+		take_photo = !take_photo;
+	}
+	
 }
 
 //--------------------------------------------------------------

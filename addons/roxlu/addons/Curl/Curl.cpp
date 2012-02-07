@@ -1,6 +1,5 @@
 #include "Curl.h"
 namespace roxlu {
-namespace twitter {
 namespace curl {
 
 // Constructor, creates curl handle.
@@ -38,6 +37,19 @@ Curl::~Curl() {
 	}
 }
 
+void Curl::addHeader(const string& header) {
+	headers.push_back(header);
+}
+
+void Curl::setHeaders(struct curl_slist** slist) {
+	vector<string>::iterator it = headers.begin();
+	while(it != headers.end()) {
+		*slist = curl_slist_append(*slist, (*it).c_str());
+
+		++it;
+	}
+}
+
 bool Curl::doGet(const string& url) {
 	CURLcode r;
 	struct curl_slist* curl_header = NULL;
@@ -58,8 +70,8 @@ bool Curl::doGet(const string& url) {
 	CHECK_CURL_ERROR(r);
 	
 	// set header
-	if(header.length()) {
-		curl_header = curl_slist_append(curl_header, header.c_str());
+	if(headers.size()) {
+		setHeaders(&curl_header);
 		if(curl_header) {
 			curl_easy_setopt(curl, CURLOPT_HTTPHEADER, curl_header);
 		}
@@ -73,16 +85,16 @@ bool Curl::doGet(const string& url) {
 	}
 	
 	// clear header.
-	if(header.length()) {
+	if(headers.size()) {
 		curl_slist_free_all(curl_header);
-		header.clear();
+		headers.clear();
 		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, NULL); // opts are sticky
 	}
 	
 	return result;
 }
 
-bool Curl::doPost(const string& url, const rtp::Collection& params, bool multiPart) {
+bool Curl::doPost(const string& url, const rcp::Collection& params, bool multiPart) {
 	CURLcode r;
 	struct curl_slist* curl_header = NULL;
 	struct curl_httppost* post_curr = NULL;
@@ -99,7 +111,7 @@ bool Curl::doPost(const string& url, const rtp::Collection& params, bool multiPa
 	// Add fields to post.
 	// ------------------------------------------------------
 	if(!multiPart) {
-		const list<rtp::Parameter*>& pars = params.getParameters();
+		const list<rcp::Parameter*>& pars = params.getParameters();
 		string data_str = createQueryString(pars);
 		
 		r = curl_easy_setopt(curl, CURLOPT_HTTPPOST, 1);
@@ -111,39 +123,52 @@ bool Curl::doPost(const string& url, const rtp::Collection& params, bool multiPa
 	}	
 	else {
 	
+		// @todo: 2012.02.03, we've to test this, I got some wierd things
+		// with posting to twitter. I had to add all parameters to the 
+		// query string and only was allowed to use files in the multipart 
+		// body...
+		//
+		// for twitpic I had to use only the multipart body ...
+		//
+		//------------------------------
 		// When we do a multi part, we add the parameters that are used 
 		// to create the signature string as query string; this is just 
 		// the ouath standard. Somehow adding them as mult-part doesnt work.
-		list<rtp::Parameter*> query_params = params.getParameters(true); 
+
+		/*  commented this because of testing with twitpic
+		list<rcp::Parameter*> query_params = params.getParameters(true); 
 		string qs = createQueryString(query_params);
 		if(qs.length()) {
-			use_url = use_url + "?" + qs; 
+			//use_url = use_url + "?" + qs; 
 		}
-		 
+		*/
+
 		// handling a multi part post.
-		list<rtp::Parameter*> post_params = params.getParameters(false); 
-		list<rtp::Parameter*>::const_iterator it = post_params.begin();	
+		//const list<rcp::Parameter*>& post_params = params.getParameters(false); 
+		const list<rcp::Parameter*>& post_params = params.getParameters(); 
+		list<rcp::Parameter*>::const_iterator it = post_params.begin();	
 	
 		while(it != post_params.end()) {
 			switch((*it)->type) {
-				// This doesn't work somehow... I'm using the query string
+				// This doesn't work somehow for twitter... I'm using the query string
 				// now and urlencoding the values. But somehow it looks like
 				// this string isn't added to the form.
-				/*
-				case rtp::Parameter::PARAM_STRING: {
+				// update: 2012.02.03 this does work for twitpic
+				// update: 2012.02.06 this also works for flickr
+				case rcp::Parameter::PARAM_STRING: {
 					curl_formadd(
 							 &post_curr
 							,&post_last
 							,CURLFORM_COPYNAME
 							,(*it)->getName().c_str()
 							,CURLFORM_COPYCONTENTS
-							,urlencode((*it)->getStringValue()).c_str()
+							,(*it)->getStringValue().c_str()
 							,CURLFORM_END
 					);
 					break;
 				}
-				*/
-				case rtp::Parameter::PARAM_FILE: {
+				
+				case rcp::Parameter::PARAM_FILE: {
 					curl_formadd(
 							 &post_curr
 							,&post_last
@@ -177,8 +202,8 @@ bool Curl::doPost(const string& url, const rtp::Collection& params, bool multiPa
 	CHECK_CURL_ERROR(r);
 	
 	// set header
-	if(header.length()) {
-		curl_header = curl_slist_append(curl_header, header.c_str());
+	if(headers.size()) {
+		setHeaders(&curl_header);
 	}
 	if(curl_header) {
 		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, curl_header);
@@ -195,16 +220,15 @@ bool Curl::doPost(const string& url, const rtp::Collection& params, bool multiPa
 	
 	// clear header.
 	curl_slist_free_all(curl_header);
-	header.clear();
+	headers.clear();
 	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, NULL); // opts are sticky
-	
 	return result;
 }
 
 // @todo use Collection::getQueryString
-string Curl::createQueryString(const list<rtp::Parameter*>& queryParams) {
+string Curl::createQueryString(const list<rcp::Parameter*>& queryParams) {
 	string qs;
-	list<rtp::Parameter*>::const_iterator it = queryParams.begin();
+	list<rcp::Parameter*>::const_iterator it = queryParams.begin();
 	while(it != queryParams.end()) {
 		
 		qs.append(urlencode((*it)->getName()));
@@ -219,10 +243,8 @@ string Curl::createQueryString(const list<rtp::Parameter*>& queryParams) {
 	return qs;
 }
 
-
 void Curl::reset() {
 	buffer = "";
-	//curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, NULL); // reset request, from twitcurl.
 	setCallback();
 	setUserPass();
 }
@@ -250,13 +272,9 @@ size_t Curl::callback(char* data, size_t size, size_t nmemb, Curl* curlPtr) {
 	return handled;
 }
 
-void Curl::setHeader(const string& h) {
-	header = h;
-}
-
 void Curl::setVerbose(bool verbose) {
 	curl_easy_setopt(curl, CURLOPT_VERBOSE, (verbose) ? 1 : 0);	
 }
 
 
-}}} // roxlu::twitter::curl
+}} // roxlu::twitter::curl

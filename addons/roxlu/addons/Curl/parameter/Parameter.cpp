@@ -1,7 +1,7 @@
 #include "Parameter.h"
 
 namespace roxlu {
-namespace twitter {
+namespace curl {
 namespace parameter {
 
 Parameter::Parameter() 
@@ -28,7 +28,7 @@ Parameter::~Parameter() {
 }
 
 void Parameter::print() {
-	printf("%s = '%s'", getName().c_str(), getStringValue().c_str());
+	printf("%s = '%s' (%d)", getName().c_str(), getStringValue().c_str(), type);
 }
 
 bool Parameter::mustUseInSignature() {
@@ -37,4 +37,4 @@ bool Parameter::mustUseInSignature() {
 
 
 
-}}} // roxlu::twitter::parameter
+}}} // roxlu::curl::parameter

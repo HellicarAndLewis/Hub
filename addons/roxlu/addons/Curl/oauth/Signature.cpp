@@ -2,10 +2,10 @@
 #include "oAuth.h"
 #include "../parameter/Parameter.h"
 
-namespace rtp = roxlu::twitter::parameter;
+namespace rcp = roxlu::curl::parameter;
 
 namespace roxlu {
-namespace twitter {
+namespace curl {
 namespace oauth {
 
 class oAuth;
@@ -16,11 +16,11 @@ class oAuth;
 //}
 
 
-string Signature::getSignatureForGet(oAuth& auth, const string& url, const rtp::Collection& params) {
+string Signature::getSignatureForGet(oAuth& auth, const string& url, const rcp::Collection& params) {
 	return getSignature(auth, url, "GET", params);
 }
 
-string Signature::getSignatureForPost(oAuth& auth, const string& url, const rtp::Collection& params) {
+string Signature::getSignatureForPost(oAuth& auth, const string& url, const rcp::Collection& params) {
 	return getSignature(auth, url, "POST", params);
 }
 
@@ -35,7 +35,7 @@ string Signature::getSignatureForPost(oAuth& auth, const string& url, const rtp:
  * @see		http://tools.ietf.org/html/rfc5849#section-3.4.1.3.1 <-- some important notes on what to include!
  * @return	string		The signature
  */
-string Signature::getSignature(oAuth& auth, const string& url, const string& method, const rtp::Collection& params) {
+string Signature::getSignature(oAuth& auth, const string& url, const string& method, const rcp::Collection& params) {
 	// step 1: create signature base string
 	// -------------------------------------
 	string sig_base;
@@ -45,11 +45,11 @@ string Signature::getSignature(oAuth& auth, const string& url, const string& met
 	sig_base.append("&");
 	
 	string param_string = getParameterStringForSignatureBase(params);
-//	printf("Parameter string: %s\n", param_string.c_str());
+	//printf("Parameter string: %s\n", param_string.c_str());
 	if(param_string.length()) {
 		sig_base.append(urlencode(param_string));
 	}
-	printf("Signature base: %s\n", sig_base.c_str());
+	//printf("Signature base: %s\n", sig_base.c_str());
 	
 	// step 2: use signature base string to create signature
 	// -----------------------------------------------------
@@ -66,7 +66,7 @@ string Signature::getSignature(oAuth& auth, const string& url, const string& met
 	if(toksec.length()) {
 		sign_key.append(urlencode(toksec));
 	}
-	
+
 	// use signature base + sign key to create signature
 	mac.HMAC_SHA1(
 				(unsigned char*)sig_base.c_str()
@@ -78,7 +78,7 @@ string Signature::getSignature(oAuth& auth, const string& url, const string& met
 			
 	string base64_encoded = base64_encode(digest, 20);
 	string signature = urlencode(base64_encoded);
-	printf("Signature: %s\n", signature.c_str());
+	//printf("Signature: %s\n", signature.c_str());
 	return signature;
 }
 
@@ -91,12 +91,12 @@ string Signature::getSignature(oAuth& auth, const string& url, const string& met
  * @return	string			Parameter string.
  *
  */
-string Signature::getParameterStringForSignatureBase(const rtp::Collection& col) {
+string Signature::getParameterStringForSignatureBase(const rcp::Collection& col) {
 	// see https://dev.twitter.com/docs/auth/creating-signature 
 	list<string> value_list;
-	list<rtp::Parameter*> pars = col.getParameters(true);
+	list<rcp::Parameter*> pars = col.getParameters(true);
 	{
-		list<rtp::Parameter*>::const_iterator it = pars.begin();
+		list<rcp::Parameter*>::const_iterator it = pars.begin();
 		string varval;
 		while(it != pars.end()) {
 			varval.assign(urlencode((*it)->getName()));
@@ -124,4 +124,4 @@ string Signature::getParameterStringForSignatureBase(const rtp::Collection& col)
 }
 
 
-}}} // roxlu::twitter::oauth
+}}} // roxlu::curl::oauth

@@ -16,10 +16,10 @@ using std::string;
 using std::map;
 
 namespace roxlu {
-namespace twitter {
+namespace curl {
 namespace parameter {
 
-namespace rtp = roxlu::twitter::parameter;
+namespace rcp = roxlu::curl::parameter;
 
 /**
  * A collection of Parameter* values. This can be used to i.e. create a 
@@ -32,6 +32,8 @@ class Collection {
 public:
 	Collection();
 	~Collection();
+	Collection(const Collection& other);
+	Collection& operator=(const Collection& other);
 	
 	// Add a string var-value
 	template<typename T>
@@ -44,6 +46,7 @@ public:
 	
 	File* addFile(const string& name, const string& file);
 	
+	bool removeParameter(const string& name);
 	Parameter* findByName(const string& name);
 	Parameter& operator[](const string& name);
 	Collection& operator+=(const Collection& other);
@@ -52,8 +55,8 @@ public:
 	
 	void print() const;
 	const list<Parameter*>& getParameters() const;
-	list<rtp::Parameter*> getParameters(bool forSignature) const;
-	
+	list<rcp::Parameter*> getParameters(bool forSignature) const;
+	void clear(); // remove all params 	
 private:
 	list<Parameter*> params;
 };
@@ -90,12 +93,12 @@ inline Collection& Collection::operator+=(const Collection& other) {
 	while(it != other.params.end()) {
 		switch((*it)->type) {
 			case Parameter::PARAM_STRING: {
-				rtp::Parameter* p = new rtp::Parameter((*it));
+				rcp::Parameter* p = new rcp::Parameter((*it));
 				params.push_back(p);
 				break;
 			};
 			case Parameter::PARAM_FILE: {
-				rtp::File* f = new rtp::File((rtp::File*)(*it));
+				rcp::File* f = new rcp::File((rcp::File*)(*it));
 				params.push_back(f);
 				break;
 			}
@@ -115,6 +118,6 @@ inline const list<Parameter*>& Collection::getParameters() const {
 }
 
 
-}}} // roxlu::twitter::parameter
+}}} // roxlu::curl::parameter
 
 #endif
