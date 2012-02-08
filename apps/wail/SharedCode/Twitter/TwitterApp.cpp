@@ -25,8 +25,13 @@ bool TwitterApp::initDB(){
 		ofSystemAlertDialog("Create an xml file called userandpass.xml in data/ and add <user>username</user><pass>password</pass> to it");
 	}
 
-	twitter.setTwitterUsername(userandpass.getValue("user", "dewarshub"));
-	twitter.setTwitterPassword(userandpass.getValue("pass", "HUB2012hub"));
+	string username = userandpass.getValue("user", "dewarshub");
+	string userpass = userandpass.getValue("pass", "HUB2012hub");
+	printf("Twitter username: %s\n", username.c_str());
+	printf("Twitter password: %s\n", userpass.c_str());
+	
+	twitter.setTwitterUsername(username);
+	twitter.setTwitterPassword(userpass);
 	twitter.setConsumerKey("5cL1KRDQzcnGo8ZOaAz0g");
 	twitter.setConsumerSecret("e4X9dtxkgmpkRlr9arhOfNe7tTezWad2bmCUNvPtBvQ");
 	
@@ -61,8 +66,8 @@ bool TwitterApp::reloadBadWords() {
 	return bad_words.reloadWordsFile(file);
 }
 				 
-void TwitterApp::cleanupBadWords(string& text, const string& replacement) {
-	bad_words.cleanup(text, replacement);
+bool TwitterApp::containsBadWord(const string& text) {
+	return bad_words.containsBadWord(text);
 }
 
 void TwitterApp::track(string trackingString){

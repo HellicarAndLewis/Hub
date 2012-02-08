@@ -40,7 +40,7 @@ public:
 	
 	// cleans up bad words.
 	bool reloadBadWords();
-	void cleanupBadWords(string& text, const string& replacement);
+	bool containsBadWord(const string& text);
 	
 	void update();	
 	

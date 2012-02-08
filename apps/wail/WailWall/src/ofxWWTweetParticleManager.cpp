@@ -255,6 +255,11 @@ void ofxWWTweetParticleManager::renderSearchTerms(){
 }
 
 void ofxWWTweetParticleManager::onStatusUpdate(const rtt::Tweet& tweet){
+	if(twitter.containsBadWord(tweet.getText())) {
+		printf("[ censored ] : %s\n", tweet.getText().c_str());
+		return;
+	}
+	
 	ofxWWTweetParticle tweetParticle = createParticleForTweet(tweet);
 	tweets.push_back( tweetParticle );	
 	

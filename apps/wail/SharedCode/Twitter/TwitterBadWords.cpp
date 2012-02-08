@@ -12,7 +12,8 @@ bool TwitterBadWords::reloadWordsFile(const string& filePath) {
 	string line;
 	while(std::getline(ifs,line)) {
 		if(line.length()) {
-			bad_words.push_back("(^|\\s)" +line +"(\\s|$)");
+			//bad_words.push_back("(^|\\s)" +line +"(\\s|$)");
+			bad_words.push_back(line);
 		}
 	}
 	return true;
@@ -28,5 +29,21 @@ void TwitterBadWords::cleanup(string& text, const string& replacement) {
 	}	
 }
 
+
+bool TwitterBadWords::containsBadWord(const string& text) {
+	pcrecpp::RE_Options re_opts;
+	re_opts.set_caseless(true)
+			.set_extended(false)
+			.set_multiline(true);	
+	vector<string>::iterator it = bad_words.begin();
+	while(it != bad_words.end()) {
+		if(pcrecpp::RE((*it), re_opts).PartialMatch(text)) {
+			printf(" > bad word: %s < ", (*it).c_str());
+			return true;
+		}
+		++it;
+	}
+	return false;
+}
 
 } // roxlu

@@ -1,22 +1,22 @@
 <settings>
-    <setting id="View" value="3"></setting>
-    <setting id="Blur Size" value="3.000000000"></setting>
-    <setting id="Blur Iterations" value="7.000000000"></setting>
+    <setting id="View" value="2"></setting>
+    <setting id="Blur Size" value="1.000000000"></setting>
+    <setting id="Blur Iterations" value="5.000000000"></setting>
     <setting id="Erode Image" value="true"></setting>
     <setting id="Dilate Image" value="true"></setting>
     <setting id="Accumulate Background" value=""></setting>
-    <setting id="Background Hysteresis" value="0.099600002"></setting>
-    <setting id="Draw Blobs" value="false"></setting>
+    <setting id="Background Hysteresis" value="0.026213592"></setting>
+    <setting id="Draw Blobs" value="true"></setting>
     <setting id="Water Surface Level" value="0.800970852"></setting>
-    <setting id="Maximum Water Depth" value="1.000000000"></setting>
-    <setting id="Minimum Blob Size" value="25.000000000"></setting>
-    <setting id="Maximum Blob Size" value="522.666625977"></setting>
-    <setting id="Blob XY Smoothing" value="0.733009696"></setting>
-    <setting id="Blob Z Smoothing" value="0.331999987"></setting>
+    <setting id="Maximum Water Depth" value="0.951456308"></setting>
+    <setting id="Minimum Blob Size" value="96.000000000"></setting>
+    <setting id="Maximum Blob Size" value="376.000000000"></setting>
+    <setting id="Blob XY Smoothing" value="0.310679615"></setting>
+    <setting id="Blob Z Smoothing" value="0.461165041"></setting>
     <setting id="Blob x top frustrum factor" value="4.024271965"></setting>
-    <setting id="Blob y top frustrum factor" value="2.868932247"></setting>
-    <setting id="Blob x bottom frustrum factor" value="2.189320326"></setting>
-    <setting id="Blob y bottom frustrum factor" value="2.189320326"></setting>
+    <setting id="Blob y top frustrum factor" value="3.208737850"></setting>
+    <setting id="Blob x bottom frustrum factor" value="6.063107014"></setting>
+    <setting id="Blob y bottom frustrum factor" value="7.830097198"></setting>
     <setting id="Flip X" value="true"></setting>
     <setting id="Flip Y" value="false"></setting>
 </settings>

@@ -13,18 +13,20 @@ TwitterEventListener::~TwitterEventListener() {
 }
 
 void TwitterEventListener::onStatusUpdate(const rtt::Tweet& tweet) {
-	rtt::Tweet clean_tweet = tweet;
+	if(twitter_app.containsBadWord(tweet.text)) {
+		printf("# [ censored ] : %s\n", tweet.text.c_str());
+		return;
+	}
 	
-	twitter_app.cleanupBadWords(clean_tweet.text, " [censored] ");
 
-	printf("> %s\n", clean_tweet.getText().c_str());
+	printf("> %s\n", tweet.getText().c_str());
 	string search_for = "dewarshub";
 	size_t search_len = search_for.size();
 	
-	twitter_app.getDB().insertTweet(clean_tweet);
-	if(clean_tweet.user_mentions.size()) {
-		for(int i = 0; i < clean_tweet.user_mentions.size(); ++i) {
-			string name = clean_tweet.user_mentions[i];
+	twitter_app.getDB().insertTweet(tweet);
+	if(tweet.user_mentions.size()) {
+		for(int i = 0; i < tweet.user_mentions.size(); ++i) {
+			string name = tweet.user_mentions[i];
 			if(name.length() != search_len) {
 				continue;
 			}
@@ -33,12 +35,12 @@ void TwitterEventListener::onStatusUpdate(const rtt::Tweet& tweet) {
 			std::transform(name.begin(), name.end(), name.begin(), ::tolower);
 			if(name == search_for) {
 				// tokenize
-				std::istringstream ss(clean_tweet.getText());
+				std::istringstream ss(tweet.getText());
 				string token;
 				ss >> token;
 				while(ss.good()) {
 					ss >> token; 
-					twitter_app.onNewSearchTerm(clean_tweet, token);
+					twitter_app.onNewSearchTerm(tweet, token);
 				}
 			}
 		}

@@ -15,6 +15,7 @@ class TwitterBadWords {
 public:
 	bool reloadWordsFile(const string& filePath);
 	void cleanup(string& text, const string& replacement);
+	bool containsBadWord(const string& text);
 private:
 	vector<string> bad_words;
 };
