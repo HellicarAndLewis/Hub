@@ -211,6 +211,10 @@ bool Stream::getTrackList(string& result) {
 	return result.length();	
 }
 
+void Stream::clearTrackList() {
+	to_track.clear();
+}
+
 void Stream::parseBuffer() {
 	// after we received the http response
 	std::stringstream ss(buffer);
@@ -235,9 +239,9 @@ void Stream::parseBuffer() {
 size_t Stream::curlWriteCallback(char *ptr, size_t size, size_t nmemb, Stream* obj) {
 	size_t bytes_to_write = size * nmemb;
 	obj->buffer.append(ptr, bytes_to_write);
-	for(int i = 0; i < bytes_to_write; ++i) {
-		printf("%c", ptr[i]);
-	}
+//	for(int i = 0; i < bytes_to_write; ++i) {
+//		printf("%c", ptr[i]);
+//	}
 	obj->parseBuffer();
 	return bytes_to_write;
 }

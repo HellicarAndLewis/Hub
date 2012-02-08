@@ -1,6 +1,7 @@
 #ifndef TWITTER_APPH
 #define TWITTER_APPH
 
+#include <vector>
 #include "ofMain.h"
 #include "Twitter.h"
 #include "TwitterDB.h"
@@ -8,12 +9,21 @@
 #include "TwitterBadWords.h"
 #include "IEventListener.h"
 #include "TwitterEventListener.h"
+#include "TwitterOSCReceiver.h"
 
 
 namespace rtt = roxlu::twitter::type;
 namespace rt = roxlu::twitter;
 using namespace roxlu;
+using std::vector;
 
+/**
+ *
+ * Event object which is passed through to objects which added themself
+ * as a event listener. We dispatch an event when a new search term is 
+ * found.
+ *
+ */
 class TwitterAppEvent { 
 public:
 	TwitterAppEvent(rtt::Tweet tweet,  string searchTerm)
@@ -28,8 +38,19 @@ public:
 
 extern ofEvent<TwitterAppEvent> twitter_app_dispatcher;
 
-class TwitterApp {
+
+/**
+ *
+ * This is the public interface for all twitter related actions. All other 
+ * parts of "WailWall" will be using this class to interface with all separate
+ * features like database, bad words, streaming connection, photo uploading
+ * etc...
+ *
+ */ 
+class TwitterApp : public TwitterOSCReceiverListener {
+
 public:
+
 	TwitterApp();
 	~TwitterApp();
 	
@@ -38,9 +59,13 @@ public:
 	void track(string trackingString);
 	bool connect();
 	
-	// cleans up bad words.
+	// bad words (o_O)
 	bool reloadBadWords();
 	bool containsBadWord(const string& text);
+	
+	// hashtags.
+	void reloadHashTags();
+	
 	
 	void update();	
 	
@@ -68,6 +93,10 @@ public:
 		ofAddListener(twitter_app_dispatcher, listener, listenerMethod);
 	}
 	
+	// implementing TwitterOSCReceiverListener
+	virtual void onUpdateBadWordList();
+	virtual void onUpdateHashTags();
+	
 private:
 	rt::Twitter twitter;
 	rt::Stream	stream;
@@ -75,12 +104,13 @@ private:
 	TwitterPhotoUploader uploader;
 	TwitterEventListener twitter_listener;
 	TwitterBadWords bad_words;
+	TwitterOSCReceiver osc_receiver;
+	//vector<string> hashtags; // what hashtags to follow?
 };
 
 inline TwitterDB& TwitterApp::getDB() {
 	return db;
 }
-
 
 inline bool TwitterApp::getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result) {
 	return db.getTweetsWithTag(tag, howMany, result);

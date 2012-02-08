@@ -134,8 +134,6 @@ const string URL_AUTHORIZE = "http://twitter.com/oauth/authorize?oauth_token=";
 
 /*
 // set keys
-	twitter.setTwitterUsername("roxlutest");
-	twitter.setTwitterPassword("*************");
 	twitter.setConsumerKey("kyw8bCAWKbkP6e1HMMdAvw");
 	twitter.setConsumerSecret("***************");
 	
@@ -297,6 +295,7 @@ private:
 	rc::Curl twitcurl;
 	vector<IEventListener*> listeners;
 	roxlu::twitter::parser::JSON json;
+	
 };
 
 inline bool Twitter::doGet(const string& url, rcp::Collection* defaultParams, rcp::Collection* extraParams) {
@@ -310,8 +309,7 @@ inline bool Twitter::doGet(const string& url, rcp::Collection* defaultParams, rc
 		
 	if(extraParams != NULL) {
 		req.getParams() += *extraParams;
-	}
-	
+	}	
 	
 	oauth.authorize(req);
 	return req.doGet(twitcurl, response);
