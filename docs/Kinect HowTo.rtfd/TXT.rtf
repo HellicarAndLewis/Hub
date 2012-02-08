@@ -1,0 +1,56 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1138\cocoasubrtf320
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red230\green230\blue230;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww15940\viewh13480\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f0\b\fs64 \cf0 KINECT HOW TO
+\b0\fs24 \
+\
+\
+Default settings\
+\
+Here are some default settings, if the controls have all managed to reset themselves.\
+\
+Blur Size 				3\
+\cb2 Blur Iterations 			7\
+\cb1 Erode Image			TRUE\
+\cb2 Dilate Image			TRUE\
+\cb1 BG Hysteresis			0.1\
+\cb2 \
+\cb1 Draw Blobs			TRUE\
+\cb2 Water Surface Level 		0.8\
+\cb1 Maximum Water Depth	1.0\
+\cb2 Min Blob Size			25\
+\cb1 Max Blob Size			524\
+\cb2 Blob XY Smoothing		0.75\
+\cb1 Blob Z Smoothing		0.3\
+\cb2 \
+\cb1 Blob X Top Frustrum		4.0\
+\cb2 Blob Y Top Frustrum		2.9\
+\cb1 Blob X Bottom Frustrum	2.2\
+\cb2 Blob Y Bottom Frustrum	2.2\
+\cb1 Flip X				TRUE\
+\cb2 Flip Y				FALSE\
+\cb1 \
+\
+The first thing you'll want to do is press "ACCUMULATE BACKGROUND".\
+Make sure that once this is pressed, there's nothing in the Well, or directly above it, for about 4 seconds.\
+\
+You might need to press the button again after about a minute of the system running.\
+\
+The 5 view buttons let you choose what the big preview screen is/\
+\
+"RAW" - the raw kinect output\
+"BG"  - the accumulated background image\
+"RANGE" - the kinect output, scaled and clipped according to "water surface levee" and "max water depth"\
+"MASKED" - the "RANGE" image, clipped by the mask (see below).\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+\cf0 You can also drag the rectangle with the red dots in its corners. It's a mask, anything outside it will be discarded.\
+\
+To adjust this, switch the view to "RAW". You'll probably see a square area of black in the centre - this is the top of the box. You want the mask to be about a centimetre or two outset from this square (so it's bigger than the square.) see below.\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 {{\NeXTGraphic Pasted Graphic.tiff \width13100 \height9840
+}¬}}

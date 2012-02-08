@@ -30,7 +30,7 @@ void testApp::setup(){
 	slosh.setup("bubbles/bubble", 11);
 	slosh.setProbability(0.3);
 	slosh.setVolumeRange(0.1, 0.5);
-	drop.setup("drop/drop", 11);
+	drop.setup("plop/out-", 123);
 	drop.setProbability(1);
 	drop.setVolumeRange(0.8, 1);
 	//gui.setup();
