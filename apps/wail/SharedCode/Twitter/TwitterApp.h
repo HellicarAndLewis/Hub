@@ -5,6 +5,7 @@
 #include "Twitter.h"
 #include "TwitterDB.h"
 #include "TwitterPhotoUploader.h"
+#include "TwitterBadWords.h"
 #include "IEventListener.h"
 #include "TwitterEventListener.h"
 
@@ -36,6 +37,10 @@ public:
 	bool initDB();
 	void track(string trackingString);
 	bool connect();
+	
+	// cleans up bad words.
+	bool reloadBadWords();
+	void cleanupBadWords(string& text, const string& replacement);
 	
 	void update();	
 	
@@ -69,6 +74,7 @@ private:
 	TwitterDB db;
 	TwitterPhotoUploader uploader;
 	TwitterEventListener twitter_listener;
+	TwitterBadWords bad_words;
 };
 
 inline TwitterDB& TwitterApp::getDB() {

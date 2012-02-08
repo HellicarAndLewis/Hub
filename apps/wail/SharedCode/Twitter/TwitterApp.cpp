@@ -7,13 +7,15 @@ TwitterApp::TwitterApp()
 	:stream(twitter)
 	,twitter_listener(*this)
 {
+
 }
 
 TwitterApp::~TwitterApp() {
 }
 
 bool TwitterApp::initDB(){
-	
+	// @todo create a init function
+	reloadBadWords();	
 
 	// TWITTER
 	// --------
@@ -52,6 +54,15 @@ bool TwitterApp::initDB(){
 	// --------
 	uploader.startThread();
 	return true;
+}
+
+bool TwitterApp::reloadBadWords() {
+	string file = ofToDataPath("badwords.txt", true);
+	return bad_words.reloadWordsFile(file);
+}
+				 
+void TwitterApp::cleanupBadWords(string& text, const string& replacement) {
+	bad_words.cleanup(text, replacement);
 }
 
 void TwitterApp::track(string trackingString){

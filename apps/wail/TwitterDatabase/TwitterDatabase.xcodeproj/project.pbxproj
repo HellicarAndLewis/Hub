@@ -18,6 +18,9 @@
 		54035B7714E08AF500A1FD59 /* Request.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54035B6D14E08AF500A1FD59 /* Request.cpp */; };
 		54035B7A14E08D3700A1FD59 /* TwitterPhotoUploader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54035B7814E08D3700A1FD59 /* TwitterPhotoUploader.cpp */; };
 		541A1B8514DB290A00F7FE34 /* sqlite3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 541A1B8414DB290900F7FE34 /* sqlite3.a */; };
+		547656FC14E2B92200DBC3D5 /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 547656F414E2B92200DBC3D5 /* libpcre.a */; };
+		547656FD14E2B92200DBC3D5 /* libpcrecpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 547656F514E2B92200DBC3D5 /* libpcrecpp.a */; };
+		5476570014E2B9DE00DBC3D5 /* TwitterBadWords.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 547656FF14E2B9DE00DBC3D5 /* TwitterBadWords.cpp */; };
 		54B4722914D9366700C39CC9 /* Database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54B4718C14D9366600C39CC9 /* Database.cpp */; };
 		54B4722B14D9366700C39CC9 /* Query.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54B4719214D9366600C39CC9 /* Query.cpp */; };
 		54B4722C14D9366700C39CC9 /* QueryInsert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54B4719414D9366600C39CC9 /* QueryInsert.cpp */; };
@@ -117,6 +120,16 @@
 		54035B7814E08D3700A1FD59 /* TwitterPhotoUploader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TwitterPhotoUploader.cpp; sourceTree = "<group>"; };
 		54035B7914E08D3700A1FD59 /* TwitterPhotoUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterPhotoUploader.h; sourceTree = "<group>"; };
 		541A1B8414DB290900F7FE34 /* sqlite3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = sqlite3.a; sourceTree = "<group>"; };
+		547656F414E2B92200DBC3D5 /* libpcre.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcre.a; sourceTree = "<group>"; };
+		547656F514E2B92200DBC3D5 /* libpcrecpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcrecpp.a; sourceTree = "<group>"; };
+		547656F614E2B92200DBC3D5 /* pcre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre.h; sourceTree = "<group>"; };
+		547656F714E2B92200DBC3D5 /* pcre_scanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre_scanner.h; sourceTree = "<group>"; };
+		547656F814E2B92200DBC3D5 /* pcre_stringpiece.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre_stringpiece.h; sourceTree = "<group>"; };
+		547656F914E2B92200DBC3D5 /* pcrecpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcrecpp.h; sourceTree = "<group>"; };
+		547656FA14E2B92200DBC3D5 /* pcrecpparg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcrecpparg.h; sourceTree = "<group>"; };
+		547656FB14E2B92200DBC3D5 /* pcreposix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcreposix.h; sourceTree = "<group>"; };
+		547656FE14E2B96500DBC3D5 /* TwitterBadWords.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterBadWords.h; sourceTree = "<group>"; };
+		547656FF14E2B9DE00DBC3D5 /* TwitterBadWords.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TwitterBadWords.cpp; sourceTree = "<group>"; };
 		54B4718C14D9366600C39CC9 /* Database.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Database.cpp; sourceTree = "<group>"; };
 		54B4718D14D9366600C39CC9 /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
 		54B4719014D9366600C39CC9 /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3.h; sourceTree = "<group>"; };
@@ -303,6 +316,8 @@
 				54B4724614D9366700C39CC9 /* libcrypto.a in Frameworks */,
 				54B4724714D9366700C39CC9 /* libssl.a in Frameworks */,
 				541A1B8514DB290A00F7FE34 /* sqlite3.a in Frameworks */,
+				547656FC14E2B92200DBC3D5 /* libpcre.a in Frameworks */,
+				547656FD14E2B92200DBC3D5 /* libpcrecpp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,6 +363,21 @@
 				54035B6C14E08AF500A1FD59 /* Parameter.h */,
 			);
 			path = parameter;
+			sourceTree = "<group>";
+		};
+		547656F314E2B92200DBC3D5 /* pcre */ = {
+			isa = PBXGroup;
+			children = (
+				547656F414E2B92200DBC3D5 /* libpcre.a */,
+				547656F514E2B92200DBC3D5 /* libpcrecpp.a */,
+				547656F614E2B92200DBC3D5 /* pcre.h */,
+				547656F714E2B92200DBC3D5 /* pcre_scanner.h */,
+				547656F814E2B92200DBC3D5 /* pcre_stringpiece.h */,
+				547656F914E2B92200DBC3D5 /* pcrecpp.h */,
+				547656FA14E2B92200DBC3D5 /* pcrecpparg.h */,
+				547656FB14E2B92200DBC3D5 /* pcreposix.h */,
+			);
+			path = pcre;
 			sourceTree = "<group>";
 		};
 		54B4718914D9366600C39CC9 /* roxlu */ = {
@@ -443,6 +473,7 @@
 		54B471C514D9366600C39CC9 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				547656F314E2B92200DBC3D5 /* pcre */,
 				54B471C614D9366600C39CC9 /* crypto */,
 				54B471CF14D9366600C39CC9 /* curl */,
 				54B471DA14D9366600C39CC9 /* jansson */,
@@ -585,6 +616,8 @@
 				A6AF012B14DAE4B5006816A8 /* TwitterDB.cpp */,
 				A6AF012E14DAE4B5006816A8 /* TwitterEventListener.h */,
 				A6AF012D14DAE4B5006816A8 /* TwitterEventListener.cpp */,
+				547656FE14E2B96500DBC3D5 /* TwitterBadWords.h */,
+				547656FF14E2B9DE00DBC3D5 /* TwitterBadWords.cpp */,
 			);
 			name = Twitter;
 			path = ../SharedCode/Twitter;
@@ -827,6 +860,7 @@
 				54035B7614E08AF500A1FD59 /* Parameter.cpp in Sources */,
 				54035B7714E08AF500A1FD59 /* Request.cpp in Sources */,
 				54035B7A14E08D3700A1FD59 /* TwitterPhotoUploader.cpp in Sources */,
+				5476570014E2B9DE00DBC3D5 /* TwitterBadWords.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -998,12 +1032,14 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_11)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_12)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_13)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_14)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/src/libs/curl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_10 = "\"$(SRCROOT)/../../../addons/roxlu/libs/curl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_11 = "\"$(SRCROOT)/../../../addons/roxlu/libs/jansson\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_12 = "\"$(SRCROOT)/../../../addons/roxlu/libs/openssl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_13 = "\"$(SRCROOT)/../../../addons/roxlu/addons/Database/lib\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_14 = "\"$(SRCROOT)/../../../addons/roxlu/libs/pcre\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/src/libs/jansson\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/src/libs/openssl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../libs/curl\"";
@@ -1110,12 +1146,14 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_11)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_12)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_13)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_14)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/src/libs/curl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_10 = "\"$(SRCROOT)/../../../addons/roxlu/libs/curl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_11 = "\"$(SRCROOT)/../../../addons/roxlu/libs/jansson\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_12 = "\"$(SRCROOT)/../../../addons/roxlu/libs/openssl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_13 = "\"$(SRCROOT)/../../../addons/roxlu/addons/Database/lib\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_14 = "\"$(SRCROOT)/../../../addons/roxlu/libs/pcre\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/src/libs/jansson\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/src/libs/openssl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../libs/curl\"";
