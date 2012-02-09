@@ -17,7 +17,7 @@
     </SliderFloat_Noise_Scale_X>
     <SliderFloat_Noise_Scale_Y>
         <name>Noise Scale Y</name>
-        <value>313.250000</value>
+        <value>344.750000</value>
     </SliderFloat_Noise_Scale_Y>
     <SliderFloat_Noise_Flow>
         <name>Noise Flow</name>
@@ -29,7 +29,7 @@
     </SliderFloat_Wobble_Speed_X>
     <SliderFloat_Noise_Wobble_Speed_Y>
         <name>Noise Wobble Speed Y</name>
-        <value>0.071000</value>
+        <value>0.031000</value>
     </SliderFloat_Noise_Wobble_Speed_Y>
     <SliderFloat_Noise_Wobble_Amplitude_X>
         <name>Noise Wobble Amplitude X</name>

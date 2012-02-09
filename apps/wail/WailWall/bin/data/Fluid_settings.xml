@@ -1,11 +1,11 @@
 <controls>
     <SliderInt_Particles>
         <name>Particles</name>
-        <value>1000</value>
+        <value>26740</value>
     </SliderInt_Particles>
     <SliderFloat_Density>
         <name>Density</name>
-        <value>6.600000</value>
+        <value>0.300000</value>
     </SliderFloat_Density>
     <SliderFloat_Stiffness>
         <name>Stiffness</name>
@@ -17,11 +17,11 @@
     </SliderFloat_Bulk_Viscosity>
     <SliderFloat_Elasticity>
         <name>Elasticity</name>
-        <value>1.460000</value>
+        <value>1.748000</value>
     </SliderFloat_Elasticity>
     <SliderFloat_Viscosity>
         <name>Viscosity</name>
-        <value>2.950000</value>
+        <value>0.360000</value>
     </SliderFloat_Viscosity>
     <SliderFloat_Yield_Rate>
         <name>Yield Rate</name>
