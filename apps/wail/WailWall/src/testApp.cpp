@@ -70,8 +70,8 @@ void testApp::exit() {
 void testApp::update(){
 	touchReceiver.update();
 	
-	//renderer.update();
-	//renderer.render();
+	renderer.update();
+	renderer.render();
 	
 	if(generateScreens){
 		//danger zone for hand written files
