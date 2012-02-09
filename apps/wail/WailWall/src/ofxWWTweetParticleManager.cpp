@@ -293,14 +293,14 @@ void ofxWWTweetParticleManager::renderCaustics(){
 
 void ofxWWTweetParticleManager::onStatusUpdate(const rtt::Tweet& tweet){
 	if(twitter.containsBadWord(tweet.getText())) {
-		printf("[ censored ] : %s\n", tweet.getText().c_str());
+		//printf("[ censored ] : %s\n", tweet.getText().c_str());
 		return;
 	}
-	
+	printf(".\n");
 	ofxWWTweetParticle tweetParticle = createParticleForTweet(tweet);
 	tweets.push_back( tweetParticle );	
 	
-	cout << "added tweet " << tweets.size() << " text is " << tweet.getText() << endl;
+	//cout << "added tweet " << tweets.size() << " text is " << tweet.getText() << endl;
 }
 
 ofxWWTweetParticle ofxWWTweetParticleManager::createParticleForTweet(const rtt::Tweet& tweet){

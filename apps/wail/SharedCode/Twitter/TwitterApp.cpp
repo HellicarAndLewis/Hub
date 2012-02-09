@@ -6,6 +6,7 @@ ofEvent<TwitterAppEvent> twitter_app_dispatcher;
 TwitterApp::TwitterApp()
 	:stream(twitter)
 	,twitter_listener(*this)
+	,uploader(twitter)
 {
 
 }
@@ -14,6 +15,7 @@ TwitterApp::~TwitterApp() {
 }
 
 bool TwitterApp::initDB(){
+
 	// @todo create a init function
 	reloadBadWords();	
 	
@@ -30,8 +32,9 @@ bool TwitterApp::initDB(){
 	// @todo set to correct dewarshub consumer key + secret
 	twitter.setConsumerKey("kyw8bCAWKbkP6e1HMMdAvw");
 	twitter.setConsumerSecret("PwVuyjLeUdVZbi4ER6yRAo0byF55AIureauV6UhLRw");
-
-	string token_file = ofToDataPath("twitter.txt", true);
+	
+	//string token_file = ofToDataPath("twitter_roxlu.txt", true);
+	string token_file = ofToDataPath("twitter_roxlutest.txt", true);
 	//twitter.removeTokens(token_file);
 	if(!twitter.loadTokens(token_file)) {
         string auth_url;

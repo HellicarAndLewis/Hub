@@ -130,9 +130,16 @@ void testApp::draw(){
 		string filepath(dirname);
 		filepath.append("/");
 		filepath.append(filename);
-		ofSaveScreen(filepath);
 		
-		renderer.getTweetManager().getTwitterApp().uploadScreenshot(ofToDataPath(filepath, true), "roxlu", "@dewarshub SEARCH biology");
+		// pretty sure we can do this better
+		ofPixels pixels;
+		renderer.getFbo().readToPixels(pixels);
+		ofImage img;
+		img.setFromPixels(pixels);
+		img.saveImage(filepath);
+		
+		
+		renderer.getTweetManager().getTwitterApp().uploadScreenshot(ofToDataPath(filepath, true), "roxlu", "");
 		shouldTakeScreenshot = false;
 	}
 	
