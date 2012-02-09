@@ -21,10 +21,10 @@
     </SliderFloat_Fake_Level>
     <SliderFloat_Touch_Scale>
         <name>Touch Scale</name>
-        <value>0.500000</value>
+        <value>0.995000</value>
     </SliderFloat_Touch_Scale>
     <SliderFloat_Influence_Width>
         <name>Influence Width</name>
-        <value>10.000000</value>
+        <value>223.149994</value>
     </SliderFloat_Influence_Width>
 </controls>
