@@ -48,7 +48,9 @@ void ofxWWRenderer::setup(int width, int height){
 	warpShader.setUniform1i("warp",1);
 	warpShader.end();
 
+	enableFluid = false;
 	justDrawWarpTexture = false;
+
 	
 	tweets.setup();
 }
@@ -58,20 +60,20 @@ void ofxWWRenderer::setupGui(){
 
 	
 	webGui.addPage("Interaction");
-	webGui.addToggle("Draw Touch Debug", drawTouchDebug);
 	webGui.addSlider("Layer Barrier Z", layerBarrierZ, .25, .75);
 	webGui.addSlider("Layer Barrier Width", layerBarrierWidth, 0.05, .25);
-	webGui.addToggle("Fake Z", fakeZOnTouch);
-	webGui.addSlider("Fake Level", fakeZLevel, 0.0, 1.0);
+//	webGui.addToggle("Fake Z", fakeZOnTouch);
+//	webGui.addSlider("Fake Level", fakeZLevel, 0.0, 1.0);
 	webGui.addSlider("Touch Scale", tweets.touchSizeScale, .5, 2.0);
 	webGui.addSlider("Influence Width", tweets.touchInfluenceFalloff, 10., 500);
-	webGui.addPage("Simulation Scale");
+	webGui.addToggle("Draw Touch Debug", drawTouchDebug);
+		
+	webGui.addPage("Fluid");
+	webGui.addToggle("Enable Fluid", enableFluid);
 	webGui.addSlider("Force Scale",	fluid.forceScale,	1.0, 200); 
 	webGui.addSlider("Zoom",			fluid.scaleFactor,	1.0, 20.0); 	
 	webGui.addSlider("Offset X",		fluid.offsetX,		-200.0, 0); 	
 	webGui.addSlider("Offset Y",		fluid.offsetY,		-200.0, 0); 	
-	
-	webGui.addPage("Fluid");
 	webGui.addSlider("Particles",		fluid.numParticles,		1000, 100000); 
 	webGui.addSlider("Density",		fluid.densitySetting,	0, 30.0);	
 	webGui.addSlider("Stiffness",		fluid.stiffness,		0, 2.0);
@@ -230,43 +232,45 @@ void ofxWWRenderer::renderFirstLayer(){
 	blurShader.setUniform2f("sampleOffset", blurAmount, 0);
 	firstLayerAccumulator.draw(0,0);
 	blurShader.end();
-	
-	ofPushMatrix();
-	ofTranslate(fluid.offsetX, fluid.offsetY);
-	ofScale(fluid.scaleFactor, fluid.scaleFactor, 1);
-	vector<ofVec2f> verts;
-	vector<ofVec2f> texcoords;
-	vector<ofVec3f> colors;
-	for(int i = 0; i < fluid.numParticles; i++){
-		ofxMPMParticle* p = fluid.getParticles()[i];
-		ofVec2f pos = ofVec2f(p->x, p->y);
-		verts.push_back(pos);
-		verts.push_back(ofVec2f(p->x - p->u, p->y - p->v));
-		texcoords.push_back( texCoordAtPos(colorField, p->x, p->y) );
-		texcoords.push_back( texCoordAtPos(colorField, p->x - p->u, p->y - p->v) );
+
+	if(enableFluid){
+		ofPushMatrix();
+		ofTranslate(fluid.offsetX, fluid.offsetY);
+		ofScale(fluid.scaleFactor, fluid.scaleFactor, 1);
+		vector<ofVec2f> verts;
+		vector<ofVec2f> texcoords;
+		vector<ofVec3f> colors;
+		for(int i = 0; i < fluid.numParticles; i++){
+			ofxMPMParticle* p = fluid.getParticles()[i];
+			ofVec2f pos = ofVec2f(p->x, p->y);
+			verts.push_back(pos);
+			verts.push_back(ofVec2f(p->x - p->u, p->y - p->v));
+			texcoords.push_back( texCoordAtPos(colorField, p->x, p->y) );
+			texcoords.push_back( texCoordAtPos(colorField, p->x - p->u, p->y - p->v) );
+		}
+		
+		colorField.getTextureReference().bind();
+		
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glVertexPointer(2, GL_FLOAT, 0, &(verts[0].x));
+		glTexCoordPointer(2, GL_FLOAT, 0, &(texcoords[0].x));
+		glDrawArrays(GL_LINES, 0, verts.size());
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_VERTEX_ARRAY);
+		
+		colorField.getTextureReference().unbind();
+		
+		ofPopMatrix();
 	}
 	
-	colorField.getTextureReference().bind();
-	
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glVertexPointer(2, GL_FLOAT, 0, &(verts[0].x));
-	glTexCoordPointer(2, GL_FLOAT, 0, &(texcoords[0].x));
-	glDrawArrays(GL_LINES, 0, verts.size());
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
-	
-	colorField.getTextureReference().unbind();
-	
-	ofPopMatrix();
-
+	tweets.renderCaustics();
+		
 	ofSetColor(0,0,0, clearSpeed);
 	ofRect(0, 0, firstLayerAccumulator.getWidth(), firstLayerAccumulator.getHeight());
 	
 	ofPopStyle();
 	
-	//create 
-	tweets.renderCaustics();
 	
 	firstLayerAccumulator.end();
 }

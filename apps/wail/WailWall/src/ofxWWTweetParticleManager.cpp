@@ -40,6 +40,10 @@ void ofxWWTweetParticleManager::setup(){
 
 void ofxWWTweetParticleManager::setupGui(){
 	
+	
+	webGui.addPage("Caustics");
+	webGui.addToggle("Enable Caustics", enableCaustics);
+	
 	webGui.addPage("Tweet Lifecycle");
 	webGui.addSlider("Tweet Font Size", fontSize, 5, 24);
 	webGui.addSlider("Word Wrap Length", wordWrapLength, 100, 300);
@@ -47,8 +51,6 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Start Fade Time", startFadeTime, 2, 10);
 	webGui.addSlider("Fade Duration", fadeDuration, 2, 10);
 	webGui.addToggle("Clear Tweets", clearTweets);
-
-	
 
 	webGui.addPage("Tweet Appearance");
 	webGui.addSlider("Two Line Scale", twoLineScaleup, 1.0, 2.0);
@@ -69,6 +71,14 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Search Min Hold T", searchTermMinHoldTime, .5, 3.0);
 
 	generateFakeSearchTerms = true;
+	
+	//TODO set up in XML
+	//ONLY CAN HAVE 4 right now
+	//least to most common
+	causticColors.push_back(ofColor::fromHex(0xf8edc0)); //LIGHT YELLOW
+	causticColors.push_back(ofColor::fromHex(0xe35a35)); //BRIGHT ORANGE
+	causticColors.push_back(ofColor::fromHex(0xad3e1c)); //MID ORANGE
+	causticColors.push_back(ofColor::fromHex(0x500a03)); //DEEP BROWN
 }
 
 
@@ -276,21 +286,40 @@ void ofxWWTweetParticleManager::renderSearchTerms(){
 }
 
 void ofxWWTweetParticleManager::renderCaustics(){
+	if(!enableCaustics){
+		return;
+	}
 	ofPushStyle();
 	for(int i = 0; i < tweets.size(); i++){
 		for(int j = 0; j < tweets.size(); j++){
 			if(j != i){
 				float chanceOfSynapis = tweets[i].selectionWeight * tweets[j].selectionWeight;
-				ofSetColor(ofColor::fromHex(0xd5712a, 100));
 				if(ofRandomuf() + .5 < chanceOfSynapis){
+					setRandomCausticColor();
 					ofLine(tweets[i].pos, tweets[j].pos);
 				}
 			}
 		}
-	}
-	
+	}	
 	ofPopStyle();	
 }
+
+void ofxWWTweetParticleManager::setRandomCausticColor(){
+	float diceroll = ofRandomuf();
+	if(diceroll < .1){
+		ofSetColor(causticColors[0], 100);
+	}
+	else if(diceroll < .3){
+		ofSetColor(causticColors[1], 100);	
+	}
+	else if(diceroll < .6){
+		ofSetColor(causticColors[2], 100);		
+	}
+	else{ 
+		ofSetColor(causticColors[3], 100);	
+	}
+}
+
 
 void ofxWWTweetParticleManager::onStatusUpdate(const rtt::Tweet& tweet){
 	if(twitter.containsBadWord(tweet.getText())) {
@@ -335,9 +364,11 @@ void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
 	
 	searchTerms.push_back( searchTerm );	
 	
+	
 	// @todo using ofSendMessage to test screenshots
 	ofSendMessage("take_screenshot");
 }
+
 
 void ofxWWTweetParticleManager::onStatusDestroy(const rtt::StatusDestroy& destroy){
 }

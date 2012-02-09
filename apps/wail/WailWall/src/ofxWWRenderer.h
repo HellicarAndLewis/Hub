@@ -56,7 +56,7 @@ class ofxWWRenderer: public KinectTouchListener {
 	float noiseWobbleAmplitudeX;
 	float noiseWobbleAmplitudeY;
 	
-	
+	bool enableFluid;
 	
 	//warp distort 
 	ofShader warpShader;

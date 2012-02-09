@@ -95,7 +95,7 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 	// roxlu 02/07
-	ofSetFullscreen(false); 
+//	ofSetFullscreen(false); 
 	
 	ofBackground(0);
 	ofRectangle renderPreview = screenManager.getRenderPreviewRect();
@@ -252,7 +252,6 @@ void testApp::gotMessage(ofMessage msg){
 	if(msg.message == "take_screenshot") {
 		shouldTakeScreenshot = true;
 	}
-	
 }
 
 //--------------------------------------------------------------
