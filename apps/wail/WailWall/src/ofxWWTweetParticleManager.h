@@ -23,8 +23,11 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	void setupGui();
 	
 	void update();
+	
 	void renderTweets();
+	void renderTweetNodes();
 	void renderSearchTerms();
+
 	void renderCaustics();
 	
 	void resetTouches();

@@ -108,14 +108,19 @@ void ofxWWTweetParticle::update(){
 	}
 }
 
-void ofxWWTweetParticle::draw(){
+void ofxWWTweetParticle::drawDot(){
 	ofPushStyle();
-	ofEnableAlphaBlending();
-	
+
 	ofSetColor(ofColor::fromHex(0xf4b149,deathAttenuation*255));
 	ofCircle(pos.x, pos.y, 10);
 
-	
+	ofPopStyle();
+}
+
+void ofxWWTweetParticle::drawText(){
+	ofPushStyle();
+	ofEnableAlphaBlending();
+
 	//DRAW @ 
 	ofSetColor(ofColor::fromHex(0x6f2b1d, opacity*255)); //TODO set font color
 	manager->sharedLargeFont.drawString("@", pos.x - atSignWidth/2, pos.y - atSignHeight/2);
@@ -133,19 +138,6 @@ void ofxWWTweetParticle::draw(){
 	if(isTwoLines){
 		manager->sharedFont.drawString(lineTwo, pos.x - lineTwoWidth/2, pos.y + manager->tweetYOffset + lineOneHeight);		
 	}
-	
-	/*
-	 //OLD DRAW
-	if(isTwoLines){
-		manager->sharedLargeFont.drawString("@"+tweet.getScreenName(), pos.x, pos.y+manager->userNameYOffset);
-	}
-	else{
-		manager->sharedFont.drawString("@"+tweet.getScreenName(), pos.x, pos.y+manager->userNameYOffset);
-	}
-	
-	ofSetColor(255, 255, 255, opacity*255);
-	manager->sharedFont.drawString(wordWrappedTweet, pos.x + userNameWidth + manager->userNameXPad, pos.y);
-	 */
 	
 	ofPopStyle();
 }

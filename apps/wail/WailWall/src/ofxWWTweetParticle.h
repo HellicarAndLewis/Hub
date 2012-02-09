@@ -22,7 +22,8 @@ class ofxWWTweetParticle {
 	
 	void setTweet(rtt::Tweet tweet);
 	void update();
-	void draw();
+	void drawDot();
+	void drawText();
 
 	//controlled through update
 	ofVec2f pos;

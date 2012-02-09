@@ -39,9 +39,24 @@ class ofxWWRenderer: public KinectTouchListener {
 	ofxWWTweetParticleManager& getTweetManager(); // roxlu 02/07
 	
   protected:
+	int targetWidth;
+	int targetHeight;
+	
+	//render targers
+	ofFbo accumulator;
+	ofFbo warpMap;
+	ofFbo renderTarget;
+
+	//pass functions
+	void typeLayer();
+	void renderWarpMap();
+	void renderContent();
+	
+	//sub objects
+	ofxMPMFluid fluid;
 	ofxWWTweetParticleManager tweets;	
 	
-	//for diffusing the lines over time
+	//shader business
 	ofShader blurShader;
 	float blurAmount;
 	float clearSpeed;
@@ -50,6 +65,7 @@ class ofxWWRenderer: public KinectTouchListener {
 	ofShader noiseShader;
 	ofImage permutationImage;
 	ofVec2f noiseScale;
+	
 	float noiseFlow;
 	float noiseWobbleSpeedX;
 	float noiseWobbleSpeedY;
@@ -63,16 +79,9 @@ class ofxWWRenderer: public KinectTouchListener {
 	float warpAmount;
 	bool justDrawWarpTexture;
 	
-	void renderLiquidField();
-	void renderFirstLayer();
-	void renderSecondLayer();
 	
 	ofVec2f texCoordAtPos(ofImage& image, float x, float y);
 
-	ofxMPMFluid fluid;
-	ofFbo firstLayerAccumulator;
-	ofFbo liquidTarget;
-	ofFbo renderTarget;
 
 	//used as a map into the fluid sim
 	ofImage colorField;

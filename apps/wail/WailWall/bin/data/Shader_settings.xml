@@ -41,6 +41,6 @@
     </SliderFloat_Noise_Wobble_Amplitude_Y>
     <Toggle_Just_Draw_Warp>
         <name>Just Draw Warp</name>
-        <value>1</value>
+        <value>0</value>
     </Toggle_Just_Draw_Warp>
 </controls>

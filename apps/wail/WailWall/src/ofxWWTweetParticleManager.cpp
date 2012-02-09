@@ -264,15 +264,28 @@ void ofxWWTweetParticleManager::updateTweets(vector<ofxWWTweetParticle>& tweetli
 	
 }
 
-void ofxWWTweetParticleManager::renderTweets(){
+void ofxWWTweetParticleManager::renderTweetNodes(){
 	if(searchTermSelected){
 		for(int i = 0; i < searchTweets.size(); i++){
-			searchTweets[i].draw();
+			searchTweets[i].drawDot();
 		}		
 	}
 	else{
 		for(int i = 0; i < tweets.size(); i++){
-			tweets[i].draw();
+			tweets[i].drawDot();
+		}
+	}
+}
+
+void ofxWWTweetParticleManager::renderTweets(){
+	if(searchTermSelected){
+		for(int i = 0; i < searchTweets.size(); i++){
+			searchTweets[i].drawText();
+		}		
+	}
+	else{
+		for(int i = 0; i < tweets.size(); i++){
+			tweets[i].drawText();
 		}
 	}
 }
