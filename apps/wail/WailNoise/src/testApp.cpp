@@ -27,30 +27,50 @@ void testApp::setup(){
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
 	
-	slosh.setup("bubbles/bubble", 11);
-	slosh.setProbability(0.3);
-	slosh.setVolumeRange(0.1, 0.5);
-	drop.setup("plop/out-", 123);
-	drop.setProbability(1);
-	drop.setVolumeRange(0.8, 1);
+	
+	
 	//gui.setup();
 	//gui.addDrawable("Depth", depthImg);
 	
 	gui.setEnabled(true);
- 
+    gui.addListener(this);
+	
+	bgLoopVolume = 0.05;
+    bubbleVolume = 0.5;
+	splashVolume = 1;
+	gui.addSlider("Splash Volume", splashVolume, 0, 1);
+	gui.addSlider("Bubble Volume", bubbleVolume, 0, 1);
+
+	gui.addSlider("Background Loop Volume", bgLoopVolume, 0, 1);
 	gui.addSlider("Min splash depth", minSplashDepth, 0, 1);
 	gui.addSlider("Max splash depth", maxSplashDepth, 0, 1);
-	
 	gui.loadSettings("wailnoise.xml");
 	gui.y = PREVIEW_HEIGHT + 10;
+	
+	
 	ofSetWindowTitle("WailNoise");
+	
+	
 	audio::init(2);
+	
+	// background loop
 	audio::SampleRef bgLoop = audio::loadSample(ofToDataPath("bgloop.wav"));
 	bgLoopPlayer = audio::createPlayer(bgLoop);
 	audio::setLooping(bgLoopPlayer, true);
-	audio::setVolume(bgLoopPlayer, 0.05);
+	audio::setVolume(bgLoopPlayer, bgLoopVolume);
 	audio::play(bgLoopPlayer);
 	
+	// initial splash
+	splash.setup("plop");
+	splash.setProbability(1);
+	splash.setVolumeRange(0.9, 1);
+	
+	
+    slosh.setup("splish");
+	slosh.setProbability(0.3);
+	slosh.setVolumeRange(0.2*bubbleVolume, bubbleVolume);
+    
+    
 	ofSoundStreamSetup(2, 0, 44100, 512, 1);
 
 	
@@ -59,6 +79,15 @@ void testApp::setup(){
 	//ofDisableSetupScreen();
 }
 
+void testApp::controlChanged(xmlgui::Control *ctrl) {
+	if(ctrl->id=="Background Loop Volume") {
+		audio::setVolume(bgLoopPlayer, bgLoopVolume);
+	} else if(ctrl->id=="Bubble Volume") {
+		slosh.setVolumeRange(0.2*bubbleVolume, bubbleVolume);
+	} else if(ctrl->id=="Splash Volume") {
+		splash.setVolumeRange(splashVolume*0.8, splashVolume);
+	}
+}
 void testApp::audioOut(float * output, int bufferSize, int nChannels) {
 	audio::getAudioSystem()->getSamples(output, bufferSize, nChannels);
 }
@@ -80,7 +109,7 @@ void testApp::draw(){
 	glEnable(GL_DEPTH_TEST);
 	ofBackground(0);
 	ofSetHexColor(0xFFFFFF);
-	/*ofDrawBitmapString(messageString, 20, 20);
+	ofDrawBitmapString(messageString, 20, 20);
 
 	glPushMatrix();
 	{
@@ -115,7 +144,7 @@ void testApp::draw(){
 	glPopMatrix();
 	
 	ofFill();
-	*/
+	
 	
 	glDisable(GL_DEPTH_TEST);
 }
@@ -220,14 +249,17 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 
 void testApp::touchDown(const KinectTouch &touch) {
 	blobs[touch.id] = touch;
-	drop.trigger(ofVec3f(ofClamp(touch.x, 0, 1), 0, 0));
+	
 	
 }
 
 void testApp::touchMoved(const KinectTouch &touch) {
 	blobs[touch.id] = touch;
-	slosh.trigger(ofVec3f(ofClamp(touch.x, 0, 1), 0, 0));
+	slosh.trigger(ofVec3f(ofClamp(touch.x, 0, 1), 0, ofRandom(0, 1)));
 	if(touch.age==1) {
+		splash.trigger(
+					   ofVec3f(ofClamp(touch.x, 0, 1), 0, ofMap(touch.z, minSplashDepth, maxSplashDepth, 0, 1, true))
+		);
 		messageString = "touch:    size:"+ofToString(touch.size, 3) + "    z:" + ofToString(touch.z, 3);
 	}
 }

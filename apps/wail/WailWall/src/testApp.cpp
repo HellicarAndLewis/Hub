@@ -1,5 +1,5 @@
 #include "testApp.h"
-#include "ofxSimpleGuiToo.h"
+#include "ofxWebSimpleGuiToo.h"
 
 ///*******
 //JG Layout calculations
@@ -42,7 +42,7 @@ void testApp::setup(){
 	screenSettingsFile = "DisplayLayout_dev.xml";
 	screenManager.loadScreens(screenSettingsFile);
 
-	gui.addToggle("Show Preview Rects", previewScreenLayout);
+	webGui.addToggle("Show Preview Rects", previewScreenLayout);
 	renderer.blobs = &blobs;
 	renderer.setup(screenManager.sourceRect.width, screenManager.sourceRect.height);	
 	renderer.setupGui();
@@ -54,12 +54,16 @@ void testApp::setup(){
 //	gui.addToggle("Load Screens File", shouldLoadScreens);
 //	gui.addToggle("Save Screens File", shouldSaveScreens);
 	
-	gui.loadFromXML();
-	gui.setAutoSave(true);
+	// disable for now
+	//webGui.startServer();
+	webGui.loadFromXML();
+	webGui.setAutoSave(true);
+	
+
 }
 
 void testApp::exit() {
-	
+	//webGui.stopServer();
 }
 
 //--------------------------------------------------------------
@@ -91,7 +95,7 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 	// roxlu 02/07
-	ofSetFullscreen(false); 
+//	ofSetFullscreen(false); 
 	
 	ofBackground(0);
 	ofRectangle renderPreview = screenManager.getRenderPreviewRect();
@@ -149,14 +153,14 @@ void testApp::draw(){
 		ofCircle((*it).second.x*ofGetWidth(), (*it).second.y*ofGetHeight(), 10, 10);
 	}*/
 	
-	gui.draw();
+	webGui.draw();
 }
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
 	switch(key) {
 		case ' ': {
-			gui.toggleDraw();
+			webGui.toggleDraw();
 			break;
 		}
 			 
@@ -185,11 +189,11 @@ void testApp::keyPressed(int key){
 		}
 			
 		case OF_KEY_LEFT: {
-			gui.prevPage();
+			webGui.prevPage();
 			break;
 		}
 		case OF_KEY_RIGHT: {
-			gui.nextPage();
+			webGui.nextPage();
 			break;
 		}
 			
@@ -255,7 +259,6 @@ void testApp::gotMessage(ofMessage msg){
 	if(msg.message == "take_screenshot") {
 		shouldTakeScreenshot = true;
 	}
-	
 }
 
 //--------------------------------------------------------------

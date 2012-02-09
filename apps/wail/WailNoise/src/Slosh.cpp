@@ -26,10 +26,15 @@ bool SloshSortComparator(const Slosh::SloshSample &a, const Slosh::SloshSample &
 	return a.volume<b.volume;
 }
 
-void Slosh::setup(string path, int number) {
-	for(int i = 0; i < number; i++) {
-		string file = string(path) + ofToString(i) + ".wav";
+void Slosh::setup(string path) {
+	ofDirectory dir;
+	dir.allowExt("wav");
+	int numFiles = dir.listDir(path);
+	for(int i = 0; i < numFiles; i++) {
+		string file = dir.getPath(i);
+//		string file = string(path) + ofToString(i) + ".wav";
 		samples.push_back(SloshSample());
+		cout << file << endl;
 		samples.back().sample = audio::loadSample(ofToDataPath(file));
 		samples.back().volume = tricks::audio::analysis::getMaxAveragePower(
 			audio::getWavFile(
@@ -48,7 +53,11 @@ void Slosh::setup(string path, int number) {
 void Slosh::trigger(ofVec3f p) {
 	
 	if(ofRandomuf()<probability) {
-		int r = ofRandom(0, samples.size());
+
+		if(p.z==1) { // if the volume is saturated, play a random sample that is loud
+			p.z = ofRandom(0.9, 1.0);
+		}
+		int r = p.z*(samples.size()-1);
 		audio::PlayerRef ref = audio::createPlayer(samples[r].sample);
 		audio::setPan(ref, p.x);
 		float vol = ofRandom(minVol, maxVol);

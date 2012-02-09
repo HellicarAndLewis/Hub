@@ -23,8 +23,11 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	void setupGui();
 	
 	void update();
+	
 	void renderTweets();
+	void renderTweetNodes();
 	void renderSearchTerms();
+
 	void renderCaustics();
 	
 	void resetTouches();
@@ -42,6 +45,7 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	ofTrueTypeFont sharedFont;
 	ofTrueTypeFont sharedLargeFont;
 	
+	bool enableCaustics;
 	bool canSelectSearchTerms;
 	float tweetLayerOpacity;
 	float touchSizeScale;
@@ -77,20 +81,20 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	float searchTermMinHoldTime;
 	vector<ofxWWTweetParticle> tweets;
 
+	vector<ofColor> causticColors;
   protected:
+	TwitterApp twitter;
+	vector<ofxWWSearchTerm> searchTerms;
+	vector<ofxWWTweetParticle> searchTweets;
+	
 	bool searchTermSelected;
 	int selectedSearchTerm;
 	
 	float weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet);
 	void updateTweets(vector<ofxWWTweetParticle>& tweetlist, float layerOpacity);
 	
+	void setRandomCausticColor();
+	
 	ofxWWTweetParticle createParticleForTweet(const rtt::Tweet& tweet);
-	
-	TwitterApp twitter;
-
-
-	vector<ofxWWSearchTerm> searchTerms;
-	
-	vector<ofxWWTweetParticle> searchTweets;
 	
 };

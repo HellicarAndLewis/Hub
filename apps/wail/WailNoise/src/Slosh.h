@@ -38,6 +38,6 @@ public:
 	
 	void setProbability(float probability);	
 	void setVolumeRange(float minVol, float maxVol);
-	void setup(string path, int number);
+	void setup(string path);
 	void trigger(ofVec3f p);
 };

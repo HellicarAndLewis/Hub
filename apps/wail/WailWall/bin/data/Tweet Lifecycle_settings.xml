@@ -1,7 +1,7 @@
 <controls>
     <SliderFloat_Tweet_Font_Size>
         <name>Tweet Font Size</name>
-        <value>22.670000</value>
+        <value>15.545000</value>
     </SliderFloat_Tweet_Font_Size>
     <SliderFloat_Word_Wrap_Length>
         <name>Word Wrap Length</name>

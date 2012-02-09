@@ -139,6 +139,13 @@
 		EA8E87F514C492F400940115 /* ofxOscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA8E87ED14C492F300940115 /* ofxOscMessage.cpp */; };
 		EA8E87F614C492F400940115 /* ofxOscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA8E87EF14C492F300940115 /* ofxOscReceiver.cpp */; };
 		EA8E87F714C492F400940115 /* ofxOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA8E87F114C492F300940115 /* ofxOscSender.cpp */; };
+		EAAD770D14E2DD5200EF1CC3 /* mongoose.c in Sources */ = {isa = PBXBuildFile; fileRef = EAAD76F414E2DD5200EF1CC3 /* mongoose.c */; };
+		EAAD770E14E2DD5200EF1CC3 /* ofxWebServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAAD76F714E2DD5200EF1CC3 /* ofxWebServer.cpp */; };
+		EAAD770F14E2DD5200EF1CC3 /* ofxWSRequestHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAAD76F914E2DD5200EF1CC3 /* ofxWSRequestHandler.cpp */; };
+		EAAD771014E2DD5200EF1CC3 /* gui.js in Sources */ = {isa = PBXBuildFile; fileRef = EAAD76FF14E2DD5200EF1CC3 /* gui.js */; };
+		EAAD771114E2DD5200EF1CC3 /* jquery-1.4.2.js in Sources */ = {isa = PBXBuildFile; fileRef = EAAD770114E2DD5200EF1CC3 /* jquery-1.4.2.js */; };
+		EAAD771214E2DD5200EF1CC3 /* oo.js in Sources */ = {isa = PBXBuildFile; fileRef = EAAD770214E2DD5200EF1CC3 /* oo.js */; };
+		EAAD771314E2DD5200EF1CC3 /* ofxWebSimpleGuiToo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAAD770414E2DD5200EF1CC3 /* ofxWebSimpleGuiToo.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -477,7 +484,7 @@
 		E45BE9770E8CC7DD009D7055 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		E45BE9790E8CC7DD009D7055 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		E45BE97A0E8CC7DD009D7055 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
-		E4B69B5B0A3A1756003C02F2 /* WailWallDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WailWallDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4B69B5B0A3A1756003C02F2 /* WailWall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WailWall.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B69E1D0A3A1BDC003C02F2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = testApp.cpp; path = src/testApp.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1F0A3A1BDC003C02F2 /* testApp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = testApp.h; path = src/testApp.h; sourceTree = SOURCE_ROOT; };
@@ -569,6 +576,19 @@
 		EA8E87F014C492F300940115 /* ofxOscReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscReceiver.h; sourceTree = "<group>"; };
 		EA8E87F114C492F300940115 /* ofxOscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOscSender.cpp; sourceTree = "<group>"; };
 		EA8E87F214C492F300940115 /* ofxOscSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscSender.h; sourceTree = "<group>"; };
+		EAAD76F414E2DD5200EF1CC3 /* mongoose.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mongoose.c; sourceTree = "<group>"; };
+		EAAD76F514E2DD5200EF1CC3 /* mongoose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mongoose.h; sourceTree = "<group>"; };
+		EAAD76F714E2DD5200EF1CC3 /* ofxWebServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxWebServer.cpp; sourceTree = "<group>"; };
+		EAAD76F814E2DD5200EF1CC3 /* ofxWebServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxWebServer.h; sourceTree = "<group>"; };
+		EAAD76F914E2DD5200EF1CC3 /* ofxWSRequestHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxWSRequestHandler.cpp; sourceTree = "<group>"; };
+		EAAD76FA14E2DD5200EF1CC3 /* ofxWSRequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxWSRequestHandler.h; sourceTree = "<group>"; };
+		EAAD76FE14E2DD5200EF1CC3 /* gui.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = gui.css; sourceTree = "<group>"; };
+		EAAD76FF14E2DD5200EF1CC3 /* gui.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = gui.js; sourceTree = "<group>"; };
+		EAAD770014E2DD5200EF1CC3 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		EAAD770114E2DD5200EF1CC3 /* jquery-1.4.2.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "jquery-1.4.2.js"; sourceTree = "<group>"; };
+		EAAD770214E2DD5200EF1CC3 /* oo.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = oo.js; sourceTree = "<group>"; };
+		EAAD770414E2DD5200EF1CC3 /* ofxWebSimpleGuiToo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxWebSimpleGuiToo.cpp; sourceTree = "<group>"; };
+		EAAD770514E2DD5200EF1CC3 /* ofxWebSimpleGuiToo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxWebSimpleGuiToo.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1169,6 +1189,8 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				EAAD76E314E2DD5200EF1CC3 /* ofxWebServer */,
+				EAAD76FB14E2DD5200EF1CC3 /* ofxWebSimpleGuiToo */,
 				A6AF03C314DB33EE006816A8 /* roxlu */,
 				A621C59A14D7493B008AA7F0 /* ofxFTGL */,
 				A621C48714D73342008AA7F0 /* ofxMPMFluid */,
@@ -1234,7 +1256,7 @@
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
 				E45BE5980E8CC70C009D7055 /* frameworks */,
-				E4B69B5B0A3A1756003C02F2 /* WailWallDebug.app */,
+				E4B69B5B0A3A1756003C02F2 /* WailWall.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1488,6 +1510,75 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		EAAD76E314E2DD5200EF1CC3 /* ofxWebServer */ = {
+			isa = PBXGroup;
+			children = (
+				EAAD76F314E2DD5200EF1CC3 /* lib */,
+				EAAD76F614E2DD5200EF1CC3 /* src */,
+			);
+			name = ofxWebServer;
+			path = ../../../addons/ofxWebServer;
+			sourceTree = "<group>";
+		};
+		EAAD76F314E2DD5200EF1CC3 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				EAAD76F414E2DD5200EF1CC3 /* mongoose.c */,
+				EAAD76F514E2DD5200EF1CC3 /* mongoose.h */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		EAAD76F614E2DD5200EF1CC3 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				EAAD76F714E2DD5200EF1CC3 /* ofxWebServer.cpp */,
+				EAAD76F814E2DD5200EF1CC3 /* ofxWebServer.h */,
+				EAAD76F914E2DD5200EF1CC3 /* ofxWSRequestHandler.cpp */,
+				EAAD76FA14E2DD5200EF1CC3 /* ofxWSRequestHandler.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		EAAD76FB14E2DD5200EF1CC3 /* ofxWebSimpleGuiToo */ = {
+			isa = PBXGroup;
+			children = (
+				EAAD76FC14E2DD5200EF1CC3 /* data */,
+				EAAD770314E2DD5200EF1CC3 /* src */,
+			);
+			name = ofxWebSimpleGuiToo;
+			path = ../../../addons/ofxWebSimpleGuiToo;
+			sourceTree = "<group>";
+		};
+		EAAD76FC14E2DD5200EF1CC3 /* data */ = {
+			isa = PBXGroup;
+			children = (
+				EAAD76FD14E2DD5200EF1CC3 /* ofxWebSimpleGuiToo */,
+			);
+			path = data;
+			sourceTree = "<group>";
+		};
+		EAAD76FD14E2DD5200EF1CC3 /* ofxWebSimpleGuiToo */ = {
+			isa = PBXGroup;
+			children = (
+				EAAD76FE14E2DD5200EF1CC3 /* gui.css */,
+				EAAD76FF14E2DD5200EF1CC3 /* gui.js */,
+				EAAD770014E2DD5200EF1CC3 /* index.html */,
+				EAAD770114E2DD5200EF1CC3 /* jquery-1.4.2.js */,
+				EAAD770214E2DD5200EF1CC3 /* oo.js */,
+			);
+			path = ofxWebSimpleGuiToo;
+			sourceTree = "<group>";
+		};
+		EAAD770314E2DD5200EF1CC3 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				EAAD770414E2DD5200EF1CC3 /* ofxWebSimpleGuiToo.cpp */,
+				EAAD770514E2DD5200EF1CC3 /* ofxWebSimpleGuiToo.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1507,7 +1598,7 @@
 			);
 			name = WailWall;
 			productName = myOFApp;
-			productReference = E4B69B5B0A3A1756003C02F2 /* WailWallDebug.app */;
+			productReference = E4B69B5B0A3A1756003C02F2 /* WailWall.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1662,6 +1753,13 @@
 				A6AF047E14DB33EF006816A8 /* HMAC_SHA1.cpp in Sources */,
 				A6AF047F14DB33EF006816A8 /* SHA1.cpp in Sources */,
 				A6AF048014DB33EF006816A8 /* urlencode.cpp in Sources */,
+				EAAD770D14E2DD5200EF1CC3 /* mongoose.c in Sources */,
+				EAAD770E14E2DD5200EF1CC3 /* ofxWebServer.cpp in Sources */,
+				EAAD770F14E2DD5200EF1CC3 /* ofxWSRequestHandler.cpp in Sources */,
+				EAAD771014E2DD5200EF1CC3 /* gui.js in Sources */,
+				EAAD771114E2DD5200EF1CC3 /* jquery-1.4.2.js in Sources */,
+				EAAD771214E2DD5200EF1CC3 /* oo.js in Sources */,
+				EAAD771314E2DD5200EF1CC3 /* ofxWebSimpleGuiToo.cpp in Sources */,
 				54C8B9D214E1150B005896E1 /* Curl.cpp in Sources */,
 				54C8B9D314E1150B005896E1 /* Header.cpp in Sources */,
 				54C8B9D414E1150B005896E1 /* oAuth.cpp in Sources */,

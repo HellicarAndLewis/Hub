@@ -8,7 +8,7 @@
 #include "AudioSystem.h"
 #include "KinectTouchReceiver.h"
 
-class testApp : public ofBaseApp, public KinectTouchListener {
+class testApp : public ofBaseApp, public KinectTouchListener, public xmlgui::Listener {
 public:
 	void setup();
 	void exit();
@@ -35,13 +35,17 @@ public:
 	KinectTouchReceiver kinect;
 	
 	xmlgui::SimpleGui gui;
+    void controlChanged(xmlgui::Control *ctrl);
 	
 	ofVec3f rotation;
 	map<int,KinectTouch> blobs;
 	virtual void audioOut(float *outs, int buffSize, int numChannels);
 	Slosh slosh;
-	Slosh drop;
+	Slosh splash;
 	
+    float bubbleVolume;
+    float bgLoopVolume;
+	float splashVolume;
 	audio::PlayerRef bgLoopPlayer;
 };
 
