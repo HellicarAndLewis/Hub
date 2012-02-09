@@ -36,6 +36,8 @@ class ofxWWRenderer: public KinectTouchListener {
 	bool fakeZOnTouch;
 	float fakeZLevel;
 	
+	ofxWWTweetParticleManager& getTweetManager(); // roxlu 02/07
+	
   protected:
 	ofxWWTweetParticleManager tweets;	
 	
@@ -53,6 +55,8 @@ class ofxWWRenderer: public KinectTouchListener {
 	float noiseWobbleSpeedY;
 	float noiseWobbleAmplitudeX;
 	float noiseWobbleAmplitudeY;
+	
+	
 	
 	//warp distort 
 	ofShader warpShader;

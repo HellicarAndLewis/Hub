@@ -1,7 +1,7 @@
 <controls>
     <Toggle_Draw_Touch_Debug>
         <name>Draw Touch Debug</name>
-        <value>1</value>
+        <value>0</value>
     </Toggle_Draw_Touch_Debug>
     <SliderFloat_Layer_Barrier_Z>
         <name>Layer Barrier Z</name>
@@ -17,6 +17,14 @@
     </Toggle_Fake_Z>
     <SliderFloat_Fake_Level>
         <name>Fake Level</name>
-        <value>0.580000</value>
+        <value>0.770000</value>
     </SliderFloat_Fake_Level>
+    <SliderFloat_Touch_Scale>
+        <name>Touch Scale</name>
+        <value>0.995000</value>
+    </SliderFloat_Touch_Scale>
+    <SliderFloat_Influence_Width>
+        <name>Influence Width</name>
+        <value>223.149994</value>
+    </SliderFloat_Influence_Width>
 </controls>

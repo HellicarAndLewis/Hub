@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "TwitterApp.h"
+#include "TwitterPhotoUploader.h"
 
 class testApp : public ofBaseApp{
 
@@ -23,4 +24,6 @@ class testApp : public ofBaseApp{
 		void onNewSearchTerm(TwitterAppEvent& event);
 
 		TwitterApp twitter_app;
+		TwitterPhotoUploader uploader;
+		bool take_photo;
 };

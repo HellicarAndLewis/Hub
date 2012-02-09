@@ -55,16 +55,19 @@ void ofxWWRenderer::setup(int width, int height){
 
 void ofxWWRenderer::setupGui(){
 	
+
+	
 	webGui.addPage("Interaction");
 	webGui.addToggle("Draw Touch Debug", drawTouchDebug);
 	webGui.addSlider("Layer Barrier Z", layerBarrierZ, .25, .75);
 	webGui.addSlider("Layer Barrier Width", layerBarrierWidth, 0.05, .25);
 	webGui.addToggle("Fake Z", fakeZOnTouch);
 	webGui.addSlider("Fake Level", fakeZLevel, 0.0, 1.0);
-	
+	webGui.addSlider("Touch Scale", tweets.touchSizeScale, .5, 2.0);
+	webGui.addSlider("Influence Width", tweets.touchInfluenceFalloff, 10., 500);
 	webGui.addPage("Simulation Scale");
 	webGui.addSlider("Force Scale",	fluid.forceScale,	1.0, 200); 
-	webGui.addSlider("Zoom",	fluid.scaleFactor,	1.0, 20.0); 	
+	webGui.addSlider("Zoom",			fluid.scaleFactor,	1.0, 20.0); 	
 	webGui.addSlider("Offset X",		fluid.offsetX,		-200.0, 0); 	
 	webGui.addSlider("Offset Y",		fluid.offsetY,		-200.0, 0); 	
 	
@@ -92,6 +95,7 @@ void ofxWWRenderer::setupGui(){
 	webGui.addSlider("Noise Wobble Amplitude X", noiseWobbleAmplitudeX, 0, 100);
 	webGui.addSlider("Noise Wobble Amplitude Y", noiseWobbleAmplitudeY, 0, 100);
 	webGui.addToggle("Just Draw Warp", justDrawWarpTexture);
+
 
 	tweets.setupGui();
 }
@@ -159,16 +163,26 @@ void ofxWWRenderer::render(){
 	tweets.renderSearchTerms();
 	
 	if(justDrawWarpTexture){
-		liquidTarget.draw(0,0);		
+		liquidTarget.draw(0,0);	
 	}
 	
-	if(drawTouchDebug){
+	if(drawTouchDebug){ 
 		ofPushStyle();
 		ofNoFill();
-		ofSetColor(0, 255, 0);
 		map<int,KinectTouch>::iterator it;
 		for(it = blobs->begin(); it != blobs->end(); it++){
-			ofCircle(it->second.x*liquidTarget.getWidth(), it->second.y*liquidTarget.getHeight(), 10);
+			ofVec2f touchCenter = ofVec2f( it->second.x*liquidTarget.getWidth(), it->second.y*liquidTarget.getHeight() );
+			float maxTouchRadius = firstLayerAccumulator.getHeight()*tweets.touchSizeScale;
+			ofSetColor(255, 255, 255);
+			ofCircle(touchCenter, it->second.size*maxTouchRadius);			
+			ofSetColor(0, 255, 0);
+			ofCircle(touchCenter, it->second.size*(maxTouchRadius - tweets.touchInfluenceFalloff/2));
+			ofSetColor(255, 255, 0);
+			ofCircle(touchCenter, it->second.size*(maxTouchRadius + tweets.touchInfluenceFalloff/2));
+			
+			for(int i = 0; i < tweets.tweets.size(); i++){
+				ofLine(touchCenter, tweets.tweets[i].pos);
+			}
 		}
 		ofPopStyle();
 	}
@@ -190,6 +204,7 @@ void ofxWWRenderer::renderFirstLayer(){
 		if(it->second.z > maxTouchZ){
 			maxTouchZ = it->second.z;
 		}
+		
 		//dirty fake hack
 		if(fakeZOnTouch){
 			maxTouchZ = fakeZLevel;
@@ -198,7 +213,12 @@ void ofxWWRenderer::renderFirstLayer(){
 	
 	float targetOpacity = ofMap(maxTouchZ, layerBarrierZ-layerBarrierWidth/2, layerBarrierZ+layerBarrierWidth/2, 1.0, 0.0, true);
 	layer1Opacity += (targetOpacity - layer1Opacity) * .05;
+	
+	//JG DISABLING SEARCH FOR THE MOMENT
 	tweets.tweetLayerOpacity = layer1Opacity;
+	tweets.tweetLayerOpacity = 1.0;
+	tweets.canSelectSearchTerms = maxTouchZ > layerBarrierZ;
+	tweets.canSelectSearchTerms = false;
 	
 	//render the fluid sim for layer 1
 	blurShader.begin();
@@ -219,7 +239,8 @@ void ofxWWRenderer::renderFirstLayer(){
 	vector<ofVec3f> colors;
 	for(int i = 0; i < fluid.numParticles; i++){
 		ofxMPMParticle* p = fluid.getParticles()[i];
-		verts.push_back(ofVec2f(p->x, p->y));
+		ofVec2f pos = ofVec2f(p->x, p->y);
+		verts.push_back(pos);
 		verts.push_back(ofVec2f(p->x - p->u, p->y - p->v));
 		texcoords.push_back( texCoordAtPos(colorField, p->x, p->y) );
 		texcoords.push_back( texCoordAtPos(colorField, p->x - p->u, p->y - p->v) );
@@ -234,15 +255,19 @@ void ofxWWRenderer::renderFirstLayer(){
 	glDrawArrays(GL_LINES, 0, verts.size());
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
-
 	
 	colorField.getTextureReference().unbind();
+	
 	ofPopMatrix();
 
 	ofSetColor(0,0,0, clearSpeed);
 	ofRect(0, 0, firstLayerAccumulator.getWidth(), firstLayerAccumulator.getHeight());
 	
 	ofPopStyle();
+	
+	//create 
+	tweets.renderCaustics();
+	
 	firstLayerAccumulator.end();
 }
 
@@ -305,4 +330,8 @@ void ofxWWRenderer::touchUp(const KinectTouch &touch) {
 ofVec2f ofxWWRenderer::texCoordAtPos(ofImage& image, float x, float y){
 	return ofVec2f(ofMap(x, 0, fluid.getGridSizeX(), 0, image.getWidth()),
 				   ofMap(y, 0, fluid.getGridSizeY(), 0, image.getHeight()));
+}
+
+ofxWWTweetParticleManager& ofxWWRenderer::getTweetManager() {
+	return tweets;
 }

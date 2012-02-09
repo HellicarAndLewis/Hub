@@ -24,6 +24,8 @@ class ofxWWSearchTerm {
 	ofVec2f closestPoint;
 	ofVec2f pos;
 	
+	//weight contributed by all surrounding touches
+	float touchWeight;
 
 	bool touchPresent;
 	bool highlighted;
