@@ -4,6 +4,7 @@
     <source>
         <x>0</x>
         <y>0</y>
+	<!-- Portrait: 1024*3 x 1280 -->
         <width>3072</width>
         <height>1280</height>
     </source>
@@ -18,12 +19,13 @@
 
 	<!-- 1080p output render -->
     <preview>
-        <x>6400</x> <!-- assuming it's TH2G + Cinema Display to the left of this display -->
+        <x>5760</x> <!-- assuming it's TH2G + Cinema Display to the left of this display -->
         <y>0</y>
         <width>1920</width>
         <height>1080</height>
     </preview>
 
+	<!-- this is the gui in absolute screen coords (push it past the triplehead) -->
 	<gui>
 		<x>3840</x>
 		<y>0</y>

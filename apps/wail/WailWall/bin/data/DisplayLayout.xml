@@ -13,13 +13,13 @@
     <dest>
         <x>0</x>
         <y>0</y>
-        <width>3840</width>
-        <height>1024</height>
+        <width>1920</width>
+        <height>1080</height>
     </dest>
 
 	<!-- 1080p output render -->
     <preview>
-        <x>5760</x> <!-- assuming it's TH2G + Cinema Display to the left of this display -->
+        <x>0</x> <!-- assuming it's TH2G + Cinema Display to the left of this display -->
         <y>0</y>
         <width>1920</width>
         <height>1080</height>
@@ -27,7 +27,7 @@
 
 	<!-- this is the gui in absolute screen coords (push it past the triplehead) -->
 	<gui>
-		<x>3840</x>
+		<x>0</x>
 		<y>0</y>
 	</gui>
 	
@@ -39,15 +39,15 @@
             <source>
                 <x>0.000000</x>
                 <y>0.000000</y>
-                <width>1024</width>
-                <height>1280</height>
+                <width>0</width>
+                <height>0</height>
             </source>
 			<!-- dest is output, 0,0 in relationship to the top left of the destination rectangle -->
             <dest>
                 <x>0</x>
                 <y>0</y>
-                <width>1280</width>
-                <height>1024</height>
+                <width>1</width>
+                <height>1</height>
             </dest>
 	        <orientation>3</orientation> <!-- 3 is 90 to the right -->
         </screen>
@@ -55,17 +55,17 @@
         <screen>
 			<!-- source is texture coordinates -->
             <source>
-                <x>1024</x>
+                <x>1</x>
                 <y>0.000000</y>
-                <width>1024</width>
-                <height>1280</height>
+                <width>1</width>
+                <height>1</height>
             </source>
 			<!-- dest is output, 0,0 in relationship to the top left of the destination rectangle -->
             <dest>
-                <x>1280</x>
+                <x>1</x>
                 <y>0</y>
-                <width>1280</width>
-                <height>1024</height>
+                <width>1</width>
+                <height>1</height>
             </dest>
 	        <orientation>3</orientation> <!-- 3 is 90 to the right -->
         </screen>
@@ -73,17 +73,17 @@
         <screen>
 			<!-- source is texture coordinates -->
             <source>
-                <x>2048</x>
+                <x>1</x>
                 <y>0.000000</y>
-                <width>1024</width>
-                <height>1280</height>
+                <width>1</width>
+                <height>1</height>
             </source>
 			<!-- dest is output, 0,0 in relationship to the top left of the destination rectangle -->
             <dest>
-                <x>2560</x>
+                <x>1</x>
                 <y>0</y>
-                <width>1280</width>
-                <height>1024</height>
+                <width>1</width>
+                <height>1</height>
             </dest>
 	        <orientation>3</orientation> <!-- 3 is 90 to the right -->
         </screen>

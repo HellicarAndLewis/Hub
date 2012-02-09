@@ -23,8 +23,8 @@ void testApp::setup(){
 	soundOsc.setup("localhost", 2468);
 	blurSize = 0;
 	blurIterations = 0;
-	waterThreshold = 10;
-	maxWaterDepth = 255;
+	waterThreshold = 0.75;
+	maxWaterDepth = 1;
 	minBlobSize = 10;
 	maxBlobSize = 200;
 
@@ -81,8 +81,8 @@ void testApp::setupGui() {
 	gui.addSlider("Background Hysteresis", backgroundHysteresis, 0, 0.1);
 	gui.addColumn();
 	gui.addToggle("Draw Blobs", drawBlobs);
-	gui.addSlider("Water Surface Level", waterThreshold, 0, 1);//->stepped = true;
-	gui.addSlider("Maximum Water Depth", maxWaterDepth, 0, 1);//->stepped = true;
+	gui.addSlider("Water Surface Level", waterThreshold, 0.75, 1);//->stepped = true;
+	gui.addSlider("Maximum Water Depth", maxWaterDepth, 0.75, 1);//->stepped = true;
 	gui.addSlider("Minimum Blob Size", minBlobSize, 10, KINECT_WIDTH/2)->stepped = true;
 	gui.addSlider("Maximum Blob Size", maxBlobSize, KINECT_WIDTH/2, KINECT_WIDTH)->stepped = true;
 	gui.addSlider("Blob XY Smoothing", Blob::xySmoothing, 0, 1);
