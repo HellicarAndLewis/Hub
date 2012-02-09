@@ -33,6 +33,8 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	void onStreamEvent(const rtt::StreamEvent& event);
 	void onNewSearchTerm(TwitterAppEvent& event);
 
+	TwitterApp& getTwitterApp();
+	
 	//ofxFTGLFont sharedFont;
 	ofxMPMFluid* fluidRef;
 	map<int,KinectTouch>* blobsRef;

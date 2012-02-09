@@ -26,7 +26,9 @@ void testApp::setup(){
 	generateScreens = false;
 	shouldLoadScreens = false;
 	shouldSaveScreens = false;
+	shouldTakeScreenshot = false;
 	previewScreenLayout = false;
+
 	
 	// touch stuff
 	touchReceiver.setup(1234);
@@ -88,6 +90,9 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
+	// roxlu 02/07
+	ofSetFullscreen(false); 
+	
 	ofBackground(0);
 	ofRectangle renderPreview = screenManager.getRenderPreviewRect();
 	renderer.getFbo().getTextureReference().draw(renderPreview);
@@ -114,6 +119,22 @@ void testApp::draw(){
 		ofRect(screenManager.destRect);
 		ofPopStyle();
 	}	
+	
+	if(shouldTakeScreenshot) {
+		// %Y-%m-%d-%H-%M-%S-%i
+		string dirname = "thumbs/" +ofGetTimestampString("%m-%d");
+		ofDirectory dir(dirname);
+		dir.create(true);
+		
+		string filename = ofGetTimestampString() +"_" +ofToString(ofGetFrameNum()) +".png";
+		string filepath(dirname);
+		filepath.append("/");
+		filepath.append(filename);
+		ofSaveScreen(filepath);
+		
+		renderer.getTweetManager().getTwitterApp().uploadScreenshot(ofToDataPath(filepath, true), "roxlu", "@dewarshub SEARCH biology");
+		shouldTakeScreenshot = false;
+	}
 	
 	/*
 	ofSetHexColor(0x0000FF);
@@ -148,6 +169,11 @@ void testApp::keyPressed(int key){
 		}
 		case 'm': {
 			simulator.setEnabled(!simulator.getEnabled());
+			break;
+		}
+		case 'p': {
+			// roxlu 02/07, test with screenshots
+			shouldTakeScreenshot = !shouldTakeScreenshot;
 			break;
 		}
 			
@@ -218,7 +244,11 @@ void testApp::windowResized(int w, int h){
 
 //--------------------------------------------------------------
 void testApp::gotMessage(ofMessage msg){
-
+	// see ofxWWTweetParticleManager
+	if(msg.message == "take_screenshot") {
+		shouldTakeScreenshot = true;
+	}
+	
 }
 
 //--------------------------------------------------------------

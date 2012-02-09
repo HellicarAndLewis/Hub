@@ -24,8 +24,11 @@ void ofxWWTweetParticleManager::setup(){
 	twitter.addCustomListener(*this);
 	
 	// What do you want to track?
+	// roxlu, 02/09: use the twitter_hashtags.txt file
+	
 	//twitter.track("love");
-	twitter.track("usa");
+	//twitter.track("usa");
+	//twitter.track("monkey");
 	
 	if(!twitter.connect()) {
 		printf("Error: cannot connect to twitter stream.\n");
@@ -289,6 +292,11 @@ void ofxWWTweetParticleManager::renderCaustics(){
 }
 
 void ofxWWTweetParticleManager::onStatusUpdate(const rtt::Tweet& tweet){
+	if(twitter.containsBadWord(tweet.getText())) {
+		printf("[ censored ] : %s\n", tweet.getText().c_str());
+		return;
+	}
+	
 	ofxWWTweetParticle tweetParticle = createParticleForTweet(tweet);
 	tweets.push_back( tweetParticle );	
 	
@@ -325,6 +333,9 @@ void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
 	searchTerm.pos = pos;
 	
 	searchTerms.push_back( searchTerm );	
+	
+	// @todo using ofSendMessage to test screenshots
+	ofSendMessage("take_screenshot");
 }
 
 void ofxWWTweetParticleManager::onStatusDestroy(const rtt::StatusDestroy& destroy){
@@ -344,3 +355,7 @@ void ofxWWTweetParticleManager::resetTouches(){
 	searchTweets.clear();
 }
 
+// roxlu 02/07
+TwitterApp& ofxWWTweetParticleManager::getTwitterApp() {
+	return twitter;
+}

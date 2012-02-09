@@ -2,6 +2,7 @@
 #define TWITTER_EVENT_LISTENERH
 
 #include "IEventListener.h"
+
 class TwitterApp;
 
 class TwitterEventListener : public roxlu::twitter::IEventListener {

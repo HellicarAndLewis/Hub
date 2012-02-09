@@ -328,3 +328,7 @@ ofVec2f ofxWWRenderer::texCoordAtPos(ofImage& image, float x, float y){
 	return ofVec2f(ofMap(x, 0, fluid.getGridSizeX(), 0, image.getWidth()),
 				   ofMap(y, 0, fluid.getGridSizeY(), 0, image.getHeight()));
 }
+
+ofxWWTweetParticleManager& ofxWWRenderer::getTweetManager() {
+	return tweets;
+}

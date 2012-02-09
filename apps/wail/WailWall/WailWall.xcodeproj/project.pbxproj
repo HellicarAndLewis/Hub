@@ -7,6 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		540A0E5114E3BAC90072CB30 /* TwitterOSCReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 540A0E4E14E3BAC90072CB30 /* TwitterOSCReceiver.cpp */; };
+		5476571814E2CEE100DBC3D5 /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5476571014E2CEE100DBC3D5 /* libpcre.a */; };
+		5476571914E2CEE100DBC3D5 /* libpcrecpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5476571114E2CEE100DBC3D5 /* libpcrecpp.a */; };
+		5476571D14E2CEF100DBC3D5 /* TwitterBadWords.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5476571B14E2CEF100DBC3D5 /* TwitterBadWords.cpp */; };
+		54C8B9D214E1150B005896E1 /* Curl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54C8B9BE14E1150B005896E1 /* Curl.cpp */; };
+		54C8B9D314E1150B005896E1 /* Header.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54C8B9C114E1150B005896E1 /* Header.cpp */; };
+		54C8B9D414E1150B005896E1 /* oAuth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54C8B9C314E1150B005896E1 /* oAuth.cpp */; };
+		54C8B9D514E1150B005896E1 /* Signature.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54C8B9C514E1150B005896E1 /* Signature.cpp */; };
+		54C8B9D614E1150B005896E1 /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54C8B9C714E1150B005896E1 /* Utils.cpp */; };
+		54C8B9D714E1150B005896E1 /* Collection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54C8B9CA14E1150B005896E1 /* Collection.cpp */; };
+		54C8B9D814E1150B005896E1 /* File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54C8B9CC14E1150B005896E1 /* File.cpp */; };
+		54C8B9D914E1150B005896E1 /* Parameter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54C8B9CE14E1150B005896E1 /* Parameter.cpp */; };
+		54C8B9DA14E1150B005896E1 /* Request.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54C8B9D014E1150B005896E1 /* Request.cpp */; };
+		54C8B9EF14E11511005896E1 /* JSON.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54C8B9DE14E11511005896E1 /* JSON.cpp */; };
+		54C8B9F014E11511005896E1 /* Stream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54C8B9E014E11511005896E1 /* Stream.cpp */; };
+		54C8B9F114E11511005896E1 /* TwitPic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54C8B9E314E11511005896E1 /* TwitPic.cpp */; };
+		54C8B9F214E11511005896E1 /* Twitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54C8B9E514E11511005896E1 /* Twitter.cpp */; };
+		54C8B9F314E11511005896E1 /* TwitterStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54C8B9E714E11511005896E1 /* TwitterStream.cpp */; };
+		54C8B9F414E11511005896E1 /* Tweet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54C8B9EB14E11511005896E1 /* Tweet.cpp */; };
+		54C8B9F514E11511005896E1 /* URL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54C8B9ED14E11511005896E1 /* URL.cpp */; };
+		54C8B9F814E1170E005896E1 /* TwitterPhotoUploader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54C8B9F614E1170E005896E1 /* TwitterPhotoUploader.cpp */; };
 		A621C4C914D73342008AA7F0 /* ofxMPMFluid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A621C4BF14D73342008AA7F0 /* ofxMPMFluid.cpp */; };
 		A621C4CA14D73342008AA7F0 /* ofxMPMNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A621C4C114D73342008AA7F0 /* ofxMPMNode.cpp */; };
 		A621C4CB14D73342008AA7F0 /* ofxMPMObstacle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A621C4C314D73342008AA7F0 /* ofxMPMObstacle.cpp */; };
@@ -60,21 +81,6 @@
 		A6AF046B14DB33EF006816A8 /* QueryParams.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF03D414DB33EE006816A8 /* QueryParams.cpp */; };
 		A6AF046C14DB33EF006816A8 /* QueryResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF03D614DB33EE006816A8 /* QueryResult.cpp */; };
 		A6AF046D14DB33EF006816A8 /* QuerySelect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF03D814DB33EE006816A8 /* QuerySelect.cpp */; };
-		A6AF046E14DB33EF006816A8 /* Curl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF03DC14DB33EE006816A8 /* Curl.cpp */; };
-		A6AF046F14DB33EF006816A8 /* Request.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF03DE14DB33EE006816A8 /* Request.cpp */; };
-		A6AF047014DB33EF006816A8 /* Header.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF03E214DB33EE006816A8 /* Header.cpp */; };
-		A6AF047114DB33EF006816A8 /* oAuth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF03E414DB33EE006816A8 /* oAuth.cpp */; };
-		A6AF047214DB33EF006816A8 /* Signature.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF03E614DB33EE006816A8 /* Signature.cpp */; };
-		A6AF047314DB33EF006816A8 /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF03E814DB33EE006816A8 /* Utils.cpp */; };
-		A6AF047414DB33EF006816A8 /* Collection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF03EB14DB33EE006816A8 /* Collection.cpp */; };
-		A6AF047514DB33EF006816A8 /* File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF03ED14DB33EE006816A8 /* File.cpp */; };
-		A6AF047614DB33EF006816A8 /* Parameter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF03EF14DB33EE006816A8 /* Parameter.cpp */; };
-		A6AF047714DB33EF006816A8 /* JSON.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF03F214DB33EE006816A8 /* JSON.cpp */; };
-		A6AF047814DB33EF006816A8 /* Stream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF03F414DB33EE006816A8 /* Stream.cpp */; };
-		A6AF047914DB33EF006816A8 /* Twitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF03F714DB33EE006816A8 /* Twitter.cpp */; };
-		A6AF047A14DB33EF006816A8 /* TwitterStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF03F914DB33EF006816A8 /* TwitterStream.cpp */; };
-		A6AF047B14DB33EF006816A8 /* Tweet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF03FD14DB33EF006816A8 /* Tweet.cpp */; };
-		A6AF047C14DB33EF006816A8 /* URL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF03FF14DB33EF006816A8 /* URL.cpp */; };
 		A6AF047D14DB33EF006816A8 /* base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF040314DB33EF006816A8 /* base64.cpp */; };
 		A6AF047E14DB33EF006816A8 /* HMAC_SHA1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF040514DB33EF006816A8 /* HMAC_SHA1.cpp */; };
 		A6AF047F14DB33EF006816A8 /* SHA1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6AF040714DB33EF006816A8 /* SHA1.cpp */; };
@@ -166,6 +172,56 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		540A0E4E14E3BAC90072CB30 /* TwitterOSCReceiver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TwitterOSCReceiver.cpp; path = ../../SharedCode/Twitter/TwitterOSCReceiver.cpp; sourceTree = "<group>"; };
+		540A0E4F14E3BAC90072CB30 /* TwitterOSCReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterOSCReceiver.h; path = ../../SharedCode/Twitter/TwitterOSCReceiver.h; sourceTree = "<group>"; };
+		540A0E5014E3BAC90072CB30 /* TwitterOSCReceiverListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterOSCReceiverListener.h; path = ../../SharedCode/Twitter/TwitterOSCReceiverListener.h; sourceTree = "<group>"; };
+		5476571014E2CEE100DBC3D5 /* libpcre.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcre.a; sourceTree = "<group>"; };
+		5476571114E2CEE100DBC3D5 /* libpcrecpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcrecpp.a; sourceTree = "<group>"; };
+		5476571214E2CEE100DBC3D5 /* pcre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre.h; sourceTree = "<group>"; };
+		5476571314E2CEE100DBC3D5 /* pcre_scanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre_scanner.h; sourceTree = "<group>"; };
+		5476571414E2CEE100DBC3D5 /* pcre_stringpiece.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre_stringpiece.h; sourceTree = "<group>"; };
+		5476571514E2CEE100DBC3D5 /* pcrecpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcrecpp.h; sourceTree = "<group>"; };
+		5476571614E2CEE100DBC3D5 /* pcrecpparg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcrecpparg.h; sourceTree = "<group>"; };
+		5476571714E2CEE100DBC3D5 /* pcreposix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcreposix.h; sourceTree = "<group>"; };
+		5476571B14E2CEF100DBC3D5 /* TwitterBadWords.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TwitterBadWords.cpp; path = ../../SharedCode/Twitter/TwitterBadWords.cpp; sourceTree = "<group>"; };
+		5476571C14E2CEF100DBC3D5 /* TwitterBadWords.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterBadWords.h; path = ../../SharedCode/Twitter/TwitterBadWords.h; sourceTree = "<group>"; };
+		54C8B9BE14E1150B005896E1 /* Curl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Curl.cpp; sourceTree = "<group>"; };
+		54C8B9BF14E1150B005896E1 /* Curl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Curl.h; sourceTree = "<group>"; };
+		54C8B9C114E1150B005896E1 /* Header.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Header.cpp; sourceTree = "<group>"; };
+		54C8B9C214E1150B005896E1 /* Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
+		54C8B9C314E1150B005896E1 /* oAuth.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = oAuth.cpp; sourceTree = "<group>"; };
+		54C8B9C414E1150B005896E1 /* oAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = oAuth.h; sourceTree = "<group>"; };
+		54C8B9C514E1150B005896E1 /* Signature.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Signature.cpp; sourceTree = "<group>"; };
+		54C8B9C614E1150B005896E1 /* Signature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Signature.h; sourceTree = "<group>"; };
+		54C8B9C714E1150B005896E1 /* Utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utils.cpp; sourceTree = "<group>"; };
+		54C8B9C814E1150B005896E1 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		54C8B9CA14E1150B005896E1 /* Collection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Collection.cpp; sourceTree = "<group>"; };
+		54C8B9CB14E1150B005896E1 /* Collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collection.h; sourceTree = "<group>"; };
+		54C8B9CC14E1150B005896E1 /* File.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = File.cpp; sourceTree = "<group>"; };
+		54C8B9CD14E1150B005896E1 /* File.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = File.h; sourceTree = "<group>"; };
+		54C8B9CE14E1150B005896E1 /* Parameter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Parameter.cpp; sourceTree = "<group>"; };
+		54C8B9CF14E1150B005896E1 /* Parameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parameter.h; sourceTree = "<group>"; };
+		54C8B9D014E1150B005896E1 /* Request.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Request.cpp; sourceTree = "<group>"; };
+		54C8B9D114E1150B005896E1 /* Request.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Request.h; sourceTree = "<group>"; };
+		54C8B9DC14E11511005896E1 /* IEventListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IEventListener.h; sourceTree = "<group>"; };
+		54C8B9DE14E11511005896E1 /* JSON.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JSON.cpp; sourceTree = "<group>"; };
+		54C8B9DF14E11511005896E1 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
+		54C8B9E014E11511005896E1 /* Stream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Stream.cpp; sourceTree = "<group>"; };
+		54C8B9E114E11511005896E1 /* Stream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stream.h; sourceTree = "<group>"; };
+		54C8B9E214E11511005896E1 /* TweetConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetConstants.h; sourceTree = "<group>"; };
+		54C8B9E314E11511005896E1 /* TwitPic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TwitPic.cpp; sourceTree = "<group>"; };
+		54C8B9E414E11511005896E1 /* TwitPic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitPic.h; sourceTree = "<group>"; };
+		54C8B9E514E11511005896E1 /* Twitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Twitter.cpp; sourceTree = "<group>"; };
+		54C8B9E614E11511005896E1 /* Twitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Twitter.h; sourceTree = "<group>"; };
+		54C8B9E714E11511005896E1 /* TwitterStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TwitterStream.cpp; sourceTree = "<group>"; };
+		54C8B9E814E11511005896E1 /* TwitterStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterStream.h; sourceTree = "<group>"; };
+		54C8B9EA14E11511005896E1 /* General.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = General.h; sourceTree = "<group>"; };
+		54C8B9EB14E11511005896E1 /* Tweet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tweet.cpp; sourceTree = "<group>"; };
+		54C8B9EC14E11511005896E1 /* Tweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tweet.h; sourceTree = "<group>"; };
+		54C8B9ED14E11511005896E1 /* URL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URL.cpp; sourceTree = "<group>"; };
+		54C8B9EE14E11511005896E1 /* URL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URL.h; sourceTree = "<group>"; };
+		54C8B9F614E1170E005896E1 /* TwitterPhotoUploader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TwitterPhotoUploader.cpp; path = ../../SharedCode/Twitter/TwitterPhotoUploader.cpp; sourceTree = "<group>"; };
+		54C8B9F714E1170E005896E1 /* TwitterPhotoUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterPhotoUploader.h; path = ../../SharedCode/Twitter/TwitterPhotoUploader.h; sourceTree = "<group>"; };
 		A621C4BF14D73342008AA7F0 /* ofxMPMFluid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMPMFluid.cpp; sourceTree = "<group>"; };
 		A621C4C014D73342008AA7F0 /* ofxMPMFluid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxMPMFluid.h; sourceTree = "<group>"; };
 		A621C4C114D73342008AA7F0 /* ofxMPMNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMPMNode.cpp; sourceTree = "<group>"; };
@@ -300,39 +356,6 @@
 		A6AF03D714DB33EE006816A8 /* QueryResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueryResult.h; sourceTree = "<group>"; };
 		A6AF03D814DB33EE006816A8 /* QuerySelect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QuerySelect.cpp; sourceTree = "<group>"; };
 		A6AF03D914DB33EE006816A8 /* QuerySelect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuerySelect.h; sourceTree = "<group>"; };
-		A6AF03DC14DB33EE006816A8 /* Curl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Curl.cpp; sourceTree = "<group>"; };
-		A6AF03DD14DB33EE006816A8 /* Curl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Curl.h; sourceTree = "<group>"; };
-		A6AF03DE14DB33EE006816A8 /* Request.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Request.cpp; sourceTree = "<group>"; };
-		A6AF03DF14DB33EE006816A8 /* Request.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Request.h; sourceTree = "<group>"; };
-		A6AF03E014DB33EE006816A8 /* IEventListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IEventListener.h; sourceTree = "<group>"; };
-		A6AF03E214DB33EE006816A8 /* Header.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Header.cpp; sourceTree = "<group>"; };
-		A6AF03E314DB33EE006816A8 /* Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
-		A6AF03E414DB33EE006816A8 /* oAuth.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = oAuth.cpp; sourceTree = "<group>"; };
-		A6AF03E514DB33EE006816A8 /* oAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = oAuth.h; sourceTree = "<group>"; };
-		A6AF03E614DB33EE006816A8 /* Signature.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Signature.cpp; sourceTree = "<group>"; };
-		A6AF03E714DB33EE006816A8 /* Signature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Signature.h; sourceTree = "<group>"; };
-		A6AF03E814DB33EE006816A8 /* Utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utils.cpp; sourceTree = "<group>"; };
-		A6AF03E914DB33EE006816A8 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
-		A6AF03EB14DB33EE006816A8 /* Collection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Collection.cpp; sourceTree = "<group>"; };
-		A6AF03EC14DB33EE006816A8 /* Collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collection.h; sourceTree = "<group>"; };
-		A6AF03ED14DB33EE006816A8 /* File.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = File.cpp; sourceTree = "<group>"; };
-		A6AF03EE14DB33EE006816A8 /* File.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = File.h; sourceTree = "<group>"; };
-		A6AF03EF14DB33EE006816A8 /* Parameter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Parameter.cpp; sourceTree = "<group>"; };
-		A6AF03F014DB33EE006816A8 /* Parameter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parameter.h; sourceTree = "<group>"; };
-		A6AF03F214DB33EE006816A8 /* JSON.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JSON.cpp; sourceTree = "<group>"; };
-		A6AF03F314DB33EE006816A8 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
-		A6AF03F414DB33EE006816A8 /* Stream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Stream.cpp; sourceTree = "<group>"; };
-		A6AF03F514DB33EE006816A8 /* Stream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stream.h; sourceTree = "<group>"; };
-		A6AF03F614DB33EE006816A8 /* TweetConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetConstants.h; sourceTree = "<group>"; };
-		A6AF03F714DB33EE006816A8 /* Twitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Twitter.cpp; sourceTree = "<group>"; };
-		A6AF03F814DB33EE006816A8 /* Twitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Twitter.h; sourceTree = "<group>"; };
-		A6AF03F914DB33EF006816A8 /* TwitterStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TwitterStream.cpp; sourceTree = "<group>"; };
-		A6AF03FA14DB33EF006816A8 /* TwitterStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterStream.h; sourceTree = "<group>"; };
-		A6AF03FC14DB33EF006816A8 /* General.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = General.h; sourceTree = "<group>"; };
-		A6AF03FD14DB33EF006816A8 /* Tweet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tweet.cpp; sourceTree = "<group>"; };
-		A6AF03FE14DB33EF006816A8 /* Tweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tweet.h; sourceTree = "<group>"; };
-		A6AF03FF14DB33EF006816A8 /* URL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = URL.cpp; sourceTree = "<group>"; };
-		A6AF040014DB33EF006816A8 /* URL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URL.h; sourceTree = "<group>"; };
 		A6AF040314DB33EF006816A8 /* base64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = base64.cpp; sourceTree = "<group>"; };
 		A6AF040414DB33EF006816A8 /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
 		A6AF040514DB33EF006816A8 /* HMAC_SHA1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HMAC_SHA1.cpp; sourceTree = "<group>"; };
@@ -454,7 +477,7 @@
 		E45BE9770E8CC7DD009D7055 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		E45BE9790E8CC7DD009D7055 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		E45BE97A0E8CC7DD009D7055 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
-		E4B69B5B0A3A1756003C02F2 /* WailWall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WailWall.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4B69B5B0A3A1756003C02F2 /* WailWallDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WailWallDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B69E1D0A3A1BDC003C02F2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = testApp.cpp; path = src/testApp.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1F0A3A1BDC003C02F2 /* testApp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = testApp.h; path = src/testApp.h; sourceTree = SOURCE_ROOT; };
@@ -573,12 +596,110 @@
 				A6AF048214DB33EF006816A8 /* libjansson.a in Frameworks */,
 				A6AF048314DB33EF006816A8 /* libcrypto.a in Frameworks */,
 				A6AF048414DB33EF006816A8 /* libssl.a in Frameworks */,
+				5476571814E2CEE100DBC3D5 /* libpcre.a in Frameworks */,
+				5476571914E2CEE100DBC3D5 /* libpcrecpp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5476570F14E2CEE100DBC3D5 /* pcre */ = {
+			isa = PBXGroup;
+			children = (
+				5476571014E2CEE100DBC3D5 /* libpcre.a */,
+				5476571114E2CEE100DBC3D5 /* libpcrecpp.a */,
+				5476571214E2CEE100DBC3D5 /* pcre.h */,
+				5476571314E2CEE100DBC3D5 /* pcre_scanner.h */,
+				5476571414E2CEE100DBC3D5 /* pcre_stringpiece.h */,
+				5476571514E2CEE100DBC3D5 /* pcrecpp.h */,
+				5476571614E2CEE100DBC3D5 /* pcrecpparg.h */,
+				5476571714E2CEE100DBC3D5 /* pcreposix.h */,
+			);
+			path = pcre;
+			sourceTree = "<group>";
+		};
+		54C8B9BD14E1150B005896E1 /* Curl */ = {
+			isa = PBXGroup;
+			children = (
+				54C8B9BE14E1150B005896E1 /* Curl.cpp */,
+				54C8B9BF14E1150B005896E1 /* Curl.h */,
+				54C8B9C014E1150B005896E1 /* oauth */,
+				54C8B9C914E1150B005896E1 /* parameter */,
+				54C8B9D014E1150B005896E1 /* Request.cpp */,
+				54C8B9D114E1150B005896E1 /* Request.h */,
+			);
+			path = Curl;
+			sourceTree = "<group>";
+		};
+		54C8B9C014E1150B005896E1 /* oauth */ = {
+			isa = PBXGroup;
+			children = (
+				54C8B9C114E1150B005896E1 /* Header.cpp */,
+				54C8B9C214E1150B005896E1 /* Header.h */,
+				54C8B9C314E1150B005896E1 /* oAuth.cpp */,
+				54C8B9C414E1150B005896E1 /* oAuth.h */,
+				54C8B9C514E1150B005896E1 /* Signature.cpp */,
+				54C8B9C614E1150B005896E1 /* Signature.h */,
+				54C8B9C714E1150B005896E1 /* Utils.cpp */,
+				54C8B9C814E1150B005896E1 /* Utils.h */,
+			);
+			path = oauth;
+			sourceTree = "<group>";
+		};
+		54C8B9C914E1150B005896E1 /* parameter */ = {
+			isa = PBXGroup;
+			children = (
+				54C8B9CA14E1150B005896E1 /* Collection.cpp */,
+				54C8B9CB14E1150B005896E1 /* Collection.h */,
+				54C8B9CC14E1150B005896E1 /* File.cpp */,
+				54C8B9CD14E1150B005896E1 /* File.h */,
+				54C8B9CE14E1150B005896E1 /* Parameter.cpp */,
+				54C8B9CF14E1150B005896E1 /* Parameter.h */,
+			);
+			path = parameter;
+			sourceTree = "<group>";
+		};
+		54C8B9DB14E11511005896E1 /* Twitter */ = {
+			isa = PBXGroup;
+			children = (
+				54C8B9DC14E11511005896E1 /* IEventListener.h */,
+				54C8B9DD14E11511005896E1 /* parser */,
+				54C8B9E014E11511005896E1 /* Stream.cpp */,
+				54C8B9E114E11511005896E1 /* Stream.h */,
+				54C8B9E214E11511005896E1 /* TweetConstants.h */,
+				54C8B9E314E11511005896E1 /* TwitPic.cpp */,
+				54C8B9E414E11511005896E1 /* TwitPic.h */,
+				54C8B9E514E11511005896E1 /* Twitter.cpp */,
+				54C8B9E614E11511005896E1 /* Twitter.h */,
+				54C8B9E714E11511005896E1 /* TwitterStream.cpp */,
+				54C8B9E814E11511005896E1 /* TwitterStream.h */,
+				54C8B9E914E11511005896E1 /* types */,
+			);
+			path = Twitter;
+			sourceTree = "<group>";
+		};
+		54C8B9DD14E11511005896E1 /* parser */ = {
+			isa = PBXGroup;
+			children = (
+				54C8B9DE14E11511005896E1 /* JSON.cpp */,
+				54C8B9DF14E11511005896E1 /* JSON.h */,
+			);
+			path = parser;
+			sourceTree = "<group>";
+		};
+		54C8B9E914E11511005896E1 /* types */ = {
+			isa = PBXGroup;
+			children = (
+				54C8B9EA14E11511005896E1 /* General.h */,
+				54C8B9EB14E11511005896E1 /* Tweet.cpp */,
+				54C8B9EC14E11511005896E1 /* Tweet.h */,
+				54C8B9ED14E11511005896E1 /* URL.cpp */,
+				54C8B9EE14E11511005896E1 /* URL.h */,
+			);
+			path = types;
+			sourceTree = "<group>";
+		};
 		A621C48714D73342008AA7F0 /* ofxMPMFluid */ = {
 			isa = PBXGroup;
 			children = (
@@ -801,6 +922,13 @@
 				A6AF015714DAF043006816A8 /* TwitterDB.cpp */,
 				A6AF015A14DAF043006816A8 /* TwitterEventListener.h */,
 				A6AF015914DAF043006816A8 /* TwitterEventListener.cpp */,
+				54C8B9F614E1170E005896E1 /* TwitterPhotoUploader.cpp */,
+				54C8B9F714E1170E005896E1 /* TwitterPhotoUploader.h */,
+				5476571B14E2CEF100DBC3D5 /* TwitterBadWords.cpp */,
+				5476571C14E2CEF100DBC3D5 /* TwitterBadWords.h */,
+				540A0E4E14E3BAC90072CB30 /* TwitterOSCReceiver.cpp */,
+				540A0E4F14E3BAC90072CB30 /* TwitterOSCReceiver.h */,
+				540A0E5014E3BAC90072CB30 /* TwitterOSCReceiverListener.h */,
 			);
 			name = App;
 			sourceTree = "<group>";
@@ -831,8 +959,9 @@
 		A6AF03C414DB33EE006816A8 /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				54C8B9DB14E11511005896E1 /* Twitter */,
+				54C8B9BD14E1150B005896E1 /* Curl */,
 				A6AF03C514DB33EE006816A8 /* Database */,
-				A6AF03DA14DB33EE006816A8 /* Twitter */,
 			);
 			path = addons;
 			sourceTree = "<group>";
@@ -871,89 +1000,10 @@
 			path = lib;
 			sourceTree = "<group>";
 		};
-		A6AF03DA14DB33EE006816A8 /* Twitter */ = {
-			isa = PBXGroup;
-			children = (
-				A6AF03DB14DB33EE006816A8 /* curl */,
-				A6AF03E014DB33EE006816A8 /* IEventListener.h */,
-				A6AF03E114DB33EE006816A8 /* oauth */,
-				A6AF03EA14DB33EE006816A8 /* parameter */,
-				A6AF03F114DB33EE006816A8 /* parser */,
-				A6AF03F414DB33EE006816A8 /* Stream.cpp */,
-				A6AF03F514DB33EE006816A8 /* Stream.h */,
-				A6AF03F614DB33EE006816A8 /* TweetConstants.h */,
-				A6AF03F714DB33EE006816A8 /* Twitter.cpp */,
-				A6AF03F814DB33EE006816A8 /* Twitter.h */,
-				A6AF03F914DB33EF006816A8 /* TwitterStream.cpp */,
-				A6AF03FA14DB33EF006816A8 /* TwitterStream.h */,
-				A6AF03FB14DB33EF006816A8 /* types */,
-			);
-			path = Twitter;
-			sourceTree = "<group>";
-		};
-		A6AF03DB14DB33EE006816A8 /* curl */ = {
-			isa = PBXGroup;
-			children = (
-				A6AF03DC14DB33EE006816A8 /* Curl.cpp */,
-				A6AF03DD14DB33EE006816A8 /* Curl.h */,
-				A6AF03DE14DB33EE006816A8 /* Request.cpp */,
-				A6AF03DF14DB33EE006816A8 /* Request.h */,
-			);
-			path = curl;
-			sourceTree = "<group>";
-		};
-		A6AF03E114DB33EE006816A8 /* oauth */ = {
-			isa = PBXGroup;
-			children = (
-				A6AF03E214DB33EE006816A8 /* Header.cpp */,
-				A6AF03E314DB33EE006816A8 /* Header.h */,
-				A6AF03E414DB33EE006816A8 /* oAuth.cpp */,
-				A6AF03E514DB33EE006816A8 /* oAuth.h */,
-				A6AF03E614DB33EE006816A8 /* Signature.cpp */,
-				A6AF03E714DB33EE006816A8 /* Signature.h */,
-				A6AF03E814DB33EE006816A8 /* Utils.cpp */,
-				A6AF03E914DB33EE006816A8 /* Utils.h */,
-			);
-			path = oauth;
-			sourceTree = "<group>";
-		};
-		A6AF03EA14DB33EE006816A8 /* parameter */ = {
-			isa = PBXGroup;
-			children = (
-				A6AF03EB14DB33EE006816A8 /* Collection.cpp */,
-				A6AF03EC14DB33EE006816A8 /* Collection.h */,
-				A6AF03ED14DB33EE006816A8 /* File.cpp */,
-				A6AF03EE14DB33EE006816A8 /* File.h */,
-				A6AF03EF14DB33EE006816A8 /* Parameter.cpp */,
-				A6AF03F014DB33EE006816A8 /* Parameter.h */,
-			);
-			path = parameter;
-			sourceTree = "<group>";
-		};
-		A6AF03F114DB33EE006816A8 /* parser */ = {
-			isa = PBXGroup;
-			children = (
-				A6AF03F214DB33EE006816A8 /* JSON.cpp */,
-				A6AF03F314DB33EE006816A8 /* JSON.h */,
-			);
-			path = parser;
-			sourceTree = "<group>";
-		};
-		A6AF03FB14DB33EF006816A8 /* types */ = {
-			isa = PBXGroup;
-			children = (
-				A6AF03FC14DB33EF006816A8 /* General.h */,
-				A6AF03FD14DB33EF006816A8 /* Tweet.cpp */,
-				A6AF03FE14DB33EF006816A8 /* Tweet.h */,
-				A6AF03FF14DB33EF006816A8 /* URL.cpp */,
-				A6AF040014DB33EF006816A8 /* URL.h */,
-			);
-			path = types;
-			sourceTree = "<group>";
-		};
 		A6AF040114DB33EF006816A8 /* libs */ = {
 			isa = PBXGroup;
 			children = (
+				5476570F14E2CEE100DBC3D5 /* pcre */,
 				A6AF040214DB33EF006816A8 /* crypto */,
 				A6AF040B14DB33EF006816A8 /* curl */,
 				A6AF041614DB33EF006816A8 /* jansson */,
@@ -1184,7 +1234,7 @@
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
 				E45BE5980E8CC70C009D7055 /* frameworks */,
-				E4B69B5B0A3A1756003C02F2 /* WailWall.app */,
+				E4B69B5B0A3A1756003C02F2 /* WailWallDebug.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1457,7 +1507,7 @@
 			);
 			name = WailWall;
 			productName = myOFApp;
-			productReference = E4B69B5B0A3A1756003C02F2 /* WailWall.app */;
+			productReference = E4B69B5B0A3A1756003C02F2 /* WailWallDebug.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1608,25 +1658,29 @@
 				A6AF046B14DB33EF006816A8 /* QueryParams.cpp in Sources */,
 				A6AF046C14DB33EF006816A8 /* QueryResult.cpp in Sources */,
 				A6AF046D14DB33EF006816A8 /* QuerySelect.cpp in Sources */,
-				A6AF046E14DB33EF006816A8 /* Curl.cpp in Sources */,
-				A6AF046F14DB33EF006816A8 /* Request.cpp in Sources */,
-				A6AF047014DB33EF006816A8 /* Header.cpp in Sources */,
-				A6AF047114DB33EF006816A8 /* oAuth.cpp in Sources */,
-				A6AF047214DB33EF006816A8 /* Signature.cpp in Sources */,
-				A6AF047314DB33EF006816A8 /* Utils.cpp in Sources */,
-				A6AF047414DB33EF006816A8 /* Collection.cpp in Sources */,
-				A6AF047514DB33EF006816A8 /* File.cpp in Sources */,
-				A6AF047614DB33EF006816A8 /* Parameter.cpp in Sources */,
-				A6AF047714DB33EF006816A8 /* JSON.cpp in Sources */,
-				A6AF047814DB33EF006816A8 /* Stream.cpp in Sources */,
-				A6AF047914DB33EF006816A8 /* Twitter.cpp in Sources */,
-				A6AF047A14DB33EF006816A8 /* TwitterStream.cpp in Sources */,
-				A6AF047B14DB33EF006816A8 /* Tweet.cpp in Sources */,
-				A6AF047C14DB33EF006816A8 /* URL.cpp in Sources */,
 				A6AF047D14DB33EF006816A8 /* base64.cpp in Sources */,
 				A6AF047E14DB33EF006816A8 /* HMAC_SHA1.cpp in Sources */,
 				A6AF047F14DB33EF006816A8 /* SHA1.cpp in Sources */,
 				A6AF048014DB33EF006816A8 /* urlencode.cpp in Sources */,
+				54C8B9D214E1150B005896E1 /* Curl.cpp in Sources */,
+				54C8B9D314E1150B005896E1 /* Header.cpp in Sources */,
+				54C8B9D414E1150B005896E1 /* oAuth.cpp in Sources */,
+				54C8B9D514E1150B005896E1 /* Signature.cpp in Sources */,
+				54C8B9D614E1150B005896E1 /* Utils.cpp in Sources */,
+				54C8B9D714E1150B005896E1 /* Collection.cpp in Sources */,
+				54C8B9D814E1150B005896E1 /* File.cpp in Sources */,
+				54C8B9D914E1150B005896E1 /* Parameter.cpp in Sources */,
+				54C8B9DA14E1150B005896E1 /* Request.cpp in Sources */,
+				54C8B9EF14E11511005896E1 /* JSON.cpp in Sources */,
+				54C8B9F014E11511005896E1 /* Stream.cpp in Sources */,
+				54C8B9F114E11511005896E1 /* TwitPic.cpp in Sources */,
+				54C8B9F214E11511005896E1 /* Twitter.cpp in Sources */,
+				54C8B9F314E11511005896E1 /* TwitterStream.cpp in Sources */,
+				54C8B9F414E11511005896E1 /* Tweet.cpp in Sources */,
+				54C8B9F514E11511005896E1 /* URL.cpp in Sources */,
+				54C8B9F814E1170E005896E1 /* TwitterPhotoUploader.cpp in Sources */,
+				5476571D14E2CEF100DBC3D5 /* TwitterBadWords.cpp in Sources */,
+				540A0E5114E3BAC90072CB30 /* TwitterOSCReceiver.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1791,6 +1845,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_6)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_7)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_8)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_9)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../addons/ofxKinect/libs/libfreenect/lib/vs2010\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../../addons/ofxKinect/libs/libusb/osx/libs\"";
@@ -1800,6 +1855,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_6 = "\"$(SRCROOT)/../../../addons/roxlu/libs/jansson\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_7 = "\"$(SRCROOT)/../../../addons/roxlu/libs/openssl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_8 = "\"$(SRCROOT)/../../../addons/roxlu/addons/Database/lib\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_9 = "\"$(SRCROOT)/../../../addons/roxlu/libs/pcre\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = WailWallDebug;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
@@ -1896,6 +1952,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_6)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_7)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_8)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_9)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../addons/ofxKinect/libs/libfreenect/lib/vs2010\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../../addons/ofxKinect/libs/libusb/osx/libs\"";
@@ -1905,6 +1962,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_6 = "\"$(SRCROOT)/../../../addons/roxlu/libs/jansson\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_7 = "\"$(SRCROOT)/../../../addons/roxlu/libs/openssl\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_8 = "\"$(SRCROOT)/../../../addons/roxlu/addons/Database/lib\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_9 = "\"$(SRCROOT)/../../../addons/roxlu/libs/pcre\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = WailWall;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";

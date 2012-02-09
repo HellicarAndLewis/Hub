@@ -2,7 +2,7 @@
 #include <sstream>
 #include "TwitterEventListener.h"
 #include "TWitterApp.h"
-
+	
 TwitterEventListener::TwitterEventListener(TwitterApp& app)
 	:twitter_app(app)
 {
@@ -13,8 +13,13 @@ TwitterEventListener::~TwitterEventListener() {
 }
 
 void TwitterEventListener::onStatusUpdate(const rtt::Tweet& tweet) {
-	printf("> %s\n", tweet.getText().c_str());
+	if(twitter_app.containsBadWord(tweet.text)) {
+		printf("# [ censored ] : %s\n", tweet.text.c_str());
+		return;
+	}
 	
+
+	printf("> %s\n", tweet.getText().c_str());
 	string search_for = "dewarshub";
 	size_t search_len = search_for.size();
 	
