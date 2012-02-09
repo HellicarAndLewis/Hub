@@ -1,7 +1,7 @@
 <controls>
     <SliderFloat_Two_Line_Scale>
         <name>Two Line Scale</name>
-        <value>0.000000</value>
+        <value>1.000000</value>
     </SliderFloat_Two_Line_Scale>
     <SliderFloat_User_Y_Shift>
         <name>User Y Shift</name>

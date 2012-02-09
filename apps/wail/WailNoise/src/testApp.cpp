@@ -61,12 +61,12 @@ void testApp::setup(){
 	audio::play(bgLoopPlayer);
 	
 	// initial splash
-	splash.setup("plop/out-", 123);
+	splash.setup("plop");
 	splash.setProbability(1);
 	splash.setVolumeRange(0.9, 1);
 	
 	
-    slosh.setup("bubbles/bubble", 11);
+    slosh.setup("splish");
 	slosh.setProbability(0.3);
 	slosh.setVolumeRange(0.2*bubbleVolume, bubbleVolume);
     

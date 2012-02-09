@@ -26,10 +26,15 @@ bool SloshSortComparator(const Slosh::SloshSample &a, const Slosh::SloshSample &
 	return a.volume<b.volume;
 }
 
-void Slosh::setup(string path, int number) {
-	for(int i = 0; i < number; i++) {
-		string file = string(path) + ofToString(i) + ".wav";
+void Slosh::setup(string path) {
+	ofDirectory dir;
+	dir.allowExt("wav");
+	int numFiles = dir.listDir(path);
+	for(int i = 0; i < numFiles; i++) {
+		string file = dir.getPath(i);
+//		string file = string(path) + ofToString(i) + ".wav";
 		samples.push_back(SloshSample());
+		cout << file << endl;
 		samples.back().sample = audio::loadSample(ofToDataPath(file));
 		samples.back().volume = tricks::audio::analysis::getMaxAveragePower(
 			audio::getWavFile(

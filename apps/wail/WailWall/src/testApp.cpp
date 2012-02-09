@@ -54,8 +54,8 @@ void testApp::setup(){
 //	gui.addToggle("Load Screens File", shouldLoadScreens);
 //	gui.addToggle("Save Screens File", shouldSaveScreens);
 	
-
-	webGui.startServer();
+	// disable for now
+	//webGui.startServer();
 	webGui.loadFromXML();
 	webGui.setAutoSave(true);
 	
@@ -63,7 +63,7 @@ void testApp::setup(){
 }
 
 void testApp::exit() {
-	webGui.stopServer();
+	//webGui.stopServer();
 }
 
 //--------------------------------------------------------------
