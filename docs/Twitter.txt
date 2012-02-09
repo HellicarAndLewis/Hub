@@ -1,0 +1,54 @@
+Information about the Twitter parts of WaillWall
+================================================
+
+You can find all the code related to twitter in:
+
+# apps/wail/SharedCode/*
+# addons/roxlu/*
+
+The important thing you need to know when using the WailWall application, is
+that you need to authorize on it twitter. What does this mean? Well, the twitter
+application will create status updates. In order to create these status updates
+it needs to "login" as a existing twitter user so to say.  To login, it uses 
+oauth, which is basically a way for a twitter user to allow an application to 
+do (automated) status updates for you. 
+
+Also when you connect to a user stream, you'll get the stream from the user
+who authorized the application. 
+
+So in order to authorize the application you need to follow these steps below.
+Once you've done these steps a there will be a file called "twitter.txt" in the
+data folder which contains a token key and token secret which are used to 
+create "signature" (this is just how oauth works). But these are necessary!
+The token key and secret are only for the user who authorized the application!
+
+IMPORTANT
+----------
+When you remove the twitter.txt file you can re-authorize the application again.
+If you do something wrong, or you get disconnected for a certain reason remember
+that Twitter has a fair use policy and you should be "nice" for the servers,
+so do not restart the application too many times when you can't connect; make
+sure to contact the developer to check what's wrong.
+
+
+AUTHORIZING A THE APPLICATION USIN A TWITTER ACCOUNT
+-----------------------------------------------------
+These steps describe how you can authorize your application using a twitter
+account. For this  we're allowing the application to perform status updates 
+for the user @dewarshub twitter account.
+
+Note: YOU ONLY NEED TO DO THIS ONCE!
+
+- remove the bin/data/twitter.txt file
+- start the application from xcode and make sure you see the console
+- a browser will automatically open asking you to authorize the app
+- make sure you're logged in a @dewarshub (if not you can relogin and twitter
+will send you back to this same page)
+- click the authorize button
+- enter the pin you see there in the console of xode, right after the colon ":"
+- then, after entering the pin, press enter
+
+Now the WailWall application is authorized and can do posts for the @dewarshub
+user. 
+
+
