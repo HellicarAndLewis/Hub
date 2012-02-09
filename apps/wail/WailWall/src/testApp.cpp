@@ -37,7 +37,7 @@ void testApp::setup(){
 	//JOEL: change this to the triplehead layout for your test
 	//screenSettingsFile = "DisplayLayout_triplehead.xml";
 	//DEV is for testing on smaller screens
-	screenSettingsFile = "DisplayLayout.xml";
+	screenSettingsFile = "DisplayLayout_dev.xml";
 	screenManager.loadScreens(screenSettingsFile);
 
 	gui.addToggle("Show Preview Rects", previewScreenLayout);
@@ -54,8 +54,6 @@ void testApp::setup(){
 	
 	gui.loadFromXML();
 	gui.setAutoSave(true);
-	
-
 }
 
 void testApp::exit() {

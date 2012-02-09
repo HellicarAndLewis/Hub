@@ -61,10 +61,11 @@ void ofxWWRenderer::setupGui(){
 	gui.addSlider("Layer Barrier Width", layerBarrierWidth, 0.05, .25);
 	gui.addToggle("Fake Z", fakeZOnTouch);
 	gui.addSlider("Fake Level", fakeZLevel, 0.0, 1.0);
-	
+	gui.addSlider("Touch Scale", tweets.touchSizeScale, .5, 2.0);
+	gui.addSlider("Influence Width", tweets.touchInfluenceFalloff, 10., 500);
 	gui.addPage("Simulation Scale");
 	gui.addSlider("Force Scale",	fluid.forceScale,	1.0, 200); 
-	gui.addSlider("Zoom",	fluid.scaleFactor,	1.0, 20.0); 	
+	gui.addSlider("Zoom",			fluid.scaleFactor,	1.0, 20.0); 	
 	gui.addSlider("Offset X",		fluid.offsetX,		-200.0, 0); 	
 	gui.addSlider("Offset Y",		fluid.offsetY,		-200.0, 0); 	
 	
@@ -159,16 +160,26 @@ void ofxWWRenderer::render(){
 	tweets.renderSearchTerms();
 	
 	if(justDrawWarpTexture){
-		liquidTarget.draw(0,0);		
+		liquidTarget.draw(0,0);	
 	}
 	
-	if(drawTouchDebug){
+	if(drawTouchDebug){ 
 		ofPushStyle();
 		ofNoFill();
-		ofSetColor(0, 255, 0);
 		map<int,KinectTouch>::iterator it;
 		for(it = blobs->begin(); it != blobs->end(); it++){
-			ofCircle(it->second.x*liquidTarget.getWidth(), it->second.y*liquidTarget.getHeight(), 10);
+			ofVec2f touchCenter = ofVec2f( it->second.x*liquidTarget.getWidth(), it->second.y*liquidTarget.getHeight() );
+			float maxTouchRadius = firstLayerAccumulator.getHeight()*tweets.touchSizeScale;
+			ofSetColor(255, 255, 255);
+			ofCircle(touchCenter, it->second.size*maxTouchRadius);			
+			ofSetColor(0, 255, 0);
+			ofCircle(touchCenter, it->second.size*(maxTouchRadius - tweets.touchInfluenceFalloff/2));
+			ofSetColor(255, 255, 0);
+			ofCircle(touchCenter, it->second.size*(maxTouchRadius + tweets.touchInfluenceFalloff/2));
+			
+			for(int i = 0; i < tweets.tweets.size(); i++){
+				ofLine(touchCenter, tweets.tweets[i].pos);
+			}
 		}
 		ofPopStyle();
 	}
@@ -190,6 +201,7 @@ void ofxWWRenderer::renderFirstLayer(){
 		if(it->second.z > maxTouchZ){
 			maxTouchZ = it->second.z;
 		}
+		
 		//dirty fake hack
 		if(fakeZOnTouch){
 			maxTouchZ = fakeZLevel;
@@ -198,7 +210,12 @@ void ofxWWRenderer::renderFirstLayer(){
 	
 	float targetOpacity = ofMap(maxTouchZ, layerBarrierZ-layerBarrierWidth/2, layerBarrierZ+layerBarrierWidth/2, 1.0, 0.0, true);
 	layer1Opacity += (targetOpacity - layer1Opacity) * .05;
+	
+	//JG DISABLING SEARCH FOR THE MOMENT
 	tweets.tweetLayerOpacity = layer1Opacity;
+	tweets.tweetLayerOpacity = 1.0;
+	tweets.canSelectSearchTerms = maxTouchZ > layerBarrierZ;
+	tweets.canSelectSearchTerms = false;
 	
 	//render the fluid sim for layer 1
 	blurShader.begin();
@@ -243,6 +260,10 @@ void ofxWWRenderer::renderFirstLayer(){
 	ofRect(0, 0, firstLayerAccumulator.getWidth(), firstLayerAccumulator.getHeight());
 	
 	ofPopStyle();
+	
+	//create 
+	tweets.renderCaustics();
+	
 	firstLayerAccumulator.end();
 }
 

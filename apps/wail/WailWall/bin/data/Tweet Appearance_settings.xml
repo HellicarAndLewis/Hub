@@ -5,15 +5,15 @@
     </SliderFloat_Two_Line_Scale>
     <SliderFloat_User_Y_Shift>
         <name>User Y Shift</name>
-        <value>7.549999</value>
+        <value>51.000000</value>
     </SliderFloat_User_Y_Shift>
-    <SliderFloat_User_X_Padding>
-        <name>User X Padding</name>
-        <value>9.688001</value>
-    </SliderFloat_User_X_Padding>
+    <SliderFloat_Tweet_Y_Shift>
+        <name>Tweet Y Shift</name>
+        <value>-93.000000</value>
+    </SliderFloat_Tweet_Y_Shift>
     <SliderFloat_Two_Line_Squish>
         <name>Two Line Squish</name>
-        <value>0.592500</value>
+        <value>0.620000</value>
     </SliderFloat_Two_Line_Squish>
     <SliderFloat_Wall_Repulsion_Dist>
         <name>Wall Repulsion Dist</name>
