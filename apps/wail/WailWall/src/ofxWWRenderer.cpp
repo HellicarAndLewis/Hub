@@ -236,7 +236,8 @@ void ofxWWRenderer::renderFirstLayer(){
 	vector<ofVec3f> colors;
 	for(int i = 0; i < fluid.numParticles; i++){
 		ofxMPMParticle* p = fluid.getParticles()[i];
-		verts.push_back(ofVec2f(p->x, p->y));
+		ofVec2f pos = ofVec2f(p->x, p->y);
+		verts.push_back(pos);
 		verts.push_back(ofVec2f(p->x - p->u, p->y - p->v));
 		texcoords.push_back( texCoordAtPos(colorField, p->x, p->y) );
 		texcoords.push_back( texCoordAtPos(colorField, p->x - p->u, p->y - p->v) );
@@ -251,9 +252,9 @@ void ofxWWRenderer::renderFirstLayer(){
 	glDrawArrays(GL_LINES, 0, verts.size());
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
-
 	
 	colorField.getTextureReference().unbind();
+	
 	ofPopMatrix();
 
 	ofSetColor(0,0,0, clearSpeed);

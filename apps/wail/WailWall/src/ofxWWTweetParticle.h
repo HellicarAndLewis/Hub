@@ -52,5 +52,7 @@ class ofxWWTweetParticle {
 	string lineOne;
 	string lineTwo;
 
+	float atSignWidth;
+	float atSignHeight;
 	
 };
