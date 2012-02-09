@@ -107,7 +107,7 @@ void ofxWWTweetParticle::update(){
 		//distance attenuation
 		opacity *= selectionWeight; 
 	}
-	opacity = 1.0f;
+	//opacity = 1.0f;
 }
 
 void ofxWWTweetParticle::drawDot(){

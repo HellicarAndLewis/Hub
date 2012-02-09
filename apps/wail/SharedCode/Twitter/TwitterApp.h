@@ -10,6 +10,7 @@
 #include "IEventListener.h"
 #include "TwitterEventListener.h"
 #include "TwitterOSCReceiver.h"
+#include "TwitterSearchTermQueue.h"
 
 
 namespace rtt = roxlu::twitter::type;
@@ -105,6 +106,7 @@ private:
 	TwitterEventListener twitter_listener;
 	TwitterBadWords bad_words;
 	TwitterOSCReceiver osc_receiver;
+	TwitterSearchTermQueue search_queue;
 	//vector<string> hashtags; // what hashtags to follow?
 };
 

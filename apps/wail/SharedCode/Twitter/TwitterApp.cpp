@@ -15,9 +15,13 @@ TwitterApp::~TwitterApp() {
 }
 
 bool TwitterApp::initDB(){
-
 	// @todo create a init function
 	reloadBadWords();	
+
+	// SEARCH TERMS
+	// --------------
+	search_queue.setup(ofToDataPath("twitter_search_terms.bin",true));
+	search_queue.load();
 	
 	// OSC RECEIVER
 	// ------------

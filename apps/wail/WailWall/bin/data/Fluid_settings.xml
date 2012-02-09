@@ -1,7 +1,7 @@
 <controls>
     <Toggle_Enable_Fluid>
         <name>Enable Fluid</name>
-        <value>0</value>
+        <value>1</value>
     </Toggle_Enable_Fluid>
     <SliderFloat_Force_Scale>
         <name>Force Scale</name>

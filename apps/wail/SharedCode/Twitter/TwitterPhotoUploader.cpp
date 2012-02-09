@@ -40,7 +40,7 @@ void TwitterPhotoUploader::threadedFunction() {
 		if(use_twitter) {
 			// USING TWITTER MEDIA UPLOAD
 			string message = "@" +ufi.username +" Thanks for your input. See the visual result here: "; 
-			twitter.statusesUpdateWithMedia(message, ufi.file);
+			//twitter.statusesUpdateWithMedia(message, ufi.file);
 		}
 		else {
 			// USING CUSTOM WEBSITE

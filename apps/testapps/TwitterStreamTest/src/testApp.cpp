@@ -10,6 +10,13 @@ void testApp::setup(){
 	ofSetVerticalSync(true);
 	ofBackground(33);
 	
+	// small test with search terms.
+	terms.setup(ofToDataPath("searches.bin",true));
+	terms.addSearchTerm("roxlu", "some search term");
+	terms.addSearchTerm("james", "something else");
+	terms.save();
+	terms.load();
+	/*
 	twitter.setConsumerKey("kyw8bCAWKbkP6e1HMMdAvw");
 	twitter.setConsumerSecret("PwVuyjLeUdVZbi4ER6yRAo0byF55AIureauV6UhLRw");
 	
@@ -26,6 +33,7 @@ void testApp::setup(){
 	//stream.connect(URL_STREAM_USER);
 	
 	twitter.addEventListener(listener);
+	*/
 }
 
 void testApp::update(){
@@ -39,6 +47,7 @@ void testApp::draw(){
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
+	/*
 	if(key == ' ') {
 		twitter.statusesUpdateWithMedia("test upload", ofToDataPath("wayne.jpg",true));
 		printf("Uploaded:\n");
@@ -47,6 +56,7 @@ void testApp::keyPressed(int key){
 	else if(key == '1') {
 		twitter.statusesUpdate("test update");
 	}
+	*/
 }
 
 //--------------------------------------------------------------
