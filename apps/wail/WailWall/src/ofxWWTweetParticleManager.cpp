@@ -8,7 +8,7 @@
  */
 
 #include "ofxWWTweetParticleManager.h"
-#include "ofxSimpleGuiToo.h"
+#include "ofxWebSimpleGuiToo.h"
 
 ofxWWTweetParticleManager::ofxWWTweetParticleManager(){
 	maxTweets = 100;
@@ -37,31 +37,31 @@ void ofxWWTweetParticleManager::setup(){
 
 void ofxWWTweetParticleManager::setupGui(){
 	
-	gui.addPage("Tweet Lifecycle");
-	gui.addSlider("Tweet Font Size", fontSize, 5, 24);
-	gui.addSlider("Word Wrap Length", wordWrapLength, 100, 300);
-	gui.addSlider("Max Tweets", maxTweets, 5, 100);
-	gui.addSlider("Start Fade Time", startFadeTime, 2, 10);
-	gui.addSlider("Fade Duration", fadeDuration, 2, 10);
-	gui.addToggle("Clear Tweets", clearTweets);
+	webGui.addPage("Tweet Lifecycle");
+	webGui.addSlider("Tweet Font Size", fontSize, 5, 24);
+	webGui.addSlider("Word Wrap Length", wordWrapLength, 100, 300);
+	webGui.addSlider("Max Tweets", maxTweets, 5, 100);
+	webGui.addSlider("Start Fade Time", startFadeTime, 2, 10);
+	webGui.addSlider("Fade Duration", fadeDuration, 2, 10);
+	webGui.addToggle("Clear Tweets", clearTweets);
 
 	
-	gui.addPage("Tweet Appearance");
-	gui.addSlider("Two Line Scale", twoLineScaleup, 1.0, 2.0);
-	gui.addSlider("User Y Shift", userNameYOffset, -10, 20);
-	gui.addSlider("User X Padding", userNameXPad, -2, 10);
-	gui.addSlider("Two Line Squish", twoLineSquish, .5, 1.0);
-	gui.addSlider("Wall Repulsion Dist", wallRepulsionDistance, 0, 300);
-	gui.addSlider("Wall Repulsion Atten", wallRepulsionAtten, 0, .5);
-	gui.addSlider("Tweet Repulsion Dist", tweetRepulsionDistance, 0, 300);
-	gui.addSlider("Tweet Repulsion Atten", tweetRepulsionAtten, 0, .5);
-	gui.addSlider("Y Force Bias", yForceBias, 1., 10.);
-	gui.addSlider("Fluid Force Scale", fluidForceScale, 1., 100.);
+	webGui.addPage("Tweet Appearance");
+	webGui.addSlider("Two Line Scale", twoLineScaleup, 1.0, 2.0);
+	webGui.addSlider("User Y Shift", userNameYOffset, -10, 20);
+	webGui.addSlider("User X Padding", userNameXPad, -2, 10);
+	webGui.addSlider("Two Line Squish", twoLineSquish, .5, 1.0);
+	webGui.addSlider("Wall Repulsion Dist", wallRepulsionDistance, 0, 300);
+	webGui.addSlider("Wall Repulsion Atten", wallRepulsionAtten, 0, .5);
+	webGui.addSlider("Tweet Repulsion Dist", tweetRepulsionDistance, 0, 300);
+	webGui.addSlider("Tweet Repulsion Atten", tweetRepulsionAtten, 0, .5);
+	webGui.addSlider("Y Force Bias", yForceBias, 1., 10.);
+	webGui.addSlider("Fluid Force Scale", fluidForceScale, 1., 100.);
 	
-	gui.addPage("Search Terms");
-//	gui.addToggle("Gen Fake Terms", generateFakeSearchTerms);
-	gui.addSlider("Search Min Dist", searchTermMinDistance, 50, 500);
-	gui.addSlider("Search Min Hold T", searchTermMinHoldTime, .5, 3.0);
+	webGui.addPage("Search Terms");
+//	webGui.addToggle("Gen Fake Terms", generateFakeSearchTerms);
+	webGui.addSlider("Search Min Dist", searchTermMinDistance, 50, 500);
+	webGui.addSlider("Search Min Hold T", searchTermMinHoldTime, .5, 3.0);
 
 	generateFakeSearchTerms = true;
 }

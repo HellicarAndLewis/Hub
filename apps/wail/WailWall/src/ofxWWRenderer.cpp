@@ -8,7 +8,7 @@
  */
 
 #include "ofxWWRenderer.h"
-#include "ofxSimpleGuiToo.h"
+#include "ofxWebSimpleGuiToo.h"
 
 void ofxWWRenderer::setup(int width, int height){
 	
@@ -55,43 +55,43 @@ void ofxWWRenderer::setup(int width, int height){
 
 void ofxWWRenderer::setupGui(){
 	
-	gui.addPage("Interaction");
-	gui.addToggle("Draw Touch Debug", drawTouchDebug);
-	gui.addSlider("Layer Barrier Z", layerBarrierZ, .25, .75);
-	gui.addSlider("Layer Barrier Width", layerBarrierWidth, 0.05, .25);
-	gui.addToggle("Fake Z", fakeZOnTouch);
-	gui.addSlider("Fake Level", fakeZLevel, 0.0, 1.0);
+	webGui.addPage("Interaction");
+	webGui.addToggle("Draw Touch Debug", drawTouchDebug);
+	webGui.addSlider("Layer Barrier Z", layerBarrierZ, .25, .75);
+	webGui.addSlider("Layer Barrier Width", layerBarrierWidth, 0.05, .25);
+	webGui.addToggle("Fake Z", fakeZOnTouch);
+	webGui.addSlider("Fake Level", fakeZLevel, 0.0, 1.0);
 	
-	gui.addPage("Simulation Scale");
-	gui.addSlider("Force Scale",	fluid.forceScale,	1.0, 200); 
-	gui.addSlider("Zoom",	fluid.scaleFactor,	1.0, 20.0); 	
-	gui.addSlider("Offset X",		fluid.offsetX,		-200.0, 0); 	
-	gui.addSlider("Offset Y",		fluid.offsetY,		-200.0, 0); 	
+	webGui.addPage("Simulation Scale");
+	webGui.addSlider("Force Scale",	fluid.forceScale,	1.0, 200); 
+	webGui.addSlider("Zoom",	fluid.scaleFactor,	1.0, 20.0); 	
+	webGui.addSlider("Offset X",		fluid.offsetX,		-200.0, 0); 	
+	webGui.addSlider("Offset Y",		fluid.offsetY,		-200.0, 0); 	
 	
-	gui.addPage("Fluid");
-	gui.addSlider("Particles",		fluid.numParticles,		1000, 100000); 
-	gui.addSlider("Density",		fluid.densitySetting,	0, 30.0);	
-	gui.addSlider("Stiffness",		fluid.stiffness,		0, 2.0);
-	gui.addSlider("Bulk Viscosity",	fluid.bulkViscosity,	0, 10.0);
-	gui.addSlider("Elasticity",		fluid.elasticity,		0, 4.0);
-	gui.addSlider("Viscosity",		fluid.viscosity,		0, 4.0);
-	gui.addSlider("Yield Rate",		fluid.yieldRate,		0, 2.0);
-	gui.addSlider("Gravity",		fluid.gravity,			0, 0.02);
-	gui.addSlider("Smoothing",		fluid.smoothing,		0, 3.0);
-	gui.addToggle("Do Obstacles",	fluid.bDoObstacles); 
+	webGui.addPage("Fluid");
+	webGui.addSlider("Particles",		fluid.numParticles,		1000, 100000); 
+	webGui.addSlider("Density",		fluid.densitySetting,	0, 30.0);	
+	webGui.addSlider("Stiffness",		fluid.stiffness,		0, 2.0);
+	webGui.addSlider("Bulk Viscosity",	fluid.bulkViscosity,	0, 10.0);
+	webGui.addSlider("Elasticity",		fluid.elasticity,		0, 4.0);
+	webGui.addSlider("Viscosity",		fluid.viscosity,		0, 4.0);
+	webGui.addSlider("Yield Rate",		fluid.yieldRate,		0, 2.0);
+	webGui.addSlider("Gravity",		fluid.gravity,			0, 0.02);
+	webGui.addSlider("Smoothing",		fluid.smoothing,		0, 3.0);
+	webGui.addToggle("Do Obstacles",	fluid.bDoObstacles); 
 	
-	gui.addPage("Shader");
-	gui.addSlider("Blur Diffuse", blurAmount, 0, .75);
-	gui.addSlider("Clear Speed", clearSpeed, 0, 15);
-	gui.addSlider("Warp Amount", warpAmount, 0, 75);
-	gui.addSlider("Noise Scale X", noiseScale.x, 50, 500);
-	gui.addSlider("Noise Scale Y", noiseScale.y, 50, 500);
-	gui.addSlider("Noise Flow", noiseFlow, 0, 200);
-	gui.addSlider("Wobble Speed X", noiseWobbleSpeedX, 0, .2);
-	gui.addSlider("Noise Wobble Speed Y", noiseWobbleSpeedY, 0, .2);
-	gui.addSlider("Noise Wobble Amplitude X", noiseWobbleAmplitudeX, 0, 100);
-	gui.addSlider("Noise Wobble Amplitude Y", noiseWobbleAmplitudeY, 0, 100);
-	gui.addToggle("Just Draw Warp", justDrawWarpTexture);
+	webGui.addPage("Shader");
+	webGui.addSlider("Blur Diffuse", blurAmount, 0, .75);
+	webGui.addSlider("Clear Speed", clearSpeed, 0, 15);
+	webGui.addSlider("Warp Amount", warpAmount, 0, 75);
+	webGui.addSlider("Noise Scale X", noiseScale.x, 50, 500);
+	webGui.addSlider("Noise Scale Y", noiseScale.y, 50, 500);
+	webGui.addSlider("Noise Flow", noiseFlow, 0, 200);
+	webGui.addSlider("Wobble Speed X", noiseWobbleSpeedX, 0, .2);
+	webGui.addSlider("Noise Wobble Speed Y", noiseWobbleSpeedY, 0, .2);
+	webGui.addSlider("Noise Wobble Amplitude X", noiseWobbleAmplitudeX, 0, 100);
+	webGui.addSlider("Noise Wobble Amplitude Y", noiseWobbleAmplitudeY, 0, 100);
+	webGui.addToggle("Just Draw Warp", justDrawWarpTexture);
 
 	tweets.setupGui();
 }
