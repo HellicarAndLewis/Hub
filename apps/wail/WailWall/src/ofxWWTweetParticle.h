@@ -29,6 +29,8 @@ class ofxWWTweetParticle {
 	ofVec2f lastPos;
 	ofVec2f force;
 	
+	float selectionWeight;
+	
 	float scale;
 	float opacity;	
 	float deathAttenuation; //used to fall off wall force
@@ -38,10 +40,19 @@ class ofxWWTweetParticle {
 	//calculated on set
 	bool isTwoLines;
 	float userNameWidth;
+	string wordWrappedTweet;	
 	float totalWidth;
 	float totalHeight;
 	
 	bool isSearchTweet;
 	
-	string wordWrappedTweet;	
+	float lineOneWidth;
+	float lineOneHeight;
+	float lineTwoWidth;
+	string lineOne;
+	string lineTwo;
+
+	float atSignWidth;
+	float atSignHeight;
+	
 };

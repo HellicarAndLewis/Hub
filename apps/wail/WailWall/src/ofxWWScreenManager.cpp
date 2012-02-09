@@ -9,7 +9,7 @@
 
 #include "ofxWWScreenManager.h"
 #include "ofxXmlSettings.h"
-#include "ofxSimpleGuiToo.h"
+#include "ofxWebSimpleGuiToo.h"
 
 ofxWWScreenManager::ofxWWScreenManager(){
 	inited = false;
@@ -203,7 +203,7 @@ void ofxWWScreenManager::loadScreens(string xmlFile){
 		settings.popTag(); //dest
 		
 		settings.pushTag("gui");
-		gui.setDrawOffset(ofPoint(settings.getValue("x", 0),settings.getValue("y", 0))); 
+		webGui.setDrawOffset(ofPoint(settings.getValue("x", 0),settings.getValue("y", 0))); 
 		settings.popTag(); //gui
 		
 		settings.pushTag("screens");

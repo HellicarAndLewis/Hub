@@ -14,6 +14,7 @@ ofxWWSearchTerm::ofxWWSearchTerm(){
 	selected = false;
 	highlighted = false;
 	manager = NULL;
+	touchWeight = 0;
 }
 
 void ofxWWSearchTerm::update(){

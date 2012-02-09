@@ -2,12 +2,12 @@
 #define ROXLU_TWITTER_STREAMH
 
 #include <vector>
-#include "curl/Request.h"
-#include "oauth/Header.h"
-#include "oauth/Signature.h"
-#include "Twitter.h"
+#include "../Curl/Request.h"
+#include "../Curl/oauth/Header.h"
+#include "../Curl/oauth/Signature.h"
 #include "../../libs/curl/curl.h"
 #include "../../libs/jansson/jansson.h"
+#include "Twitter.h"
 
 using std::vector;
 
@@ -34,6 +34,7 @@ public:
 	void follow(const vector<string>& followers);
 	bool getFollowList(string& result);
 	void track(const string& tag); // adds a hashtag to the list of hashtags to track.
+	void clearTrackList();
 	bool getTrackList(string& result);
 	
 	// Callback & helpers

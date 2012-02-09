@@ -44,5 +44,8 @@ public:
 	bool shouldLoadScreens;
 	bool shouldSaveScreens;
 	bool previewScreenLayout;
+	
+	// screenshots
+	bool shouldTakeScreenshot;
 
 };

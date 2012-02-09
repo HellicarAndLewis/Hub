@@ -8,7 +8,7 @@
  */
 
 #include "ofxWWTweetParticleManager.h"
-#include "ofxSimpleGuiToo.h"
+#include "ofxWebSimpleGuiToo.h"
 
 ofxWWTweetParticleManager::ofxWWTweetParticleManager(){
 	maxTweets = 100;
@@ -24,44 +24,49 @@ void ofxWWTweetParticleManager::setup(){
 	twitter.addCustomListener(*this);
 	
 	// What do you want to track?
+	// roxlu, 02/09: use the twitter_hashtags.txt file
+	
 	//twitter.track("love");
-	twitter.track("usa");
+	//twitter.track("usa");
+	//twitter.track("monkey");
 	
 	if(!twitter.connect()) {
 		printf("Error: cannot connect to twitter stream.\n");
 	}
 	
 	twitter.addListener(this, &ofxWWTweetParticleManager::onNewSearchTerm);
-	
+	canSelectSearchTerms = false;
 }
 
 void ofxWWTweetParticleManager::setupGui(){
 	
-	gui.addPage("Tweet Lifecycle");
-	gui.addSlider("Tweet Font Size", fontSize, 5, 24);
-	gui.addSlider("Word Wrap Length", wordWrapLength, 100, 300);
-	gui.addSlider("Max Tweets", maxTweets, 5, 100);
-	gui.addSlider("Start Fade Time", startFadeTime, 2, 10);
-	gui.addSlider("Fade Duration", fadeDuration, 2, 10);
-	gui.addToggle("Clear Tweets", clearTweets);
+	webGui.addPage("Tweet Lifecycle");
+	webGui.addSlider("Tweet Font Size", fontSize, 5, 24);
+	webGui.addSlider("Word Wrap Length", wordWrapLength, 100, 300);
+	webGui.addSlider("Max Tweets", maxTweets, 5, 100);
+	webGui.addSlider("Start Fade Time", startFadeTime, 2, 10);
+	webGui.addSlider("Fade Duration", fadeDuration, 2, 10);
+	webGui.addToggle("Clear Tweets", clearTweets);
 
 	
-	gui.addPage("Tweet Appearance");
-	gui.addSlider("Two Line Scale", twoLineScaleup, 1.0, 2.0);
-	gui.addSlider("User Y Shift", userNameYOffset, -10, 20);
-	gui.addSlider("User X Padding", userNameXPad, -2, 10);
-	gui.addSlider("Two Line Squish", twoLineSquish, .5, 1.0);
-	gui.addSlider("Wall Repulsion Dist", wallRepulsionDistance, 0, 300);
-	gui.addSlider("Wall Repulsion Atten", wallRepulsionAtten, 0, .5);
-	gui.addSlider("Tweet Repulsion Dist", tweetRepulsionDistance, 0, 300);
-	gui.addSlider("Tweet Repulsion Atten", tweetRepulsionAtten, 0, .5);
-	gui.addSlider("Y Force Bias", yForceBias, 1., 10.);
-	gui.addSlider("Fluid Force Scale", fluidForceScale, 1., 100.);
+
+	webGui.addPage("Tweet Appearance");
+	webGui.addSlider("Two Line Scale", twoLineScaleup, 1.0, 2.0);
+	webGui.addSlider("User Y Shift", userNameYOffset, -150, 150);
+//	webGui.addSlider("User X Padding", userNameXPad, -2, 10);
+	webGui.addSlider("Tweet Y Shift", tweetYOffset, -150, 150);
+	webGui.addSlider("Two Line Squish", twoLineSquish, .5, 1.0);
+	webGui.addSlider("Wall Repulsion Dist", wallRepulsionDistance, 0, 300);
+	webGui.addSlider("Wall Repulsion Atten", wallRepulsionAtten, 0, .5);
+	webGui.addSlider("Tweet Repulsion Dist", tweetRepulsionDistance, 0, 300);
+	webGui.addSlider("Tweet Repulsion Atten", tweetRepulsionAtten, 0, .5);
+	webGui.addSlider("Y Force Bias", yForceBias, 1., 10.);
+	webGui.addSlider("Fluid Force Scale", fluidForceScale, 1., 100.);
 	
-	gui.addPage("Search Terms");
-//	gui.addToggle("Gen Fake Terms", generateFakeSearchTerms);
-	gui.addSlider("Search Min Dist", searchTermMinDistance, 50, 500);
-	gui.addSlider("Search Min Hold T", searchTermMinHoldTime, .5, 3.0);
+	webGui.addPage("Search Terms");
+//	webGui.addToggle("Gen Fake Terms", generateFakeSearchTerms);
+	webGui.addSlider("Search Min Dist", searchTermMinDistance, 50, 500);
+	webGui.addSlider("Search Min Hold T", searchTermMinHoldTime, .5, 3.0);
 
 	generateFakeSearchTerms = true;
 }
@@ -119,7 +124,6 @@ void ofxWWTweetParticleManager::update(){
 	selectedSearchTerm = -1;
 	for(int i = 0; i < searchTerms.size(); i++){
 		if(searchTerms[i].selected){
-			cout << " search term selected " << endl;
 			searchTermSelected = true;
 			selectedSearchTerm = i;
 			if(!searchTerms[i].populated){
@@ -148,7 +152,8 @@ void ofxWWTweetParticleManager::update(){
 		}
 	}
 	
-	if(!searchTermSelected){	
+	if(!searchTermSelected && canSelectSearchTerms){	
+		//Update Tweets           
 		for(int i = 0; i < searchTerms.size(); i++){
 			searchTerms[i].touchPresent = false;
 			float closestDistance = 99999;
@@ -175,6 +180,11 @@ void ofxWWTweetParticleManager::update(){
 	}
 }
 
+float ofxWWTweetParticleManager::weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet){
+	float touchMid = normalizedSize*simulationHeight*touchSizeScale;
+	return ofMap(touch.distance(tweet), touchMid-touchInfluenceFalloff/2., touchMid+touchInfluenceFalloff/2., 1.0, 0.0, true);
+}
+
 void ofxWWTweetParticleManager::updateTweets(vector<ofxWWTweetParticle>& tweetlist, float layerOpacity){
 	
 	///ANIMATE tweetlist
@@ -194,7 +204,6 @@ void ofxWWTweetParticleManager::updateTweets(vector<ofxWWTweetParticle>& tweetli
 		if ((tweetlist[i].pos.y + tweetlist[i].totalHeight) > (simulationHeight-wallRepulsionDistance)) {
 			tweetlist[i].force.y += ( (simulationHeight-wallRepulsionDistance)  - (tweetlist[i].pos.y + tweetlist[i].totalHeight)) * wallRepulsionAtten * tweetlist[i].deathAttenuation;
 		}
-		
 	}
 	
 	//apply mutual repulsion
@@ -213,7 +222,7 @@ void ofxWWTweetParticleManager::updateTweets(vector<ofxWWTweetParticle>& tweetli
 			}
 		}
 	}
-	
+		
 	for(int i = 0; i < tweetlist.size(); i++){
 		/*
 		 printf("Fluidforcescale: %f\n", fluidForceScale);
@@ -224,6 +233,19 @@ void ofxWWTweetParticleManager::updateTweets(vector<ofxWWTweetParticle>& tweetli
 		 printf("--------------------------------------------------------\n");		
 		 */
 		fluidRef->applyForce( tweetlist[i].pos/ofVec2f(simulationWidth,simulationHeight), tweetlist[i].force/ofVec2f(simulationWidth,simulationHeight) * fluidForceScale * layerOpacity * tweetlist[i].deathAttenuation );
+	}
+	
+	//hand reveal
+	for(int i = 0; i < tweetlist.size(); i++){
+		tweetlist[i].selectionWeight = 0;
+		map<int,KinectTouch>::iterator it;
+		for(it = blobsRef->begin(); it != blobsRef->end(); it++){
+			if(tweetlist[i].selectionWeight < 1){
+				ofVec2f touchpoint = ofVec2f(it->second.x*simulationWidth, it->second.y*simulationHeight);
+				float weightBetween = weightBetweenPoints(ofVec2f(it->second.x*simulationWidth, it->second.y*simulationHeight), it->second.size, tweetlist[i].pos);
+				tweetlist[i].selectionWeight = MIN(tweetlist[i].selectionWeight + weightBetween, 1.0);
+			}
+		}
 	}
 	
 	for(int i = 0; i < tweetlist.size(); i++){
@@ -251,10 +273,31 @@ void ofxWWTweetParticleManager::renderSearchTerms(){
 			searchTerms[i].draw();
 		}
 	}	
+}
+
+void ofxWWTweetParticleManager::renderCaustics(){
+	ofPushStyle();
+	for(int i = 0; i < tweets.size(); i++){
+		for(int j = 0; j < tweets.size(); j++){
+			if(j != i){
+				float chanceOfSynapis = tweets[i].selectionWeight * tweets[j].selectionWeight;
+				ofSetColor(ofColor::fromHex(0xd5712a, 100));
+				if(ofRandomuf() + .5 < chanceOfSynapis){
+					ofLine(tweets[i].pos, tweets[j].pos);
+				}
+			}
+		}
+	}
 	
+	ofPopStyle();	
 }
 
 void ofxWWTweetParticleManager::onStatusUpdate(const rtt::Tweet& tweet){
+	if(twitter.containsBadWord(tweet.getText())) {
+		printf("[ censored ] : %s\n", tweet.getText().c_str());
+		return;
+	}
+	
 	ofxWWTweetParticle tweetParticle = createParticleForTweet(tweet);
 	tweets.push_back( tweetParticle );	
 	
@@ -291,6 +334,9 @@ void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
 	searchTerm.pos = pos;
 	
 	searchTerms.push_back( searchTerm );	
+	
+	// @todo using ofSendMessage to test screenshots
+	ofSendMessage("take_screenshot");
 }
 
 void ofxWWTweetParticleManager::onStatusDestroy(const rtt::StatusDestroy& destroy){
@@ -310,3 +356,7 @@ void ofxWWTweetParticleManager::resetTouches(){
 	searchTweets.clear();
 }
 
+// roxlu 02/07
+TwitterApp& ofxWWTweetParticleManager::getTwitterApp() {
+	return twitter;
+}

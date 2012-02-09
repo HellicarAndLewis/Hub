@@ -7,31 +7,30 @@ TwitterApp::TwitterApp()
 	:stream(twitter)
 	,twitter_listener(*this)
 {
+
 }
 
 TwitterApp::~TwitterApp() {
 }
 
 bool TwitterApp::initDB(){
+	// @todo create a init function
+	reloadBadWords();	
 	
-
+	// OSC RECEIVER
+	// ------------
+	osc_receiver.setup(4444);
+	osc_receiver.addListener(this);
+	
+	
 	// TWITTER
 	// --------
-	printf("initializeing twitter\n");
-	ofxXmlSettings userandpass;
-	if(!userandpass.loadFile("userandpass.xml")){
-		ofSystemAlertDialog("Create an xml file called userandpass.xml in data/ and add <user>username</user><pass>password</pass> to it");
-	}
-	printf("%s\n", userandpass.getValue("user", "dewarshub").c_str());
-	printf("'%s'\n", userandpass.getValue("pass", "HUB2012hub").c_str());
+	reloadHashTags();	
 	
-//	twitter.setTwitterUsername("dewarshub");
-//	twitter.setTwitterPassword("HUB2012hub#");
-	twitter.setTwitterUsername(userandpass.getValue("user", "dewarshub"));
-	twitter.setTwitterPassword(userandpass.getValue("pass", "HUB2012hub"));
-	twitter.setConsumerKey("5cL1KRDQzcnGo8ZOaAz0g");
-	twitter.setConsumerSecret("e4X9dtxkgmpkRlr9arhOfNe7tTezWad2bmCUNvPtBvQ");
-	
+	// @todo set to correct dewarshub consumer key + secret
+	twitter.setConsumerKey("kyw8bCAWKbkP6e1HMMdAvw");
+	twitter.setConsumerSecret("PwVuyjLeUdVZbi4ER6yRAo0byF55AIureauV6UhLRw");
+
 	string token_file = ofToDataPath("twitter.txt", true);
 	//twitter.removeTokens(token_file);
 	if(!twitter.loadTokens(token_file)) {
@@ -41,22 +40,74 @@ bool TwitterApp::initDB(){
         twitter.accessToken();
         twitter.saveTokens(token_file);
 	}
-		
 
 	// DATABASE 
 	// --------
 	if(!db.open("twitter.db")) {
 		printf("Error: Cannot open twitter db.\n");
-		//return false;
 	}
 	
 	if(!db.createTables()) {
 		printf("Error: Cannot create database.\n");
-		//return false;
 	}
+	
+	// UPLOADER
+	// --------
+	uploader.startThread();
 	return true;
 }
 
+// Bad words handling
+// -------------------------------------
+void TwitterApp::onUpdateBadWordList() {
+	printf("\n\n\n----------------> on update bad wordlist. <---------------------\n\n\n\n");
+	reloadBadWords();
+}
+
+bool TwitterApp::reloadBadWords() {
+	string file = ofToDataPath("badwords.txt", true);
+	return bad_words.reloadWordsFile(file);
+}
+				 
+bool TwitterApp::containsBadWord(const string& text) {
+	return bad_words.containsBadWord(text);
+}
+
+
+// Reload hashtags
+// -------------------------------------
+void TwitterApp::onUpdateHashTags() {
+	printf("\n\n\n----------------> on hash tags <---------------------\n\n\n\n");
+	reloadHashTags();
+	if(stream.isConnected()) {
+		stream.disconnect();
+	}
+	connect();
+}
+
+void TwitterApp::reloadHashTags() {
+	stream.clearTrackList();
+	
+	string file = ofToDataPath("twitter_hashtags.txt", true);
+	ifstream ifs(file.c_str());
+	if(!ifs.is_open()) {
+		printf("Cannot open hashtag list");
+		exit(0);
+	}
+	
+	string line;
+	while(std::getline(ifs, line)) {
+		printf("line: %s\n", line.c_str());
+		if(line.length()) {
+			stream.track(line);
+		}
+	}
+	ifs.close();
+}
+
+
+// Twitter
+// -------------------------------------
 void TwitterApp::track(string trackingString){
 	stream.track(trackingString);
 }
@@ -66,9 +117,7 @@ bool TwitterApp::connect(){
 		printf("Error: cannot connect to user stream.\n");
 		return false;
 	}
-	
 	return true;
-	
 }
 
 void TwitterApp::addDefaultListener(){
@@ -99,49 +148,10 @@ void TwitterApp::update() {
 	if(stream.isConnected()) {
 		stream.update();
 	}
+	osc_receiver.update();
 }
 
 // get the list of people to follow, separated by comma
 bool TwitterApp::getFollowers(vector<string>& result) {
 	return db.getFollowers(result);
 }
-
-//bool TwitterApp::init() {
-	// What do you want to track?
-	//	stream.track("ItsFunnyHow");
-	//	stream.track("NeverTrustAGuyWho");
-	//	stream.track("TolimaDay");
-	//	stream.track("love");
-	
-	
-//	// testing queries
-//	// -------------------------------------------------------------------------
-//	// get tweets with tag...
-//	
-//	vector<rtt::Tweet> tweets;
-//	if(getTweetsWithTag("NeverTrustAGuyWho",10, tweets)) {
-//		printf("found: %d!", tweets.size());
-//	}
-	
-	/*
-	// get tweets newer then 2400 seconds.
-	
-	int now = ofGetElapsedTimeMillis();
-	vector<rtt::Tweet> tweets;
-	if(getTweetsNewerThan(2400,100, tweets)) {
-		printf("found: %zu!", tweets.size());
-	}
-	int done = ofGetElapsedTimeMillis();
-	int diff = done-now;
-	printf("diff: %d\n", diff);
-	// -------------------------------------------------------------------------
-	*/
-
-//	if(!stream.connect(URL_STREAM_USER)) {
-//		printf("Error: cannot connect to user stream.\n");
-//		return false;
-//	}
-//	
-//	return true;
-	
-//}

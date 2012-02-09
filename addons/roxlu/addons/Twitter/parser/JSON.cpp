@@ -12,9 +12,24 @@ namespace parser {
 
 
 JSON::JSON(roxlu::twitter::Twitter& tw) 
-	:twitter(tw)
+	:twit(tw)
 {
 }
+
+JSON::JSON(const roxlu::twitter::parser::JSON& other)
+	:twit(other.twit)
+{
+	*this = other;
+}
+
+JSON& JSON::operator=(const roxlu::twitter::parser::JSON& other) {
+	if(this != &other) {
+		return *this;
+	}
+	//twit = other.twit;
+	return *this;
+}
+
 
 JSON::~JSON() {
 	printf("~JSON()");
@@ -30,6 +45,8 @@ bool JSON::parseStatus(json_t* root, rtt::Tweet& tweet) {
 		string text = json_string_value(node);
 		tweet.setText(text);
 	}
+	
+	//printf(">  %s\n", tweet.text.c_str());
 	
 	// id_str
 	node = json_object_get(root, "id_str");
@@ -333,7 +350,7 @@ void JSON::parse(const string& line) {
 	if(json_is_string(node)) {
 		rtt::Tweet tweet;
 		if(parseStatus(root, tweet)) {
-			twitter.onStatusUpdate(tweet);
+			twit.onStatusUpdate(tweet);
 		}
 		json_decref(root);
 		return;
@@ -344,7 +361,7 @@ void JSON::parse(const string& line) {
 	if(json_is_object(node)) {
 		rtt::StatusDestroy destroy;
 		if(parseDestroy(root, destroy)) {
-			twitter.onStatusDestroy(destroy);
+			twit.onStatusDestroy(destroy);
 		}
 		//printf("found a delete\n");
 		json_decref(root);
@@ -366,7 +383,7 @@ void JSON::parse(const string& line) {
 			rtt::StreamEvent stream_event;
 			stream_event.event = event;
 			if(parseStreamEvent(root, stream_event)) {
-				twitter.onStreamEvent(stream_event);
+				twit.onStreamEvent(stream_event);
 			}
 		}
 	}

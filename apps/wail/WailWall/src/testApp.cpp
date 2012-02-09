@@ -1,5 +1,5 @@
 #include "testApp.h"
-#include "ofxSimpleGuiToo.h"
+#include "ofxWebSimpleGuiToo.h"
 
 ///*******
 //JG Layout calculations
@@ -26,7 +26,9 @@ void testApp::setup(){
 	generateScreens = false;
 	shouldLoadScreens = false;
 	shouldSaveScreens = false;
+	shouldTakeScreenshot = false;
 	previewScreenLayout = false;
+
 	
 	// touch stuff
 	touchReceiver.setup(1234);
@@ -37,10 +39,10 @@ void testApp::setup(){
 	//JOEL: change this to the triplehead layout for your test
 	//screenSettingsFile = "DisplayLayout_triplehead.xml";
 	//DEV is for testing on smaller screens
-	screenSettingsFile = "DisplayLayout.xml";
+	screenSettingsFile = "DisplayLayout_dev.xml";
 	screenManager.loadScreens(screenSettingsFile);
 
-	gui.addToggle("Show Preview Rects", previewScreenLayout);
+	webGui.addToggle("Show Preview Rects", previewScreenLayout);
 	renderer.blobs = &blobs;
 	renderer.setup(screenManager.sourceRect.width, screenManager.sourceRect.height);	
 	renderer.setupGui();
@@ -52,14 +54,16 @@ void testApp::setup(){
 //	gui.addToggle("Load Screens File", shouldLoadScreens);
 //	gui.addToggle("Save Screens File", shouldSaveScreens);
 	
-	gui.loadFromXML();
-	gui.setAutoSave(true);
+
+	webGui.startServer();
+	webGui.loadFromXML();
+	webGui.setAutoSave(true);
 	
 
 }
 
 void testApp::exit() {
-	
+	webGui.stopServer();
 }
 
 //--------------------------------------------------------------
@@ -90,6 +94,9 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
+	// roxlu 02/07
+	ofSetFullscreen(false); 
+	
 	ofBackground(0);
 	ofRectangle renderPreview = screenManager.getRenderPreviewRect();
 	renderer.getFbo().getTextureReference().draw(renderPreview);
@@ -117,20 +124,36 @@ void testApp::draw(){
 		ofPopStyle();
 	}	
 	
+	if(shouldTakeScreenshot) {
+		// %Y-%m-%d-%H-%M-%S-%i
+		string dirname = "thumbs/" +ofGetTimestampString("%m-%d");
+		ofDirectory dir(dirname);
+		dir.create(true);
+		
+		string filename = ofGetTimestampString() +"_" +ofToString(ofGetFrameNum()) +".png";
+		string filepath(dirname);
+		filepath.append("/");
+		filepath.append(filename);
+		ofSaveScreen(filepath);
+		
+		renderer.getTweetManager().getTwitterApp().uploadScreenshot(ofToDataPath(filepath, true), "roxlu", "@dewarshub SEARCH biology");
+		shouldTakeScreenshot = false;
+	}
+	
 	/*
 	ofSetHexColor(0x0000FF);
 	for(map<int,KinectTouch>::iterator it = blobs.begin(); it != blobs.end(); it++) {
 		ofCircle((*it).second.x*ofGetWidth(), (*it).second.y*ofGetHeight(), 10, 10);
 	}*/
 	
-	gui.draw();
+	webGui.draw();
 }
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
 	switch(key) {
 		case ' ': {
-			gui.toggleDraw();
+			webGui.toggleDraw();
 			break;
 		}
 			 
@@ -152,13 +175,18 @@ void testApp::keyPressed(int key){
 			simulator.setEnabled(!simulator.getEnabled());
 			break;
 		}
+		case 'p': {
+			// roxlu 02/07, test with screenshots
+			shouldTakeScreenshot = !shouldTakeScreenshot;
+			break;
+		}
 			
 		case OF_KEY_LEFT: {
-			gui.prevPage();
+			webGui.prevPage();
 			break;
 		}
 		case OF_KEY_RIGHT: {
-			gui.nextPage();
+			webGui.nextPage();
 			break;
 		}
 			
@@ -220,7 +248,11 @@ void testApp::windowResized(int w, int h){
 
 //--------------------------------------------------------------
 void testApp::gotMessage(ofMessage msg){
-
+	// see ofxWWTweetParticleManager
+	if(msg.message == "take_screenshot") {
+		shouldTakeScreenshot = true;
+	}
+	
 }
 
 //--------------------------------------------------------------
