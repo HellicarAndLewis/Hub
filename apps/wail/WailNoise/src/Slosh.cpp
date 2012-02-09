@@ -48,7 +48,11 @@ void Slosh::setup(string path, int number) {
 void Slosh::trigger(ofVec3f p) {
 	
 	if(ofRandomuf()<probability) {
-		int r = ofRandom(0, samples.size());
+
+		if(p.z==1) { // if the volume is saturated, play a random sample that is loud
+			p.z = ofRandom(0.9, 1.0);
+		}
+		int r = p.z*(samples.size()-1);
 		audio::PlayerRef ref = audio::createPlayer(samples[r].sample);
 		audio::setPan(ref, p.x);
 		float vol = ofRandom(minVol, maxVol);
