@@ -24,9 +24,11 @@ void ofxWWTweetParticleManager::setup(){
 	twitter.addCustomListener(*this);
 	
 	// What do you want to track?
-	twitter.track("love");
+	// roxlu, 02/09: use the twitter_hashtags.txt file
+	
+	//twitter.track("love");
 	//twitter.track("usa");
-	twitter.track("monkey");
+	//twitter.track("monkey");
 	
 	if(!twitter.connect()) {
 		printf("Error: cannot connect to twitter stream.\n");
