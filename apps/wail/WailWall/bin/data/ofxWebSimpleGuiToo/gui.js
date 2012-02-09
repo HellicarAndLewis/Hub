@@ -4,6 +4,10 @@
 // GLOBAL STUFF
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+var isiDevice = (
+		(navigator.userAgent.match(/iPad/i)) ||
+		(navigator.userAgent.match(/iPhone/i)) || 
+		(navigator.userAgent.match(/iPod/i)));
 
 // hash of all controls
 var controls = new Array();
@@ -72,7 +76,13 @@ var Control = Class.extend({
 
 	setValue: function(val) {
 		v = val;
-		if(isNumber(val)) v = val.toFixed(4);
+		if(isNumber(val)) {
+			if(this.type == "SliderInt") {
+				v = parseInt(val);
+			} else {
+				v = val.toFixed(4);
+			}
+		}
 		$("#"+this.id+"Value").html(": "+v);
 		vals[this.name] = this.value;
 		
@@ -81,7 +91,7 @@ var Control = Class.extend({
 	render: function(parent) {
 	
 		// silly hack to stop the title drawing twice
-		var title = '<h3>'+this.name+'<span id="'+this.id+'Value"></span></h3>';
+		var title = '<h3>'+this.name+'<span id="'+this.id+'Value" class="val"></span></h3>';
 		if(this.type=="Title") title = '';
 		
 		
@@ -107,11 +117,15 @@ var Control = Class.extend({
 
 		});
 		
-		$("#"+this.id).mouseup(function(e) {
-			controls[this.id].mouseReleased(e.pageX-this.offsetLeft, e.pageY-this.offsetTop);
-			controls[this.id].update();
-			controls[this.id].setValue(controls[this.id].value);
-		});
+		if(!isiDevice) { // iDevices receive both a touch up and a mouseup
+							// so this stops mouseReleased being called twice.
+			$("#"+this.id).mouseup(function(e) {
+				controls[this.id].mouseReleased(e.pageX-this.offsetLeft, e.pageY-this.offsetTop);
+				controls[this.id].update();
+				//alert("mouseup");
+				controls[this.id].setValue(controls[this.id].value);
+			});
+		}
 		
 		$("#"+this.id).mousemove(function(e) {
 			if(!mouseIsDown) controls[this.id].mouseMoved(e.pageX-this.offsetLeft, e.pageY-this.offsetTop);
@@ -135,7 +149,8 @@ var Control = Class.extend({
 			var e = event.originalEvent;
 			e.preventDefault();
 			controls[this.id].mouseReleased(e.pageX-this.offsetLeft, e.pageY-this.offsetTop);
-//			controls[this.id].mouseDragged();
+//			controls[this.id].mouseDragged()
+//alert("touchend");
 			controls[this.id].update();
 			controls[this.id].setValue(controls[this.id].value);
 		});
@@ -171,8 +186,8 @@ var SliderFloat = Control.extend({
 	update: function() {
 		var val = (this.value-this.min)/(this.max-this.min);
 		val *= this.width;
-		val += this.x;
-		$("#"+this.id + " .sliderHandle").css("left", val + "px");
+		//val += this.x;
+		$("#"+this.id + " .sliderHandle").css("width", val + "px");
 	},
 	
 	mousePressed: 	function(x, y) {
@@ -336,7 +351,7 @@ var Slider3D = Control.extend({
 var Toggle = Control.extend({
 
 	update: function() {
-		$("#"+this.id).html(this.value=="true"?"on":"off");
+		$("#"+this.id).html(this.value=="true"?'<div class="tick">&nbsp;</div>':"");
 	},
 	
 	mouseReleased: function() {

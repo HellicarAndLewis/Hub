@@ -13,6 +13,6 @@
     </SliderFloat_Offset_X>
     <SliderFloat_Offset_Y>
         <name>Offset Y</name>
-        <value>0.000000</value>
+        <value>-49.000000</value>
     </SliderFloat_Offset_Y>
 </controls>

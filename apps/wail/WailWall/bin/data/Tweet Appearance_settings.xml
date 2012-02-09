@@ -1,11 +1,10 @@
 <controls>
     <SliderFloat_Two_Line_Scale>
         <name>Two Line Scale</name>
-        <value>1.955000</value>
+        <value>0.000000</value>
     </SliderFloat_Two_Line_Scale>
     <SliderFloat_User_Y_Shift>
         <name>User Y Shift</name>
-
         <value>51.000000</value>
     </SliderFloat_User_Y_Shift>
     <SliderFloat_Tweet_Y_Shift>
@@ -26,7 +25,7 @@
     </SliderFloat_Wall_Repulsion_Atten>
     <SliderFloat_Tweet_Repulsion_Dist>
         <name>Tweet Repulsion Dist</name>
-        <value>267.000000</value>
+        <value>0.015000</value>
     </SliderFloat_Tweet_Repulsion_Dist>
     <SliderFloat_Tweet_Repulsion_Atten>
         <name>Tweet Repulsion Atten</name>
@@ -34,7 +33,7 @@
     </SliderFloat_Tweet_Repulsion_Atten>
     <SliderFloat_Y_Force_Bias>
         <name>Y Force Bias</name>
-        <value>3.160000</value>
+        <value>4.555000</value>
     </SliderFloat_Y_Force_Bias>
     <SliderFloat_Fluid_Force_Scale>
         <name>Fluid Force Scale</name>
