@@ -275,7 +275,6 @@ void ofxWWTweetParticleManager::renderSearchTerms(){
 }
 
 void ofxWWTweetParticleManager::renderCaustics(){
-	//tweetlist[i].selectionWeight
 	ofPushStyle();
 	for(int i = 0; i < tweets.size(); i++){
 		for(int j = 0; j < tweets.size(); j++){
@@ -288,7 +287,8 @@ void ofxWWTweetParticleManager::renderCaustics(){
 			}
 		}
 	}
-	ofPopStyle();
+	
+	ofPopStyle();	
 }
 
 void ofxWWTweetParticleManager::onStatusUpdate(const rtt::Tweet& tweet){

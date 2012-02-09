@@ -76,6 +76,10 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 	lineOneWidth = manager->sharedFont.getStringBoundingBox(lineOne,0,0).width;
 	lineOneHeight = manager->sharedFont.getStringBoundingBox(lineOne,0,0).height;
 	userNameWidth = manager->sharedLargeFont.getStringBoundingBox(tweet.getScreenName(), 0, 0).width;
+	
+	atSignWidth = manager->sharedLargeFont.getStringBoundingBox("@", 0, 0).width;
+	atSignHeight = manager->sharedLargeFont.getStringBoundingBox("@", 0, 0).height;
+
 }
 
 void ofxWWTweetParticle::update(){
@@ -108,18 +112,20 @@ void ofxWWTweetParticle::draw(){
 	ofPushStyle();
 	ofEnableAlphaBlending();
 	
-	ofSetColor(ofColor::fromHex(0xf4b149));
+	ofSetColor(ofColor::fromHex(0xf4b149,deathAttenuation*255));
 	ofCircle(pos.x, pos.y, 10);
 
+	
+	//DRAW @ 
+	ofSetColor(ofColor::fromHex(0x6f2b1d, opacity*255)); //TODO set font color
+	manager->sharedLargeFont.drawString("@", pos.x - atSignWidth/2, pos.y - atSignHeight/2);
+	
 	if(isSearchTweet){
 		ofSetColor(ofColor::fromHex(0x4051dc, opacity*255)); //TODO set font color
 	}
 	else{
 		ofSetColor(ofColor::fromHex(0xe6ab38, opacity*255)); //TODO set font color
-	}
-	
-	//DRAW @
-	manager->sharedLargeFont.drawString("@", pos.x - manager->sharedLargeFont.getStringBoundingBox("@", 0, 0).width/2, pos.y);
+	}	
 	//USER NAME BELOW
 	manager->sharedLargeFont.drawString(tweet.getScreenName(), pos.x - userNameWidth/2, pos.y + manager->userNameYOffset);
 	//DRAW TWEET
