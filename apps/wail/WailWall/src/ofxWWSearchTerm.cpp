@@ -18,17 +18,18 @@ ofxWWSearchTerm::ofxWWSearchTerm(){
 }
 
 void ofxWWSearchTerm::update(){
+	float targetOpacity;
 	if(!touchPresent){
-		opacity = 0;
+		targetOpacity = 0;
 		highlighted = false;
 		selected = false;
 	}
 	else if(selected){
-		opacity = 1.0;
+		targetOpacity = 1.0;
 	}
 	// there is a touch && we aren't yet selected, calculate th new opacity
 	else{
-		opacity = 1 - manager->tweetLayerOpacity;
+		targetOpacity = 1 - manager->tweetLayerOpacity;
 		float distance = closestPoint.distance(pos);
 //		if(term == "OPENFRAMEWORKS"){
 //			cout << "closest distance is " << distance << endl;
@@ -46,6 +47,8 @@ void ofxWWSearchTerm::update(){
 			selected = true;
 		} 		
 	}
+	
+	opacity += (targetOpacity - opacity)*.1;
 }
 
 void ofxWWSearchTerm::draw(){
@@ -57,7 +60,7 @@ void ofxWWSearchTerm::draw(){
 	float holdLerp = highlighted ? ofMap(ofGetElapsedTimef(), holdStartTime, holdStartTime+manager->searchTermMinHoldTime, .0, 1.0, true) : 0.0 ;
 	ofSetColor( baseColor.lerp(selectedColor, holdLerp) );
 			   
-	manager->sharedLargeFont.drawString(term, pos.x, pos.y);
+	manager->sharedSearchFont.drawString(term, pos.x, pos.y);
 	
 	ofPopStyle();
 }

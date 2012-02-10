@@ -114,8 +114,16 @@ void ofxWWTweetParticle::drawDot(){
 	//ofSetColor(ofColor::fromHex(0xf4b149,deathAttenuation*255));
 	
 	ofSetRectMode(OF_RECTMODE_CENTER);
-	ofSetColor(255,255,255,deathAttenuation*255);
-	manager->burstOne.draw(pos.x, pos.y, manager->dotSize,manager->dotSize);
+	float alpha = deathAttenuation;
+	alpha *= isSearchTweet ? (1-manager->tweetLayerOpacity) : manager->tweetLayerOpacity;
+	
+	ofSetColor(255,255,255,alpha*255);
+	if(useBurstOne){
+		manager->burstOne.draw(pos.x, pos.y, manager->dotSize*1.2,manager->dotSize*1.2);
+	}
+	else{
+		manager->burstTwo.draw(pos.x, pos.y, manager->dotSize,manager->dotSize);
+	}
 
 	ofPopStyle();
 }

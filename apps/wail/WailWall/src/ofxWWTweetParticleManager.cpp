@@ -39,6 +39,7 @@ void ofxWWTweetParticleManager::setup(){
 
 	twitter.addListener(this, &ofxWWTweetParticleManager::onNewSearchTerm);
 	canSelectSearchTerms = false;
+	enableCaustics = true;
 }
 
 void ofxWWTweetParticleManager::setupGui(){
@@ -61,10 +62,10 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Two Line Scale", twoLineScaleup, 1.0, 2.0);
 	webGui.addSlider("User Y Shift", userNameYOffset, -150, 150);
 //	webGui.addSlider("Two Line Squish", twoLineSquish, .5, 1.0);
-	webGui.addSlider("Wall Repulsion Dist", wallRepulsionDistance, 0, 300);
-	webGui.addSlider("Wall Repulsion Atten", wallRepulsionAtten, 0, .5);
-	webGui.addSlider("Tweet Repulsion Dist", tweetRepulsionDistance, 0, 300);
-	webGui.addSlider("Tweet Repulsion Atten", tweetRepulsionAtten, 0, .5);
+	webGui.addSlider("Wall Repulsion Dist", wallRepulsionDistance, 0, 900);
+	webGui.addSlider("Wall Repulsion Atten", wallRepulsionAtten, 0, .2);
+	webGui.addSlider("Tweet Repulsion Dist", tweetRepulsionDistance, 0, 900);
+	webGui.addSlider("Tweet Repulsion Atten", tweetRepulsionAtten, 0, .2);
 	webGui.addSlider("Y Force Bias", yForceBias, 1., 10.);
 	webGui.addSlider("Fluid Force Scale", fluidForceScale, 1., 100.);
 	
@@ -177,6 +178,11 @@ void ofxWWTweetParticleManager::update(){
 void ofxWWTweetParticleManager::handleTouchSearch() {
 	
 	if(!canSelectSearchTerms){
+		if(searchTermSelected){
+			for(int i = 0; i < searchTerms.size(); i++){
+				searchTerms[i].selected = false;
+			}
+		}		
 		searchTermSelected = false;
 		return;
 	}
@@ -310,17 +316,27 @@ void ofxWWTweetParticleManager::updateTweets(){
 
 void ofxWWTweetParticleManager::renderTweetNodes(){
 	for(int i = 0; i < tweets.size(); i++){
-		tweets[i].drawDot();
+		//NO LONGER NEEDEd
 	}
 }
 
 void ofxWWTweetParticleManager::renderTweets(){
 	for(int i = 0; i < tweets.size(); i++){
-		tweets[i].drawText();
+		if(!tweets[i].isSearchTweet){
+			tweets[i].drawText();
+			tweets[i].drawDot();
+		}
 	}
 }
 
 void ofxWWTweetParticleManager::renderSearchTerms(){	
+	for(int i = 0; i < tweets.size(); i++){
+		if(!tweets[i].isSearchTweet){
+			tweets[i].drawText();
+			tweets[i].drawDot();
+		}
+	}
+	
 	for(int i = 0; i < searchTerms.size(); i++){
 		if( !searchTermSelected || (searchTermSelected && i == selectedSearchTerm) ){
 			searchTerms[i].draw();
@@ -334,6 +350,7 @@ void ofxWWTweetParticleManager::renderCaustics(){
 	}
 	
 	ofPushStyle();
+	
 	if(tweetLayerOpacity > 0){
 		for(int i = 0; i < tweets.size(); i++){
 			for(int j = 0; j < tweets.size(); j++){
@@ -389,7 +406,6 @@ void ofxWWTweetParticleManager::onStatusUpdate(const rtt::Tweet& tweet){
 	
 	ofxWWTweetParticle tweetParticle = createParticleForTweet(tweet);
 	tweets.push_back( tweetParticle );	
-	
 //	cout << "added tweet " << tweets.size() << " text is " << tweet.getText() << endl;
 }
 
@@ -418,12 +434,11 @@ void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
 			}
 		}
 	} while (!validPosFound && tries++ < 100);
+	
 	searchTerm.manager = this;
 	searchTerm.term = event.search_term;
 	searchTerm.pos = pos;
-	
 	searchTerms.push_back( searchTerm );	
-	
 	
 	// @todo using ofSendMessage to test screenshots
 	ofSendMessage("take_screenshot");

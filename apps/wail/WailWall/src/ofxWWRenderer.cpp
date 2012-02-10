@@ -26,6 +26,9 @@ void ofxWWRenderer::setup(int width, int height){
 	
 	gradientOverlay.allocate(width/8, height/8, GL_RGB);
 	
+	layer1Target.allocate(width, height, GL_RGBA);
+	layer2Target.allocate(width, height, GL_RGBA);
+	
 	tweets.simulationWidth = width;
 	tweets.simulationHeight = height;
 	
@@ -120,12 +123,7 @@ void ofxWWRenderer::update(){
 	for(it = blobs->begin(); it != blobs->end(); it++){
 		if(it->second.z > maxTouchZ){
 			maxTouchZ = it->second.z;
-		}
-		
-		//dirty fake hack
-//		if(fakeZOnTouch){
-//			maxTouchZ = fakeZLevel;
-//		}		
+		}		
 	}
 
 	float targetOpacity = ofMap(maxTouchZ, layerBarrierZ-layerBarrierWidth/2, layerBarrierZ+layerBarrierWidth/2, 1.0, 0.0, true);
@@ -139,14 +137,22 @@ void ofxWWRenderer::update(){
 
 void ofxWWRenderer::render(){
 	
+	
+	//type
+//	renderLayer1();
+//	renderLayer2();
+	
+	//effects
 	renderGradientOverlay();
-	renderContent();
+	renderDynamics();
 	renderWarpMap();
 	
+	//blit to main render target
 	renderTarget.begin();
 	ofClear(0);
 	ofEnableAlphaBlending();
 			
+	//BLIT DYNAMICS
 	warpShader.begin();
 	warpShader.setUniform1f("warpScale", warpAmount);
 	//our shader uses two textures, the top layer and the alpha
@@ -187,10 +193,38 @@ void ofxWWRenderer::render(){
 	accumulator.getTextureReference().unbind();
 	
 	warpShader.end();
+	
 
-	tweets.renderTweets();
+	tweets.renderTweetNodes();
+	tweets.renderTweets();	
+	
 	tweets.renderSearchTerms();
 	
+	//BLIT CONTENT
+//	blurShader.begin();
+//	blurShader.setUniform2f("sampleOffset", 0, (1-layer1Opacity)*2);
+//	layer1Target.draw(0,0);
+//	blurShader.end();
+//	
+//	blurShader.begin();
+//	blurShader.setUniform2f("sampleOffset", (1-layer1Opacity)*2, 0);
+//	layer1Target.draw(0,0);
+//	blurShader.end();
+//	
+//	
+//	blurShader.begin();
+//	blurShader.setUniform2f("sampleOffset", 0, layer1Opacity*2);
+//	layer1Target.draw(0,0);
+//	blurShader.end();
+//	
+//	blurShader.begin();
+//	blurShader.setUniform2f("sampleOffset", layer1Opacity*2, 0);
+//	layer1Target.draw(0,0);
+//	blurShader.end();
+	
+	
+	
+	//DEBUG
 	if(justDrawWarpTexture){
 		warpMap.draw(0,0);	
 	}
@@ -224,7 +258,7 @@ void ofxWWRenderer::render(){
 	renderTarget.end();	
 }
 
-void ofxWWRenderer::renderContent(){
+void ofxWWRenderer::renderDynamics(){
 	
 	accumulator.begin();
 	ofEnableAlphaBlending();
@@ -276,7 +310,7 @@ void ofxWWRenderer::renderContent(){
 	
 	
 	tweets.renderCaustics();
-	tweets.renderTweetNodes();
+//	tweets.renderTweetNodes();
 	
 //	ofSetColor(0,0,0, clearSpeed);
 //	ofRect(0, 0, targetWidth, targetHeight);
@@ -287,6 +321,23 @@ void ofxWWRenderer::renderContent(){
 	ofPopStyle();
 	
 	accumulator.end();
+}
+
+void ofxWWRenderer::renderLayer1(){
+	layer1Target.begin();
+	ofClear(0,0,0,0);
+	tweets.renderTweetNodes();
+	tweets.renderTweets();	
+	layer1Target.end();
+}
+
+void ofxWWRenderer::renderLayer2(){
+	layer2Target.begin();
+	ofClear(0,0,0,0);
+	
+	tweets.renderSearchTerms();
+	
+	layer2Target.end();
 }
 
 

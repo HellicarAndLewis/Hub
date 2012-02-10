@@ -458,7 +458,6 @@
 		A6AF046214DB33EF006816A8 /* x509.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x509.h; sourceTree = "<group>"; };
 		A6AF046314DB33EF006816A8 /* x509_vfy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x509_vfy.h; sourceTree = "<group>"; };
 		A6AF046414DB33EF006816A8 /* x509v3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x509v3.h; sourceTree = "<group>"; };
-		A6FDBDEE14D9F46E0003EBE5 /* color_palette.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = color_palette.png; sourceTree = "<group>"; };
 		A6FDBDEF14D9F46E0003EBE5 /* DisplayLayout.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = DisplayLayout.xml; sourceTree = "<group>"; };
 		A6FDBDF014D9F46E0003EBE5 /* Fluid_settings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Fluid_settings.xml; sourceTree = "<group>"; };
 		A6FDBDF114D9F46E0003EBE5 /* Fluid_settings.xml.bak */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Fluid_settings.xml.bak; sourceTree = "<group>"; };
@@ -1158,7 +1157,6 @@
 		A6FDBDED14D9F46E0003EBE5 /* data */ = {
 			isa = PBXGroup;
 			children = (
-				A6FDBDEE14D9F46E0003EBE5 /* color_palette.png */,
 				A6FDBDEF14D9F46E0003EBE5 /* DisplayLayout.xml */,
 				A6FDBDF014D9F46E0003EBE5 /* Fluid_settings.xml */,
 				A6FDBDF114D9F46E0003EBE5 /* Fluid_settings.xml.bak */,

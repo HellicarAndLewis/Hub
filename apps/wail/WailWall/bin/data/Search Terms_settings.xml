@@ -1,7 +1,7 @@
 <controls>
     <SliderFloat_Search_Term_Size>
         <name>Search Term Size</name>
-        <value>40.000000</value>
+        <value>66.550003</value>
     </SliderFloat_Search_Term_Size>
     <SliderFloat_Search_Min_Dist>
         <name>Search Min Dist</name>

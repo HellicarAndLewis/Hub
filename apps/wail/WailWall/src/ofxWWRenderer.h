@@ -47,11 +47,17 @@ class ofxWWRenderer: public KinectTouchListener {
 	ofFbo warpMap;
 	ofFbo renderTarget;
 	ofFbo gradientOverlay;
+	ofFbo layer1Target;
+	ofFbo layer2Target;
+	
 	//pass functions
 	void typeLayer();
 	void renderWarpMap();
-	void renderContent();
+	void renderDynamics();
 	void renderGradientOverlay();
+	
+	void renderLayer1();
+	void renderLayer2();
 	
 	//sub objects
 	ofxMPMFluid fluid;
