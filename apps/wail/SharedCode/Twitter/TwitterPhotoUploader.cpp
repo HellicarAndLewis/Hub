@@ -32,6 +32,7 @@ void TwitterPhotoUploader::threadedFunction() {
 		unlock();
 
 		// and upload
+		printf(">>>>>>>>>>>>>>>>>>\n");
 		rc::Request req(URL_TWITTER_UPLOADER);
 		req.getParams().addString("act", "upload");
 		req.getParams().addFile("photo", ufi.file);
