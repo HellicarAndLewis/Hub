@@ -5,7 +5,7 @@
     </SliderFloat_Tweet_Font_Size>
     <SliderFloat_Word_Wrap_Length>
         <name>Word Wrap Length</name>
-        <value>238.000000</value>
+        <value>200.000000</value>
     </SliderFloat_Word_Wrap_Length>
     <SliderInt_Max_Tweets>
         <name>Max Tweets</name>
@@ -13,7 +13,7 @@
     </SliderInt_Max_Tweets>
     <SliderFloat_Start_Fade_Time>
         <name>Start Fade Time</name>
-        <value>3.440000</value>
+        <value>10.000000</value>
     </SliderFloat_Start_Fade_Time>
     <SliderFloat_Fade_Duration>
         <name>Fade Duration</name>

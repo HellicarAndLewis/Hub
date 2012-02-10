@@ -6,7 +6,7 @@
 //========================================================================
 int main( ){
 
-	bool bUseCocoaWindow = true;
+	bool bUseCocoaWindow = false;
     
     if( bUseCocoaWindow )
     {

@@ -10,7 +10,7 @@
 	<!-- the destination rectangle is where this actually gets displayed on the screen -->
 	<!-- which is our triple head canvas laid out lengthwise at 3 * 1280 x 1024 -->
     <dest>
-        <x>0</x>
+        <x>1920</x>
         <y>0</y>
         <width>3840</width>
         <height>1024</height>
@@ -26,7 +26,7 @@
 
 	<!-- this is the gui in absolute screen coords (push it past the triplehead) -->
 	<gui>
-		<x>3840</x>
+		<x>0</x>
 		<y>0</y>
 	</gui>
 	
@@ -47,7 +47,7 @@
                 <width>3840</width>
                 <height>1024</height>
             </dest>
-	        <orientation>3</orientation> <!-- 3 is 90 to the right -->
+	        <orientation>1</orientation> <!-- 3 is 90 to the right -->
         </screen>
     </screens>
 </layout>
