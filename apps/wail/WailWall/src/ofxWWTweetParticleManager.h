@@ -101,8 +101,8 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	float weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet);
 	void updateTweets();
 	
-	void attemptCausticConnection(ofVec2f pos1, float weight1, ofVec2f pos2, float weight2);
-	void setRandomCausticColor();
+	void attemptCausticConnection(ofVec2f pos1, float weight1, ofVec2f pos2, float weight2, float layerOpacity);
+	void setRandomCausticColor(float layerOpacity);
 	
 	
 	ofxWWTweetParticle createParticleForTweet(const rtt::Tweet& tweet);

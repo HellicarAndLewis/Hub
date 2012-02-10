@@ -98,7 +98,7 @@ void ofxWWRenderer::setupGui(){
 	webGui.addToggle("Do Obstacles",	fluid.bDoObstacles); 
 	
 	webGui.addPage("Shader");
-	webGui.addSlider("Blur Diffuse", blurAmount, 0, .75);
+	webGui.addSlider("Blur Diffuse", blurAmount, 0, 10);
 	webGui.addSlider("Clear Speed", clearSpeed, 0, 15);
 	webGui.addSlider("Warp Amount", warpAmount, 0, 75);
 	webGui.addSlider("Noise Scale X", noiseScale.x, 50, 500);
@@ -128,7 +128,7 @@ void ofxWWRenderer::update(){
 
 	float targetOpacity = ofMap(maxTouchZ, layerBarrierZ-layerBarrierWidth/2, layerBarrierZ+layerBarrierWidth/2, 1.0, 0.0, true);
 
-	layer1Opacity += (targetOpacity - layer1Opacity) * .05; //dampen
+	layer1Opacity += (targetOpacity - layer1Opacity) * .1; //dampen
 	tweets.tweetLayerOpacity = layer1Opacity;
 	tweets.canSelectSearchTerms = maxTouchZ > layerBarrierZ;
 		
@@ -197,7 +197,6 @@ void ofxWWRenderer::render(){
 
 	tweets.renderTweetNodes();
 	tweets.renderTweets();	
-	
 	tweets.renderSearchTerms();
 	
 	//BLIT CONTENT
@@ -315,6 +314,7 @@ void ofxWWRenderer::renderDynamics(){
 //	ofSetColor(0,0,0, clearSpeed);
 //	ofRect(0, 0, targetWidth, targetHeight);
 
+	//ofSetColor(255,255,255, clearSpeed);
 	ofSetColor(255,255,255, clearSpeed);
 	gradientOverlay.draw(0,0,targetWidth,targetHeight);
 	

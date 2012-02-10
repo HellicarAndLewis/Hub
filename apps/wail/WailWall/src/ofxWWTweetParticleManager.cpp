@@ -361,7 +361,7 @@ void ofxWWTweetParticleManager::renderCaustics(){
 			for(int j = 0; j < tweets.size(); j++){
 				if(j != i){
 					attemptCausticConnection(tweets[i].pos, tweets[i].selectionWeight,
-											 tweets[j].pos, tweets[j].selectionWeight);
+											 tweets[j].pos, tweets[j].selectionWeight, tweetLayerOpacity);
 				}
 			}
 		}	
@@ -370,8 +370,8 @@ void ofxWWTweetParticleManager::renderCaustics(){
 	if(searchTermSelected){
 		for(int i = 0; i < tweets.size(); i++){
 			if(tweets[i].isSearchTweet){
-				cout << "++++++ DRAWING CAUSTICS BETWEEN " << tweets[i].pos << " " << searchTerms[selectedSearchTerm].pos << endl;
-				attemptCausticConnection(tweets[i].pos, 1.0, searchTerms[selectedSearchTerm].pos, 1.0);
+//				cout << "++++++ DRAWING CAUSTICS BETWEEN " << tweets[i].pos << " " << searchTerms[selectedSearchTerm].pos << endl;
+				attemptCausticConnection(tweets[i].pos, 1.0, searchTerms[selectedSearchTerm].pos, 1.0, 1-tweetLayerOpacity);
 			}
 		}
 	}
@@ -379,27 +379,27 @@ void ofxWWTweetParticleManager::renderCaustics(){
 	ofPopStyle();	
 }
 
-void ofxWWTweetParticleManager::attemptCausticConnection(ofVec2f pos1, float weight1, ofVec2f pos2, float weight2){
+void ofxWWTweetParticleManager::attemptCausticConnection(ofVec2f pos1, float weight1, ofVec2f pos2, float weight2, float layerOpacity){
 	float chanceOfSynapse = weight1 * weight2;
 	if(ofRandomuf() + .5 < chanceOfSynapse){
-		setRandomCausticColor();
+		setRandomCausticColor(layerOpacity);
 		ofLine(pos1, pos2);
 	}
 }
 
-void ofxWWTweetParticleManager::setRandomCausticColor(){
+void ofxWWTweetParticleManager::setRandomCausticColor(float layerOpacity){
 	float diceroll = ofRandomuf();
 	if(diceroll < .1){
-		ofSetColor(causticColors[0], 100*tweetLayerOpacity);
+		ofSetColor(causticColors[0], 100*layerOpacity);
 	}
 	else if(diceroll < .3){
-		ofSetColor(causticColors[1], 100*tweetLayerOpacity);	
+		ofSetColor(causticColors[1], 100*layerOpacity);	
 	}
 	else if(diceroll < .6){
-		ofSetColor(causticColors[2], 100*tweetLayerOpacity);		
+		ofSetColor(causticColors[2], 100*layerOpacity);		
 	}
 	else{ 
-		ofSetColor(causticColors[3], 100*tweetLayerOpacity);	
+		ofSetColor(causticColors[3], 100*layerOpacity);	
 	}
 }
 

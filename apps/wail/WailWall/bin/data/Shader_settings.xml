@@ -1,11 +1,11 @@
 <controls>
     <SliderFloat_Blur_Diffuse>
         <name>Blur Diffuse</name>
-        <value>0.390000</value>
+        <value>3.950000</value>
     </SliderFloat_Blur_Diffuse>
     <SliderFloat_Clear_Speed>
         <name>Clear Speed</name>
-        <value>1.650000</value>
+        <value>8.250000</value>
     </SliderFloat_Clear_Speed>
     <SliderFloat_Warp_Amount>
         <name>Warp Amount</name>
