@@ -11,6 +11,10 @@
         <name>User Y Shift</name>
         <value>69.000000</value>
     </SliderFloat_User_Y_Shift>
+    <SliderFloat_Tweet_Y_Shift>
+        <name>Tweet Y Shift</name>
+        <value>0.000000</value>
+    </SliderFloat_Tweet_Y_Shift>
     <SliderFloat_Wall_Repulsion_Dist>
         <name>Wall Repulsion Dist</name>
         <value>517.500000</value>

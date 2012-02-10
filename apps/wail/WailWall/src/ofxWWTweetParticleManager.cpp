@@ -51,7 +51,7 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addPage("Tweet Lifecycle");
 	webGui.addSlider("Tweet Font Size", fontSize, 5, 24);
 	webGui.addSlider("Word Wrap Length", wordWrapLength, 100, 300);
-	webGui.addSlider("Max Tweets", maxTweets, 5, 100);
+	webGui.addSlider("Max Tweets", maxTweets, 5, 500);
 	webGui.addSlider("Start Fade Time", startFadeTime, 2, 10);
 	webGui.addSlider("Fade Duration", fadeDuration, 2, 10);
 	webGui.addToggle("Clear Tweets", clearTweets);
