@@ -40,6 +40,7 @@ void TwitterPhotoUploader::threadedFunction() {
 		req.getParams().addString("message", ufi.message);
 	
 		string response;
+		uploader_curl.setVerbose(true);
 		req.doPost(uploader_curl, response, true);
 		printf("result:\n%s\n", response.c_str());
 	}
