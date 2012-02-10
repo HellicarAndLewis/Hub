@@ -15,14 +15,16 @@ void ofxWWRenderer::setup(int width, int height){
 	targetHeight = height;
 	
 	//anything that diffuses in liquid gets drawn into here
-	accumulator.allocate(width, height, GL_RGBA);
+	accumulator.allocate(width, height, GL_RGB);
 	
 	//type layer
 	//draw everything into here that needs to be warped
-	warpMap.allocate(width, height, GL_RGB);
+	warpMap.allocate(width/2, height/2, GL_RGB);
 	
 	//final buffer for comping it all together
 	renderTarget.allocate(width, height, GL_RGB);
+	
+	gradientOverlay.allocate(width/8, height/8, GL_RGB);
 	
 	tweets.simulationWidth = width;
 	tweets.simulationHeight = height;
@@ -36,7 +38,10 @@ void ofxWWRenderer::setup(int width, int height){
 	tweets.fluidRef = &fluid;
 	tweets.blobsRef = blobs;
 	
-	colorField.loadImage("color_palette.png");
+	colorField.loadImage("images/color_palette.png");
+	layerOneBackground.loadImage("images/layerOneBG.png");
+	layerTwoBackground.loadImage("images/layerTwoBG.png");
+
 	layer1Opacity = 1.0;
 	
 	permutationImage.loadImage("shaders/permtexture.png");
@@ -68,26 +73,24 @@ void ofxWWRenderer::setupGui(){
 	webGui.addPage("Interaction");
 	webGui.addSlider("Layer Barrier Z", layerBarrierZ, .25, .75);
 	webGui.addSlider("Layer Barrier Width", layerBarrierWidth, 0.05, .25);
-//	webGui.addToggle("Fake Z", fakeZOnTouch);
-//	webGui.addSlider("Fake Level", fakeZLevel, 0.0, 1.0);
 	webGui.addSlider("Touch Scale", tweets.touchSizeScale, .5, 2.0);
 	webGui.addSlider("Influence Width", tweets.touchInfluenceFalloff, 10., 500);
 	webGui.addToggle("Draw Touch Debug", drawTouchDebug);
-		
+	
 	webGui.addPage("Fluid");
-	webGui.addToggle("Enable Fluid", enableFluid);
-	webGui.addSlider("Force Scale",	fluid.forceScale,	1.0, 200); 
+	webGui.addToggle("Enable Fluid",	enableFluid);
+	webGui.addSlider("Force Scale",		fluid.forceScale,	1.0, 200); 
 	webGui.addSlider("Zoom",			fluid.scaleFactor,	1.0, 20.0); 	
 	webGui.addSlider("Offset X",		fluid.offsetX,		-200.0, 0); 	
 	webGui.addSlider("Offset Y",		fluid.offsetY,		-200.0, 0); 	
 	webGui.addSlider("Particles",		fluid.numParticles,		1000, 100000); 
-	webGui.addSlider("Density",		fluid.densitySetting,	0, 30.0);	
+	webGui.addSlider("Density",			fluid.densitySetting,	0, 30.0);	
 	webGui.addSlider("Stiffness",		fluid.stiffness,		0, 2.0);
 	webGui.addSlider("Bulk Viscosity",	fluid.bulkViscosity,	0, 10.0);
 	webGui.addSlider("Elasticity",		fluid.elasticity,		0, 4.0);
 	webGui.addSlider("Viscosity",		fluid.viscosity,		0, 4.0);
 	webGui.addSlider("Yield Rate",		fluid.yieldRate,		0, 2.0);
-	webGui.addSlider("Gravity",		fluid.gravity,			0, 0.02);
+	webGui.addSlider("Gravity",			fluid.gravity,			0, 0.02);
 	webGui.addSlider("Smoothing",		fluid.smoothing,		0, 3.0);
 	webGui.addToggle("Do Obstacles",	fluid.bDoObstacles); 
 	
@@ -103,7 +106,6 @@ void ofxWWRenderer::setupGui(){
 	webGui.addSlider("Noise Wobble Amplitude X", noiseWobbleAmplitudeX, 0, 100);
 	webGui.addSlider("Noise Wobble Amplitude Y", noiseWobbleAmplitudeY, 0, 100);
 	webGui.addToggle("Just Draw Warp", justDrawWarpTexture);
-
 
 	tweets.setupGui();
 }
@@ -121,25 +123,23 @@ void ofxWWRenderer::update(){
 		}
 		
 		//dirty fake hack
-		if(fakeZOnTouch){
-			maxTouchZ = fakeZLevel;
-		}		
+//		if(fakeZOnTouch){
+//			maxTouchZ = fakeZLevel;
+//		}		
 	}
-		
+
 	float targetOpacity = ofMap(maxTouchZ, layerBarrierZ-layerBarrierWidth/2, layerBarrierZ+layerBarrierWidth/2, 1.0, 0.0, true);
-	layer1Opacity += (targetOpacity - layer1Opacity) * .05;
-	
-	//JG DISABLING SEARCH FOR THE MOMENT
+
+	layer1Opacity += (targetOpacity - layer1Opacity) * .05; //dampen
 	tweets.tweetLayerOpacity = layer1Opacity;
-	tweets.tweetLayerOpacity = 1.0;
 	tweets.canSelectSearchTerms = maxTouchZ > layerBarrierZ;
-	tweets.canSelectSearchTerms = false;
 		
 	tweets.update();
 }
 
 void ofxWWRenderer::render(){
-
+	
+	renderGradientOverlay();
 	renderContent();
 	renderWarpMap();
 	
@@ -209,9 +209,14 @@ void ofxWWRenderer::render(){
 			ofSetColor(255, 255, 0);
 			ofCircle(touchCenter, it->second.size*(maxTouchRadius + tweets.touchInfluenceFalloff/2));
 			
-			for(int i = 0; i < tweets.tweets.size(); i++){
-				ofLine(touchCenter, tweets.tweets[i].pos);
-			}
+			ofPushMatrix();
+			ofTranslate(touchCenter.x, touchCenter.y);
+			ofScale(10, 10);
+			ofDrawBitmapString("Z:"+ofToString(it->second.z,4), ofVec2f(0,0));
+			ofPopMatrix();
+//			for(int i = 0; i < tweets.tweets.size(); i++){
+//				ofLine(touchCenter, tweets.tweets[i].pos);
+//			}
 		}
 		ofPopStyle();
 	}
@@ -222,10 +227,11 @@ void ofxWWRenderer::render(){
 void ofxWWRenderer::renderContent(){
 	
 	accumulator.begin();
+	ofEnableAlphaBlending();
+	
 	ofPushStyle();
 	ofSetColor(255, 255, 255);
 	
-	ofEnableAlphaBlending();
 	
 	blurShader.begin();
 	blurShader.setUniform2f("sampleOffset", 0, blurAmount);
@@ -272,8 +278,11 @@ void ofxWWRenderer::renderContent(){
 	tweets.renderCaustics();
 	tweets.renderTweetNodes();
 	
-	ofSetColor(0,0,0, clearSpeed);
-	ofRect(0, 0, targetWidth, targetHeight);
+//	ofSetColor(0,0,0, clearSpeed);
+//	ofRect(0, 0, targetWidth, targetHeight);
+
+	ofSetColor(255,255,255, clearSpeed);
+	gradientOverlay.draw(0,0,targetWidth,targetHeight);
 	
 	ofPopStyle();
 	
@@ -316,6 +325,20 @@ void ofxWWRenderer::renderWarpMap(){
 	warpMap.end();
 }
 
+void ofxWWRenderer::renderGradientOverlay(){
+	ofPushStyle();
+	gradientOverlay.begin();
+	ofClear(0, 0, 0);
+
+	layerTwoBackground.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
+	ofSetColor(255, 255, 255, layer1Opacity*255);				
+	layerOneBackground.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
+	
+	gradientOverlay.end();
+	ofPopStyle();
+	
+}
+
 ofFbo& ofxWWRenderer::getFbo(){
 	return renderTarget;
 }
@@ -329,7 +352,7 @@ void ofxWWRenderer::touchMoved(const KinectTouch &touch) {
 }
 
 void ofxWWRenderer::touchUp(const KinectTouch &touch) {
-	tweets.resetTouches();
+//	tweets.resetTouches();
 }
 
 ofVec2f ofxWWRenderer::texCoordAtPos(ofImage& image, float x, float y){

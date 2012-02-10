@@ -1,4 +1,8 @@
 <controls>
+    <SliderFloat_Dot_Size>
+        <name>Dot Size</name>
+        <value>50.000000</value>
+    </SliderFloat_Dot_Size>
     <SliderFloat_Two_Line_Scale>
         <name>Two Line Scale</name>
         <value>1.955000</value>
@@ -7,14 +11,6 @@
         <name>User Y Shift</name>
         <value>51.000000</value>
     </SliderFloat_User_Y_Shift>
-    <SliderFloat_Tweet_Y_Shift>
-        <name>Tweet Y Shift</name>
-        <value>-93.000000</value>
-    </SliderFloat_Tweet_Y_Shift>
-    <SliderFloat_Two_Line_Squish>
-        <name>Two Line Squish</name>
-        <value>0.620000</value>
-    </SliderFloat_Two_Line_Squish>
     <SliderFloat_Wall_Repulsion_Dist>
         <name>Wall Repulsion Dist</name>
         <value>145.500000</value>

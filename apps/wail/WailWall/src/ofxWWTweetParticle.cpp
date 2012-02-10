@@ -23,6 +23,7 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 	opacity = 1.0;
 	dead = false;
 	
+	useBurstOne = ofRandomuf() > .8;
 	lineOne = "";
 	lineTwo = "";
 
@@ -57,9 +58,9 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 
 		//wordWrappedTweet = lineOne + "\n" + lineTwo;
 		userNameWidth = manager->sharedLargeFont.getStringBoundingBox(tweet.getScreenName(), 0, 0).width;
-		totalWidth = userNameWidth + manager->userNameXPad + wrapPoint;
-		totalHeight = MAX(manager->sharedLargeFont.getStringBoundingBox(tweet.getScreenName(), 0, 0).height,
-						  manager->sharedFont.getStringBoundingBox(wordWrappedTweet, 0, 0).height);
+//		totalWidth = userNameWidth + manager->userNameXPad + wrapPoint;
+//		totalHeight = MAX(manager->sharedLargeFont.getStringBoundingBox(tweet.getScreenName(), 0, 0).height,
+//						  manager->sharedFont.getStringBoundingBox(wordWrappedTweet, 0, 0).height);
 		lineTwoWidth = manager->sharedFont.getStringBoundingBox(lineTwo,0,0).width;
 		if(!isTwoLines){
 			ofLogError("ofxWWTwitterParticle -- word wrapped didn't hit two lines ... ");
@@ -68,10 +69,9 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 	}
 	else {
 		//wordWrappedTweet = tweet.getText();
-		lineOne = tweet.getText();
-		
-		totalWidth = userNameWidth + manager->userNameXPad + tweetWidth;
-		totalHeight = manager->sharedFont.getStringBoundingBox(tweet.getScreenName(), 0, 0).height;
+		lineOne = tweet.getText();		
+//		totalWidth = userNameWidth + manager->userNameXPad + tweetWidth;
+//		totalHeight = manager->sharedFont.getStringBoundingBox(tweet.getScreenName(), 0, 0).height;
 	}	
 	lineOneWidth = manager->sharedFont.getStringBoundingBox(lineOne,0,0).width;
 	lineOneHeight = manager->sharedFont.getStringBoundingBox(lineOne,0,0).height;
@@ -111,8 +111,11 @@ void ofxWWTweetParticle::update(){
 void ofxWWTweetParticle::drawDot(){
 	ofPushStyle();
 
-	ofSetColor(ofColor::fromHex(0xf4b149,deathAttenuation*255));
-	ofCircle(pos.x, pos.y, 10);
+	//ofSetColor(ofColor::fromHex(0xf4b149,deathAttenuation*255));
+	
+	ofSetRectMode(OF_RECTMODE_CENTER);
+	ofSetColor(255,255,255,deathAttenuation*255);
+	manager->burstOne.draw(pos.x, pos.y, manager->dotSize,manager->dotSize);
 
 	ofPopStyle();
 }

@@ -4,8 +4,8 @@
     <source>
         <x>0</x>
         <y>0</y>
-        <width>3072</width>
-        <height>1280</height>
+        <width>3840</width>
+        <height>3072</height>
     </source>
 	<!-- the destination rectangle is where this actually gets displayed on the screen -->
 	<!-- which is our triplehead canvas laid out lengthwise at 3 * 320 x 256 (dev testing numbers) -->

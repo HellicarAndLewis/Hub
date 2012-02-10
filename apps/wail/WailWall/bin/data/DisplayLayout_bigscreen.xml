@@ -1,0 +1,209 @@
+<layout>
+	<!-- this controls the texture size, and is the perceived resolution of the output -->
+    <source>
+        <x>0</x>
+        <y>0</y>
+		<!-- 5x3 1280x1024 screens -->
+        <width>3840</width>
+        <height>3072</height>
+    </source>
+
+	<!-- the destination rectangle is where this actually gets displayed on the screen -->
+	<!-- which is our triplehead canvas laid out lengthwise at 3 * 1280 x 1024 -->
+    <dest>
+        <x>0</x>
+        <y>0</y>
+        <width>3840</width>
+        <height>1024</height>
+    </dest>
+
+	<!-- 1080p output render -->
+    <preview>
+        <x>5760</x> <!-- assuming it's TH2G + Cinema Display to the left of this display -->
+        <y>0</y>
+        <width>1920</width>
+        <height>1080</height>
+    </preview>
+
+	<!-- this is the gui in absolute screen coords (push it past the triplehead) -->
+	<gui>
+		<x>3840</x>
+		<y>0</y>
+	</gui>
+	
+	<!-- we stack each output so that we can reconstruct our image -->
+    <screens>
+		<!-- LEFT TOP ONE -->
+        <screen>
+			<!-- source is texture coordinates -->
+            <source>
+                <x>0.000000</x>
+                <y>0.000000</y>
+                <width>1024</width>
+                <height>1280</height>
+            </source>
+			<!-- dest is output, 0,0 in relationship to the top left of the destination rectangle -->
+            <dest>
+                <x>0</x>
+                <y>0</y>
+                <width>1280</width>
+                <height>1024</height>
+            </dest>
+	        <orientation>3</orientation> <!-- 3 is 90 to the right -->
+        </screen>
+
+		<!-- FAR LEFT TWO -->
+        <screen>
+			<!-- source is texture coordinates -->
+            <source>
+                <x>0.000000</x>
+                <y>0.000000</y>
+                <width>1024</width>
+                <height>1280</height>
+            </source>
+			<!-- dest is output, 0,0 in relationship to the top left of the destination rectangle -->
+            <dest>
+                <x>0</x>
+                <y>0</y>
+                <width>1280</width>
+                <height>1024</height>
+            </dest>
+	        <orientation>3</orientation> <!-- 3 is 90 to the right -->
+        </screen>
+
+		<!-- FAR LEFT THREE -->
+        <screen>
+			<!-- source is texture coordinates -->
+            <source>
+                <x>0.000000</x>
+                <y>0.000000</y>
+                <width>1024</width>
+                <height>1280</height>
+            </source>
+			<!-- dest is output, 0,0 in relationship to the top left of the destination rectangle -->
+            <dest>
+                <x>0</x>
+                <y>0</y>
+                <width>1280</width>
+                <height>1024</height>
+            </dest>
+	        <orientation>3</orientation> <!-- 3 is 90 to the right -->
+        </screen>
+
+		<!-- FAR LEFT FIVE -->
+        <screen>
+			<!-- source is texture coordinates -->
+            <source>
+                <x>0.000000</x>
+                <y>0.000000</y>
+                <width>1024</width>
+                <height>1280</height>
+            </source>
+			<!-- dest is output, 0,0 in relationship to the top left of the destination rectangle -->
+            <dest>
+                <x>0</x>
+                <y>0</y>
+                <width>1280</width>
+                <height>1024</height>
+            </dest>
+	        <orientation>3</orientation> <!-- 3 is 90 to the right -->
+        </screen>
+
+		<!-- MIDDLE TOP -->
+        <screen>
+			<!-- source is texture coordinates -->
+            <source>
+                <x>0.000000</x>
+                <y>0.000000</y>
+                <width>1024</width>
+                <height>1280</height>
+            </source>
+			<!-- dest is output, 0,0 in relationship to the top left of the destination rectangle -->
+            <dest>
+                <x>0</x>
+                <y>0</y>
+                <width>1280</width>
+                <height>1024</height>
+            </dest>
+	        <orientation>3</orientation> <!-- 3 is 90 to the right -->
+        </screen>
+
+
+		<!-- MIDDLE TWO -->
+        <screen>
+			<!-- source is texture coordinates -->
+            <source>
+                <x>1024</x>
+                <y>0.000000</y>
+                <width>1024</width>
+                <height>1280</height>
+            </source>
+			<!-- dest is output, 0,0 in relationship to the top left of the destination rectangle -->
+            <dest>
+                <x>1280</x>
+                <y>0</y>
+                <width>1280</width>
+                <height>1024</height>
+            </dest>
+	        <orientation>3</orientation> <!-- 3 is 90 to the right -->
+        </screen>
+
+		<!-- MIDDLE THREE -->
+        <screen>
+			<!-- source is texture coordinates -->
+            <source>
+                <x>2048</x>
+                <y>0.000000</y>
+                <width>1024</width>
+                <height>1280</height>
+            </source>
+			<!-- dest is output, 0,0 in relationship to the top left of the destination rectangle -->
+            <dest>
+                <x>2560</x>
+                <y>0</y>
+                <width>1280</width>
+                <height>1024</height>
+            </dest>
+	        <orientation>3</orientation> <!-- 3 is 90 to the right -->
+        </screen>
+
+		<!-- MIDDLE FOUR -->
+        <screen>
+			<!-- source is texture coordinates -->
+            <source>
+                <x>2048</x>
+                <y>0.000000</y>
+                <width>1024</width>
+                <height>1280</height>
+            </source>
+			<!-- dest is output, 0,0 in relationship to the top left of the destination rectangle -->
+            <dest>
+                <x>2560</x>
+                <y>0</y>
+                <width>1280</width>
+                <height>1024</height>
+            </dest>
+	        <orientation>3</orientation> <!-- 3 is 90 to the right -->
+        </screen>
+
+		<!-- MIDDLE FIVE -->
+        <screen>
+			<!-- source is texture coordinates -->
+            <source>
+                <x>2048</x>
+                <y>0.000000</y>
+                <width>1024</width>
+                <height>1280</height>
+            </source>
+			<!-- dest is output, 0,0 in relationship to the top left of the destination rectangle -->
+            <dest>
+                <x>2560</x>
+                <y>0</y>
+                <width>1280</width>
+                <height>1024</height>
+            </dest>
+	        <orientation>3</orientation> <!-- 3 is 90 to the right -->
+        </screen>
+
+    </screens>
+</layout>
