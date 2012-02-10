@@ -61,6 +61,7 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Dot Size", dotSize, 5, 50);
 	webGui.addSlider("Two Line Scale", twoLineScaleup, 1.0, 2.0);
 	webGui.addSlider("User Y Shift", userNameYOffset, -150, 150);
+	webGui.addSlider("Tweet Y Shift", tweetYOffset, -150, 150);
 //	webGui.addSlider("Two Line Squish", twoLineSquish, .5, 1.0);
 	webGui.addSlider("Wall Repulsion Dist", wallRepulsionDistance, 0, 900);
 	webGui.addSlider("Wall Repulsion Atten", wallRepulsionAtten, 0, .2);
@@ -87,7 +88,7 @@ void ofxWWTweetParticleManager::setupGui(){
 
 
 void ofxWWTweetParticleManager::update(){
-	
+
 	if(clearTweets){
 		tweets.clear();
 		clearTweets = false;
@@ -151,6 +152,7 @@ void ofxWWTweetParticleManager::update(){
 	}
 		
 	for(int i = 0; i < searchTerms.size(); i++){
+
 		searchTerms[i].touchPresent = blobsRef->size() != 0;
 		searchTerms[i].update();
 	}		
@@ -178,11 +180,10 @@ void ofxWWTweetParticleManager::update(){
 void ofxWWTweetParticleManager::handleTouchSearch() {
 	
 	if(!canSelectSearchTerms){
-		if(searchTermSelected){
-			for(int i = 0; i < searchTerms.size(); i++){
-				searchTerms[i].selected = false;
-			}
-		}		
+
+		for(int i = 0; i < searchTerms.size(); i++){
+			searchTerms[i].selected = false;
+		}
 		searchTermSelected = false;
 		return;
 	}
@@ -190,31 +191,32 @@ void ofxWWTweetParticleManager::handleTouchSearch() {
 	if(searchTermSelected){
 		return;
 	}
-
-	cout << "++++++ SEARCH DEBUG QUERY " << endl;
+	
+	bool searchDebug = false;
+	if(searchDebug) cout << "++++++ SEARCH DEBUG QUERY " << endl;
 	//look for a selected search term
 	for(int i = 0; i < searchTerms.size(); i++){
 		
 		if(searchTerms[i].selected){
-			cout << "++++++ SEARCH DEBUG SELECTED SEARCH TERM " << searchTerms[i].term << endl;
+			if(searchDebug) cout << "++++++ SEARCH DEBUG SELECTED SEARCH TERM " << searchTerms[i].term << endl;
 
 			searchTermSelected = true;
 			selectedSearchTerm = i;
 			//TODO: Run Real Query
 			vector<rtt::Tweet> result;
 			twitter.getTweetsNewerThan(1000000, 25, result);
-			cout << "++++++ SEARCH DEBUG SELECTED SEARCH TERM RETURNED: " << result.size() << endl;
+			if(searchDebug) cout << "++++++ SEARCH DEBUG SELECTED SEARCH TERM RETURNED: " << result.size() << endl;
 			if(result.size() != 0){
-				cout << "++++++ SEARCH DEBUG FOUND REAL RESULTS: " << endl;
+				if(searchDebug) cout << "++++++ SEARCH DEBUG FOUND REAL RESULTS: " << endl;
 				for(int t = 0; t < result.size(); t++){
 					if(t < tweets.size()){
 						//reappropriate tweet
-						cout << "++++++ REAPPROPRIATING TWEET" << endl;
-						tweets[t].setTweet( result[t] );
+						if(searchDebug) cout << "++++++ REAPPROPRIATING TWEET" << endl;
+						//tweets[t].setTweet( result[t] );
 						tweets[t].isSearchTweet = true;
 					}
 					else{
-						cout << "++++++ GENERATING TWEET" << endl;
+						if(searchDebug) cout << "++++++ GENERATING TWEET" << endl;
 						//generate tweet
 						ofxWWTweetParticle tweetParticle = createParticleForTweet(result[t]);
 						tweetParticle.isSearchTweet = true;
@@ -225,7 +227,7 @@ void ofxWWTweetParticleManager::handleTouchSearch() {
 			}
 			//THIS IS A HACK BC QUERY SOMETIMES RETURNS 0
 			else {
-				cout << "++++++ SEARCH DEBUG CREATING FAKED RESULTS: " << endl;
+				if(searchDebug) cout << "++++++ SEARCH DEBUG CREATING FAKED RESULTS: " << endl;
 				for(int t = 0; t < MIN(15, tweets.size()); t++){
 					tweets[t].isSearchTweet = true;
 					tweets[t].createdTime = ofGetElapsedTimef() + ofRandom(2);
@@ -355,6 +357,7 @@ void ofxWWTweetParticleManager::renderCaustics(){
 	}
 	
 	ofPushStyle();
+	ofSetLineWidth(2);
 	
 	if(tweetLayerOpacity > 0){
 		for(int i = 0; i < tweets.size(); i++){

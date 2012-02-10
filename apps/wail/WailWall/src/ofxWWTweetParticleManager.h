@@ -67,6 +67,7 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 
 	float twoLineScaleup;
 	float userNameYOffset;
+	
 	float tweetYOffset;
 	
 	float dotSize;

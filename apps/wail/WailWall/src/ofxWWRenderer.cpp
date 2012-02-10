@@ -83,7 +83,7 @@ void ofxWWRenderer::setupGui(){
 	webGui.addPage("Fluid");
 	webGui.addToggle("Enable Fluid",	enableFluid);
 	webGui.addSlider("Force Scale",		fluid.forceScale,	1.0, 200); 
-	webGui.addSlider("Zoom",			fluid.scaleFactor,	1.0, 20.0); 	
+	webGui.addSlider("Zoom",			fluid.scaleFactor,	1.0, 40.0); 	
 	webGui.addSlider("Offset X",		fluid.offsetX,		-200.0, 0); 	
 	webGui.addSlider("Offset Y",		fluid.offsetY,		-200.0, 0); 	
 	webGui.addSlider("Particles",		fluid.numParticles,		1000, 100000); 
@@ -114,6 +114,7 @@ void ofxWWRenderer::setupGui(){
 }
 
 void ofxWWRenderer::update(){
+	enableFluid = false;
 	if(enableFluid){
 		fluid.update();
 	}
@@ -136,8 +137,7 @@ void ofxWWRenderer::update(){
 }
 
 void ofxWWRenderer::render(){
-	
-	
+
 	//type
 //	renderLayer1();
 //	renderLayer2();
