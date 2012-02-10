@@ -190,41 +190,46 @@ void ofxWWTweetParticleManager::handleTouchSearch() {
 	if(searchTermSelected){
 		return;
 	}
-	
+
+	cout << "++++++ SEARCH DEBUG QUERY " << endl;
 	//look for a selected search term
 	for(int i = 0; i < searchTerms.size(); i++){
+		
 		if(searchTerms[i].selected){
+			cout << "++++++ SEARCH DEBUG SELECTED SEARCH TERM " << searchTerms[i].term << endl;
+
 			searchTermSelected = true;
 			selectedSearchTerm = i;
-			if(!searchTerms[i].populated){
-				//TODO: Run Real Query
-				vector<rtt::Tweet> result;
-				twitter.getTweetsNewerThan(1000000, 25, result);
-				cout << "query returned " << result.size() << " results " << endl;
-				if(result.size() != 0){
-					for(int t = 0; t < result.size(); t++){
-						if(t < tweets.size()){
-							//reappropriate tweet
-							tweets[i].setTweet( result[t] );
-							tweets[i].isSearchTweet = true;
-						}
-						else{
-							//generate tweet
-							ofxWWTweetParticle tweetParticle = createParticleForTweet(result[t]);
-							tweetParticle.isSearchTweet = true;
-							//searchTweets.push_back( tweetParticle );
-							tweets.push_back( tweetParticle );
-						}
-					}
-				}
-				//THIS IS A HACK BC QUERY SOMETIMES RETURNS 0
-				else {
-					for(int t = 0; t < MIN(15, tweets.size()); t++){
+			//TODO: Run Real Query
+			vector<rtt::Tweet> result;
+			twitter.getTweetsNewerThan(1000000, 25, result);
+			cout << "++++++ SEARCH DEBUG SELECTED SEARCH TERM RETURNED: " << result.size() << endl;
+			if(result.size() != 0){
+				cout << "++++++ SEARCH DEBUG FOUND REAL RESULTS: " << endl;
+				for(int t = 0; t < result.size(); t++){
+					if(t < tweets.size()){
+						//reappropriate tweet
+						cout << "++++++ REAPPROPRIATING TWEET" << endl;
+						tweets[t].setTweet( result[t] );
 						tweets[t].isSearchTweet = true;
-						tweets[t].createdTime = ofGetElapsedTimef() + ofRandom(2);
+					}
+					else{
+						cout << "++++++ GENERATING TWEET" << endl;
+						//generate tweet
+						ofxWWTweetParticle tweetParticle = createParticleForTweet(result[t]);
+						tweetParticle.isSearchTweet = true;
+						//searchTweets.push_back( tweetParticle );
+						tweets.push_back( tweetParticle );
 					}
 				}
-				searchTerms[i].populated = true;
+			}
+			//THIS IS A HACK BC QUERY SOMETIMES RETURNS 0
+			else {
+				cout << "++++++ SEARCH DEBUG CREATING FAKED RESULTS: " << endl;
+				for(int t = 0; t < MIN(15, tweets.size()); t++){
+					tweets[t].isSearchTweet = true;
+					tweets[t].createdTime = ofGetElapsedTimef() + ofRandom(2);
+				}
 			}
 			break;
 		}
@@ -331,7 +336,7 @@ void ofxWWTweetParticleManager::renderTweets(){
 
 void ofxWWTweetParticleManager::renderSearchTerms(){	
 	for(int i = 0; i < tweets.size(); i++){
-		if(!tweets[i].isSearchTweet){
+		if(tweets[i].isSearchTweet){
 			tweets[i].drawText();
 			tweets[i].drawDot();
 		}
@@ -365,6 +370,7 @@ void ofxWWTweetParticleManager::renderCaustics(){
 	if(searchTermSelected){
 		for(int i = 0; i < tweets.size(); i++){
 			if(tweets[i].isSearchTweet){
+				cout << "++++++ DRAWING CAUSTICS BETWEEN " << tweets[i].pos << " " << searchTerms[selectedSearchTerm].pos << endl;
 				attemptCausticConnection(tweets[i].pos, 1.0, searchTerms[selectedSearchTerm].pos, 1.0);
 			}
 		}

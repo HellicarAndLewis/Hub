@@ -90,7 +90,6 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
   protected:
 	TwitterApp twitter;
 	vector<ofxWWSearchTerm> searchTerms;
-	//vector<ofxWWTweetParticle> searchTweets;
 	
 	
 	bool searchTermSelected;

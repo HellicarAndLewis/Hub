@@ -93,6 +93,9 @@ void ofxWWTweetParticle::update(){
 	//interaction tweet layer attenuation
 	if(isSearchTweet){
 		opacity *= (1-manager->tweetLayerOpacity);
+		if(!manager->canSelectSearchTerms){
+			isSearchTweet = false; //this will kill the tweet
+		}
 	}
 	else{
 		//death attenuation
@@ -136,12 +139,7 @@ void ofxWWTweetParticle::drawText(){
 	ofSetColor(ofColor::fromHex(0x6f2b1d, opacity*255)); //TODO set font color
 	manager->sharedLargeFont.drawString("@", pos.x - atSignWidth/2, pos.y - atSignHeight/2);
 	
-	if(isSearchTweet){
-		ofSetColor(ofColor::fromHex(0x4051dc, opacity*255)); //TODO set font color
-	}
-	else{
-		ofSetColor(ofColor::fromHex(0xe6ab38, opacity*255)); //TODO set font color
-	}	
+	ofSetColor(ofColor::fromHex(0xe6ab38, opacity*255)); //TODO set font color
 	//USER NAME BELOW
 	manager->sharedLargeFont.drawString(tweet.getScreenName(), pos.x - userNameWidth/2, pos.y + manager->userNameYOffset);
 	//DRAW TWEET

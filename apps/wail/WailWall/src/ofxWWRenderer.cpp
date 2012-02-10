@@ -269,12 +269,12 @@ void ofxWWRenderer::renderDynamics(){
 	
 	blurShader.begin();
 	blurShader.setUniform2f("sampleOffset", 0, blurAmount);
-	accumulator.draw(0,0);
+	accumulator.draw(7,0); //this x offset causes the blur to cascade away
 	blurShader.end();
 
 	blurShader.begin();
 	blurShader.setUniform2f("sampleOffset", blurAmount, 0);
-	accumulator.draw(0,0);
+	accumulator.draw(3,0); //this x offset causes the blur to cascade away
 	blurShader.end();
 
 	if(enableFluid){
