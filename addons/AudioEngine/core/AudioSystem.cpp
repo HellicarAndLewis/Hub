@@ -19,7 +19,8 @@ CRITICAL_SECTION  critSec;  	//same as a mutex
 pthread_mutex_t  myMutex;
 #endif
 
-
+#include "SVFEffect.h"
+#include "DelayEffect.h"
 
 
 
@@ -49,9 +50,15 @@ int audioCallback( void *outputBuffer, void *inputBuffer, unsigned int nBufferFr
 AudioSystem::AudioSystem() {
 	sampleRefCounter = 0;
 	playerRefCounter = 0;
+	busRefCounter = 0;
+	effectRefCounter = 0;
 	masterVolume = 1.0;
     softSaturation = false;
     saturationSoftness = 0.5;
+	
+	// this is the main audio bus
+	buses[0] = new AudioBus();
+	
 #ifdef USING_RTAUDIO
 	rtAudio = NULL;
 #endif
@@ -215,7 +222,7 @@ void audio::reset() {
 
 void audio::play(PlayerRef playerId, float timeDelay) {
 	if(playerId==0) {
-        printf("Trying to paly a zero\n");
+        printf("Trying to play a zero\n");
     }
 	audioSystem.addCommand(playerId, PLAY, timeDelay);
 
@@ -276,13 +283,37 @@ int secondsToSamples(float seconds) {
 
 void AudioSystem::getSamples(float *samples, int length, int numChannels) {
 
+	
+	AudioBus *mainBus = buses[0];
+	
+	
+	// set the main output buffer
 	memset(samples, 0, numChannels*sizeof(float)*length);
+	mainBus->setBuffer(samples, length, numChannels);
+	
+	// clear all buses (except main output
+	for(map<BusRef,AudioBus*>::iterator it = buses.begin(); it != buses.end(); it++) {
+		if((*it).first!=0) {
+			(*it).second->allocateBuffer(length, numChannels);
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	lock();
 	if(!enabled) return;
 	for(unsigned int i = 0; i < commandList.size(); i++) {
-		if(commandList[i].playerId==0 || players.find(commandList[i].playerId)==players.end()) {
-            printf("Trying to %d an unallocated sample!!\n", commandList[i].type);
+		if(commandList[i].playerId==0 || (players.find(commandList[i].playerId)==players.end()
+		   && commandList[i].type!=SET_EFFECT_PARAM && commandList[i].type != SET_BUS_VOLUME)
+		   ) {
+            printf("Trying to run command %d an unallocated sample(%d)!!\n", commandList[i].type, commandList[i].playerId);
 
 			continue;
 		}
@@ -293,6 +324,21 @@ void AudioSystem::getSamples(float *samples, int length, int numChannels) {
 			case PLAY:
 				players[commandList[i].playerId]->trigger(-secondsToSamples(commandList[i].parameter1));
 				break;
+			
+			case SET_EFFECT_PARAM:
+				effects[commandList[i].playerId]->setParameter(commandList[i].parameter1, commandList[i].parameter2);
+				break;
+				
+			case PLAY_ON_BUS:
+
+				players[commandList[i].playerId]->busRef = commandList[i].parameter1;
+				printf("Playing on bus %d\n", players[commandList[i].playerId]->busRef);
+				players[commandList[i].playerId]->trigger(0);
+				break;
+			case SET_BUS_VOLUME:
+				buses[commandList[i].playerId]->setVolume(commandList[i].parameter1, commandList[i].parameter2);
+				break;
+				
             case OUTPUT:
                 players[commandList[i].playerId]->setOutputs(commandList[i].parameter1, commandList[i].parameter2);
                 break;
@@ -339,7 +385,13 @@ void AudioSystem::getSamples(float *samples, int length, int numChannels) {
 	//if(numChannels==2) {
     for(it = players.begin(); it != players.end(); ++it) {
         if((*it).second->isPlaying()) {
-            (*it).second->addSamples(samples, length, numChannels);
+		//	printf("Sample %d playing out of Bus %d\n", (*it).first, (*it).second->busRef);
+			//if((*it).second->busRef==0) {
+			//	(*it).second->addSamples(samples, length, numChannels);
+			//} else {
+				buses[(*it).second->busRef]->accumulateSamples((*it).second, length, numChannels);
+			//printf("Accumulating\n");
+			//}
         } else {
             if((*it).second->donePlaying()) { // has it ever played?
                 playersToDelete.push_back((*it).first);
@@ -353,8 +405,21 @@ void AudioSystem::getSamples(float *samples, int length, int numChannels) {
         players.erase(playersToDelete[i]);
     }
 		
-	//}
+	
 
+	// now mix the AudioBuses into the main one
+	for(map<BusRef,AudioBus*>::iterator it = buses.begin(); it != buses.end(); it++) {
+		if((*it).first!=0) {
+			//printf("Mixing other bus into main bus\n");
+			mainBus->mix((*it).second);
+		}
+	}
+	
+	// now clip the main buffer
+	mainBus->clip(softSaturation, masterVolume);
+	
+	//}
+/*
 	int numSamples = length * numChannels;
 
 	// MW removed unlock to fix crash, correct?
@@ -384,7 +449,8 @@ void AudioSystem::getSamples(float *samples, int length, int numChannels) {
             samples[i] = -1;
         }
     }
-    
+    */
+	
 	unlock();
 }
 
@@ -527,10 +593,80 @@ void audio::fadeOut(PlayerRef playerId, float duration) {
 	
 	
 bool AudioSystem::hasClipped() {
+	// this doesn't work at the moment.
+	assert(false);
     if(clipped) {
         clipped = false;
         return true;
     } else {
         return false;
     }
+}
+
+
+
+
+
+
+void audio::playOnBus(PlayerRef playerId, BusRef busRef) {
+	if(playerId==0) {
+        printf("audio::playOnBus() - Trying to play a zero\n");
+    }
+	audioSystem.addCommand(playerId, PLAY_ON_BUS, busRef);	
+	//printf("Request play on bus %d\n", busRef);
+}
+
+/**
+ * If you want effects, you create a bus, and add effects to it.
+ * You have to specify a channel for its output
+ */
+BusRef audio::createBus(int channel) {
+	audioSystem.busRefCounter++;
+	audioSystem.buses[audioSystem.busRefCounter] = new AudioBus();
+	return audioSystem.busRefCounter;
+}
+
+/**
+ * Sets the bus volume
+ */
+void audio::setBusVolume(BusRef busRef, float volumeL, float volumeR) {
+	if(volumeR==-1) volumeR = volumeL;
+	audioSystem.addCommand(busRef, SET_BUS_VOLUME, volumeL, volumeR);
+}
+
+/**
+ * Creates an effect assigned to a specific bus
+ */
+EffectRef audio::createEffect(BusRef busRef, EffectType effectType) {
+	if(audioSystem.buses.find(busRef)!=audioSystem.buses.end()) {
+		
+		
+		AudioEffect *effect = NULL;
+		switch(effectType) {
+			case EFFECT_TYPE_DELAY:
+				effect = new DelayEffect();
+				break;
+			case EFFECT_TYPE_HI_PASS:
+				effect = new SVFEffect(SVFEffect::HI_PASS);
+				break;
+			
+		}
+		
+		if(effect==NULL) {
+			printf("audio::createEffect() - couldn't find an effect of type %d\n", effectType);
+			return 0;
+		}
+
+		audioSystem.effectRefCounter++;
+		audioSystem.effects[audioSystem.effectRefCounter] = effect;
+		audioSystem.buses[busRef]->addEffect(audioSystem.effects[audioSystem.effectRefCounter]);
+		printf("Created effect of type %d on bus %d\n", effectType, busRef);
+	} else {
+		printf("Couldn't create effect\n");
+	}
+	return audioSystem.effectRefCounter;
+}
+
+void audio::setEffectParameter(EffectRef effect, int parameter, float value) {
+	audioSystem.addCommand(effect, SET_EFFECT_PARAM, parameter, value);
 }

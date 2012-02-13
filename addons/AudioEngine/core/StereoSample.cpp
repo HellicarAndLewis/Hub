@@ -21,6 +21,7 @@ void StereoSample::init() {
 	targetVolume = volume = 1.0;
     fadePos = -1;
     setOutputs(0, 1);
+	busRef = 0;
 }
 StereoSample::StereoSample(): Sample() {
 	init();

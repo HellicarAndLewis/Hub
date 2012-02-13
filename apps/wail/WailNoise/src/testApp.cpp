@@ -16,7 +16,20 @@ float PREVIEW_WIDTH = 500;
 float PREVIEW_HEIGHT = 500;
 float minSplashDepth = 0;
 float maxSplashDepth = 0;
+
+audio::EffectRef hiPass;
+audio::EffectRef delay;
+
+float bgCutoff = 8000;
+float bgRes = 0.1;
 void drawCube();
+
+float delayTimeL = 500;
+float delayTimeR = 1000;
+float mixL = 0.5;
+float mixR = 0.5;
+float feedbackL = 0.1;
+float feedbackR = 0.1;
 
 //--------------------------------------------------------------
 void testApp::setup(){
@@ -41,24 +54,53 @@ void testApp::setup(){
 	gui.addSlider("Splash Volume", splashVolume, 0, 1);
 	gui.addSlider("Bubble Volume", bubbleVolume, 0, 1);
 
-	gui.addSlider("Background Loop Volume", bgLoopVolume, 0, 1);
+	gui.addSlider("Background Loop Volume", bgLoopVolume, 0, 2.5);
+	gui.addSlider("Background Cutoff", bgCutoff, 50, 1000);
+	gui.addSlider("Background Resonance", bgRes, 0, 0.9);
+	
 	gui.addSlider("Min splash depth", minSplashDepth, 0, 1);
 	gui.addSlider("Max splash depth", maxSplashDepth, 0, 1);
+
+	gui.addColumn();
+	gui.addSlider("Delay Time Left", delayTimeL, 100, 10000);
+	gui.addSlider("Delay Time Right", delayTimeR, 100, 10000);
+	gui.addSlider("Feedback Left", feedbackL, 0, 1);
+	gui.addSlider("Feedback Right", feedbackR, 0, 1);
+	gui.addSlider("Mix L", mixL, 0, 1);
+	gui.addSlider("Mix R", mixR, 0, 1);
+	
+	
 	gui.loadSettings("wailnoise.xml");
 	gui.y = PREVIEW_HEIGHT + 10;
-	
+
 	
 	ofSetWindowTitle("WailNoise");
 	
 	
 	audio::init(2);
+
+	
+	audio::BusRef hiPassBus = audio::createBus(0);
+	audio::setBusVolume(hiPassBus, 0.9);
+	
+	hiPass = audio::createEffect(hiPassBus, audio::EFFECT_TYPE_HI_PASS);
+	audio::setEffectParameter(hiPass, SVFEffect::CUTOFF, bgCutoff);
+	audio::setEffectParameter(hiPass, SVFEffect::RESONANCE, bgRes);	
+	
+	delay = audio::createEffect(hiPassBus, audio::EFFECT_TYPE_DELAY);
+	audio::setEffectParameter(delay, DelayEffect::DELAY_TIME_L, delayTimeL);
+	audio::setEffectParameter(delay, DelayEffect::DELAY_TIME_R, delayTimeR);
+	audio::setEffectParameter(delay, DelayEffect::FEEDBACK_L, feedbackL);
+	audio::setEffectParameter(delay, DelayEffect::FEEDBACK_R, feedbackR);
+	audio::setEffectParameter(delay, DelayEffect::MIX_L, mixL);
+	audio::setEffectParameter(delay, DelayEffect::MIX_R, mixR);
 	
 	// background loop
 	audio::SampleRef bgLoop = audio::loadSample(ofToDataPath("bgloop.wav"));
 	bgLoopPlayer = audio::createPlayer(bgLoop);
 	audio::setLooping(bgLoopPlayer, true);
 	audio::setVolume(bgLoopPlayer, bgLoopVolume);
-	audio::play(bgLoopPlayer);
+	audio::playOnBus(bgLoopPlayer, hiPassBus);
 	
 	// initial splash
 	splash.setup("plop");
@@ -86,7 +128,25 @@ void testApp::controlChanged(xmlgui::Control *ctrl) {
 		slosh.setVolumeRange(0.2*bubbleVolume, bubbleVolume);
 	} else if(ctrl->id=="Splash Volume") {
 		splash.setVolumeRange(splashVolume*0.8, splashVolume);
+	} else if(ctrl->value==&bgCutoff) {
+		audio::setEffectParameter(hiPass, SVFEffect::CUTOFF, bgCutoff);
+	} else if(ctrl->value==&bgRes) {
+		audio::setEffectParameter(hiPass, SVFEffect::RESONANCE, bgRes);
+	} else if(ctrl->value==&delayTimeL) {
+		audio::setEffectParameter(delay, DelayEffect::DELAY_TIME_L, delayTimeL);
+	} else if(ctrl->value==&delayTimeR) {
+		audio::setEffectParameter(delay, DelayEffect::DELAY_TIME_R, delayTimeR);
+	} else if(ctrl->value==&mixL) {
+		audio::setEffectParameter(delay, DelayEffect::MIX_L, mixL);
+	} else if(ctrl->value==&mixR) {
+		audio::setEffectParameter(delay, DelayEffect::MIX_R, mixR);
+	} else if(ctrl->value==&feedbackL) {
+		audio::setEffectParameter(delay, DelayEffect::FEEDBACK_L, feedbackL);
+	} else if(ctrl->value==&feedbackR) {
+		audio::setEffectParameter(delay, DelayEffect::FEEDBACK_R, feedbackR);
 	}
+	
+	
 }
 void testApp::audioOut(float * output, int bufferSize, int nChannels) {
 	audio::getAudioSystem()->getSamples(output, bufferSize, nChannels);
