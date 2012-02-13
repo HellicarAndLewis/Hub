@@ -47,7 +47,7 @@ public:
 			else if(q>0.9) q = 0.9;
 		}
 	}
-	SVFEffect(FilterType type) {
+	FilterEffect(FilterType type) {
 		this->type = type;
 		fs = 44100;
 		q = 1;

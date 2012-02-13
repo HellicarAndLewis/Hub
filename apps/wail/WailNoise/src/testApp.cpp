@@ -72,7 +72,7 @@ void testApp::setup(){
 	
 	gui.loadSettings("wailnoise.xml");
 	gui.y = PREVIEW_HEIGHT + 10;
-
+	oscInterface.setup(gui, 1098, 1097);
 	
 	ofSetWindowTitle("WailNoise");
 	
@@ -84,8 +84,8 @@ void testApp::setup(){
 	audio::setBusVolume(hiPassBus, 0.9);
 	
 	hiPass = audio::createEffect(hiPassBus, audio::EFFECT_TYPE_HI_PASS);
-	audio::setEffectParameter(hiPass, SVFEffect::CUTOFF, bgCutoff);
-	audio::setEffectParameter(hiPass, SVFEffect::RESONANCE, bgRes);	
+	audio::setEffectParameter(hiPass, FilterEffect::CUTOFF, bgCutoff);
+	audio::setEffectParameter(hiPass, FilterEffect::RESONANCE, bgRes);	
 	
 	delay = audio::createEffect(hiPassBus, audio::EFFECT_TYPE_DELAY);
 	audio::setEffectParameter(delay, DelayEffect::DELAY_TIME_L, delayTimeL);
@@ -112,6 +112,7 @@ void testApp::setup(){
 	slosh.setProbability(0.3);
 	slosh.setVolumeRange(0.2*bubbleVolume, bubbleVolume);
     
+
     
 	ofSoundStreamSetup(2, 0, 44100, 512, 1);
 
@@ -129,9 +130,9 @@ void testApp::controlChanged(xmlgui::Control *ctrl) {
 	} else if(ctrl->id=="Splash Volume") {
 		splash.setVolumeRange(splashVolume*0.8, splashVolume);
 	} else if(ctrl->value==&bgCutoff) {
-		audio::setEffectParameter(hiPass, SVFEffect::CUTOFF, bgCutoff);
+		audio::setEffectParameter(hiPass, FilterEffect::CUTOFF, bgCutoff);
 	} else if(ctrl->value==&bgRes) {
-		audio::setEffectParameter(hiPass, SVFEffect::RESONANCE, bgRes);
+		audio::setEffectParameter(hiPass, FilterEffect::RESONANCE, bgRes);
 	} else if(ctrl->value==&delayTimeL) {
 		audio::setEffectParameter(delay, DelayEffect::DELAY_TIME_L, delayTimeL);
 	} else if(ctrl->value==&delayTimeR) {
@@ -160,6 +161,7 @@ void testApp::exit() {
 //--------------------------------------------------------------
 void testApp::update(){
 	kinect.update();
+	oscInterface.update();
 	
 }
 string messageString = "";

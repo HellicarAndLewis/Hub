@@ -55,7 +55,9 @@ namespace xmlgui {
 		// this and it receives keyboard events directly from the 
 		// root container
 		void setKeyboardFocus(Control *keyboardFocusedControl);
-			
+		int getNumChildren();
+		
+		Control *getChild(int index);
 	protected:
 		string bgImageUrl;
 		ofImage *bgImage;

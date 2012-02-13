@@ -17,7 +17,7 @@
 #include "AudioBus.h"
 #include "AudioEffect.h"
 
-#include "SVFEffect.h"
+#include "FilterEffect.h"
 #include "DelayEffect.h"
 
 #ifdef USING_RTAUDIO

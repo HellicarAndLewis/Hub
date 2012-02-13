@@ -19,7 +19,7 @@ CRITICAL_SECTION  critSec;  	//same as a mutex
 pthread_mutex_t  myMutex;
 #endif
 
-#include "SVFEffect.h"
+#include "FilterEffect.h"
 #include "DelayEffect.h"
 
 
