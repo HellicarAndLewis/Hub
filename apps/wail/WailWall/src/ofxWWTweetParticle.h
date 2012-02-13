@@ -22,7 +22,8 @@ class ofxWWTweetParticle {
 	
 	void setTweet(rtt::Tweet tweet);
 	void update();
-	void draw();
+	void drawDot();
+	void drawText();
 
 	//controlled through update
 	ofVec2f pos;
@@ -40,11 +41,12 @@ class ofxWWTweetParticle {
 	//calculated on set
 	bool isTwoLines;
 	float userNameWidth;
-	string wordWrappedTweet;	
+//	string wordWrappedTweet;	
 	float totalWidth;
 	float totalHeight;
 	
 	bool isSearchTweet;
+	bool useBurstOne;
 	
 	float lineOneWidth;
 	float lineOneHeight;

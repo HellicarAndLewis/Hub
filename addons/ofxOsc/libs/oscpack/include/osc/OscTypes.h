@@ -249,7 +249,7 @@ struct NilType{
 #endif
 
 #ifndef IGNORE_NIL_TYPE
-	extern NilType Nil;
+//	extern NilType Nil;
 #endif
 
 

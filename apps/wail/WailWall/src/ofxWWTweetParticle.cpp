@@ -23,6 +23,7 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 	opacity = 1.0;
 	dead = false;
 	
+	useBurstOne = ofRandomuf() > .8;
 	lineOne = "";
 	lineTwo = "";
 
@@ -57,9 +58,9 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 
 		//wordWrappedTweet = lineOne + "\n" + lineTwo;
 		userNameWidth = manager->sharedLargeFont.getStringBoundingBox(tweet.getScreenName(), 0, 0).width;
-		totalWidth = userNameWidth + manager->userNameXPad + wrapPoint;
-		totalHeight = MAX(manager->sharedLargeFont.getStringBoundingBox(tweet.getScreenName(), 0, 0).height,
-						  manager->sharedFont.getStringBoundingBox(wordWrappedTweet, 0, 0).height);
+//		totalWidth = userNameWidth + manager->userNameXPad + wrapPoint;
+//		totalHeight = MAX(manager->sharedLargeFont.getStringBoundingBox(tweet.getScreenName(), 0, 0).height,
+//						  manager->sharedFont.getStringBoundingBox(wordWrappedTweet, 0, 0).height);
 		lineTwoWidth = manager->sharedFont.getStringBoundingBox(lineTwo,0,0).width;
 		if(!isTwoLines){
 			ofLogError("ofxWWTwitterParticle -- word wrapped didn't hit two lines ... ");
@@ -68,10 +69,9 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 	}
 	else {
 		//wordWrappedTweet = tweet.getText();
-		lineOne = tweet.getText();
-		
-		totalWidth = userNameWidth + manager->userNameXPad + tweetWidth;
-		totalHeight = manager->sharedFont.getStringBoundingBox(tweet.getScreenName(), 0, 0).height;
+		lineOne = tweet.getText();		
+//		totalWidth = userNameWidth + manager->userNameXPad + tweetWidth;
+//		totalHeight = manager->sharedFont.getStringBoundingBox(tweet.getScreenName(), 0, 0).height;
 	}	
 	lineOneWidth = manager->sharedFont.getStringBoundingBox(lineOne,0,0).width;
 	lineOneHeight = manager->sharedFont.getStringBoundingBox(lineOne,0,0).height;
@@ -93,6 +93,9 @@ void ofxWWTweetParticle::update(){
 	//interaction tweet layer attenuation
 	if(isSearchTweet){
 		opacity *= (1-manager->tweetLayerOpacity);
+		if(!manager->canSelectSearchTerms){
+			isSearchTweet = false; //this will kill the tweet
+		}
 	}
 	else{
 		//death attenuation
@@ -108,24 +111,42 @@ void ofxWWTweetParticle::update(){
 	}
 }
 
-void ofxWWTweetParticle::draw(){
+void ofxWWTweetParticle::drawDot(){
+	ofPushStyle();
+
+	ofSetRectMode(OF_RECTMODE_CENTER);
+	float alpha;
+	if(isSearchTweet){
+		alpha = 1-manager->tweetLayerOpacity;
+	}
+	else {
+		alpha = deathAttenuation * manager->tweetLayerOpacity;
+	}
+	float scale = useBurstOne ? 1.2 : 1.0;
+	if(isSearchTweet){
+		scale *= 1.5;
+	}
+	
+	ofSetColor(255,255,255,alpha*255);
+	if(useBurstOne){
+		manager->burstOne.draw(pos.x, pos.y, manager->dotSize*1.2,manager->dotSize*1.2);
+	}
+	else{
+		manager->burstTwo.draw(pos.x, pos.y, manager->dotSize,manager->dotSize);
+	}
+
+	ofPopStyle();
+}
+
+void ofxWWTweetParticle::drawText(){
 	ofPushStyle();
 	ofEnableAlphaBlending();
-	
-	ofSetColor(ofColor::fromHex(0xf4b149,deathAttenuation*255));
-	ofCircle(pos.x, pos.y, 10);
 
-	
 	//DRAW @ 
 	ofSetColor(ofColor::fromHex(0x6f2b1d, opacity*255)); //TODO set font color
 	manager->sharedLargeFont.drawString("@", pos.x - atSignWidth/2, pos.y - atSignHeight/2);
 	
-	if(isSearchTweet){
-		ofSetColor(ofColor::fromHex(0x4051dc, opacity*255)); //TODO set font color
-	}
-	else{
-		ofSetColor(ofColor::fromHex(0xe6ab38, opacity*255)); //TODO set font color
-	}	
+	ofSetColor(ofColor::fromHex(0xe6ab38, opacity*255)); //TODO set font color
 	//USER NAME BELOW
 	manager->sharedLargeFont.drawString(tweet.getScreenName(), pos.x - userNameWidth/2, pos.y + manager->userNameYOffset);
 	//DRAW TWEET
@@ -133,19 +154,6 @@ void ofxWWTweetParticle::draw(){
 	if(isTwoLines){
 		manager->sharedFont.drawString(lineTwo, pos.x - lineTwoWidth/2, pos.y + manager->tweetYOffset + lineOneHeight);		
 	}
-	
-	/*
-	 //OLD DRAW
-	if(isTwoLines){
-		manager->sharedLargeFont.drawString("@"+tweet.getScreenName(), pos.x, pos.y+manager->userNameYOffset);
-	}
-	else{
-		manager->sharedFont.drawString("@"+tweet.getScreenName(), pos.x, pos.y+manager->userNameYOffset);
-	}
-	
-	ofSetColor(255, 255, 255, opacity*255);
-	manager->sharedFont.drawString(wordWrappedTweet, pos.x + userNameWidth + manager->userNameXPad, pos.y);
-	 */
 	
 	ofPopStyle();
 }

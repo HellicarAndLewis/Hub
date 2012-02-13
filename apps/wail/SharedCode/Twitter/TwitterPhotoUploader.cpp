@@ -32,6 +32,7 @@ void TwitterPhotoUploader::threadedFunction() {
 		unlock();
 
 		// and upload
+		printf(">>>>>>>>>>>>>>>>>>\n");
 		rc::Request req(URL_TWITTER_UPLOADER);
 		req.getParams().addString("act", "upload");
 		req.getParams().addFile("photo", ufi.file);
@@ -39,6 +40,7 @@ void TwitterPhotoUploader::threadedFunction() {
 		req.getParams().addString("message", ufi.message);
 	
 		string response;
+		uploader_curl.setVerbose(true);
 		req.doPost(uploader_curl, response, true);
 		printf("result:\n%s\n", response.c_str());
 	}

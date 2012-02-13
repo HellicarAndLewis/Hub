@@ -1,43 +1,43 @@
 <controls>
     <SliderFloat_Blur_Diffuse>
         <name>Blur Diffuse</name>
-        <value>0.468000</value>
+        <value>2.750000</value>
     </SliderFloat_Blur_Diffuse>
     <SliderFloat_Clear_Speed>
         <name>Clear Speed</name>
-        <value>8.775000</value>
+        <value>8.250000</value>
     </SliderFloat_Clear_Speed>
     <SliderFloat_Warp_Amount>
         <name>Warp Amount</name>
-        <value>27.375000</value>
+        <value>75.000000</value>
     </SliderFloat_Warp_Amount>
     <SliderFloat_Noise_Scale_X>
         <name>Noise Scale X</name>
-        <value>428.000000</value>
+        <value>367.250000</value>
     </SliderFloat_Noise_Scale_X>
     <SliderFloat_Noise_Scale_Y>
         <name>Noise Scale Y</name>
-        <value>344.750000</value>
+        <value>387.500000</value>
     </SliderFloat_Noise_Scale_Y>
     <SliderFloat_Noise_Flow>
         <name>Noise Flow</name>
-        <value>113.000000</value>
+        <value>99.000000</value>
     </SliderFloat_Noise_Flow>
     <SliderFloat_Wobble_Speed_X>
         <name>Wobble Speed X</name>
-        <value>0.011000</value>
+        <value>0.016000</value>
     </SliderFloat_Wobble_Speed_X>
     <SliderFloat_Noise_Wobble_Speed_Y>
         <name>Noise Wobble Speed Y</name>
-        <value>0.031000</value>
+        <value>0.024000</value>
     </SliderFloat_Noise_Wobble_Speed_Y>
     <SliderFloat_Noise_Wobble_Amplitude_X>
         <name>Noise Wobble Amplitude X</name>
-        <value>79.500000</value>
+        <value>56.500000</value>
     </SliderFloat_Noise_Wobble_Amplitude_X>
     <SliderFloat_Noise_Wobble_Amplitude_Y>
         <name>Noise Wobble Amplitude Y</name>
-        <value>24.400000</value>
+        <value>25.500000</value>
     </SliderFloat_Noise_Wobble_Amplitude_Y>
     <Toggle_Just_Draw_Warp>
         <name>Just Draw Warp</name>
