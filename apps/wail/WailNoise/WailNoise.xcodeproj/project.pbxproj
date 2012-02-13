@@ -175,7 +175,7 @@
 		EA9427FB14E42F9A003D615A /* AudioBus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioBus.h; sourceTree = "<group>"; };
 		EA9427FD14E430D8003D615A /* AudioEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioEffect.cpp; sourceTree = "<group>"; };
 		EA9427FE14E430D8003D615A /* AudioEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioEffect.h; sourceTree = "<group>"; };
-		EA94280314E95203003D615A /* SVFEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVFEffect.h; sourceTree = "<group>"; };
+		EA94280314E95203003D615A /* FilterEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterEffect.h; sourceTree = "<group>"; };
 		EA94280414E95279003D615A /* DelayEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelayEffect.h; sourceTree = "<group>"; };
 		EA96600F14E00C7800656E58 /* analysis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = analysis.cpp; sourceTree = "<group>"; };
 		EA96601014E00C7800656E58 /* analysis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = analysis.h; sourceTree = "<group>"; };
@@ -566,7 +566,7 @@
 		EAC8154D14D703B800595518 /* core */ = {
 			isa = PBXGroup;
 			children = (
-				EA94280314E95203003D615A /* SVFEffect.h */,
+				EA94280314E95203003D615A /* FilterEffect.h */,
 				EA94280414E95279003D615A /* DelayEffect.h */,
 				EAC8154E14D703B800595518 /* AudioSystem.cpp */,
 				EAC8154F14D703B800595518 /* AudioSystem.h */,

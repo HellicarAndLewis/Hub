@@ -36,9 +36,13 @@ namespace audio {
 			// 2: mix
 			EFFECT_TYPE_DELAY,
 		
-			// high pass filter
+			// filters
 			// 0: cutoff
-			EFFECT_TYPE_HI_PASS
+			// 1: resonance
+			EFFECT_TYPE_HI_PASS,
+			EFFECT_TYPE_LOW_PASS,
+			EFFECT_TYPE_BAND_PASS,
+			EFFECT_TYPE_NOTCH
 		
 	};
 	

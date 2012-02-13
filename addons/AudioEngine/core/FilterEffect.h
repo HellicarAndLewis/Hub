@@ -21,7 +21,7 @@
 #include "ofMain.h"
 #include <math.h>
 
-class SVFEffect: public AudioEffect {
+class FilterEffect: public AudioEffect {
 public:
 	enum FilterType {
 		HI_PASS,
@@ -41,7 +41,6 @@ public:
 		if(parameterId==CUTOFF) {
 			cutoff = value;
 			f = 2 * sin(M_PI*cutoff/fs);
-			printf("F is now %f\n", f);
 		} else if(parameterId==RESONANCE) {
 			q = value;
 			if(q<0) q = 0;

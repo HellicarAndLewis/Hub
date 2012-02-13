@@ -647,7 +647,16 @@ EffectRef audio::createEffect(BusRef busRef, EffectType effectType) {
 				effect = new DelayEffect();
 				break;
 			case EFFECT_TYPE_HI_PASS:
-				effect = new SVFEffect(SVFEffect::HI_PASS);
+				effect = new FilterEffect(FilterEffect::HI_PASS);
+				break;
+			case EFFECT_TYPE_LOW_PASS:
+				effect = new FilterEffect(FilterEffect::LOW_PASS);
+				break;
+			case EFFECT_TYPE_BAND_PASS:
+				effect = new FilterEffect(FilterEffect::BAND_PASS);
+				break;
+			case EFFECT_TYPE_NOTCH:
+				effect = new FilterEffect(FilterEffect::NOTCH);
 				break;
 			
 		}
