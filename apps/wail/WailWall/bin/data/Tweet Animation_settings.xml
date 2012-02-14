@@ -1,0 +1,14 @@
+<controls>
+    <Toggle_Flow_Sideways>
+        <name>Flow Sideways</name>
+        <value>0</value>
+    </Toggle_Flow_Sideways>
+    <SliderFloat_Flow_Speed>
+        <name>Flow Speed</name>
+        <value>7.200001</value>
+    </SliderFloat_Flow_Speed>
+    <SliderFloat_Flow_Chaos>
+        <name>Flow Chaos</name>
+        <value>3.000000</value>
+    </SliderFloat_Flow_Chaos>
+</controls>
