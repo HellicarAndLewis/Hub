@@ -41,7 +41,7 @@ bool TwitterBadWords::containsBadWord(const string& text) {
 	vector<string>::iterator it = bad_words.begin();
 	while(it != bad_words.end()) {
 		if(pcrecpp::RE((*it), re_opts).PartialMatch(text)) {
-			printf(" > bad word: %s < ", (*it).c_str());
+			//printf(" > bad word: %s < ", (*it).c_str());
 			return true;
 		}
 		++it;

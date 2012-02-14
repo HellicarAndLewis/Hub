@@ -31,7 +31,9 @@ bool TwitterApp::initDB(){
 	twitter.setConsumerKey("kyw8bCAWKbkP6e1HMMdAvw");
 	twitter.setConsumerSecret("PwVuyjLeUdVZbi4ER6yRAo0byF55AIureauV6UhLRw");
 
-	string token_file = ofToDataPath("twitter.txt", true);
+	//string token_file = ofToDataPath("twitter.txt", true);
+	string token_file = ofToDataPath("twitter_roxlutest.txt", true);
+	
 	//twitter.removeTokens(token_file);
 	if(!twitter.loadTokens(token_file)) {
         string auth_url;

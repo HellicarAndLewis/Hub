@@ -13,8 +13,9 @@ TwitterEventListener::~TwitterEventListener() {
 }
 
 void TwitterEventListener::onStatusUpdate(const rtt::Tweet& tweet) {
+	printf("Status update: %s\n", tweet.getText().c_str());
 	if(twitter_app.containsBadWord(tweet.text)) {
-		printf("# [ censored ] : %s\n", tweet.text.c_str());
+		//printf("# [ censored ] : %s\n", tweet.text.c_str());
 		return;
 	}
 	
@@ -27,17 +28,19 @@ void TwitterEventListener::onStatusUpdate(const rtt::Tweet& tweet) {
 	if(tweet.user_mentions.size()) {
 		for(int i = 0; i < tweet.user_mentions.size(); ++i) {
 			string name = tweet.user_mentions[i];
+			printf("mention: %s\n", name.c_str());
 			if(name.length() != search_len) {
 				continue;
 			}
 			// @todo pass to the visualisation app.
-	
+		
 			std::transform(name.begin(), name.end(), name.begin(), ::tolower);
 			if(name == search_for) {
 				// tokenize
 				std::istringstream ss(tweet.getText());
 				string token;
 				ss >> token;
+				printf("mention: %s\n", name.c_str());;			
 				while(ss.good()) {
 					ss >> token; 
 					twitter_app.onNewSearchTerm(tweet, token);
