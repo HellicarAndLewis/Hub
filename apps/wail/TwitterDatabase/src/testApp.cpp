@@ -6,28 +6,16 @@ void testApp::setup(){
 	ofSetFrameRate(60);
 	ofSetVerticalSync(true);
 	
-	if(!twitter_app.initDB()){
-		printf("Error: cannot initialize twitter db.\n");
-		exit();
-	}
-	
+	twitter_app.init(4444);
 	twitter_app.addDefaultListener();
 	
 	// What do you want to track?
-	/*
-	twitter_app.track("ItsFunnyHow");
-	twitter_app.track("NeverTrustAGuyWho");
-	twitter_app.track("TolimaDay");
-	twitter_app.track("love");
-*/
-	//twitter_app.track("love");
 	if(!twitter_app.connect()) {
 		printf("Error: cannot connect to twitter stream.\n");
 		exit();
 	}
 	
 	twitter_app.addListener(this, &testApp::onNewSearchTerm);
-	uploader.startThread();
 	take_photo = false;
 }
 
@@ -53,8 +41,8 @@ void testApp::draw(){
 		string filename = ofGetTimestampString() +".jpg";
 		ofSaveScreen(filename);
 		//for(int i = 0; i < 5; ++i) {
-			uploader.addFile(ofToDataPath(filename,true), "roxlu", "@dewarscube SEARCH biology");
-			printf("created : %s\n", filename.c_str());
+		//	uploader.addFile(ofToDataPath(filename,true), "roxlu", "@dewarscube SEARCH biology");
+		//	printf("created : %s\n", filename.c_str());
 		//}
 		take_photo = false;
 	}

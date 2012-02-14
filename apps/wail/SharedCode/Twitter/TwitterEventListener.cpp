@@ -14,10 +14,9 @@ TwitterEventListener::~TwitterEventListener() {
 
 void TwitterEventListener::onStatusUpdate(const rtt::Tweet& tweet) {
 	if(twitter_app.containsBadWord(tweet.text)) {
-		printf("# [ censored ] : %s\n", tweet.text.c_str());
+		//printf("# [ censored ] : %s\n", tweet.text.c_str());
 		return;
 	}
-	
 
 	printf("> %s\n", tweet.getText().c_str());
 	string search_for = "dewarshub";
@@ -47,17 +46,5 @@ void TwitterEventListener::onStatusUpdate(const rtt::Tweet& tweet) {
 	}
 }
 
-void TwitterEventListener::onStatusDestroy(const rtt::StatusDestroy& destroy) {
-}
-
-
-void TwitterEventListener::onStreamEvent(const rtt::StreamEvent& event) {
-	/*
-	if(event.event == "list_member_removed") {
-		twitter_app.getDB().removeFollower(event);
-	}
-	else if(event.event == "list_member_added") {
-		twitter_app.getDB().insertFollower(event);
-	}
-	*/
-}
+void TwitterEventListener::onStatusDestroy(const rtt::StatusDestroy& destroy) { }
+void TwitterEventListener::onStreamEvent(const rtt::StreamEvent& event) { }

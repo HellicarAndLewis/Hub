@@ -1,6 +1,13 @@
 #include "TwitterBadWords.h"
 namespace roxlu {
 
+// You can also simply pass a vector of bad words.
+void TwitterBadWords::setBadWords(const vector<string>& words) {
+	bad_words.clear();
+	std::copy(words.begin(), words.end(), std::back_inserter(bad_words));
+}
+
+// Use a textfile to load bad words (one per line)
 bool TwitterBadWords::reloadWordsFile(const string& filePath) {
 	bad_words.clear();
 	
@@ -22,6 +29,7 @@ bool TwitterBadWords::reloadWordsFile(const string& filePath) {
 	return true;
 }
 
+// Removes all found instances of bad_words with the given replacement.
 void TwitterBadWords::cleanup(string& text, const string& replacement) {
 	pcrecpp::RE_Options re_opts;
 	re_opts.set_caseless(true).set_extended(false).set_multiline(true);	
@@ -32,7 +40,7 @@ void TwitterBadWords::cleanup(string& text, const string& replacement) {
 	}	
 }
 
-
+// Check if the given text contains a bad word.
 bool TwitterBadWords::containsBadWord(const string& text) {
 	pcrecpp::RE_Options re_opts;
 	re_opts.set_caseless(true)
@@ -41,7 +49,6 @@ bool TwitterBadWords::containsBadWord(const string& text) {
 	vector<string>::iterator it = bad_words.begin();
 	while(it != bad_words.end()) {
 		if(pcrecpp::RE((*it), re_opts).PartialMatch(text)) {
-			printf(" > bad word: %s < ", (*it).c_str());
 			return true;
 		}
 		++it;

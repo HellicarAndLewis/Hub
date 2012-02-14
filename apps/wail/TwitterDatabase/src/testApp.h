@@ -7,6 +7,7 @@
 class testApp : public ofBaseApp{
 
 	public:
+		//testApp();
 		void setup();
 		void update();
 		void draw();
@@ -24,6 +25,5 @@ class testApp : public ofBaseApp{
 		void onNewSearchTerm(TwitterAppEvent& event);
 
 		TwitterApp twitter_app;
-		TwitterPhotoUploader uploader;
 		bool take_photo;
 };
