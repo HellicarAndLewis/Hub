@@ -1,15 +1,15 @@
 <controls>
     <SliderFloat_Layer_Barrier_Z>
         <name>Layer Barrier Z</name>
-        <value>0.485000</value>
+        <value>0.502500</value>
     </SliderFloat_Layer_Barrier_Z>
     <SliderFloat_Layer_Barrier_Width>
         <name>Layer Barrier Width</name>
-        <value>0.249800</value>
+        <value>0.137000</value>
     </SliderFloat_Layer_Barrier_Width>
     <SliderFloat_Touch_Scale>
         <name>Touch Scale</name>
-        <value>0.582500</value>
+        <value>1.190000</value>
     </SliderFloat_Touch_Scale>
     <SliderFloat_Influence_Width>
         <name>Influence Width</name>

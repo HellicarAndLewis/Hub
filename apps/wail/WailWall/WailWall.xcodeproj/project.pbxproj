@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		540A0E5114E3BAC90072CB30 /* TwitterOSCReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 540A0E4E14E3BAC90072CB30 /* TwitterOSCReceiver.cpp */; };
-		542DD22214E472A5004D7828 /* TwitterSearchTermQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 542DD22114E472A5004D7828 /* TwitterSearchTermQueue.cpp */; };
 		5476571814E2CEE100DBC3D5 /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5476571014E2CEE100DBC3D5 /* libpcre.a */; };
 		5476571914E2CEE100DBC3D5 /* libpcrecpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5476571114E2CEE100DBC3D5 /* libpcrecpp.a */; };
 		5476571D14E2CEF100DBC3D5 /* TwitterBadWords.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5476571B14E2CEF100DBC3D5 /* TwitterBadWords.cpp */; };
@@ -107,12 +106,16 @@
 		E45BE9810E8CC7DD009D7055 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9770E8CC7DD009D7055 /* CoreServices.framework */; };
 		E45BE9830E8CC7DD009D7055 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9790E8CC7DD009D7055 /* OpenGL.framework */; };
 		E45BE9840E8CC7DD009D7055 /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE97A0E8CC7DD009D7055 /* QuickTime.framework */; };
-		E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1D0A3A1BDC003C02F2 /* main.cpp */; };
+		E4B69E200A3A1BDC003C02F2 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1D0A3A1BDC003C02F2 /* main.mm */; };
 		E4B69E210A3A1BDC003C02F2 /* testApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */; };
 		E4C2424710CC5A17004149E2 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C2424410CC5A17004149E2 /* AppKit.framework */; };
 		E4C2424810CC5A17004149E2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C2424510CC5A17004149E2 /* Cocoa.framework */; };
 		E4C2424910CC5A17004149E2 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C2424610CC5A17004149E2 /* IOKit.framework */; };
 		E4EB6799138ADC1D00A09F29 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
+		E701412814E54B8A007926C9 /* GLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E701411B14E54B8A007926C9 /* GLView.mm */; };
+		E701412914E54B8A007926C9 /* ofxCocoaDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = E701411D14E54B8A007926C9 /* ofxCocoaDelegate.mm */; };
+		E701412A14E54B8A007926C9 /* ofxCocoaWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = E701411F14E54B8A007926C9 /* ofxCocoaWindow.mm */; };
+		E701413114E54BCA007926C9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E701413014E54BCA007926C9 /* QuartzCore.framework */; };
 		EA05663614D959B8009282B0 /* KinectTouchReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA05663414D959B8009282B0 /* KinectTouchReceiver.cpp */; };
 		EA05663914D95EB8009282B0 /* KinectTouchSimulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA05663814D95EB8009282B0 /* KinectTouchSimulator.cpp */; };
 		EA8E87BB14C492EE00940115 /* ofxMSAInteractiveObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA8E877514C492ED00940115 /* ofxMSAInteractiveObject.cpp */; };
@@ -183,8 +186,6 @@
 		540A0E4E14E3BAC90072CB30 /* TwitterOSCReceiver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TwitterOSCReceiver.cpp; path = ../../SharedCode/Twitter/TwitterOSCReceiver.cpp; sourceTree = "<group>"; };
 		540A0E4F14E3BAC90072CB30 /* TwitterOSCReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterOSCReceiver.h; path = ../../SharedCode/Twitter/TwitterOSCReceiver.h; sourceTree = "<group>"; };
 		540A0E5014E3BAC90072CB30 /* TwitterOSCReceiverListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterOSCReceiverListener.h; path = ../../SharedCode/Twitter/TwitterOSCReceiverListener.h; sourceTree = "<group>"; };
-		542DD22014E471AB004D7828 /* TwitterSearchTermQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterSearchTermQueue.h; path = ../../SharedCode/Twitter/TwitterSearchTermQueue.h; sourceTree = "<group>"; };
-		542DD22114E472A5004D7828 /* TwitterSearchTermQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TwitterSearchTermQueue.cpp; path = ../../SharedCode/Twitter/TwitterSearchTermQueue.cpp; sourceTree = "<group>"; };
 		5476571014E2CEE100DBC3D5 /* libpcre.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcre.a; sourceTree = "<group>"; };
 		5476571114E2CEE100DBC3D5 /* libpcrecpp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpcrecpp.a; sourceTree = "<group>"; };
 		5476571214E2CEE100DBC3D5 /* pcre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcre.h; sourceTree = "<group>"; };
@@ -461,7 +462,6 @@
 		A6AF046214DB33EF006816A8 /* x509.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x509.h; sourceTree = "<group>"; };
 		A6AF046314DB33EF006816A8 /* x509_vfy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x509_vfy.h; sourceTree = "<group>"; };
 		A6AF046414DB33EF006816A8 /* x509v3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x509v3.h; sourceTree = "<group>"; };
-		A6FDBDEE14D9F46E0003EBE5 /* color_palette.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = color_palette.png; sourceTree = "<group>"; };
 		A6FDBDEF14D9F46E0003EBE5 /* DisplayLayout.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = DisplayLayout.xml; sourceTree = "<group>"; };
 		A6FDBDF014D9F46E0003EBE5 /* Fluid_settings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Fluid_settings.xml; sourceTree = "<group>"; };
 		A6FDBDF114D9F46E0003EBE5 /* Fluid_settings.xml.bak */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Fluid_settings.xml.bak; sourceTree = "<group>"; };
@@ -487,8 +487,8 @@
 		E45BE9770E8CC7DD009D7055 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		E45BE9790E8CC7DD009D7055 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		E45BE97A0E8CC7DD009D7055 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
-		E4B69B5B0A3A1756003C02F2 /* WailWallDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WailWallDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		E4B69E1D0A3A1BDC003C02F2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
+		E4B69B5B0A3A1756003C02F2 /* WailWall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WailWall.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4B69E1D0A3A1BDC003C02F2 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = testApp.cpp; path = src/testApp.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1F0A3A1BDC003C02F2 /* testApp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = testApp.h; path = src/testApp.h; sourceTree = SOURCE_ROOT; };
 		E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = "openFrameworks-Info.plist"; sourceTree = "<group>"; };
@@ -497,6 +497,14 @@
 		E4C2424610CC5A17004149E2 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
 		E4EB691F138AFCF100A09F29 /* CoreOF.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = CoreOF.xcconfig; path = ../../../libs/openFrameworksCompiled/project/osx/CoreOF.xcconfig; sourceTree = SOURCE_ROOT; };
 		E4EB6923138AFD0F00A09F29 /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
+		E701411A14E54B8A007926C9 /* GLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLView.h; sourceTree = "<group>"; };
+		E701411B14E54B8A007926C9 /* GLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLView.mm; sourceTree = "<group>"; };
+		E701411C14E54B8A007926C9 /* ofxCocoaDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCocoaDelegate.h; sourceTree = "<group>"; };
+		E701411D14E54B8A007926C9 /* ofxCocoaDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxCocoaDelegate.mm; sourceTree = "<group>"; };
+		E701411E14E54B8A007926C9 /* ofxCocoaWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCocoaWindow.h; sourceTree = "<group>"; };
+		E701411F14E54B8A007926C9 /* ofxCocoaWindow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxCocoaWindow.mm; sourceTree = "<group>"; };
+		E701412014E54B8A007926C9 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
+		E701413014E54BCA007926C9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		EA05663214D959B8009282B0 /* KinectTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KinectTouch.h; sourceTree = "<group>"; };
 		EA05663314D959B8009282B0 /* KinectTouchListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KinectTouchListener.h; sourceTree = "<group>"; };
 		EA05663414D959B8009282B0 /* KinectTouchReceiver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KinectTouchReceiver.cpp; sourceTree = "<group>"; };
@@ -621,6 +629,7 @@
 				A6AF048414DB33EF006816A8 /* libssl.a in Frameworks */,
 				5476571814E2CEE100DBC3D5 /* libpcre.a in Frameworks */,
 				5476571914E2CEE100DBC3D5 /* libpcrecpp.a in Frameworks */,
+				E701413114E54BCA007926C9 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -952,8 +961,6 @@
 				540A0E4E14E3BAC90072CB30 /* TwitterOSCReceiver.cpp */,
 				540A0E4F14E3BAC90072CB30 /* TwitterOSCReceiver.h */,
 				540A0E5014E3BAC90072CB30 /* TwitterOSCReceiverListener.h */,
-				542DD22014E471AB004D7828 /* TwitterSearchTermQueue.h */,
-				542DD22114E472A5004D7828 /* TwitterSearchTermQueue.cpp */,
 			);
 			name = App;
 			sourceTree = "<group>";
@@ -1163,7 +1170,6 @@
 		A6FDBDED14D9F46E0003EBE5 /* data */ = {
 			isa = PBXGroup;
 			children = (
-				A6FDBDEE14D9F46E0003EBE5 /* color_palette.png */,
 				A6FDBDEF14D9F46E0003EBE5 /* DisplayLayout.xml */,
 				A6FDBDF014D9F46E0003EBE5 /* Fluid_settings.xml */,
 				A6FDBDF114D9F46E0003EBE5 /* Fluid_settings.xml.bak */,
@@ -1194,6 +1200,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				E70140E914E54B89007926C9 /* ofxCocoaWindow */,
 				EAAD76E314E2DD5200EF1CC3 /* ofxWebServer */,
 				EAAD76FB14E2DD5200EF1CC3 /* ofxWebSimpleGuiToo */,
 				A6AF03C314DB33EE006816A8 /* roxlu */,
@@ -1261,7 +1268,8 @@
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
 				E45BE5980E8CC70C009D7055 /* frameworks */,
-				E4B69B5B0A3A1756003C02F2 /* WailWallDebug.app */,
+				E4B69B5B0A3A1756003C02F2 /* WailWall.app */,
+				E701413014E54BCA007926C9 /* QuartzCore.framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1272,7 +1280,7 @@
 				A621C64414D74BD5008AA7F0 /* Twitter */,
 				A683B91114D5A9BD00C3B6F7 /* Renderer */,
 				A683B8E614D5A60C00C3B6F7 /* ScreenManagement */,
-				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
+				E4B69E1D0A3A1BDC003C02F2 /* main.mm */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
 				A69C743B14D6470B00C0EABC /* ofModifiers.h */,
@@ -1287,6 +1295,29 @@
 				E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */,
 			);
 			name = openFrameworks;
+			sourceTree = "<group>";
+		};
+		E70140E914E54B89007926C9 /* ofxCocoaWindow */ = {
+			isa = PBXGroup;
+			children = (
+				E701411914E54B8A007926C9 /* src */,
+				E701412014E54B8A007926C9 /* TODO */,
+			);
+			name = ofxCocoaWindow;
+			path = ../../../addons/ofxCocoaWindow;
+			sourceTree = SOURCE_ROOT;
+		};
+		E701411914E54B8A007926C9 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				E701411A14E54B8A007926C9 /* GLView.h */,
+				E701411B14E54B8A007926C9 /* GLView.mm */,
+				E701411C14E54B8A007926C9 /* ofxCocoaDelegate.h */,
+				E701411D14E54B8A007926C9 /* ofxCocoaDelegate.mm */,
+				E701411E14E54B8A007926C9 /* ofxCocoaWindow.h */,
+				E701411F14E54B8A007926C9 /* ofxCocoaWindow.mm */,
+			);
+			path = src;
 			sourceTree = "<group>";
 		};
 		EA05663114D959B8009282B0 /* KinectTouch */ = {
@@ -1603,7 +1634,7 @@
 			);
 			name = WailWall;
 			productName = myOFApp;
-			productReference = E4B69B5B0A3A1756003C02F2 /* WailWallDebug.app */;
+			productReference = E4B69B5B0A3A1756003C02F2 /* WailWall.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1668,7 +1699,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
+				E4B69E200A3A1BDC003C02F2 /* main.mm in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* testApp.cpp in Sources */,
 				EA8E87BB14C492EE00940115 /* ofxMSAInteractiveObject.cpp in Sources */,
 				EA8E87BE14C492EE00940115 /* ofxSimpleGuiButton.cpp in Sources */,
@@ -1784,7 +1815,9 @@
 				54C8B9F814E1170E005896E1 /* TwitterPhotoUploader.cpp in Sources */,
 				5476571D14E2CEF100DBC3D5 /* TwitterBadWords.cpp in Sources */,
 				540A0E5114E3BAC90072CB30 /* TwitterOSCReceiver.cpp in Sources */,
-				542DD22214E472A5004D7828 /* TwitterSearchTermQueue.cpp in Sources */,
+				E701412814E54B8A007926C9 /* GLView.mm in Sources */,
+				E701412914E54B8A007926C9 /* ofxCocoaDelegate.mm in Sources */,
+				E701412A14E54B8A007926C9 /* ofxCocoaWindow.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -35,6 +35,8 @@ public:
     // optional index for second channel
 	int channel2;
 	
+	int busRef;
+	
 	// fades a sample in over a period of [duration] samples
 	// (also starts it playing)
 	void fadeIn(float toVolume, int duration);

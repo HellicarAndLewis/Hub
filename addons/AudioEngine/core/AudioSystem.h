@@ -14,6 +14,12 @@
 #include <map>
 #include "WavFile.h"
 #include "StereoSample.h"
+#include "AudioBus.h"
+#include "AudioEffect.h"
+
+#include "FilterEffect.h"
+#include "DelayEffect.h"
+
 #ifdef USING_RTAUDIO
 #include "RtAudio.h"
 #endif
@@ -23,16 +29,35 @@ using namespace std;
 namespace audio {
 	
 	
-	
+	enum EffectType {
+			// delay, params:
+			// 0: delay time
+			// 1: feedback
+			// 2: mix
+			EFFECT_TYPE_DELAY,
+		
+			// filters
+			// 0: cutoff
+			// 1: resonance
+			EFFECT_TYPE_HI_PASS,
+			EFFECT_TYPE_LOW_PASS,
+			EFFECT_TYPE_BAND_PASS,
+			EFFECT_TYPE_NOTCH
+		
+	};
 	
 	
 	/** this is the type for the id of a sample in RAM */
-	typedef int SampleRef;
+	typedef unsigned int SampleRef;
 	
 	/* This references a player that points to a sample in RAM */
-	typedef int PlayerRef;
+	typedef unsigned int PlayerRef;
 		
+	/* This is a bus that you can play a PlayerRef through */
+	typedef unsigned int BusRef;
 	
+	/* This references an effect that you can put in a bus */
+	typedef unsigned int EffectRef;
 	
 	
 	
@@ -85,11 +110,24 @@ namespace audio {
 	PlayerRef createPlayer(SampleRef sampleId);
 	
 	
+	/**
+	 * If you want effects, you create a bus, and add effects to it.
+	 * You have to specify a channel for its output
+	 */
+	BusRef createBus(int channel);
 	
-
+	/**
+	 * Sets the bus volume. If you don't set the right channel volume
+	 * it'll default to whatever volumeL is.
+	 */
+	void setBusVolume(BusRef busRef, float volumeL, float volumeR = -1);
 	
+	/**
+	 * Creates an effect assigned to a specific bus
+	 */
+	EffectRef createEffect(BusRef busRef, EffectType effectType);
 	
-	
+	void setEffectParameter(EffectRef effect, int parameter, float value);
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 
@@ -109,6 +147,11 @@ namespace audio {
 	 * that the sample will start playing after a delay of timeDelay seconds
 	 */ 
 	void play(PlayerRef playerId, float timeDelay = 0);
+	
+	/**
+	 * Play a sound through a specific bus
+	 */
+	void playOnBus(PlayerRef playerId, BusRef busRef);
 	
 	
 	/**
@@ -215,7 +258,7 @@ namespace audio {
 	
 	
 	
-	
+
 	
 	
 	
@@ -240,7 +283,10 @@ namespace audio {
 		FADE_IN,
 		FADE_OUT,
 		FADE_TO,
-        OUTPUT
+        OUTPUT,
+		PLAY_ON_BUS,
+		SET_BUS_VOLUME,
+		SET_EFFECT_PARAM
 	};
 		
 
@@ -299,7 +345,10 @@ namespace audio {
 		map<SampleRef, WavFile*> audioSamples;
 		map<PlayerRef, StereoSample*> players;
 
-
+		map<BusRef, AudioBus*> buses;
+		map<EffectRef, AudioEffect*> effects;
+		
+		
         // convenience lookup map to see if we've already loaded an audio file.
 		map<string,SampleRef> loadedSamples;
         
@@ -308,6 +357,12 @@ namespace audio {
 		
 		// increment every time a player is added
 		PlayerRef playerRefCounter;
+		
+		// increment every time a bus is added
+		BusRef busRefCounter;
+		
+		EffectRef effectRefCounter;
+		
 #ifdef USING_RTAUDIO
 		// implementation
 		RtAudio *rtAudio;

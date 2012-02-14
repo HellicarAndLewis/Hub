@@ -41,11 +41,12 @@ class ofxWWTweetParticle {
 	//calculated on set
 	bool isTwoLines;
 	float userNameWidth;
-	string wordWrappedTweet;	
+//	string wordWrappedTweet;	
 	float totalWidth;
 	float totalHeight;
 	
 	bool isSearchTweet;
+	bool useBurstOne;
 	
 	float lineOneWidth;
 	float lineOneHeight;

@@ -40,6 +40,7 @@ void testApp::setup(){
 	//screenSettingsFile = "DisplayLayout_triplehead.xml";
 	//DEV is for testing on smaller screens
 	screenSettingsFile = "DisplayLayout_dev.xml";
+	//screenSettingsFile = "DisplayLayout_bigscreen.xml";
 	screenManager.loadScreens(screenSettingsFile);
 
 	webGui.addToggle("Show Preview Rects", previewScreenLayout);
@@ -126,6 +127,7 @@ void testApp::draw(){
 	
 	if(shouldTakeScreenshot) {
 		// %Y-%m-%d-%H-%M-%S-%i
+		/*
 		string dirname = "thumbs/" +ofGetTimestampString("%m-%d");
 		ofDirectory dir(dirname);
 		dir.create(true);
@@ -143,6 +145,27 @@ void testApp::draw(){
 		img.saveImage(filepath);
 		
 		
+		renderer.getTweetManager().getTwitterApp().uploadScreenshot(ofToDataPath(filepath, true), "roxlu", "");
+		shouldTakeScreenshot = false;
+		*/
+		// %Y-%m-%d-%H-%M-%S-%i
+		string dirname = "thumbs/" +ofGetTimestampString("%m-%d");
+		ofDirectory dir(dirname);
+		dir.create(true);
+
+		string filename = ofGetTimestampString() +"_" +ofToString(ofGetFrameNum()) +".png";
+		string filepath(dirname);
+		filepath.append("/");
+		filepath.append(filename);
+
+		// pretty sure we can do this better
+		ofPixels pixels;
+		renderer.getFbo().readToPixels(pixels);
+		ofImage img;
+		img.setFromPixels(pixels);
+		img.saveImage(filepath);
+
+
 		renderer.getTweetManager().getTwitterApp().uploadScreenshot(ofToDataPath(filepath, true), "roxlu", "");
 		shouldTakeScreenshot = false;
 	}

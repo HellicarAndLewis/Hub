@@ -46,11 +46,18 @@ class ofxWWRenderer: public KinectTouchListener {
 	ofFbo accumulator;
 	ofFbo warpMap;
 	ofFbo renderTarget;
-
+	ofFbo gradientOverlay;
+	ofFbo layer1Target;
+	ofFbo layer2Target;
+	
 	//pass functions
 	void typeLayer();
 	void renderWarpMap();
-	void renderContent();
+	void renderDynamics();
+	void renderGradientOverlay();
+	
+	void renderLayer1();
+	void renderLayer2();
 	
 	//sub objects
 	ofxMPMFluid fluid;
@@ -85,6 +92,8 @@ class ofxWWRenderer: public KinectTouchListener {
 
 	//used as a map into the fluid sim
 	ofImage colorField;
+	ofImage layerOneBackground;
+	ofImage layerTwoBackground;
 	
 	bool drawTouchDebug;
 	
