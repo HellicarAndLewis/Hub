@@ -1,0 +1,43 @@
+2012:02:09 17:04	Table 'dewarscube_admin.badwords' doesn't exist
+2012:02:09 17:04	Table 'dewarscube_admin.badwords' doesn't exist
+2012:02:09 17:04	Table 'dewarscube_admin.badwords' doesn't exist
+2012:02:09 17:04	Table 'dewarscube_admin.badwords' doesn't exist
+2012:02:09 17:05	Table 'dewarscube_admin.badwords' doesn't exist
+2012:02:09 17:05	Table 'dewarscube_admin.badwords' doesn't exist
+2012:02:09 17:05	Table 'dewarscube_admin.badwords' doesn't exist
+2012:02:09 17:05	Table 'dewarscube_admin.badwords' doesn't exist
+2012:02:09 18:30	
+2012:02:14 10:37	delete from badwords where id = "463"
+2012:02:14 10:38	delete from badwords where id = "324"
+2012:02:14 10:38	delete from badwords where id = "325"
+2012:02:14 10:38	delete from badwords where id = "326"
+2012:02:14 10:38	delete from badwords where id = "327"
+2012:02:14 10:38	delete from badwords where id = "328"
+2012:02:14 10:39	delete from badwords where id = "331"
+2012:02:14 10:39	delete from badwords where id = "473"
+2012:02:14 10:39	delete from badwords where id = "489"
+2012:02:14 10:39	delete from badwords where id = "470"
+2012:02:14 10:39	delete from badwords where id = "477"
+2012:02:14 10:39	delete from badwords where id = "481"
+2012:02:14 10:39	delete from badwords where id = "484"
+2012:02:14 10:39	delete from badwords where id = "471"
+2012:02:14 10:39	delete from badwords where id = "464"
+2012:02:14 10:39	delete from badwords where id = "474"
+2012:02:14 10:39	delete from badwords where id = "469"
+2012:02:14 10:39	delete from badwords where id = "467"
+2012:02:14 10:39	delete from badwords where id = "465"
+2012:02:14 10:39	delete from badwords where id = "475"
+2012:02:14 10:39	delete from badwords where id = "482"
+2012:02:14 10:39	delete from badwords where id = "466"
+2012:02:14 10:39	delete from badwords where id = "486"
+2012:02:14 10:39	delete from badwords where id = "472"
+2012:02:14 10:49	Column 'name' cannot be null
+2012:02:14 10:50	no name given
+2012:02:14 10:57	delete from tracks where id = "4"
+2012:02:14 10:58	delete from track where id = "4"
+2012:02:14 10:58	delete from track where id = "3"
+2012:02:14 10:58	delete from track where id = "2"
+2012:02:14 10:58	delete from track where id = "1"
+2012:02:14 11:15	/twitter/update_badwords
+2012:02:14 11:15	/twitter/update_badwords
+2012:02:14 11:15	/twitter/update_hashtags
