@@ -21,7 +21,8 @@ void TwitterApp::init(int oscPort) {
 	initDB();
 	initTwitter();
 	initOSC(oscPort);
-	uploader.startThread();
+	initStoredSearchTerms();
+	uploader.startThread(true, false);
 }
 
 void TwitterApp::initTwitter() {
@@ -30,7 +31,8 @@ void TwitterApp::initTwitter() {
 	twitter.setConsumerSecret("PwVuyjLeUdVZbi4ER6yRAo0byF55AIureauV6UhLRw");
 	
 	//string token_file = ofToDataPath("twitter_roxlu.txt", true);
-	string token_file = ofToDataPath("twitter_roxlutest.txt", true);
+	//string token_file = ofToDataPath("twitter_roxlutest.txt", true);
+	string token_file = ofToDataPath("twitter_dewarshub.txt", true);
 	if(!twitter.loadTokens(token_file)) {
         string auth_url;
         twitter.requestToken(auth_url);
@@ -46,7 +48,8 @@ void TwitterApp::initOSC(int port) {
 }
 
 void TwitterApp::initDB() {
-	if(!mysql.connect("localhost" , "dewarscube_admin", "dewarscube_admin", "dewarscube_admin")) {
+	//grant all on dewarscube_admin.* to dewarscube_admin@"%" identified by "dewarscube_admin"
+	if(!mysql.connect("dewarshub.demo.apollomedia.nl" , "dewarscube_admin", "dewarscube_admin", "dewarscube_admin")) {
 		exit(0);
 	}
 	
@@ -58,14 +61,17 @@ void TwitterApp::initDB() {
 		printf("Error: Cannot create database.\n");
 	}
 
-	search_queue.setup(ofToDataPath("twitter_search_terms.bin",true));
-	search_queue.load();
-
 	reloadHashTags();	
 	reloadBadWords();	
 }
 
-// Events
+// load search terms which are saved on disk.
+void TwitterApp::initStoredSearchTerms() {
+	search_queue.setup(ofToDataPath("twitter_search_terms.bin",true));
+	search_queue.load();
+}
+
+// OSC
 // -------------------------------------
 
 // OSC event: bad words handling
@@ -82,11 +88,20 @@ bool TwitterApp::reloadBadWords() {
 	bad_words.setBadWords(w);
 	return true;
 }
-				 
+
+// only used to make testing everything a bit more easy.
+void TwitterApp::simulateSearch(const string& term) {
+	printf("> simulate search.\n");
+	rtt::Tweet tweet;
+	tweet.setScreenName("roxlu");
+	tweet.setText("@dewarshub " +term);
+	twitter_listener.onStatusUpdate(tweet);
+}	
+				 			 
 // Bad words & hash tags				 
 // -------------------------------------				 
-bool TwitterApp::containsBadWord(const string& text) {
-	return bad_words.containsBadWord(text);
+bool TwitterApp::containsBadWord(const string& text, string& foundWord) {
+	return bad_words.containsBadWord(text, foundWord);
 }
 
 // OSC event: reload hashtags
@@ -131,8 +146,11 @@ void TwitterApp::addCustomListener(rt::IEventListener& listener){
 }
 
 void TwitterApp::onNewSearchTerm(rtt::Tweet tweet, const string& term) {
-	TwitterAppEvent ev(tweet, term);
-	ofNotifyEvent(twitter_app_dispatcher, ev);
+	// When we added a new search term to the queue, pass it through!
+	if(search_queue.addSearchTerm(tweet.getScreenName(), term)) {
+		TwitterAppEvent ev(tweet, term);
+		ofNotifyEvent(twitter_app_dispatcher, ev);
+	}
 }
 
 void TwitterApp::update() {	

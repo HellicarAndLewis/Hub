@@ -27,12 +27,20 @@ bool TwitterSearchTermQueue::save() {
 		printf("Cannot open: %s\n", filepath.c_str());
 		return false;
 	}
+	
+	// we store only unused items.
+	vector<TwitterSearchTerm*> unused;
+	getUnusedSearchTerms(unused);
 
-	size_t size = terms.size();
+	// check how many items 
+	size_t size = unused.size();
 	ofs.write((const char*)&size, sizeof(size_t));
 	
 	for(int i = 0; i < size; ++i) {
-		TwitterSearchTerm& term = *terms[i];
+		TwitterSearchTerm& term = *unused[i];
+		if(term.is_used) {
+			continue;
+		}
 		
 		// user
 		size_t ulen = term.user.length() + 1;
@@ -66,6 +74,7 @@ bool TwitterSearchTermQueue::load() {
 	size_t len = 0;
 	size_t size = 0;
 	ifs.read((char*)&size, sizeof(size_t));
+
 	for(int i = 0; i < size; ++i) {
 
 		// user
@@ -83,8 +92,8 @@ bool TwitterSearchTermQueue::load() {
 		ifs.read((char*)&is_used, sizeof(short));
 		
 		TwitterSearchTerm* term = new TwitterSearchTerm(user, search_term, is_used);
-		term->print();
 		terms.push_back(term);
+		term->print();
 
 		delete[] user;
 		delete[] search_term;
@@ -94,9 +103,23 @@ bool TwitterSearchTermQueue::load() {
 	return true;
 }
 
-void TwitterSearchTermQueue::addSearchTerm(const string& user, const string& searchTerm) {
+
+// Add a new search term to the queue; only when it's not yet in there.
+bool TwitterSearchTermQueue::addSearchTerm(const string& user, const string& searchTerm) {
+	vector<TwitterSearchTerm*>::iterator it = std::find_if(
+		 terms.begin()
+		,terms.end()
+		,TwitterSearchTermCompare(user, searchTerm)
+	);
+	
+	if(it != terms.end()) {
+		printf("Search term for user: %s and term: %s already added, %zu items.\n", user.c_str(), searchTerm.c_str(), terms.size());
+		return false;
+	}
+	
 	TwitterSearchTerm* st = new TwitterSearchTerm(user, searchTerm, false);
 	terms.push_back(st);
+	return true;
 	
 }
 
@@ -109,6 +132,21 @@ bool TwitterSearchTermQueue::getUnusedSearchTerms(vector<TwitterSearchTerm*>& re
 			result.push_back(terms[i]);
 		}
 	}	
+	return true;
+}
+
+// Get the search term for the given user and set it to used.
+bool TwitterSearchTermQueue::setSearchTermAsUsed(const string& user, const string& searchTerm) {
+	vector<TwitterSearchTerm*>::iterator it = std::find_if(
+		 terms.begin()
+		,terms.end()
+		,TwitterSearchTermCompare(user, searchTerm)
+	);
+	if(it == terms.end()) {
+		printf("Search term for user: %s  and term: %s not found in queue.\n", user.c_str(), searchTerm.c_str());
+		return false;
+	}	
+	(*it)->is_used = true;
 	return true;
 }
 

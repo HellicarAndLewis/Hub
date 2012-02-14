@@ -11,6 +11,8 @@ Stream::Stream(Twitter& tw)
 	:twitter(tw)
 	,connected(false)
 	,curl_header(NULL)
+	,reconnect_on(0)
+	,reconnect_delay(10) // 10 seconds
 {
 	
 }
@@ -29,6 +31,7 @@ bool Stream::connect(const string& streamURL) {
 	
 	// create request.
 	string url = streamURL;
+	connected_url = streamURL;
 	rcp::Collection params;
 	rc::Request req;
 	req.setURL(url);
@@ -66,13 +69,7 @@ bool Stream::connect(const string& streamURL) {
 		printf("Error: cannot create easy handle.\n");
 		return false;
 	}
-	
-	/*
-	string userpass = twitter.getTwitterUsername() +":" +twitter.getTwitterPassword();
-	curl_easy_setopt(curl, CURLOPT_USERPWD, NULL); 
-	curl_easy_setopt(curl, CURLOPT_USERPWD, userpass.c_str());
-	*/
-	
+
 	// set url
 	r = curl_easy_setopt(curl, CURLOPT_URL, use_url.c_str());
 	CHECK_CURL_ERROR(r);
@@ -89,7 +86,7 @@ bool Stream::connect(const string& streamURL) {
 	r = curl_easy_setopt(curl, CURLOPT_WRITEDATA, this);
 	CHECK_CURL_ERROR(r);	
 	
-	curl_easy_setopt(curl, CURLOPT_VERBOSE, true);
+	//curl_easy_setopt(curl, CURLOPT_VERBOSE, true);
 
 	// set the oauth headers.
 	const vector<string>& headers = req.getHeaders();
@@ -158,6 +155,24 @@ bool Stream::update() {
 	CHECK_CURLM_ERROR(r);
 	
 	if(still_running == 0) {
+		if(reconnect_on == 0) {
+			time_t seconds;
+			seconds = time(NULL);
+			printf("Seconds: %ld\n", seconds);
+			reconnect_on = seconds + reconnect_delay;
+			reconnect_delay *= reconnect_delay;
+			printf("Next time we disconnect we start after: %d seconds\n", reconnect_delay);
+		}
+		else {
+			time_t now = time(NULL);
+			if(now > reconnect_on) {
+				printf("Twitter is reconnecting\n");
+				reconnect_delay = 10; // reset.
+				reconnect_on = 0;
+				disconnect();
+				connect(connected_url);
+			}
+		}
 		printf("Twitter stream not running...\n");
 		return false;
 	}

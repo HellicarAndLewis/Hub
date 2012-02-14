@@ -2,12 +2,14 @@
 #define ROXLU_TWITTER_STREAMH
 
 #include <vector>
+#include <time.h>
 #include "../Curl/Request.h"
 #include "../Curl/oauth/Header.h"
 #include "../Curl/oauth/Signature.h"
 #include "../../libs/curl/curl.h"
 #include "../../libs/jansson/jansson.h"
 #include "Twitter.h"
+
 
 using std::vector;
 
@@ -54,6 +56,9 @@ private:
 	CURLM* curlm;
 	Twitter& twitter;
 	bool connected;
+	int reconnect_on; 
+	int reconnect_delay;
+	string connected_url; 
 };
 
 inline std::string& Stream::trim(std::string &s) {

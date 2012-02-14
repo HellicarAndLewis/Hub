@@ -32,7 +32,7 @@ public:
 	void setBadWords(const vector<string>& words);
 	bool reloadWordsFile(const string& filePath);
 	void cleanup(string& text, const string& replacement);
-	bool containsBadWord(const string& text);
+	bool containsBadWord(const string& text, string& foundWord);
 	
 private:
 

@@ -16,10 +16,21 @@ bool TwitterDB::open(const string& name) {
 bool TwitterDB::createTables() {
 
 	// Full Text Search (FTS) table for tweet texts
-	bool result_virtual = db.query("CREATE VIRTUAL TABLE tweet_texts USING fts4(text, id)");
-	if(!result_virtual) {
-		printf("Error: cannot create virtual table.\n");
+	roxlu::QueryResult qr(db);
+	bool r = db.select("distinct tbl_name")
+					.from("sqlite_master")
+					.where("tbl_name = \"tweet_texts\"")
+					.execute(qr);
+	if(!r) {
+		printf("error: Cannot get table info for tweet_text (full text search).\n");
 		return false;
+	}
+	if(!qr.next()) {
+		bool result_virtual = db.query("CREATE VIRTUAL TABLE tweet_texts USING fts4(text, id)");
+		if(!result_virtual) {
+			printf("Error: cannot create virtual table.\n");
+			return false;
+		}
 	}
 	
 	//db.printCompileInfo();
@@ -32,7 +43,7 @@ bool TwitterDB::createTables() {
 			",t_user_id		VARCHAR(50)"						\
 			",t_text		INTEGER"							\
 			",t_screen_name	VARCHAR(20)"						\
-			",t_timestamp	TIMESTAMP"							\	
+			",t_timestamp	TIMESTAMP"							\
 			",t_longitude	REAL"								\
 			",t_latitude	REAL"								\
 		");"
@@ -69,17 +80,6 @@ bool TwitterDB::createTables() {
 		printf("Error: cannot create tweet_tags table.\n");
 		return false;
 	}
-	
-	// USERLIST (experimental)
-	// ------------------------
-	result = db.query(
-		"CREATE TABLE IF NOT EXISTS follow( "
-			"fl_id				INTEGER PRIMARY KEY AUTOINCREMENT "	\
-			",fl_user_id		VARCHAR(50) UNIQUE"					\
-			",fl_screen_name	VARCHAR(20) UNIQUE"					\
-			",fl_timestamp		TIMESTAMP "							\
-		");"
-	);
 	return true;
 }
 
@@ -141,7 +141,7 @@ bool TwitterDB::insertTweet(const rtt::Tweet& tweet) {
 					.use("tt_tweetid", tweet_id)
 					.execute();
 		if(!result) {
-			printf("Error: cannot connect tag: %d with tweet: %s\n", (*tag_it), tweet_id);
+			printf("Error: cannot connect tag: %d with tweet: %s (%d)\n", (*tag_it), tweet_id);
 		}
 		++tag_it;
 	}

@@ -2,7 +2,8 @@
 #include <sstream>
 #include "TwitterEventListener.h"
 #include "TWitterApp.h"
-	
+#include "pcrecpp.h"
+		
 TwitterEventListener::TwitterEventListener(TwitterApp& app)
 	:twitter_app(app)
 {
@@ -11,38 +12,56 @@ TwitterEventListener::TwitterEventListener(TwitterApp& app)
 
 TwitterEventListener::~TwitterEventListener() {
 }
-
+/**
+ * 
+ * When a new tweet arrives at the stream, this function is called. Here we
+ * store the tweet into the database so the visual part of the app can fetch
+ * this when it needs to. 
+ * 
+ * We also check if the tweet contains a search term. Search terms must follow
+ * this format:
+ * 
+ *
+ * 					@dewarshub [the search terms]
+ *
+ *
+ * Some examples:
+ * -------------- 
+ * "@dewarshub search me!";  --> "search me!"
+ * "wow did you people see @dewarshub last night!"; --> No search term!
+ * "@dewars wow did you people see last night!"; --> No search term
+ " "@dewarshub economy" --> economy
+ *
+ */
 void TwitterEventListener::onStatusUpdate(const rtt::Tweet& tweet) {
-	if(twitter_app.containsBadWord(tweet.text)) {
+	string bad_word;
+	if(twitter_app.containsBadWord(tweet.text, bad_word)) {
+		printf("[censored][%s] %s\n",bad_word.c_str(), tweet.getText().c_str());
 		//printf("# [ censored ] : %s\n", tweet.text.c_str());
 		return;
 	}
+	printf("[ok] %s \n", tweet.getText().c_str());
 
-	printf("> %s\n", tweet.getText().c_str());
-	string search_for = "dewarshub";
-	size_t search_len = search_for.size();
+	// Check for search term; we first lowercase the tweet.
+	string search_query;
+	string tweet_text_lower = tweet.getText();
+	std::transform(
+		 tweet_text_lower.begin()
+		,tweet_text_lower.end()
+		,tweet_text_lower.begin()
+		,::tolower
+	);
 	
-	twitter_app.getDB().insertTweet(tweet);
-	if(tweet.user_mentions.size()) {
-		for(int i = 0; i < tweet.user_mentions.size(); ++i) {
-			string name = tweet.user_mentions[i];
-			if(name.length() != search_len) {
-				continue;
-			}
-			// @todo pass to the visualisation app.
-	
-			std::transform(name.begin(), name.end(), name.begin(), ::tolower);
-			if(name == search_for) {
-				// tokenize
-				std::istringstream ss(tweet.getText());
-				string token;
-				ss >> token;
-				while(ss.good()) {
-					ss >> token; 
-					twitter_app.onNewSearchTerm(tweet, token);
-				}
-			}
-		}
+	// Check if it's a correct search term:
+	pcrecpp::RE re("^@dewarshub (.*)$");
+	re.FullMatch(tweet_text_lower, &search_query);
+	if(search_query.length()) {
+		printf("[search]: '%s'\n", search_query.c_str());
+		twitter_app.onNewSearchTerm(tweet, search_query);
+	}
+	else {
+		// store tweet in DB so the visual app can fetch it.
+		twitter_app.getDB().insertTweet(tweet);
 	}
 }
 

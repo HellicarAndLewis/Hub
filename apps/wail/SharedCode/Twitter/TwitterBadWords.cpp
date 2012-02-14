@@ -41,7 +41,7 @@ void TwitterBadWords::cleanup(string& text, const string& replacement) {
 }
 
 // Check if the given text contains a bad word.
-bool TwitterBadWords::containsBadWord(const string& text) {
+bool TwitterBadWords::containsBadWord(const string& text, string& foundWord) {
 	pcrecpp::RE_Options re_opts;
 	re_opts.set_caseless(true)
 			.set_extended(false)
@@ -49,6 +49,7 @@ bool TwitterBadWords::containsBadWord(const string& text) {
 	vector<string>::iterator it = bad_words.begin();
 	while(it != bad_words.end()) {
 		if(pcrecpp::RE((*it), re_opts).PartialMatch(text)) {
+			foundWord = (*it);
 			return true;
 		}
 		++it;

@@ -37,6 +37,7 @@ class ofxWWSearchTerm {
 	float scale;
 	float opacity;
 	
+	string user;
 	string term;
 	vector<ofxWWTweetParticle> associatedTweets;
 };

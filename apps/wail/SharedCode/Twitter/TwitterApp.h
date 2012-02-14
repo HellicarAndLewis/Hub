@@ -63,9 +63,11 @@ public:
 	void update();	
 	
 	bool reloadBadWords();
-	bool containsBadWord(const string& text);
+	bool containsBadWord(const string& text, string& foundWord);
 	void reloadHashTags();
 
+	bool getUnusedSearchTerms(vector<TwitterSearchTerm*>& result);
+	bool setSearchTermAsUsed(const string& user, const string& term);
 	bool getFollowers(vector<string>& result);
 	bool getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result);
 	bool getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result);
@@ -83,8 +85,10 @@ public:
 		ofAddListener(twitter_app_dispatcher, listener, listenerMethod);
 	}
 	
+	// OSC events.
 	virtual void onUpdateBadWordList();
 	virtual void onUpdateHashTags();
+	virtual void simulateSearch(const string& term);
 	
 	TwitterDB& getDB();	
 	
@@ -93,6 +97,7 @@ private:
 	void initDB();
 	void initTwitter();
 	void initOSC(int port);
+	void initStoredSearchTerms();
 
 	rt::Twitter 			twitter;
 	rt::Stream				stream;
@@ -124,6 +129,14 @@ inline bool TwitterApp::getTweetsWithSearchTerm(const string& q, int youngerThan
 
 inline void TwitterApp::uploadScreenshot(const string& filePath, const string& username, const string& message) {
 	uploader.addFile(filePath, username, message);
+}
+
+inline bool TwitterApp::getUnusedSearchTerms(vector<TwitterSearchTerm*>& result) {
+	return search_queue.getUnusedSearchTerms(result);
+}
+
+inline bool TwitterApp::setSearchTermAsUsed(const string& user, const string& term) {
+	return search_queue.setSearchTermAsUsed(user, term);
 }
 
 #endif
