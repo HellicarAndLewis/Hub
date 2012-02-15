@@ -34,7 +34,7 @@ void Slosh::setup(string path) {
 		string file = dir.getPath(i);
 //		string file = string(path) + ofToString(i) + ".wav";
 		samples.push_back(SloshSample());
-		cout << file << endl;
+		//cout << file << endl;
 		samples.back().sample = audio::loadSample(ofToDataPath(file));
 		samples.back().volume = tricks::audio::analysis::getMaxAveragePower(
 			audio::getWavFile(

@@ -7,6 +7,7 @@
 #include "Slosh.h"
 #include "AudioSystem.h"
 #include "KinectTouchReceiver.h"
+#include "OSCInterface.h"
 
 class testApp : public ofBaseApp, public KinectTouchListener, public xmlgui::Listener {
 public:
@@ -35,6 +36,8 @@ public:
 	KinectTouchReceiver kinect;
 	
 	xmlgui::SimpleGui gui;
+	xmlgui::OSCInterface oscInterface;
+	
     void controlChanged(xmlgui::Control *ctrl);
 	
 	ofVec3f rotation;

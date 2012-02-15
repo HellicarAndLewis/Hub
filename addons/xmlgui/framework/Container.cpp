@@ -285,3 +285,11 @@ string xmlgui::Container::getString(string controlId) {
 	getControlById(controlId);
 	return "";
 }
+
+int xmlgui::Container::getNumChildren() {
+	return children.size();
+}
+
+xmlgui::Control *xmlgui::Container::getChild(int index) {
+	return children[index];
+}

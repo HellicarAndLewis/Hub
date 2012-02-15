@@ -56,13 +56,16 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Fade Duration", fadeDuration, 2, 10);
 	webGui.addToggle("Clear Tweets", clearTweets);
 
+	webGui.addPage("Tweet Animation");
+	webGui.addToggle("Flow Sideways", tweetsFlowLeftRight);
+	webGui.addSlider("Flow Speed", tweetFlowSpeed, -10, 10);	
+	webGui.addSlider("Flow Chaos", flowChaosScale, 0, 10);
 	
 	webGui.addPage("Tweet Appearance");
 	webGui.addSlider("Dot Size", dotSize, 5, 50);
 	webGui.addSlider("Two Line Scale", twoLineScaleup, 1.0, 2.0);
 	webGui.addSlider("User Y Shift", userNameYOffset, -150, 150);
 	webGui.addSlider("Tweet Y Shift", tweetYOffset, -150, 150);
-//	webGui.addSlider("Two Line Squish", twoLineSquish, .5, 1.0);
 	webGui.addSlider("Wall Repulsion Dist", wallRepulsionDistance, 0, 900);
 	webGui.addSlider("Wall Repulsion Atten", wallRepulsionAtten, 0, .2);
 	webGui.addSlider("Tweet Repulsion Dist", tweetRepulsionDistance, 0, 900);
@@ -129,12 +132,32 @@ void ofxWWTweetParticleManager::update(){
 	
 	twitter.update();
 	
-	//purge dead tweets
 	for(int i = tweets.size()-1; i >= 0; i--){
-		if(tweets[i].dead){
-			tweets.erase(tweets.begin()+i);
+		//purge dead tweets
+		//don't purge tweets this way when flow is on
+//		if(tweets[i].dead){
+//			tweets.erase(tweets.begin()+i);
+//		}
+		
+		//purge offscreen tweets
+		if(tweetsFlowLeftRight){
+			if((tweetFlowSpeed <= 0 && tweets[i].pos.x < -wallRepulsionDistance) || 
+			   (tweetFlowSpeed >= 0 && tweets[i].pos.x > simulationWidth+wallRepulsionDistance) )
+			{
+				tweets.erase(tweets.begin()+i);
+			}
 		}
+		else {
+			if((tweetFlowSpeed <= 0 && tweets[i].pos.y < -wallRepulsionDistance) || 
+			   (tweetFlowSpeed >= 0 && tweets[i].pos.y > simulationHeight+wallRepulsionDistance) )
+			{
+				tweets.erase(tweets.begin()+i);
+			}
+		}
+
 	}
+	
+
 	
 	if(tweets.size() > maxTweets){
 		tweets.resize(maxTweets);
@@ -152,7 +175,6 @@ void ofxWWTweetParticleManager::update(){
 	}
 		
 	for(int i = 0; i < searchTerms.size(); i++){
-
 		searchTerms[i].touchPresent = blobsRef->size() != 0;
 		searchTerms[i].update();
 	}		
@@ -180,7 +202,6 @@ void ofxWWTweetParticleManager::update(){
 void ofxWWTweetParticleManager::handleTouchSearch() {
 	
 	if(!canSelectSearchTerms){
-
 		for(int i = 0; i < searchTerms.size(); i++){
 			searchTerms[i].selected = false;
 		}
@@ -270,19 +291,26 @@ void ofxWWTweetParticleManager::updateTweets(){
 	///ANIMATE tweet
 	//apply wall forces
 	for(int i = 0; i < tweets.size(); i++){
-		
-		if (tweets[i].pos.x < wallRepulsionDistance) {
-			tweets[i].force.x += (wallRepulsionDistance - tweets[i].pos.x) * wallRepulsionAtten * tweets[i].deathAttenuation;
+		if(!tweetsFlowLeftRight){
+			//LEFT WALL
+			if (tweets[i].pos.x < wallRepulsionDistance) {
+				tweets[i].force.x += (wallRepulsionDistance - tweets[i].pos.x) * wallRepulsionAtten * tweets[i].deathAttenuation;
+			}
+			//RIGHT WALL
+			if ((tweets[i].pos.x + tweets[i].totalWidth) > (simulationWidth-wallRepulsionDistance)) {
+				tweets[i].force.x += ( (simulationWidth-wallRepulsionDistance) - (tweets[i].pos.x + tweets[i].totalWidth) ) * wallRepulsionAtten * tweets[i].deathAttenuation;
+			}
 		}
-		if ((tweets[i].pos.x + tweets[i].totalWidth) > (simulationWidth-wallRepulsionDistance)) {
-			tweets[i].force.x += ( (simulationWidth-wallRepulsionDistance) - (tweets[i].pos.x + tweets[i].totalWidth) ) * wallRepulsionAtten * tweets[i].deathAttenuation;
-		}
-		
-		if (tweets[i].pos.y < wallRepulsionDistance) {
-			tweets[i].force.y += (wallRepulsionDistance - tweets[i].pos.y) * wallRepulsionAtten * tweets[i].deathAttenuation;
-		}
-		if ((tweets[i].pos.y + tweets[i].totalHeight) > (simulationHeight-wallRepulsionDistance)) {
-			tweets[i].force.y += ( (simulationHeight-wallRepulsionDistance)  - (tweets[i].pos.y + tweets[i].totalHeight)) * wallRepulsionAtten * tweets[i].deathAttenuation;
+		else {
+			//TOP
+			if (tweets[i].pos.y < wallRepulsionDistance) {
+				tweets[i].force.y += (wallRepulsionDistance - tweets[i].pos.y) * wallRepulsionAtten * tweets[i].deathAttenuation;
+			}
+			
+			//BOTTOM
+			if ((tweets[i].pos.y + tweets[i].totalHeight) > (simulationHeight-wallRepulsionDistance)) {
+				tweets[i].force.y += ( (simulationHeight-wallRepulsionDistance)  - (tweets[i].pos.y + tweets[i].totalHeight)) * wallRepulsionAtten * tweets[i].deathAttenuation;
+			}
 		}
 	}
 	
@@ -303,6 +331,19 @@ void ofxWWTweetParticleManager::updateTweets(){
 		}
 	}
 		
+	//apply flow
+	for(int i = 0; i < tweets.size(); i++){
+		ofVec2f forceVector(0,0);
+		if(tweetsFlowLeftRight){
+			forceVector.x += (tweetFlowSpeed + tweets[i].speedAdjust) * (1-tweets[i].selectionWeight);
+		}
+		else{
+			forceVector.y += (tweetFlowSpeed + tweets[i].speedAdjust) * (1-tweets[i].selectionWeight);
+		}
+		//TODO add chaose;
+		tweets[i].force += forceVector;
+	}
+	
 	for(int i = 0; i < tweets.size(); i++){
 		/*
 		 printf("Fluidforcescale: %f\n", fluidForceScale);
@@ -421,7 +462,32 @@ void ofxWWTweetParticleManager::onStatusUpdate(const rtt::Tweet& tweet){
 ofxWWTweetParticle ofxWWTweetParticleManager::createParticleForTweet(const rtt::Tweet& tweet){
 	ofxWWTweetParticle tweetParticle;
 	tweetParticle.manager = this;
-	tweetParticle.pos = ofVec2f(ofRandom(simulationWidth-wordWrapLength), ofRandom(simulationHeight));
+	if(tweetFlowSpeed == 0){
+	}
+	else if(tweetsFlowLeftRight){
+		//LEFT
+		if(tweetFlowSpeed > 0){
+			tweetParticle.pos = ofVec2f(ofRandom(-100, -10), ofRandom(-20, simulationHeight+20));			
+		}
+		//RIGHT
+		else{
+			tweetParticle.pos = ofVec2f(ofRandom(simulationWidth+10, simulationWidth+100), ofRandom(-20, simulationHeight+20));
+		}
+	}
+	else{
+		//TOP
+		if(tweetFlowSpeed > 0){
+			tweetParticle.pos = ofVec2f(ofRandom(-20, simulationWidth+20), ofRandom(-10, -100));
+		}
+		//BOTTOM
+		else{
+			tweetParticle.pos = ofVec2f(ofRandom(-20, simulationWidth+20), ofRandom(simulationHeight+10, simulationHeight+100));
+		}
+	}
+	
+	tweetParticle.speedAdjust = ofRandom(-flowChaosScale, flowChaosScale);
+	
+	//tweetParticle.pos = ofVec2f(ofRandom(simulationWidth-wordWrapLength), ofRandom(simulationHeight));
 	tweetParticle.setTweet(tweet);
 	return tweetParticle;
 }

@@ -12,12 +12,7 @@
 #include "ofxXmlSettings.h"
 #include "ParameterInfo.h"
 #include "Resources.h"
-#define bval(A) (*((bool*)A))
-#define ival(A) (*((int*)A))
-#define fval(A) (*((float*)A))
-#define dval(A) (*((double*)A))
-#define faval(A, B) (*(((float*)A)+B))
-#define sval(A) (*((string*)A))
+
 
 
 namespace xmlgui {
@@ -25,7 +20,11 @@ namespace xmlgui {
 	class Control: public ofRectangle {
 		
 	public:
-
+		// this is the pointer to
+		// the stored value. handle
+		// with care!!
+		void *value;
+		
 		// human readable name
 		string name;
 		
@@ -130,8 +129,6 @@ namespace xmlgui {
 		// this clones an existing control
 		Control *clone();
 		
-	protected:
-		void *value;
 		
 	};
 	
@@ -144,3 +141,12 @@ namespace xmlgui {
 // so you can type in numbers without an alpha
 // channel and it will still work.
 void setRGBA(int rgba);
+
+// a few little casting helpers
+// for void pointers.
+#define bval(A) (*((bool*)A))
+#define ival(A) (*((int*)A))
+#define fval(A) (*((float*)A))
+#define dval(A) (*((double*)A))
+#define faval(A, B) (*(((float*)A)+B))
+#define sval(A) (*((string*)A))
