@@ -22,6 +22,13 @@ void TwitterOSCReceiver::update() {
 				listeners[i]->onUpdateHashTags();
 			}
 		}
+		else if(m.getAddress() == "/twitter/simulate_search") {
+			string search_term = m.getArgAsString(0);
+			
+			for(int i = 0; i < listeners.size(); ++i) {
+				listeners[i]->simulateSearch(search_term);
+			}
+		}
 	}
 }
 

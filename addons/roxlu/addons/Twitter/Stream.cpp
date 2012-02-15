@@ -11,6 +11,8 @@ Stream::Stream(Twitter& tw)
 	:twitter(tw)
 	,connected(false)
 	,curl_header(NULL)
+	,reconnect_on(0)
+	,reconnect_delay(10) // 10 seconds
 {
 	
 }
@@ -25,10 +27,14 @@ Stream::~Stream() {
 @todo	implement reconnecting to server when hashtags to track changes
 */
 bool Stream::connect(const string& streamURL) {
+	twitter.accountVerifyCredentials();
+	printf("Credentials: %s\n", twitter.getResponse().c_str());
+	
 	CURLcode r;
 	
 	// create request.
 	string url = streamURL;
+	connected_url = streamURL;
 	rcp::Collection params;
 	rc::Request req;
 	req.setURL(url);
@@ -66,13 +72,7 @@ bool Stream::connect(const string& streamURL) {
 		printf("Error: cannot create easy handle.\n");
 		return false;
 	}
-	
-	/*
-	string userpass = twitter.getTwitterUsername() +":" +twitter.getTwitterPassword();
-	curl_easy_setopt(curl, CURLOPT_USERPWD, NULL); 
-	curl_easy_setopt(curl, CURLOPT_USERPWD, userpass.c_str());
-	*/
-	
+
 	// set url
 	r = curl_easy_setopt(curl, CURLOPT_URL, use_url.c_str());
 	CHECK_CURL_ERROR(r);
@@ -88,8 +88,16 @@ bool Stream::connect(const string& streamURL) {
 	// object we get passed into writeData
 	r = curl_easy_setopt(curl, CURLOPT_WRITEDATA, this);
 	CHECK_CURL_ERROR(r);	
+
+	// parse headers.
+	r = curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, &Stream::curlHeaderCallback);
+	CHECK_CURL_ERROR(r);	
 	
-	curl_easy_setopt(curl, CURLOPT_VERBOSE, true);
+	// object gets passed to header function
+	r = curl_easy_setopt(curl, CURLOPT_WRITEHEADER, this);
+	CHECK_CURL_ERROR(r);	
+	
+	//curl_easy_setopt(curl, CURLOPT_VERBOSE, true);
 
 	// set the oauth headers.
 	const vector<string>& headers = req.getHeaders();
@@ -114,9 +122,13 @@ bool Stream::connect(const string& streamURL) {
 	}
 
 	// add the easy handle to the multi stack.
-	CURLMcode t = curl_multi_add_handle(curlm, curl);
-	CHECK_CURLM_ERROR(t);	
+	CURLMcode cm = curl_multi_add_handle(curlm, curl);
+	CHECK_CURLM_ERROR(cm);	
 
+	int running = 0;
+	cm = curl_multi_perform(curlm, &running);
+	CHECK_CURLM_ERROR(cm);
+	
 	connected = true;
 	return true;
 }
@@ -158,8 +170,29 @@ bool Stream::update() {
 	CHECK_CURLM_ERROR(r);
 	
 	if(still_running == 0) {
+		if(reconnect_on == 0) {
+			time_t seconds;
+			seconds = time(NULL);
+			printf("Seconds: %ld\n", seconds);
+			reconnect_on = seconds + reconnect_delay;
+			reconnect_delay *= reconnect_delay;
+			printf("Next time we disconnect we start after: %d seconds\n", reconnect_delay);
+		}
+		else {
+			time_t now = time(NULL);
+			if(now > reconnect_on) {
+				printf("Twitter is reconnecting\n");
+				reconnect_delay = 10; // reset.
+				reconnect_on = 0;
+				disconnect();
+				connect(connected_url);
+			}
+		}
 		printf("Twitter stream not running...\n");
 		return false;
+	}
+	else {
+				
 	}
 	return true;
 }
@@ -235,6 +268,20 @@ void Stream::parseBuffer() {
 		buffer.erase(0, num_chars);
 	}
 }
+void Stream::addResponseHeader(const string& name, const string& value) {
+	response_headers.insert(std::pair<string, string>(name, value));
+}
+
+bool Stream::getResponseHeader(const string& name, string& result) {
+	result.clear();
+	map<string, string>::iterator it = response_headers.find(name);
+	if(it == response_headers.end()) {
+		return false;
+	}
+	result = it->second;
+	return true;
+}
+
 
 size_t Stream::curlWriteCallback(char *ptr, size_t size, size_t nmemb, Stream* obj) {
 	size_t bytes_to_write = size * nmemb;
@@ -243,6 +290,35 @@ size_t Stream::curlWriteCallback(char *ptr, size_t size, size_t nmemb, Stream* o
 //		printf("%c", ptr[i]);
 //	}
 	obj->parseBuffer();
+	return bytes_to_write;
+}
+
+size_t Stream::curlHeaderCallback(char* ptr, size_t size, size_t nmemb, Stream* obj) {
+	size_t bytes_to_write = size * nmemb;
+
+	// store the headers
+	string header_line(ptr, nmemb);
+	size_t pos = header_line.find_first_of(":");
+	if(pos != string::npos) {
+		string header_name = header_line.substr(0,pos);
+		string header_value = header_line.substr(pos+2, (header_line.length()-(pos+4)));
+		std::transform(header_name.begin(), header_name.end(), header_name.begin(),::tolower);
+		obj->addResponseHeader(header_name, header_value);
+	}
+	else {
+		// parse the HTTP result.
+		pos = header_line.find("HTTP/");
+		if(pos != std::string::npos) {
+			std::istringstream oss(header_line);
+			long code;
+			string msg;
+			oss >> msg >> code >> msg;;
+			if(code == 401) {
+				printf("Error: while connecting to twitter server: %s, code: %lu\n", msg.c_str(), code);
+				exit(0);
+			}
+		}
+	}
 	return bytes_to_write;
 }
 

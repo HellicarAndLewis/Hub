@@ -43,6 +43,7 @@
 		5415AD6014E2F61D00B9CA3C /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5415AD0E14E2F61C00B9CA3C /* libssl.a */; };
 		5415AD6114E2F61D00B9CA3C /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5415AD3614E2F61D00B9CA3C /* libpcre.a */; };
 		5415AD6214E2F61D00B9CA3C /* libpcrecpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5415AD3714E2F61D00B9CA3C /* libpcrecpp.a */; };
+		542DD22F14E47CCD004D7828 /* TwitterSearchTermQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 542DD22D14E47CCD004D7828 /* TwitterSearchTermQueue.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -251,6 +252,8 @@
 		5415AD3B14E2F61D00B9CA3C /* pcrecpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcrecpp.h; sourceTree = "<group>"; };
 		5415AD3C14E2F61D00B9CA3C /* pcrecpparg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcrecpparg.h; sourceTree = "<group>"; };
 		5415AD3D14E2F61D00B9CA3C /* pcreposix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pcreposix.h; sourceTree = "<group>"; };
+		542DD22D14E47CCD004D7828 /* TwitterSearchTermQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TwitterSearchTermQueue.cpp; path = ../../../wail/SharedCode/Twitter/TwitterSearchTermQueue.cpp; sourceTree = "<group>"; };
+		542DD22E14E47CCD004D7828 /* TwitterSearchTermQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterSearchTermQueue.h; path = ../../../wail/SharedCode/Twitter/TwitterSearchTermQueue.h; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
@@ -670,6 +673,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				542DD22D14E47CCD004D7828 /* TwitterSearchTermQueue.cpp */,
+				542DD22E14E47CCD004D7828 /* TwitterSearchTermQueue.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
@@ -800,6 +805,7 @@
 				5415AD5A14E2F61D00B9CA3C /* HMAC_SHA1.cpp in Sources */,
 				5415AD5B14E2F61D00B9CA3C /* SHA1.cpp in Sources */,
 				5415AD5C14E2F61D00B9CA3C /* urlencode.cpp in Sources */,
+				542DD22F14E47CCD004D7828 /* TwitterSearchTermQueue.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

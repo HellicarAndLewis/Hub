@@ -12,9 +12,11 @@
 #include "ofxWWTweetParticle.h"
 #include "ofxWWSearchTerm.h"
 #include "TwitterApp.h"
+#include "TwitterSearchTerm.h"
 #include "ofxFTGLFont.h"
 #include "ofxMPMFluid.h"
 #include "KinectTouchListener.h"
+
 
 class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
   public:
@@ -80,7 +82,6 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	
 	bool clearTweets;
 	
-	bool generateFakeSearchTerms;
 	float searchTermMinDistance;
 	float searchTermMinHoldTime;
 
@@ -91,6 +92,10 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	ofImage burstOne;
 	ofImage burstTwo;
 
+	// search state vars
+	int shouldChangeSearchTermOn;	// when do show the next search term.
+	int changeSearchTermDelay; 		// after how many seconds do go to the next search term in queue.
+	int currentSearchTermIndex;
   protected:
 	TwitterApp twitter;
 	vector<ofxWWSearchTerm> searchTerms;
@@ -108,7 +113,7 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	void attemptCausticConnection(ofVec2f pos1, float weight1, ofVec2f pos2, float weight2, float layerOpacity);
 	void setRandomCausticColor(float layerOpacity);
 	
-	
+	void addSearchTerm(const string& user, const string& term);
 	ofxWWTweetParticle createParticleForTweet(const rtt::Tweet& tweet);
 	
 };

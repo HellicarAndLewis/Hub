@@ -1,5 +1,6 @@
 #include "testApp.h"
 #include "ofxWebSimpleGuiToo.h"
+//#include "pcrecpp.h"
 
 ///*******
 //JG Layout calculations
@@ -18,6 +19,7 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
+
 	
 	ofSetFrameRate(30);
 	ofSetVerticalSync(true);
@@ -96,7 +98,7 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 	// roxlu 02/07
-//	ofSetFullscreen(false); 
+	ofSetFullscreen(false); 
 	
 	ofBackground(0);
 	ofRectangle renderPreview = screenManager.getRenderPreviewRect();
@@ -136,9 +138,16 @@ void testApp::draw(){
 		string filepath(dirname);
 		filepath.append("/");
 		filepath.append(filename);
-		ofSaveScreen(filepath);
 		
-		renderer.getTweetManager().getTwitterApp().uploadScreenshot(ofToDataPath(filepath, true), "roxlu", "@dewarshub SEARCH biology");
+		// pretty sure we can do this better
+		ofPixels pixels;
+		renderer.getFbo().readToPixels(pixels);
+		ofImage img;
+		img.setFromPixels(pixels);
+		img.saveImage(filepath);
+		
+		
+		renderer.getTweetManager().getTwitterApp().uploadScreenshot(ofToDataPath(filepath, true), "roxlu", "");
 		shouldTakeScreenshot = false;
 		*/
 		// %Y-%m-%d-%H-%M-%S-%i

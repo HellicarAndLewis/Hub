@@ -1,0 +1,220 @@
+/* 
+ * Reset 
+ * ----------------------------------------------------------------
+ */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+	overflow-x: hidden;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;	
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+.clear {
+	clear: both;
+	float: none;
+}
+input:focus, textarea:focus {
+    outline: none;
+}
+
+
+/* 
+ * Menu 
+ * ----------------------------------------------------------------
+ */
+#menu_wrapper {
+	padding:10px;
+	background-color:#666;
+	width:100%;
+	height:35px;
+	border-bottom:1px solid #ccc;
+	padding-left:100px;
+}
+
+.menu li {
+	width:120px;
+	float:left;
+	margin-right:20px;
+	padding:10px;
+	background-color:rgb(22,33,44);
+	text-align:center;
+	-moz-border-radius: 10px; 
+	-webkit-border-radius: 10px;
+	cursor:hand;
+}
+.menu li a {
+	display:inline-block;
+	width:100%;
+}
+
+.menu li:hover {
+	background-color:white;
+}
+
+.menu li:hover a {
+	color:black;
+}
+
+.menu li a {
+	color:white;
+}
+
+#menu_wrapper .menu li.active {
+	background-color:#64B1F2;
+
+}
+
+/* 
+ * Dewars Admin 
+ * ----------------------------------------------------------------
+ */
+body {
+	margin:0;
+	padding:0;
+	font-family:'Lucida Grande', Arial;
+	color:#333;
+	height:480px;
+	
+}
+a {
+	text-decoration:none;
+}
+
+#wrapper {
+	padding:0px;
+}
+
+#content {
+}
+
+/* 
+ * Admin list 
+ * ----------------------------------------------------------------
+ */
+table.list {
+	width:100%;
+}
+
+table.list td {
+	padding:15px;
+	border-bottom:1px solid #ccc;
+}
+table.list td.title {
+	font-weight:bold;
+	width:200px;
+	padding-left:100px;
+}
+
+span.command,
+span.up_button,
+span.save_button,
+table.list td span.remove_button {
+	display:block;
+	box-shadow: inset 0 1px 3px #BABABA, inset 0 12px 3px 2px rgba(232, 232, 232, 0.5);
+	height:28px;
+	width:87px;
+	border:1px solid #979797;
+	border-radius: 20px;
+	overflow: hidden;
+	line-height:30px;
+	text-indent:13px;
+	cursor:pointer;
+}
+
+span.command,
+span.up_button,
+span.save_button {
+	font-weight:bold;
+	text-indent:25px;
+	box-shadow: inset 0 1px 2px #0063B7, inset 0 12px 3px 2px rgba(0, 127, 234, 0.5);
+	background-color: #64B1F2;
+	color:white;
+}
+
+span.up_button {
+	width:40px;
+	text-indent:9px;
+}
+
+span.command {
+	width:300px;
+	height:40px;
+	line-height:40px;
+	border-radius:10px;	
+	box-shadow: none;
+	text-align:center;
+	text-indent:0;
+}
+
+input.text {
+	padding:5px;
+	font-family:'Lucida Grande', Arial;
+	font-size:25px;
+	
+}
+
+
+/* 
+ * Commands 
+ * ----------------------------------------------------------------
+ */
+#commands {
+	 margin-left:100px;
+ 	 margin-top:40px;
+}
+
+span.command {
+	margin-bottom:30px;
+}
+
+input.search_term {
+	border-radius:10px 10px 0px 0px;
+	border:1px solid #ccc;
+	font-size:25px;
+	padding:5px;
+	width:290px;
+	margin:0px;
+}
+.fake_search span.command {
+	border-radius:0px 0px 5px 5px;
+}
+.fake_search {
+}

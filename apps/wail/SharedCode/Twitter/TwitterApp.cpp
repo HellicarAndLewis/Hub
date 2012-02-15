@@ -3,9 +3,13 @@
 
 ofEvent<TwitterAppEvent> twitter_app_dispatcher;
 
+// Init
+// -------------------------------------
+
 TwitterApp::TwitterApp()
 	:stream(twitter)
 	,twitter_listener(*this)
+	,uploader(twitter)
 {
 
 }
@@ -13,28 +17,23 @@ TwitterApp::TwitterApp()
 TwitterApp::~TwitterApp() {
 }
 
-bool TwitterApp::initDB(){
-	// @todo create a init function
-	reloadBadWords();	
-	
-	// OSC RECEIVER
-	// ------------
-	osc_receiver.setup(4444);
-	osc_receiver.addListener(this);
-	
-	
-	// TWITTER
-	// --------
-	reloadHashTags();	
-	
+void TwitterApp::init(int oscPort) {
+	initDB();
+	initTwitter();
+	initOSC(oscPort);
+	initStoredSearchTerms();
+	uploader.startThread(true, false);
+}
+
+void TwitterApp::initTwitter() {
 	// @todo set to correct dewarshub consumer key + secret
 	twitter.setConsumerKey("kyw8bCAWKbkP6e1HMMdAvw");
 	twitter.setConsumerSecret("PwVuyjLeUdVZbi4ER6yRAo0byF55AIureauV6UhLRw");
-
-	//string token_file = ofToDataPath("twitter.txt", true);
-	string token_file = ofToDataPath("twitter_roxlutest.txt", true);
 	
-	//twitter.removeTokens(token_file);
+	//string token_file = ofToDataPath("twitter_roxlu.txt", true);
+	//string token_file = ofToDataPath("twitter_roxlutest.txt", true);
+	string token_file = ofToDataPath("twitter_dewarshub.txt", true);
+
 	if(!twitter.loadTokens(token_file)) {
         string auth_url;
         twitter.requestToken(auth_url);
@@ -42,9 +41,19 @@ bool TwitterApp::initDB(){
         twitter.accessToken();
         twitter.saveTokens(token_file);
 	}
+}
 
-	// DATABASE 
-	// --------
+void TwitterApp::initOSC(int port) {
+	osc_receiver.setup(port);
+	osc_receiver.addListener(this);
+}
+
+void TwitterApp::initDB() {
+	//grant all on dewarscube_admin.* to dewarscube_admin@"%" identified by "dewarscube_admin"
+	if(!mysql.connect("dewarshub.demo.apollomedia.nl" , "dewarscube_admin", "dewarscube_admin", "dewarscube_admin")) {
+		exit(0);
+	}
+	
 	if(!db.open("twitter.db")) {
 		printf("Error: Cannot open twitter db.\n");
 	}
@@ -52,34 +61,52 @@ bool TwitterApp::initDB(){
 	if(!db.createTables()) {
 		printf("Error: Cannot create database.\n");
 	}
-	
-	// UPLOADER
-	// --------
-	uploader.startThread();
-	return true;
+
+	reloadHashTags();	
+	reloadBadWords();	
 }
 
-// Bad words handling
+// load search terms which are saved on disk.
+void TwitterApp::initStoredSearchTerms() {
+	search_queue.setup(ofToDataPath("twitter_search_terms.bin",true));
+	search_queue.load();
+}
+
+// OSC
 // -------------------------------------
+
+// OSC event: bad words handling
 void TwitterApp::onUpdateBadWordList() {
-	printf("\n\n\n----------------> on update bad wordlist. <---------------------\n\n\n\n");
 	reloadBadWords();
 }
 
+// Reloads the badwords from MySQL DB.
 bool TwitterApp::reloadBadWords() {
-	string file = ofToDataPath("badwords.txt", true);
-	return bad_words.reloadWordsFile(file);
-}
-				 
-bool TwitterApp::containsBadWord(const string& text) {
-	return bad_words.containsBadWord(text);
+	vector<string> w;
+	if(!mysql.getBadWords(w)) {
+		return false;
+	}
+	bad_words.setBadWords(w);
+	return true;
 }
 
+// only used to make testing everything a bit more easy.
+void TwitterApp::simulateSearch(const string& term) {
+	printf("> simulate search.\n");
+	rtt::Tweet tweet;
+	tweet.setScreenName("roxlu");
+	tweet.setText("@dewarshub " +term);
+	twitter_listener.onStatusUpdate(tweet);
+}	
+				 			 
+// Bad words & hash tags				 
+// -------------------------------------				 
+bool TwitterApp::containsBadWord(const string& text, string& foundWord) {
+	return bad_words.containsBadWord(text, foundWord);
+}
 
-// Reload hashtags
-// -------------------------------------
+// OSC event: reload hashtags
 void TwitterApp::onUpdateHashTags() {
-	printf("\n\n\n----------------> on hash tags <---------------------\n\n\n\n");
 	reloadHashTags();
 	if(stream.isConnected()) {
 		stream.disconnect();
@@ -87,33 +114,22 @@ void TwitterApp::onUpdateHashTags() {
 	connect();
 }
 
+// Update the stream connection with new tags to track.
 void TwitterApp::reloadHashTags() {
 	stream.clearTrackList();
-	
-	string file = ofToDataPath("twitter_hashtags.txt", true);
-	ifstream ifs(file.c_str());
-	if(!ifs.is_open()) {
-		printf("Cannot open hashtag list");
-		exit(0);
-	}
-	
-	string line;
-	while(std::getline(ifs, line)) {
-		printf("line: %s\n", line.c_str());
-		if(line.length()) {
-			stream.track(line);
+	vector<string> tags;
+	if(mysql.getTrackList(tags)) {
+		vector<string>::iterator it = tags.begin();
+		while(it != tags.end()) {
+			stream.track((*it));
+			++it;
 		}
 	}
-	ifs.close();
 }
 
 
 // Twitter
 // -------------------------------------
-void TwitterApp::track(string trackingString){
-	stream.track(trackingString);
-}
-
 bool TwitterApp::connect(){
 	if(!stream.connect(URL_STREAM_USER)) {
 		printf("Error: cannot connect to user stream.\n");
@@ -130,20 +146,12 @@ void TwitterApp::addCustomListener(rt::IEventListener& listener){
 	twitter.addEventListener(listener);
 }
 
-void TwitterApp::populateFakeSearchTerms(vector<string> fakeTerms){
-	rtt::Tweet fakeTweek;
-	for(int i = 0; i < fakeTerms.size(); i++){
-		onNewSearchTerm(fakeTweek, fakeTerms[i]);
-	}
-}
-
-bool TwitterApp::getFakeTweetsWithSearchTerm(vector<rtt::Tweet>& result){
-	
-}
-
 void TwitterApp::onNewSearchTerm(rtt::Tweet tweet, const string& term) {
-	TwitterAppEvent ev(tweet, term);
-	ofNotifyEvent(twitter_app_dispatcher, ev);
+	// When we added a new search term to the queue, pass it through!
+	if(search_queue.addSearchTerm(tweet.getScreenName(), term)) {
+		TwitterAppEvent ev(tweet, term);
+		ofNotifyEvent(twitter_app_dispatcher, ev);
+	}
 }
 
 void TwitterApp::update() {	

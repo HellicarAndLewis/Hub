@@ -5,6 +5,7 @@
 #include "Curl.h"
 #include "Request.h"
 #include "ofMain.h"
+#include "Twitter.h"
 
 namespace rc = roxlu::curl;
 namespace rcp = roxlu::curl::parameter;
@@ -22,7 +23,7 @@ struct UploadFileInfo {
 
 class TwitterPhotoUploader : public ofThread {
 public:
-	
+	TwitterPhotoUploader(rt::Twitter& twitter);
 	void addFile(const string& file, const string& username, const string& message);
 	void threadedFunction();
 		
@@ -30,6 +31,7 @@ private:
 	void upload(const string& file);
 	deque<UploadFileInfo> upload_queue;
 	rc::Curl uploader_curl;
+	rt::Twitter& twitter;
 };
 
 } // roxlu

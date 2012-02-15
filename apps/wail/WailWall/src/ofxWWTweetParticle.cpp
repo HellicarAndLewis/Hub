@@ -91,6 +91,7 @@ void ofxWWTweetParticle::update(){
 	
 	//birth attenuation just to stop snapping on
 	opacity = ofMap(ofGetElapsedTimef(), createdTime, createdTime+.5, .0, 1.0, true);
+
 	//interaction tweet layer attenuation
 	if(isSearchTweet){
 		opacity *= (1-manager->tweetLayerOpacity);
@@ -110,6 +111,7 @@ void ofxWWTweetParticle::update(){
 		//distance attenuation
 		opacity *= selectionWeight; 
 	}
+	//opacity = 1.0f;
 }
 
 void ofxWWTweetParticle::drawDot(){

@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "Twitter.h"
+#include "TwitterSearchTermQueue.h"
 
 // example listener:
 class TwitterListener : public rt::IEventListener {
@@ -41,4 +42,5 @@ class testApp : public ofBaseApp{
 		rt::Twitter twitter;
 		rt::Stream stream;		
 		TwitterListener listener;
+		roxlu::TwitterSearchTermQueue terms;
 };

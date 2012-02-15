@@ -10,34 +10,40 @@
 #include "ofxWWTweetParticleManager.h"
 #include "ofxWebSimpleGuiToo.h"
 
-ofxWWTweetParticleManager::ofxWWTweetParticleManager(){
+ofxWWTweetParticleManager::ofxWWTweetParticleManager()
+	:shouldChangeSearchTermOn(0)
+	,changeSearchTermDelay(10)  
+	,currentSearchTermIndex(0)
+{
 	maxTweets = 100;
 }
 
 void ofxWWTweetParticleManager::setup(){
-	
-	if(!twitter.initDB()){
-		printf("Error: cannot initialize twitter db.\n");
-	}
-	
-	//twitter.addDefaultListener();
+	// Initialize twitter.	
+	// -------------------
+	twitter.init(4444);
+	twitter.addDefaultListener();
 	twitter.addCustomListener(*this);
-	
-	// What do you want to track?
-	// roxlu, 02/09: use the twitter_hashtags.txt file
-	
-	//twitter.track("love");
-	//twitter.track("usa");
-	//twitter.track("monkey");
 	
 	if(!twitter.connect()) {
 		printf("Error: cannot connect to twitter stream.\n");
 	}
+	twitter.addListener(this, &ofxWWTweetParticleManager::onNewSearchTerm);
+
+	// Get previously received search terms.
+	// -------------------------------------
+	vector<TwitterSearchTerm*> stored_search_terms;
+	if(twitter.getUnusedSearchTerms(stored_search_terms)) {
+		vector<TwitterSearchTerm*>::iterator it = stored_search_terms.begin();
+		while(it != stored_search_terms.end()) {
+			addSearchTerm((*it)->user, (*it)->search_term);
+			++it;
+		}
+	}
 	
 	burstOne.loadImage("images/burst1.png");
 	burstTwo.loadImage("images/burst2.png");
-
-	twitter.addListener(this, &ofxWWTweetParticleManager::onNewSearchTerm);
+	
 	canSelectSearchTerms = false;
 	enableCaustics = true;
 }
@@ -78,8 +84,6 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Search Min Dist", searchTermMinDistance, 50, 500);
 	webGui.addSlider("Search Min Hold T", searchTermMinHoldTime, .5, 3.0);
 
-	generateFakeSearchTerms = true;
-	
 	//TODO set up in XML
 	//ONLY CAN HAVE 4 right now
 	//least to most common
@@ -97,25 +101,6 @@ void ofxWWTweetParticleManager::update(){
 		clearTweets = false;
 	}
 	
-	//////////////////JUST FOR TESTING SEARCH TERMS BEFORE ITS IMPLEMENTED FULLY
-	if(generateFakeSearchTerms){
-		vector<string> fakeTerms;
-		fakeTerms.push_back("DESIGN");
-		fakeTerms.push_back("ECONOMICS");
-		fakeTerms.push_back("INTERNET");
-		fakeTerms.push_back("GENETICS");
-		fakeTerms.push_back("EDUCATION");
-		fakeTerms.push_back("SUSTAINABILITY");
-		fakeTerms.push_back("OPENFRAMEWORKS");
-		fakeTerms.push_back("GREEN");
-		fakeTerms.push_back("INNOVATION");
-		fakeTerms.push_back("GOOGLE");
-		fakeTerms.push_back("INTELLIGENCE");
-		
-		twitter.populateFakeSearchTerms(fakeTerms);
-		generateFakeSearchTerms = false;
-	}
-	//////////////////END TESTING
 	
 	if(!sharedFont.isLoaded() || fontSize != sharedFont.getSize() || int(fontSize*twoLineScaleup) != sharedLargeFont.getSize()){
 		if(!sharedFont.loadFont("fonts/Tahoma.ttf", fontSize, true, true, false) ||
@@ -274,11 +259,45 @@ void ofxWWTweetParticleManager::handleTouchSearch() {
 			}
 		}
 	}
-	
 }
 
 void ofxWWTweetParticleManager::handleTweetSearch(){
-	//TODO:
+	// TODO: maybe add a count member somehere?
+	if(!searchTerms.size()) {
+		return;
+	}
+	
+	// When do we need to change to the next search term:
+	// --------------------------------------------------
+	int now = ofGetElapsedTimef();
+	bool change = false;
+	if(shouldChangeSearchTermOn == 0) {
+		shouldChangeSearchTermOn = now + changeSearchTermDelay;
+		change = true;
+	}
+	else if(now > shouldChangeSearchTermOn) {
+		shouldChangeSearchTermOn = now + changeSearchTermDelay;
+		printf("Current search term index: %d\n", currentSearchTermIndex);
+		currentSearchTermIndex = (++currentSearchTermIndex) % searchTerms.size();
+		printf("Next search term index: %d\n", currentSearchTermIndex);
+		change = true;
+	}
+	
+	// When we need to change, make the next search term active, and load tweets.
+	// --------------------------------------------------------------------------
+	if(change) {
+		ofxWWSearchTerm search_term = searchTerms[currentSearchTermIndex];
+		twitter.setSearchTermAsUsed(search_term.user, search_term.term);
+		
+		vector<rtt::Tweet> found_tweets;
+		if(twitter.getTweetsWithSearchTerm(search_term.term, 100000, 100, found_tweets)) {
+			for(int i = 0; i < found_tweets.size(); ++i) {
+				printf("[found] %s\n", found_tweets[i].getText().c_str());
+				// TODO: This is where we need to create or fill a new tweet. @James lets talk about this
+
+			}
+		}
+	}
 }
 	   
 float ofxWWTweetParticleManager::weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet){
@@ -345,14 +364,6 @@ void ofxWWTweetParticleManager::updateTweets(){
 	}
 	
 	for(int i = 0; i < tweets.size(); i++){
-		/*
-		 printf("Fluidforcescale: %f\n", fluidForceScale);
-		 printf("TweetLayerOpacity: %f\n", tweetLayerOpacity);
-		 printf("DeathAttenuation: %f\n", tweets[i].deathAttenuation);
-		 printf("tweets[i].force.x: %f\n", tweets[i].force.x);
-		 printf("tweets[i].force.y: %f\n", tweets[i].force.y);
-		 printf("--------------------------------------------------------\n");		
-		 */
 		fluidRef->applyForce( tweets[i].pos/ofVec2f(simulationWidth,simulationHeight), tweets[i].force/ofVec2f(simulationWidth,simulationHeight) * fluidForceScale * tweetLayerOpacity * tweets[i].deathAttenuation );
 	}
 	
@@ -449,14 +460,12 @@ void ofxWWTweetParticleManager::setRandomCausticColor(float layerOpacity){
 
 
 void ofxWWTweetParticleManager::onStatusUpdate(const rtt::Tweet& tweet){
-	if(twitter.containsBadWord(tweet.getText())) {
-//		printf("[ censored ] : %s\n", tweet.getText().c_str());
+	string bad_word;
+	if(twitter.containsBadWord(tweet.getText(), bad_word)) {
 		return;
 	}
-	
 	ofxWWTweetParticle tweetParticle = createParticleForTweet(tweet);
 	tweets.push_back( tweetParticle );	
-//	cout << "added tweet " << tweets.size() << " text is " << tweet.getText() << endl;
 }
 
 ofxWWTweetParticle ofxWWTweetParticleManager::createParticleForTweet(const rtt::Tweet& tweet){
@@ -493,8 +502,10 @@ ofxWWTweetParticle ofxWWTweetParticleManager::createParticleForTweet(const rtt::
 }
 					
 void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
-	printf("Yay I got a new search term: %s\n", event.search_term.c_str());
-	
+	addSearchTerm(event.tweet.getScreenName(), event.search_term);
+}
+
+void ofxWWTweetParticleManager::addSearchTerm(const string& user, const string& term) {
 	ofxWWSearchTerm searchTerm;
 	int tries = 0;
 	ofVec2f pos;
@@ -511,14 +522,14 @@ void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
 	} while (!validPosFound && tries++ < 100);
 	
 	searchTerm.manager = this;
-	searchTerm.term = event.search_term;
+	searchTerm.term = term;
+	searchTerm.user = user;
 	searchTerm.pos = pos;
 	searchTerms.push_back( searchTerm );	
 	
 	// @todo using ofSendMessage to test screenshots
-	ofSendMessage("take_screenshot");
+	//ofSendMessage("take_screenshot");
 }
-
 
 void ofxWWTweetParticleManager::onStatusDestroy(const rtt::StatusDestroy& destroy){
 }
@@ -527,7 +538,6 @@ void ofxWWTweetParticleManager::onStreamEvent(const rtt::StreamEvent& event){
 }
 
 
-// roxlu 02/07
 TwitterApp& ofxWWTweetParticleManager::getTwitterApp() {
 	return twitter;
 }
