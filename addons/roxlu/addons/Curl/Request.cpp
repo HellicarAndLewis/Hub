@@ -52,6 +52,8 @@ bool Request::doGet(rc::Curl& curl, string& result) {
 		++head_it;
 	}
 	
+	curl.setVerbose(true);
+	
 	// create url + query string.	
 	string use_url = url;
 	use_url += getQueryString();	

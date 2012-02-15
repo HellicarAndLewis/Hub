@@ -1,3 +1,5 @@
+// TODO: Check the return headers from twitter (404,301 etc..)
+// TODO: Check the timestamp from twitter; our and theirs must be somewhat in sync.
 #ifndef ROXLU_TWITTERH
 #define ROXLU_TWITTERH
 

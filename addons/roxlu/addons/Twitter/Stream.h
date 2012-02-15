@@ -1,6 +1,7 @@
 #ifndef ROXLU_TWITTER_STREAMH
 #define ROXLU_TWITTER_STREAMH
 
+#include <map>
 #include <vector>
 #include <time.h>
 #include "../Curl/Request.h"
@@ -10,7 +11,7 @@
 #include "../../libs/jansson/jansson.h"
 #include "Twitter.h"
 
-
+using std::map;
 using std::vector;
 
 // @todo read this: https://dev.twitter.com/docs/streaming-api/user-streams/suggestions
@@ -45,11 +46,17 @@ public:
 	std::string& trim(std::string &s);
  	std::string& ltrim(std::string &s);
 	std::string& rtrim(std::string &s);
+
+	// Response headers
+	static size_t curlHeaderCallback(char* ptr, size_t size, size_t nmemb, Stream* obj);
+	void addResponseHeader(const string& name, const string& value);
+	bool getResponseHeader(const string& name, string& result);
 	
 	string buffer;
 
 private:
 	struct curl_slist* curl_header;
+	map<string, string> response_headers;
 	vector<string> to_follow;
 	vector<string> to_track;
 	CURL* curl;
