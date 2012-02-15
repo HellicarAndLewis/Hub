@@ -125,10 +125,6 @@ bool Stream::connect(const string& streamURL) {
 	CURLMcode cm = curl_multi_add_handle(curlm, curl);
 	CHECK_CURLM_ERROR(cm);	
 
-	int running = 0;
-	cm = curl_multi_perform(curlm, &running);
-	CHECK_CURLM_ERROR(cm);
-	
 	connected = true;
 	return true;
 }
