@@ -46,8 +46,8 @@
 #include "ofxMPMFluid.h"
 
 //TODO make varying
-#define gridSizeX 160
-#define gridSizeY 120 
+//#define gridSizeX 160
+//#define gridSizeY 120 
 
 ofxMPMFluid::ofxMPMFluid() 
 :	densitySetting(5.0),
@@ -68,7 +68,10 @@ ofxMPMFluid::ofxMPMFluid()
 	//
 }
 
-void ofxMPMFluid::setup(int maxParticles){
+void ofxMPMFluid::setup(int gridX, int gridY, int maxParticles){
+	gridSizeX = gridX;
+	gridSizeY = gridY;
+	
 	maxNumParticles = maxParticles;
 	
 	// This creates a 2-dimensional array (i.e. grid) of Node objects.
@@ -582,7 +585,18 @@ void ofxMPMFluid::update(){
 }
 
 void ofxMPMFluid::draw(){
-	
+	draw(ofRectangle(0,0,gridSizeX,gridSizeY));
+}
+
+void ofxMPMFluid::draw(float x, float y){
+	draw(ofRectangle(x,y,gridSizeX,gridSizeY));
+}
+
+void ofxMPMFluid::draw(float x, float y, float width, float height){
+	draw(ofRectangle(x,y,width,height));
+}
+
+void ofxMPMFluid::draw(ofRectangle rect){
 	ofPushStyle();
 	// These improve the appearance of small lines and/or points.
 	glDisable(GL_LIGHTING);
@@ -596,24 +610,33 @@ void ofxMPMFluid::draw(){
 	ofSetColor(255,255,255, 204); 
 	glLineWidth(1.0); // or thicker, if you prefer
 	
-	ofPushMatrix();
-	ofScale(scaleFactor, scaleFactor, 1.0);
+//	ofPushMatrix();
+//	ofScale(scaleFactor, scaleFactor, 1.0);
 	
 	// Draw the active particles as a short line, 
 	// using their velocity for their length. 
 	vector<ofVec2f> verts;
 	for (int ip=0; ip<numParticles; ip++) {
 		ofxMPMParticle* p = particles[ip];
-		verts.push_back(ofVec2f(p->x, p->y));
-		verts.push_back(ofVec2f(p->x - p->u, p->y - p->v));
+		float screenx = rect.x + p->x/gridSizeX * rect.width;
+		float screeny = rect.y + p->y/gridSizeY * rect.height;
+		float screenu = rect.x + (p->x - p->u)/gridSizeX * rect.width;
+		float screenv = rect.y + (p->y - p->v)/gridSizeY * rect.height;
+		verts.push_back( ofVec2f(screenx, screeny) );
+		verts.push_back( ofVec2f(screenu, screenv) );
+		
+//		verts.push_back( ofVec2f(rect.x + p->x, rect.y + p->y / gridSizeY * rect.height));
+//		verts.push_back( ofVec2f(rect.x + p->x - p->u, rect.y + (p->y - p->v) / gridSizeY * rect.height) );
 	}
+	
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(2, GL_FLOAT, 0, &(verts[0].x));
 	glDrawArrays(GL_LINES, 0, verts.size());
 	glDisableClientState(GL_VERTEX_ARRAY);
 	
-	ofPopMatrix();
+//	ofPopMatrix();
 	ofPopStyle();
+	
 }
 
 vector<ofxMPMParticle*>& ofxMPMFluid::getParticles(){

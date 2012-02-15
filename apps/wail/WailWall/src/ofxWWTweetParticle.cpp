@@ -13,6 +13,7 @@ ofxWWTweetParticle::ofxWWTweetParticle(){
 	manager = NULL;
 	isTwoLines = false;
 	isSearchTweet = false;
+	speedAdjust = 0;
 }
 
 void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
@@ -97,10 +98,10 @@ void ofxWWTweetParticle::update(){
 			isSearchTweet = false; //this will kill the tweet
 		}
 	}
-	else{
+	else {
 		//death attenuation
 		deathAttenuation = ofMap(ofGetElapsedTimef(), createdTime+manager->startFadeTime, createdTime+manager->startFadeTime+manager->fadeDuration, 1.0, 0.0, true);
-		opacity *= deathAttenuation;
+//		opacity *= deathAttenuation; //
 		opacity *= manager->tweetLayerOpacity;
 		if(deathAttenuation == 0) {
 			dead = true;
@@ -120,7 +121,8 @@ void ofxWWTweetParticle::drawDot(){
 		alpha = 1-manager->tweetLayerOpacity;
 	}
 	else {
-		alpha = deathAttenuation * manager->tweetLayerOpacity;
+		//alpha = deathAttenuation * manager->tweetLayerOpacity;
+		alpha = manager->tweetLayerOpacity;
 	}
 	float scale = useBurstOne ? 1.2 : 1.0;
 	if(isSearchTweet){
@@ -139,6 +141,7 @@ void ofxWWTweetParticle::drawDot(){
 }
 
 void ofxWWTweetParticle::drawText(){
+	
 	ofPushStyle();
 	ofEnableAlphaBlending();
 

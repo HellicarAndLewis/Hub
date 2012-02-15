@@ -30,7 +30,7 @@ class ofxWWTweetParticle {
 	ofVec2f lastPos;
 	ofVec2f force;
 	
-	float selectionWeight;
+	float selectionWeight; //influence from hand
 	
 	float scale;
 	float opacity;	
@@ -44,6 +44,8 @@ class ofxWWTweetParticle {
 //	string wordWrappedTweet;	
 	float totalWidth;
 	float totalHeight;
+	
+	float speedAdjust;
 	
 	bool isSearchTweet;
 	bool useBurstOne;

@@ -57,10 +57,14 @@ class ofxMPMFluid {
   public:
 	ofxMPMFluid();
 
-	void setup(int maxParticles);
+	void setup(int gridX, int gridY, int maxParticles);
 	void update();
-	void draw();
 	
+	void draw();
+	void draw(float x, float y);
+	void draw(float x, float y, float width, float height);
+	void draw(ofRectangle rect);
+		
 	int getGridSizeX();
 	int getGridSizeY();
 
@@ -90,6 +94,9 @@ class ofxMPMFluid {
 	vector<ofxMPMParticle*>& getParticles();
 	
   protected:
+	float gridSizeX;
+	float gridSizeY;
+	
 	float elapsed;
 
 	vector<ofxMPMParticle*> particles;
