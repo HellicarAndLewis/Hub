@@ -36,7 +36,7 @@ void ofxWWRenderer::setup(int width, int height){
 	ofClear(0);
 	accumulator.end();
 	
-	fluid.setup(100000);
+	fluid.setup(width/20.0,height/2.0,100000);
 	fluid.scaleFactor = 6.4;
 	tweets.fluidRef = &fluid;
 	tweets.blobsRef = blobs;
@@ -114,7 +114,7 @@ void ofxWWRenderer::setupGui(){
 }
 
 void ofxWWRenderer::update(){
-	enableFluid = false;
+//	enableFluid = false;
 	if(enableFluid){
 		fluid.update();
 	}

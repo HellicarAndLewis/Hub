@@ -119,9 +119,10 @@ void ofxWWTweetParticleManager::update(){
 	
 	for(int i = tweets.size()-1; i >= 0; i--){
 		//purge dead tweets
-		if(tweets[i].dead){
-			tweets.erase(tweets.begin()+i);
-		}
+		//don't purge tweets this way when flow is on
+//		if(tweets[i].dead){
+//			tweets.erase(tweets.begin()+i);
+//		}
 		
 		//purge offscreen tweets
 		if(tweetsFlowLeftRight){
@@ -353,10 +354,10 @@ void ofxWWTweetParticleManager::updateTweets(){
 	for(int i = 0; i < tweets.size(); i++){
 		ofVec2f forceVector(0,0);
 		if(tweetsFlowLeftRight){
-			forceVector.x += tweetFlowSpeed;
+			forceVector.x += (tweetFlowSpeed + tweets[i].speedAdjust) * (1-tweets[i].selectionWeight);
 		}
 		else{
-			forceVector.y += tweetFlowSpeed;
+			forceVector.y += (tweetFlowSpeed + tweets[i].speedAdjust) * (1-tweets[i].selectionWeight);
 		}
 		//TODO add chaose;
 		tweets[i].force += forceVector;
@@ -492,6 +493,9 @@ ofxWWTweetParticle ofxWWTweetParticleManager::createParticleForTweet(const rtt::
 			tweetParticle.pos = ofVec2f(ofRandom(-20, simulationWidth+20), ofRandom(simulationHeight+10, simulationHeight+100));
 		}
 	}
+	
+	tweetParticle.speedAdjust = ofRandom(-flowChaosScale, flowChaosScale);
+	
 	//tweetParticle.pos = ofVec2f(ofRandom(simulationWidth-wordWrapLength), ofRandom(simulationHeight));
 	tweetParticle.setTweet(tweet);
 	return tweetParticle;
