@@ -27,9 +27,8 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	void setupGui();
 	
 	void update();
-	
+
 	void renderTweets();
-	void renderTweetNodes();
 	void renderSearchTerms();
 
 	void renderCaustics();
@@ -78,6 +77,7 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	float fluidForceScale;
 	float yForceBias;
 
+	
 	float twoLineScaleup;
 	float userNameYOffset;
 	float tweetYOffset;
@@ -95,7 +95,13 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	
 	float searchTermMinDistance;
 	float searchTermMinHoldTime;
+	float searchMinOpacity;
+	float searchTermRepulsionDistance;
+	float searchTermRepulsionAttenuation;
+	float searchTermHandAttractionFactor;
 
+	bool drawSearchDebug;
+	
 	vector<ofxWWTweetParticle> tweets;
 	vector<ofColor> causticColors;
 
@@ -128,6 +134,7 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	
 	float weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet);
 	void updateTweets();
+	void updateSearchTerms();
 	
 	void attemptCausticConnection(ofVec2f pos1, float weight1, ofVec2f pos2, float weight2, float layerOpacity);
 	void setRandomCausticColor(float layerOpacity);
