@@ -9,6 +9,6 @@
     </SliderFloat_Flow_Speed>
     <SliderFloat_Flow_Chaos>
         <name>Flow Chaos</name>
-        <value>3.000000</value>
+        <value>8.600000</value>
     </SliderFloat_Flow_Chaos>
 </controls>

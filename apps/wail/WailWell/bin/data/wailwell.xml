@@ -9,7 +9,7 @@
     <setting id="Draw Blobs" value="true"></setting>
     <setting id="Water Surface Level" value="0.803398073"></setting>
     <setting id="Maximum Water Depth" value="0.969660163"></setting>
-    <setting id="Minimum Blob Size" value="282.000000000"></setting>
+    <setting id="Minimum Blob Size" value="21.000000000"></setting>
     <setting id="Maximum Blob Size" value="579.000000000"></setting>
     <setting id="Blob XY Smoothing" value="0.344660193"></setting>
     <setting id="Blob Z Smoothing" value="0.354368925"></setting>
@@ -18,5 +18,5 @@
     <setting id="Blob x bottom frustrum factor" value="1.781553388"></setting>
     <setting id="Blob y bottom frustrum factor" value="2.121359348"></setting>
     <setting id="Flip X" value="false"></setting>
-    <setting id="Flip Y" value="true"></setting>
+    <setting id="Flip Y" value="false"></setting>
 </settings>

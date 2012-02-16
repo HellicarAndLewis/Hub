@@ -9,7 +9,7 @@
     </SliderFloat_Layer_Barrier_Width>
     <SliderFloat_Touch_Scale>
         <name>Touch Scale</name>
-        <value>1.190000</value>
+        <value>0.972500</value>
     </SliderFloat_Touch_Scale>
     <SliderFloat_Influence_Width>
         <name>Influence Width</name>
@@ -17,6 +17,6 @@
     </SliderFloat_Influence_Width>
     <Toggle_Draw_Touch_Debug>
         <name>Draw Touch Debug</name>
-        <value>0</value>
+        <value>1</value>
     </Toggle_Draw_Touch_Debug>
 </controls>

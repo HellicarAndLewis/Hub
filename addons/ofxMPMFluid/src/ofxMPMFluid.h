@@ -53,11 +53,13 @@ typedef struct {
 	ofVec2f vel;
 } MPMForce;
 
-class ofxMPMFluid {
+class ofxMPMFluid : public ofThread {
   public:
 	ofxMPMFluid();
-
+	~ofxMPMFluid();
+	
 	void setup(int gridX, int gridY, int maxParticles);
+	void threadedFunction();
 	void update();
 	
 	void draw();
@@ -89,7 +91,13 @@ class ofxMPMFluid {
 	bool  bDoObstacles;
 	float smoothing;
 
+	bool wrapHorizontal;
+	bool wrapVertical;
+	
 	int historyLevel; //stores where each particle has been for rendering trails
+	
+	//if not null will be bound as a sample texture
+	ofBaseHasTexture* sampleTexture;
 	
 	vector<ofxMPMParticle*>& getParticles();
 	
@@ -108,4 +116,6 @@ class ofxMPMFluid {
 	vector<ofxMPMObstacle*> obstacles;
 
 	vector<MPMForce> forces;
+	
+	ofVec2f texCoordAtPos(float x, float y);
 };

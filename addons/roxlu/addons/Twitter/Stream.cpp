@@ -184,7 +184,7 @@ bool Stream::update() {
 				connect(connected_url);
 			}
 		}
-		printf("Twitter stream not running...\n");
+//		printf("Twitter stream not running...\n");
 		return false;
 	}
 	else {
@@ -311,7 +311,7 @@ size_t Stream::curlHeaderCallback(char* ptr, size_t size, size_t nmemb, Stream* 
 			oss >> msg >> code >> msg;;
 			if(code == 401) {
 				printf("Error: while connecting to twitter server: %s, code: %lu\n", msg.c_str(), code);
-				exit(0);
+//				exit(0);
 			}
 		}
 	}

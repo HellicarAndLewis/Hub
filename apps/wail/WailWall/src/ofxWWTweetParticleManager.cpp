@@ -16,20 +16,26 @@ ofxWWTweetParticleManager::ofxWWTweetParticleManager()
 	,currentSearchTermIndex(0)
 {
 	maxTweets = 100;
+	tweetSearchEndedTime = 0;
+	isDoingSearch = false;
 }
 
 void ofxWWTweetParticleManager::setup(){
 	// Initialize twitter.	
 	// -------------------
-	twitter.init(4444);
+	cout << "init twitter" << endl;
+//	twitter.init(4444);
 	twitter.addDefaultListener();
 	twitter.addCustomListener(*this);
+	
+	cout << "connect twitter" << endl;
 	
 	if(!twitter.connect()) {
 		printf("Error: cannot connect to twitter stream.\n");
 	}
 	twitter.addListener(this, &ofxWWTweetParticleManager::onNewSearchTerm);
 
+	cout << "adding unused terms" << endl;
 	// Get previously received search terms.
 	// -------------------------------------
 	vector<TwitterSearchTerm*> stored_search_terms;
@@ -46,21 +52,39 @@ void ofxWWTweetParticleManager::setup(){
 	
 	canSelectSearchTerms = false;
 	enableCaustics = true;
+	
+	//fakin' it
+	ofAddListener(ofEvents.keyPressed, this, &ofxWWTweetParticleManager::keyPressed);
+	fakeSearchTerms.push_back("POLITICS");
+	fakeSearchTerms.push_back("ECONOMY");
+	fakeSearchTerms.push_back("BIOLOGY");
+	fakeSearchTerms.push_back("TED");
+	fakeSearchTerms.push_back("DEWARDS");
+	fakeSearchTerms.push_back("TECHNOLOGY");
+	fakeSearchTerms.push_back("SPIRTUALITY");
+	fakeSearchTerms.push_back("CULTURE");
+
+	for(int i = 0; i < fakeSearchTerms.size(); i++){
+		twitter.simulateSearch(fakeSearchTerms[i]);
+	}
+}
+
+void ofxWWTweetParticleManager::keyPressed(ofKeyEventArgs& args) {
+	if(args.key == '!'){
+//		addSearchTerm("no_user", fakeSearchTerms[ofRandom(fakeSearchTerms.size())] );
+	}
 }
 
 void ofxWWTweetParticleManager::setupGui(){
-	
 	
 	webGui.addPage("Caustics");
 	webGui.addToggle("Enable Caustics", enableCaustics);
 	
 	webGui.addPage("Tweet Lifecycle");
-	webGui.addSlider("Tweet Font Size", fontSize, 5, 24);
-	webGui.addSlider("Word Wrap Length", wordWrapLength, 100, 300);
 	webGui.addSlider("Max Tweets", maxTweets, 5, 500);
-	webGui.addSlider("Start Fade Time", startFadeTime, 2, 10);
-	webGui.addSlider("Fade Duration", fadeDuration, 2, 10);
 	webGui.addToggle("Clear Tweets", clearTweets);
+	//webGui.addSlider("Start Fade Time", startFadeTime, 2, 10);
+	//webGui.addSlider("Fade Duration", fadeDuration, 2, 10);
 
 	webGui.addPage("Tweet Animation");
 	webGui.addToggle("Flow Sideways", tweetsFlowLeftRight);
@@ -68,6 +92,8 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Flow Chaos", flowChaosScale, 0, 10);
 	
 	webGui.addPage("Tweet Appearance");
+	webGui.addSlider("Tweet Font Size", fontSize, 5, 24);
+	webGui.addSlider("Word Wrap Length", wordWrapLength, 100, 300);
 	webGui.addSlider("Dot Size", dotSize, 5, 50);
 	webGui.addSlider("Two Line Scale", twoLineScaleup, 1.0, 2.0);
 	webGui.addSlider("User Y Shift", userNameYOffset, -150, 150);
@@ -80,9 +106,11 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Fluid Force Scale", fluidForceScale, 1., 100.);
 	
 	webGui.addPage("Search Terms");
-	webGui.addSlider("Search Term Size", searchTermFontSize, 40, 70);
-	webGui.addSlider("Search Min Dist", searchTermMinDistance, 50, 500);
-	webGui.addSlider("Search Min Hold T", searchTermMinHoldTime, .5, 3.0);
+	webGui.addSlider("Search Font Size", searchTermFontSize, 40, 70);
+	webGui.addSlider("Touch Min Dist", searchTermMinDistance, 50, 500);
+	webGui.addSlider("Touch Min Hold", searchTermMinHoldTime, .5, 3.0);
+	webGui.addSlider("Search Duration", tweetSearchDuration, 2, 15);
+	webGui.addSlider("Search Time Between", tweetSearchMinWaitTime, 1, 20);
 
 	//TODO set up in XML
 	//ONLY CAN HAVE 4 right now
@@ -143,67 +171,84 @@ void ofxWWTweetParticleManager::update(){
 	}
 	
 
-	
 	if(tweets.size() > maxTweets){
 		tweets.resize(maxTweets);
 	}
 	
 //	cout << "can select search term ? " << canSelectSearchTerms << " layer opacity? " << tweetLayerOpacity << " search term selected? " << searchTermSelected << endl;
 	
+	
+	handleSearch();
+	
 	//////////////
-	//IF A USER IS PRESENT HANDLE THEM
-	if(blobsRef->size() > 0){
-		handleTouchSearch();
-	}
-	else{
-		handleTweetSearch();
-	}
-		
-	for(int i = 0; i < searchTerms.size(); i++){
-		searchTerms[i].touchPresent = blobsRef->size() != 0;
-		searchTerms[i].update();
-	}		
+//	//IF A USER IS PRESENT HANDLE THEM
+//	if(blobsRef->size() > 0){
+//		handleTouchSearch();
+//	}
+//	else{
+//		handleTweetSearch();
+//	}
+//		
+//	for(int i = 0; i < searchTerms.size(); i++){
+//		searchTerms[i].touchPresent = blobsRef->size() != 0;
+//		searchTerms[i].update();
+//	}		
 	
 //	if(searchTermSelected){
 	//	updateTweets(searchTweets, 1-tweetLayerOpacity);
 //	}
 	
-	//hand reveal top level tweets
-	for(int i = 0; i < tweets.size(); i++){
-		tweets[i].selectionWeight = 0;
-		map<int,KinectTouch>::iterator it;
-		for(it = blobsRef->begin(); it != blobsRef->end(); it++){
-			if(tweets[i].selectionWeight < 1){
-				ofVec2f touchpoint = ofVec2f(it->second.x*simulationWidth, it->second.y*simulationHeight);
-				float weightBetween = weightBetweenPoints(ofVec2f(it->second.x*simulationWidth, it->second.y*simulationHeight), it->second.size, tweets[i].pos);
-				tweets[i].selectionWeight = MIN(tweets[i].selectionWeight + weightBetween, 1.0);
-			}
+	updateTweets();
+}
+
+void ofxWWTweetParticleManager::handleSearch() {
+	if(isDoingSearch){
+		if(ofGetElapsedTimef() - tweetSearchStartTime > tweetSearchDuration){
+			finishSearch();
+		}
+	}
+	else {
+		if(blobsRef->size() > 0){
+			handleTouchSearch();
+		}
+		else{
+			handleTweetSearch();
 		}
 	}
 	
-	updateTweets();
+	for(int i = 0; i < searchTerms.size(); i++){
+		searchTerms[i].touchPresent = blobsRef->size() != 0;
+		searchTerms[i].update();
+	}
 }
 
 void ofxWWTweetParticleManager::handleTouchSearch() {
 	
-	if(!canSelectSearchTerms){
-		for(int i = 0; i < searchTerms.size(); i++){
-			searchTerms[i].selected = false;
-		}
-		searchTermSelected = false;
-		return;
-	}
-	
-	if(searchTermSelected){
-		return;
-	}
+//	if(!canSelectSearchTerms){
+//		for(int i = 0; i < searchTerms.size(); i++){
+//			searchTerms[i].selected = false;
+//		}
+//		searchTermSelected = false;
+//		return;
+//	}
+//	
+//	if(searchTermSelected){
+//		return;
+//	}
 	
 	bool searchDebug = false;
 	if(searchDebug) cout << "++++++ SEARCH DEBUG QUERY " << endl;
+	
 	//look for a selected search term
 	for(int i = 0; i < searchTerms.size(); i++){
 		
 		if(searchTerms[i].selected){
+			searchForTerm(searchTerms[i]);
+			selectedSearchTermIndex = i;
+			shouldTriggerScreenshot = false;
+			break;
+			
+			/*
 			if(searchDebug) cout << "++++++ SEARCH DEBUG SELECTED SEARCH TERM " << searchTerms[i].term << endl;
 
 			searchTermSelected = true;
@@ -240,10 +285,11 @@ void ofxWWTweetParticleManager::handleTouchSearch() {
 				}
 			}
 			break;
+			*/
 		}
 	}
 	
-	if(!searchTermSelected){	
+	if(!isDoingSearch){	
 		//Update Tweets           
 		for(int i = 0; i < searchTerms.size(); i++){
 			searchTerms[i].touchPresent = false;
@@ -262,50 +308,120 @@ void ofxWWTweetParticleManager::handleTouchSearch() {
 }
 
 void ofxWWTweetParticleManager::handleTweetSearch(){
-	// TODO: maybe add a count member somehere?
-	if(!searchTerms.size()) {
+	
+	if(ofGetElapsedTimef() - tweetSearchEndedTime < tweetSearchMinWaitTime){
 		return;
 	}
 	
-	// When do we need to change to the next search term:
-	// --------------------------------------------------
-	int now = ofGetElapsedTimef();
-	bool change = false;
-	if(shouldChangeSearchTermOn == 0) {
-		shouldChangeSearchTermOn = now + changeSearchTermDelay;
-		change = true;
-	}
-	else if(now > shouldChangeSearchTermOn) {
-		shouldChangeSearchTermOn = now + changeSearchTermDelay;
-		printf("Current search term index: %d\n", currentSearchTermIndex);
-		currentSearchTermIndex = (++currentSearchTermIndex) % searchTerms.size();
-		printf("Next search term index: %d\n", currentSearchTermIndex);
-		change = true;
-	}
-	
-	// When we need to change, make the next search term active, and load tweets.
-	// --------------------------------------------------------------------------
-	if(change) {
-		ofxWWSearchTerm search_term = searchTerms[currentSearchTermIndex];
-		twitter.setSearchTermAsUsed(search_term.user, search_term.term);
-		
-		vector<rtt::Tweet> found_tweets;
-		if(twitter.getTweetsWithSearchTerm(search_term.term, 100000, 100, found_tweets)) {
-			for(int i = 0; i < found_tweets.size(); ++i) {
-				printf("[found] %s\n", found_tweets[i].getText().c_str());
-				// TODO: This is where we need to create or fill a new tweet. @James lets talk about this
+	if(!incomingSearchTerms.empty()){
+		ofxWWSearchTerm term = incomingSearchTerms.front();
+		incomingSearchTerms.pop();
 
-			}
+		searchForTerm( term );
+		shouldTriggerScreenshot = true;
+		selectedSearchTermIndex = searchTerms.size();
+		searchTerms.push_back(term);
+
+	}
+	//DO IDLE MODE SEARCHING	
+	else{
+		//DO IDLE MODE SEARCHING
+		// TODO: maybe add a count member somehere?
+		if(!searchTerms.size()) {
+			return;
+		}
+		
+		// When do we need to change to the next search term:
+		// --------------------------------------------------
+		int now = ofGetElapsedTimef();
+		bool change = false;
+		if(shouldChangeSearchTermOn == 0) {
+			shouldChangeSearchTermOn = now + changeSearchTermDelay;
+			change = true;
+		}
+		else if(now > shouldChangeSearchTermOn) {
+			shouldChangeSearchTermOn = now + changeSearchTermDelay;
+			printf("Current search term index: %d\n", currentSearchTermIndex);
+			currentSearchTermIndex = (++currentSearchTermIndex) % searchTerms.size();
+			printf("Next search term index: %d\n", currentSearchTermIndex);
+			change = true;
+		}
+		
+		// When we need to change, make the next search term active, and load tweets.
+		// --------------------------------------------------------------------------
+		if(change) {
+			searchForTerm( searchTerms[currentSearchTermIndex] );
+			shouldTriggerScreenshot = false;
+			selectedSearchTermIndex = currentSearchTermIndex;
 		}
 	}
 }
-	   
+
+void ofxWWTweetParticleManager::searchForTerm(ofxWWSearchTerm& term){
+	
+	cout << "Searching for " << term.term << " by " << term.user << endl;
+	
+	twitter.setSearchTermAsUsed(term.user, term.term);
+	
+	vector<rtt::Tweet> found_tweets;
+	if(twitter.getTweetsWithSearchTerm(term.term, 100000, 100, found_tweets)) {
+		for(int i = 0; i < found_tweets.size(); ++i) {
+			printf("[found] %s\n", found_tweets[i].getText().c_str());
+			// TODO: This is where we need to create or fill a new tweet. @James lets talk about this
+		}
+	}
+	else {
+		//no tweets, just reclaim some random ones
+
+		for(int t = 0; t < 15; t++){
+			int randomTweet = ofRandom(tweets.size()-1);
+			tweets[randomTweet].isSearchTweet = true;
+			tweets[randomTweet].createdTime = ofGetElapsedTimef() + ofRandom(2);
+			/*
+			tweets[t].isSearchTweet = true;
+			tweets[t].createdTime = ofGetElapsedTimef() + ofRandom(2);
+			 */
+		}
+	}
+	
+	tweetSearchStartTime = ofGetElapsedTimef();
+	isDoingSearch = true;
+
+}
+
+void ofxWWTweetParticleManager::finishSearch(){
+	
+	if(shouldTriggerScreenshot){
+		//TODO: trigger screenshot of current layout
+	}
+	isDoingSearch = false;
+	shouldTriggerScreenshot = false;
+	for(int i = 0; i < searchTerms.size(); i++){
+		searchTerms[i].selected = false;
+	}
+	tweetSearchEndedTime = ofGetElapsedTimef();
+}
+
 float ofxWWTweetParticleManager::weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet){
 	float touchMid = normalizedSize*simulationHeight*touchSizeScale;
 	return ofMap(touch.distance(tweet), touchMid-touchInfluenceFalloff/2., touchMid+touchInfluenceFalloff/2., 1.0, 0.0, true);
 }
 
 void ofxWWTweetParticleManager::updateTweets(){
+	
+	//hand reveal top level tweets
+	for(int i = 0; i < tweets.size(); i++){
+		tweets[i].selectionWeight = 0;
+		map<int,KinectTouch>::iterator it;
+		for(it = blobsRef->begin(); it != blobsRef->end(); it++){
+			if(tweets[i].selectionWeight < 1){
+				ofVec2f touchpoint = ofVec2f(it->second.x*simulationWidth, it->second.y*simulationHeight);
+				float weightBetween = weightBetweenPoints(ofVec2f(it->second.x*simulationWidth, it->second.y*simulationHeight), it->second.size, tweets[i].pos);
+				tweets[i].selectionWeight = MIN(tweets[i].selectionWeight + weightBetween, 1.0);
+			}
+		}
+	}
+	
 	
 	///ANIMATE tweet
 	//apply wall forces
@@ -397,7 +513,7 @@ void ofxWWTweetParticleManager::renderSearchTerms(){
 	}
 	
 	for(int i = 0; i < searchTerms.size(); i++){
-		if( !searchTermSelected || (searchTermSelected && i == selectedSearchTerm) ){
+		if( !isDoingSearch || (isDoingSearch && i == selectedSearchTermIndex) ){
 			searchTerms[i].draw();
 		}
 	}	
@@ -422,11 +538,11 @@ void ofxWWTweetParticleManager::renderCaustics(){
 		}	
 	}
 	
-	if(searchTermSelected){
+	if(isDoingSearch){
 		for(int i = 0; i < tweets.size(); i++){
 			if(tweets[i].isSearchTweet){
 //				cout << "++++++ DRAWING CAUSTICS BETWEEN " << tweets[i].pos << " " << searchTerms[selectedSearchTerm].pos << endl;
-				attemptCausticConnection(tweets[i].pos, 1.0, searchTerms[selectedSearchTerm].pos, 1.0, 1-tweetLayerOpacity);
+				attemptCausticConnection(tweets[i].pos, 1.0, searchTerms[selectedSearchTermIndex].pos, 1.0, 1-tweetLayerOpacity);
 			}
 		}
 	}
@@ -506,26 +622,29 @@ void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
 }
 
 void ofxWWTweetParticleManager::addSearchTerm(const string& user, const string& term) {
+	cout << "adding search term " << term << endl;
+//	int tries = 0;
+//	ofVec2f pos;
+//	bool validPosFound;
+//	do {
+//		validPosFound = true;
+//		pos = ofVec2f(ofRandom(simulationWidth-wordWrapLength/2.), ofRandom(simulationHeight));
+//		for(int i = 0; i < searchTerms.size(); i++){
+//			if (searchTerm.pos.distance(pos) < 400) {
+//				validPosFound = false;
+//				break;
+//			}
+//		}
+//	} while (!validPosFound && tries++ < 100);
+
 	ofxWWSearchTerm searchTerm;
-	int tries = 0;
-	ofVec2f pos;
-	bool validPosFound;
-	do {
-		validPosFound = true;
-		pos = ofVec2f(ofRandom(simulationWidth-wordWrapLength/2.), ofRandom(simulationHeight));
-		for(int i = 0; i < searchTerms.size(); i++){
-			if (searchTerm.pos.distance(pos) < 400) {
-				validPosFound = false;
-				break;
-			}
-		}
-	} while (!validPosFound && tries++ < 100);
-	
+	searchTerm.pos = ofVec2f(ofRandom(simulationWidth-wordWrapLength/2.), ofRandom(simulationHeight));
 	searchTerm.manager = this;
 	searchTerm.term = term;
 	searchTerm.user = user;
-	searchTerm.pos = pos;
-	searchTerms.push_back( searchTerm );	
+	incomingSearchTerms.push(searchTerm);
+	
+	//searchTerms.push_back( searchTerm );	
 	
 	// @todo using ofSendMessage to test screenshots
 	//ofSendMessage("take_screenshot");

@@ -31,9 +31,6 @@ void ofxWWSearchTerm::update(){
 	else{
 		targetOpacity = 1 - manager->tweetLayerOpacity;
 		float distance = closestPoint.distance(pos);
-//		if(term == "OPENFRAMEWORKS"){
-//			cout << "closest distance is " << distance << endl;
-//		}
 		
 		if(!highlighted && distance < manager->searchTermMinDistance){
 			highlighted = true;

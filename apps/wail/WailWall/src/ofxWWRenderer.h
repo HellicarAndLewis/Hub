@@ -37,6 +37,7 @@ class ofxWWRenderer: public KinectTouchListener {
 	float fakeZLevel;
 	
 	ofxWWTweetParticleManager& getTweetManager(); // roxlu 02/07
+	void stopFluidThread();
 	
   protected:
 	int targetWidth;
@@ -85,10 +86,8 @@ class ofxWWRenderer: public KinectTouchListener {
 	ofShader warpShader;
 	float warpAmount;
 	bool justDrawWarpTexture;
-	
-	
-	ofVec2f texCoordAtPos(ofImage& image, float x, float y);
-
+		
+	//ofVec2f texCoordAtPos(ofImage& image, float x, float y);
 
 	//used as a map into the fluid sim
 	ofImage colorField;

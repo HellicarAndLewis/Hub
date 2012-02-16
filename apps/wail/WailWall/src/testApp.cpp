@@ -46,27 +46,22 @@ void testApp::setup(){
 	screenManager.loadScreens(screenSettingsFile);
 
 	webGui.addToggle("Show Preview Rects", previewScreenLayout);
+
 	renderer.blobs = &blobs;
+	cout << "setting up renderer" << endl;
 	renderer.setup(screenManager.sourceRect.width, screenManager.sourceRect.height);	
 	renderer.setupGui();
 
-	//JG 2/6/12
-	//Disabled for now since we are hardcoding the screen values
-//	gui.addPage("Screen Settings");
-//	gui.addToggle("Generate Screen Layout", generateScreens);
-//	gui.addToggle("Load Screens File", shouldLoadScreens);
-//	gui.addToggle("Save Screens File", shouldSaveScreens);
-	
 	// disable for now
 	//webGui.startServer();
 	webGui.loadFromXML();
 	webGui.setAutoSave(true);
-	
 
 }
 
 void testApp::exit() {
 	//webGui.stopServer();
+	renderer.stopFluidThread();
 }
 
 //--------------------------------------------------------------
@@ -76,36 +71,33 @@ void testApp::update(){
 	renderer.update();
 	renderer.render();
 	
-	if(generateScreens){
-		//danger zone for hand written files
-//		generateScreens = false;
-//		screenManager.generateScreens(5, 3);
-//		screenManager.saveScreens(screenSettingsFile);
-	}
-	
-	if(shouldLoadScreens){
-		shouldLoadScreens = false;
-		screenManager.loadScreens(screenSettingsFile);
-	}
-	
-	if(shouldSaveScreens){
-		//danger zone for hand written files
-//		shouldSaveScreens = false;
-//		screenManager.saveScreens(screenSettingsFile);
-	}	
+//	if(generateScreens){
+//		//danger zone for hand written files
+////		generateScreens = false;
+////		screenManager.generateScreens(5, 3);
+////		screenManager.saveScreens(screenSettingsFile);
+//	}
+//	
+//	if(shouldLoadScreens){
+//		shouldLoadScreens = false;
+//		screenManager.loadScreens(screenSettingsFile);
+//	}
+//	
+//	if(shouldSaveScreens){
+//		//danger zone for hand written files
+////		shouldSaveScreens = false;
+////		screenManager.saveScreens(screenSettingsFile);
+//	}	
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
 	// roxlu 02/07
-	ofSetFullscreen(false); 
+	ofSetFullscreen(true); 
 	
 	ofBackground(0);
 	ofRectangle renderPreview = screenManager.getRenderPreviewRect();
 	renderer.getFbo().getTextureReference().draw(renderPreview);
-	if(previewScreenLayout){
-//		screenManager.renderLayout();
-	}
 	
 	renderer.getFbo().getTextureReference().bind();
 	screenManager.renderScreens();

@@ -1,4 +1,12 @@
 <controls>
+    <SliderFloat_Tweet_Font_Size>
+        <name>Tweet Font Size</name>
+        <value>12.885000</value>
+    </SliderFloat_Tweet_Font_Size>
+    <SliderFloat_Word_Wrap_Length>
+        <name>Word Wrap Length</name>
+        <value>190.000000</value>
+    </SliderFloat_Word_Wrap_Length>
     <SliderFloat_Dot_Size>
         <name>Dot Size</name>
         <value>40.549999</value>

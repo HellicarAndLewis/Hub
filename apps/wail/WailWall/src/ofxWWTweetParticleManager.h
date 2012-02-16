@@ -96,16 +96,24 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	int shouldChangeSearchTermOn;	// when do show the next search term.
 	int changeSearchTermDelay; 		// after how many seconds do go to the next search term in queue.
 	int currentSearchTermIndex;
+	
+	void keyPressed(ofKeyEventArgs& args); //JG just used for simulating searches
+	
   protected:
 	TwitterApp twitter;
+	
+	vector<string> fakeSearchTerms;	
+	queue<ofxWWSearchTerm> incomingSearchTerms;
 	vector<ofxWWSearchTerm> searchTerms;
 	
+//	bool searchTermSelected;
+	int selectedSearchTermIndex;
 	
-	bool searchTermSelected;
-	int selectedSearchTerm;
-	
+	void handleSearch();
 	void handleTouchSearch();
-	void handleTweetSearch();
+	void handleTweetSearch();	
+	void searchForTerm(ofxWWSearchTerm& term);	
+	void finishSearch();
 	
 	float weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet);
 	void updateTweets();
@@ -116,4 +124,11 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	void addSearchTerm(const string& user, const string& term);
 	ofxWWTweetParticle createParticleForTweet(const rtt::Tweet& tweet);
 	
+	float tweetSearchMinWaitTime;
+	float tweetSearchDuration;
+	float tweetSearchStartTime;
+	float tweetSearchEndedTime;
+	bool isDoingSearch;
+	bool shouldTriggerScreenshot;
+
 };

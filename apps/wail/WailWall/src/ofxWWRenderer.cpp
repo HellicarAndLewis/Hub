@@ -36,15 +36,17 @@ void ofxWWRenderer::setup(int width, int height){
 	ofClear(0);
 	accumulator.end();
 	
-	fluid.setup(width/20.0,height/2.0,100000);
-	fluid.scaleFactor = 6.4;
+	fluid.setup(width/20.0,height/20.0,100000);
+//	fluid.scaleFactor = 6.4;
 	tweets.fluidRef = &fluid;
 	tweets.blobsRef = blobs;
 	
 	colorField.loadImage("images/color_palette.png");
+	fluid.sampleTexture = &colorField;
 	layerOneBackground.loadImage("images/layerOneBG.png");
 	layerTwoBackground.loadImage("images/layerTwoBG.png");
 
+	
 	layer1Opacity = 1.0;
 	
 	permutationImage.loadImage("shaders/permtexture.png");
@@ -67,7 +69,7 @@ void ofxWWRenderer::setup(int width, int height){
 	enableFluid = false;
 	justDrawWarpTexture = false;
 
-	
+//	cout << "setting up tweets" << endl;
 	tweets.setup();
 }
 
@@ -115,6 +117,7 @@ void ofxWWRenderer::setupGui(){
 
 void ofxWWRenderer::update(){
 //	enableFluid = false;
+	enableFluid = true;
 	if(enableFluid){
 		fluid.update();
 	}
@@ -277,34 +280,37 @@ void ofxWWRenderer::renderDynamics(){
 	blurShader.end();
 
 	if(enableFluid){
-		ofPushMatrix();
-		ofTranslate(fluid.offsetX, fluid.offsetY);
-		ofScale(fluid.scaleFactor, fluid.scaleFactor, 1);
-		vector<ofVec2f> verts;
-		vector<ofVec2f> texcoords;
-		vector<ofVec3f> colors;
-		for(int i = 0; i < fluid.numParticles; i++){
-			ofxMPMParticle* p = fluid.getParticles()[i];
-			ofVec2f pos = ofVec2f(p->x, p->y);
-			verts.push_back(pos);
-			verts.push_back(ofVec2f(p->x - p->u, p->y - p->v));
-			texcoords.push_back( texCoordAtPos(colorField, p->x, p->y) );
-			texcoords.push_back( texCoordAtPos(colorField, p->x - p->u, p->y - p->v) );
-		}
 		
-		colorField.getTextureReference().bind();
+		fluid.draw(0,0,targetWidth,targetHeight);
 		
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glVertexPointer(2, GL_FLOAT, 0, &(verts[0].x));
-		glTexCoordPointer(2, GL_FLOAT, 0, &(texcoords[0].x));
-		glDrawArrays(GL_LINES, 0, verts.size());
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glDisableClientState(GL_VERTEX_ARRAY);
-		
-		colorField.getTextureReference().unbind();
-		
-		ofPopMatrix();
+//		ofPushMatrix();
+//		ofTranslate(fluid.offsetX, fluid.offsetY);
+//		ofScale(fluid.scaleFactor, fluid.scaleFactor, 1);
+//		vector<ofVec2f> verts;
+//		vector<ofVec2f> texcoords;
+//		vector<ofVec3f> colors;
+//		for(int i = 0; i < fluid.numParticles; i++){
+//			ofxMPMParticle* p = fluid.getParticles()[i];
+//			ofVec2f pos = ofVec2f(p->x, p->y);
+//			verts.push_back(pos);
+//			verts.push_back(ofVec2f(p->x - p->u, p->y - p->v));
+//			texcoords.push_back( texCoordAtPos(colorField, p->x, p->y) );
+//			texcoords.push_back( texCoordAtPos(colorField, p->x - p->u, p->y - p->v) );
+//		}
+//		
+//		colorField.getTextureReference().bind();
+//		
+//		glEnableClientState(GL_VERTEX_ARRAY);
+//		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+//		glVertexPointer(2, GL_FLOAT, 0, &(verts[0].x));
+//		glTexCoordPointer(2, GL_FLOAT, 0, &(texcoords[0].x));
+//		glDrawArrays(GL_LINES, 0, verts.size());
+//		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+//		glDisableClientState(GL_VERTEX_ARRAY);
+//		
+//		colorField.getTextureReference().unbind();
+//		
+//		ofPopMatrix();
 	}
 	
 	
@@ -406,11 +412,10 @@ void ofxWWRenderer::touchUp(const KinectTouch &touch) {
 //	tweets.resetTouches();
 }
 
-ofVec2f ofxWWRenderer::texCoordAtPos(ofImage& image, float x, float y){
-	return ofVec2f(ofMap(x, 0, fluid.getGridSizeX(), 0, image.getWidth()),
-				   ofMap(y, 0, fluid.getGridSizeY(), 0, image.getHeight()));
-}
-
 ofxWWTweetParticleManager& ofxWWRenderer::getTweetManager() {
 	return tweets;
+}
+
+void ofxWWRenderer::stopFluidThread(){
+	fluid.stopThread(true);
 }

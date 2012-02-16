@@ -1,15 +1,15 @@
 <controls>
     <Toggle_Enable_Fluid>
         <name>Enable Fluid</name>
-        <value>0</value>
+        <value>1</value>
     </Toggle_Enable_Fluid>
     <SliderFloat_Force_Scale>
         <name>Force Scale</name>
-        <value>167.164993</value>
+        <value>130.349991</value>
     </SliderFloat_Force_Scale>
     <SliderFloat_Zoom>
         <name>Zoom</name>
-        <value>20.000000</value>
+        <value>13.285000</value>
     </SliderFloat_Zoom>
     <SliderFloat_Offset_X>
         <name>Offset X</name>
@@ -21,11 +21,11 @@
     </SliderFloat_Offset_Y>
     <SliderInt_Particles>
         <name>Particles</name>
-        <value>17830</value>
+        <value>33175</value>
     </SliderInt_Particles>
     <SliderFloat_Density>
         <name>Density</name>
-        <value>1.800000</value>
+        <value>0.750000</value>
     </SliderFloat_Density>
     <SliderFloat_Stiffness>
         <name>Stiffness</name>

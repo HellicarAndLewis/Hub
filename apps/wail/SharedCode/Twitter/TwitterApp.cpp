@@ -33,7 +33,7 @@ void TwitterApp::initTwitter() {
 	//string token_file = ofToDataPath("twitter_roxlu.txt", true);
 	//string token_file = ofToDataPath("twitter_roxlutest.txt", true);
 	string token_file = ofToDataPath("twitter_dewarshub.txt", true);
-
+	//string token_file = ofToDataPath("twitter.txt", true);
 	if(!twitter.loadTokens(token_file)) {
         string auth_url;
         twitter.requestToken(auth_url);
