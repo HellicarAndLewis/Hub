@@ -63,6 +63,7 @@
 		EAC8153714D6D82600595518 /* ofxCvCoordWarping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAC8152E14D6D82600595518 /* ofxCvCoordWarping.cpp */; };
 		EAC8153914D6D82600595518 /* ofxCvOpticalFlowLK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAC8153214D6D82600595518 /* ofxCvOpticalFlowLK.cpp */; };
 		EAF5F01B14ED5D610041A5BE /* ofxKinectInpainter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAF5F01214ED5D610041A5BE /* ofxKinectInpainter.cpp */; };
+		EAF5F02414ED73040041A5BE /* geomutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAF5F02214ED73040041A5BE /* geomutils.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -346,6 +347,8 @@
 		EAC8153414D6D82600595518 /* ofxCvTrackedBlob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCvTrackedBlob.h; sourceTree = "<group>"; };
 		EAF5F01214ED5D610041A5BE /* ofxKinectInpainter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxKinectInpainter.cpp; sourceTree = "<group>"; };
 		EAF5F01314ED5D610041A5BE /* ofxKinectInpainter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxKinectInpainter.h; sourceTree = "<group>"; };
+		EAF5F02214ED73040041A5BE /* geomutils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = geomutils.cpp; sourceTree = "<group>"; };
+		EAF5F02314ED73040041A5BE /* geomutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geomutils.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -451,6 +454,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				EAF5F02214ED73040041A5BE /* geomutils.cpp */,
+				EAF5F02314ED73040041A5BE /* geomutils.h */,
 				EAB60DB214D99D5700AF3F6F /* contourutils.cpp */,
 				EAB60DB314D99D5700AF3F6F /* contourutils.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
@@ -1393,6 +1398,7 @@
 				EAB60DB414D99D5700AF3F6F /* contourutils.cpp in Sources */,
 				EA96600914E0037D00656E58 /* testAppVision.cpp in Sources */,
 				EAF5F01B14ED5D610041A5BE /* ofxKinectInpainter.cpp in Sources */,
+				EAF5F02414ED73040041A5BE /* geomutils.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

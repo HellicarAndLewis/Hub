@@ -6,6 +6,7 @@
 
 #include "testApp.h"
 #include "contourutils.h"
+#include "geomutils.h"
 
 float lastVisionCalculationDuration = 0;
 
@@ -48,15 +49,19 @@ void testApp::normalizeBlobCoords(ofVec3f &blob) {
 	
 	float scaleFactorX = ofMap(blob.z, 0, 1, xScaleTop, xScaleBottom);
 	float scaleFactorY = ofMap(blob.z, 0, 1, yScaleTop, yScaleBottom);
-	
+	ofVec2f normCentre = centre/ofVec2f(KINECT_WIDTH, KINECT_HEIGHT);
 	// scale out from the centre
-	ofVec2f newCoord = ofVec2f(blob.x, blob.y) - ofVec2f(0.5, 0.5);
+	ofVec2f newCoord = ofVec2f(blob.x, blob.y) - normCentre;
 	newCoord *= ofVec2f(scaleFactorX, scaleFactorY);
 	
-	blob.x =  0.5 + newCoord.x;//*(flipX?-1:1);
-	blob.y =  0.5 + newCoord.y;//*(flipY?-1:1);
-	
+	blob.x =  normCentre.x + newCoord.x;//*(flipX?-1:1);
+	blob.y =  normCentre.y+ newCoord.y;//*(flipY?-1:1);
 	// z is already scaled
+	
+	// clamp em
+	blob.x = ofClamp(blob.x, 0, 1);
+	blob.y = ofClamp(blob.y, 0, 1);
+	
 }
 
 
@@ -122,37 +127,32 @@ void testApp::blobOff( int x, int y, int id, int order ) {
 	soundOsc.sendMessage(msg);
 }
 
+void mergeBlobIntoBlob(ofxCvBlob &blob, const ofxCvBlob &dinner) {
+	// merge points
+	for(int i = 0; i < dinner.nPts; i++) {
+		blob.pts.push_back(dinner.pts[i]);
+	}
+	// merge boundingRects
+	blob.boundingRect = tricks::math::combineRects(blob.boundingRect, dinner.boundingRect);
+	
+	// adjust centroid
+	blob.centroid = blob.boundingRect.getCenter();
+}
 
 void testApp::doVision() {
 	float startTime = ofGetElapsedTimef();
-	unsigned char img[KINECT_WIDTH*KINECT_HEIGHT];
-	unsigned char *distPix = kinect.getDepthPixels();
-	
-	
-	depthImg.setFromPixels(distPix,KINECT_WIDTH,KINECT_HEIGHT);
-	if(doInpainting) {
-//		printf("Inpainting\n");
-		inpainter.inpaint(depthImg);	
-	}
-	distPix = depthImg.getPixels();
-	
-	float mwd = maxWaterDepth*255.f;
-	float wt = waterThreshold*255.f;
-	if(wt==mwd) wt = mwd-1; // div-by-zero
+	float img[KINECT_WIDTH*KINECT_HEIGHT];
+	float *distPix = kinect.getDistancePixels();
 	for(int i = 0; i < KINECT_WIDTH*KINECT_HEIGHT; i++) {
-		img[i] = ofMap(distPix[i], mwd, wt, 255, 0, true);
-		if(img[i]>=255) img[i] = 0;
+		img[i] = ofMap(ofMap(distPix[i], 500, 4000, 1, 0), maxWaterDepth, waterThreshold, 1, 0);
+		if(img[i]>1) img[i] = 0;
 		if(img[i]<0) img[i] = 0;
 	}
-	
-	
+	depthImg.setFromPixels(img,KINECT_WIDTH,KINECT_HEIGHT);
 	
 	if(flipX || flipY) depthImg.mirror(flipY, flipX);
 	
-
-	
-	rangeScaledImg.setFromPixels(img, KINECT_WIDTH, KINECT_HEIGHT);
-
+	rangeScaledImg = depthImg;
 	
 	for(int i = 0; i < blurIterations; i++) {
 		rangeScaledImg.blur(2*blurSize+1);
@@ -179,13 +179,13 @@ void testApp::doVision() {
 	}
 	
 	
-	unsigned char *fgPix = rangeScaledImg.getPixels();//AsFloats();
-	unsigned char *bgPix = bgImg.getPixels();//AsFloats();
+	float *fgPix = rangeScaledImg.getPixelsAsFloats();
+	float *bgPix = bgImg.getPixelsAsFloats();
 	
 	int numPix = KINECT_WIDTH * KINECT_HEIGHT;
-	int bh = (float)backgroundHysteresis*255;
+	
 	for(int i = 0; i < numPix; i++) {
-		if(fgPix[i]<=bgPix[i]+bh) {
+		if(fgPix[i]<=bgPix[i]+backgroundHysteresis) {
 			fgPix[i] = 0;
 		}
 	}
@@ -235,7 +235,7 @@ void testApp::doVision() {
 																				contourFinder.blobs[j].pts, 3);
 				
 				// find which one is closest to any other blob and delete the other one
-				if(dist<10) {
+				if(dist<20) {
 					float distToI = FLT_MAX;
 					float distToJ = FLT_MAX;
 					for(map<int,Blob>::iterator it = blobs.begin(); it!=blobs.end(); it++) {
@@ -244,11 +244,14 @@ void testApp::doVision() {
 						distToJ = MIN(distToJ, (*it).second.distanceSquared(ofVec2f(contourFinder.blobs[j].centroid)));
 					}
 					if(distToI<distToJ) {
-						// delete the jth one
+						// merge the jth into the ith, and delete the jth one
+						mergeBlobIntoBlob(contourFinder.blobs[i], contourFinder.blobs[j]);
 						contourFinder.blobs.erase(contourFinder.blobs.begin() + j);
 						j--;
 					} else {
-						// delete the ith one
+						
+						// merge the ith into the jth, and delete the ith one
+						mergeBlobIntoBlob(contourFinder.blobs[j], contourFinder.blobs[i]);
 						contourFinder.blobs.erase(contourFinder.blobs.begin() + i);
 						i--;
 						break;

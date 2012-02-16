@@ -6,7 +6,6 @@
 #include "ofxOsc.h"
 #include "xmlgui/container/SimpleGui.h"
 #include "ofxCvBlobTracker.h"
-#include "ofxKinectInpainter.h"
 
 class Blob: public ofVec3f {
 public:
@@ -49,13 +48,10 @@ public:
 	
 	void setupVision();
 	ofxKinect kinect;
-	ofxKinectInpainter inpainter;
-	
-	ofxCvGrayscaleImage depthImg;
-	ofxCvGrayscaleImage rangeScaledImg;
-	ofxCvGrayscaleImage maskedImg;
-	ofxCvGrayscaleImage bgImg;
-	
+	ofxCvFloatImage depthImg;
+	ofxCvFloatImage rangeScaledImg;
+	ofxCvFloatImage maskedImg;
+	ofxCvFloatImage bgImg;
 	ofxCvContourFinder contourFinder;
 	ofxCvBlobTracker blobTracker;
 	
@@ -69,6 +65,7 @@ public:
 	
 	static const int NUM_MASK_POINTS = 4;
 	ofVec2f mask[NUM_MASK_POINTS];
+	ofVec2f centre;
 	ofVec2f *dragger;
 	void setupMask();
 	void saveMask();
@@ -77,7 +74,7 @@ public:
 	float minBlobSize;
 	float maxBlobSize;
 	
-	bool doInpainting;
+	
 	// callbacks for blob listener
 	void blobOn( int x, int y, int id, int order );
     void blobMoved( int x, int y, int id, int order );
