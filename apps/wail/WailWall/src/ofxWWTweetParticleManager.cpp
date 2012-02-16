@@ -74,6 +74,12 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	
 	// test pbo
 	glGenBuffers(1,&pbo);
+	glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo);
+	
+	int w = renderer->getFbo().getWidth();
+	int h = renderer->getFbo().getHeight();
+	int size = w * h * 4;
+	glBufferData(GL_PIXEL_PACK_BUFFER, size, NULL, GL_STATIC_READ);
 
 }
 
@@ -455,13 +461,23 @@ void ofxWWTweetParticleManager::addCurrentRenderToScreenshotQueue() {
 		// pretty sure we can do this better
 		ofPixels pixels;
 		
-		renderer->getFbo().bind();
-		glReadPixels(0, 0, ofGetWidth(), ofGetHeight(), GL_BGRA, GL_UNSIGNED_BYTE, 0);
+		renderer->getFbo().getTextureReference().bind();
+		glReadPixels(0, 0, renderer->getFbo().getWidth(), renderer->getFbo().getHeight(), GL_BGRA, GL_UNSIGNED_BYTE, 0);
 		GLubyte* ptr = (GLubyte*)glMapBuffer(GL_PIXEL_PACK_BUFFER_ARB,GL_READ_ONLY);
+		
+		if(ptr) {
+			printf("XXXXXXXXXXX \n");
+//			ofPixels pix;
+//			pix.setFromPixels(ptr, renderer->getFbo().getWidth(), renderer->getFbo().getHeight(), OF_IMAGE_COLOR_ALPHA);
+//			ofImage img;
+//			img.setFromPixels(pix);
+//			img.saveImage("tester.jpg");
+			glUnmapBuffer(GL_PIXEL_PACK_BUFFER);			
+		}
 		//renderer->getFbo().readToPixels(pixels);
 		twitter.writeScreenshot(filepath, "roxlu", pixels);
 		int end = ofGetElapsedTimeMillis();
-		glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
+
 		ofPixels pix;
 		pix.setFromPixels(ptr, ofGetWidth(), ofGetHeight(), OF_IMAGE_COLOR_ALPHA);
 
