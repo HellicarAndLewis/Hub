@@ -1,15 +1,16 @@
 <settings>
     <setting id="View" value="0"></setting>
-    <setting id="Blur Size" value="3.000000000"></setting>
-    <setting id="Blur Iterations" value="7.000000000"></setting>
+    <setting id="Blur Size" value="5.000000000"></setting>
+    <setting id="Blur Iterations" value="5.000000000"></setting>
     <setting id="Erode Image" value="true"></setting>
     <setting id="Dilate Image" value="true"></setting>
+    <setting id="Do Inpainting" value="true"></setting>
     <setting id="Accumulate Background" value=""></setting>
     <setting id="Background Hysteresis" value="0.093689322"></setting>
     <setting id="Draw Blobs" value="true"></setting>
-    <setting id="Water Surface Level" value="0.803398073"></setting>
-    <setting id="Maximum Water Depth" value="0.969660163"></setting>
-    <setting id="Minimum Blob Size" value="21.000000000"></setting>
+    <setting id="Water Surface Level" value="0.938106775"></setting>
+    <setting id="Maximum Water Depth" value="0.998786390"></setting>
+    <setting id="Minimum Blob Size" value="22.000000000"></setting>
     <setting id="Maximum Blob Size" value="579.000000000"></setting>
     <setting id="Blob XY Smoothing" value="0.344660193"></setting>
     <setting id="Blob Z Smoothing" value="0.354368925"></setting>

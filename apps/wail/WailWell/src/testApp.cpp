@@ -17,7 +17,7 @@ void testApp::setup(){
 	yScaleBottom = 1;
 	flipX = false;
 	flipY = false;
-	
+	doInpainting = false;
 	viewMode = VIEWMODE_RAW;
 	wallOsc.setup("localhost", 1234);
 	soundOsc.setup("localhost", 2468);
@@ -38,7 +38,8 @@ void testApp::setup(){
 	
 	
 	
-	
+	inpainter.setup(640, 480, 8);
+	inpainter.setInpaintingRadius(10);
 	setupVision();
 	
 	
@@ -77,6 +78,7 @@ void testApp::setupGui() {
 	gui.addSlider("Blur Iterations", blurIterations, 0, 10)->stepped = true;
 	gui.addToggle("Erode Image", erode);
 	gui.addToggle("Dilate Image", dilate);
+	gui.addToggle("Do Inpainting", doInpainting);
 	gui.addPushButton("Accumulate Background")->width = 150;
 	gui.addSlider("Background Hysteresis", backgroundHysteresis, 0, 0.1);
 	gui.addColumn();

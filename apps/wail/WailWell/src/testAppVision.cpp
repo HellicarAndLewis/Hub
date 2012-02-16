@@ -125,18 +125,34 @@ void testApp::blobOff( int x, int y, int id, int order ) {
 
 void testApp::doVision() {
 	float startTime = ofGetElapsedTimef();
-	float img[KINECT_WIDTH*KINECT_HEIGHT];
-	float *distPix = kinect.getDistancePixels();
+	unsigned char img[KINECT_WIDTH*KINECT_HEIGHT];
+	unsigned char *distPix = kinect.getDepthPixels();
+	
+	
+	depthImg.setFromPixels(distPix,KINECT_WIDTH,KINECT_HEIGHT);
+	if(doInpainting) {
+//		printf("Inpainting\n");
+		inpainter.inpaint(depthImg);	
+	}
+	distPix = depthImg.getPixels();
+	
+	float mwd = maxWaterDepth*255.f;
+	float wt = waterThreshold*255.f;
+	if(wt==mwd) wt = mwd-1; // div-by-zero
 	for(int i = 0; i < KINECT_WIDTH*KINECT_HEIGHT; i++) {
-		img[i] = ofMap(ofMap(distPix[i], 500, 4000, 1, 0), maxWaterDepth, waterThreshold, 1, 0);
-		if(img[i]>1) img[i] = 0;
+		img[i] = ofMap(distPix[i], mwd, wt, 255, 0, true);
+		if(img[i]>=255) img[i] = 0;
 		if(img[i]<0) img[i] = 0;
 	}
-	depthImg.setFromPixels(img,KINECT_WIDTH,KINECT_HEIGHT);
+	
+	
 	
 	if(flipX || flipY) depthImg.mirror(flipY, flipX);
 	
-	rangeScaledImg = depthImg;
+
+	
+	rangeScaledImg.setFromPixels(img, KINECT_WIDTH, KINECT_HEIGHT);
+
 	
 	for(int i = 0; i < blurIterations; i++) {
 		rangeScaledImg.blur(2*blurSize+1);
@@ -163,13 +179,13 @@ void testApp::doVision() {
 	}
 	
 	
-	float *fgPix = rangeScaledImg.getPixelsAsFloats();
-	float *bgPix = bgImg.getPixelsAsFloats();
+	unsigned char *fgPix = rangeScaledImg.getPixels();//AsFloats();
+	unsigned char *bgPix = bgImg.getPixels();//AsFloats();
 	
 	int numPix = KINECT_WIDTH * KINECT_HEIGHT;
-	
+	int bh = (float)backgroundHysteresis*255;
 	for(int i = 0; i < numPix; i++) {
-		if(fgPix[i]<=bgPix[i]+backgroundHysteresis) {
+		if(fgPix[i]<=bgPix[i]+bh) {
 			fgPix[i] = 0;
 		}
 	}
