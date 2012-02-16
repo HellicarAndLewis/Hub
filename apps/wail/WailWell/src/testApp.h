@@ -65,6 +65,7 @@ public:
 	
 	static const int NUM_MASK_POINTS = 4;
 	ofVec2f mask[NUM_MASK_POINTS];
+	ofVec2f centre;
 	ofVec2f *dragger;
 	void setupMask();
 	void saveMask();

@@ -62,6 +62,8 @@
 		EAC8153614D6D82600595518 /* ofxCvBlobTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAC8152B14D6D82600595518 /* ofxCvBlobTracker.cpp */; };
 		EAC8153714D6D82600595518 /* ofxCvCoordWarping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAC8152E14D6D82600595518 /* ofxCvCoordWarping.cpp */; };
 		EAC8153914D6D82600595518 /* ofxCvOpticalFlowLK.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAC8153214D6D82600595518 /* ofxCvOpticalFlowLK.cpp */; };
+		EAF5F01B14ED5D610041A5BE /* ofxKinectInpainter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAF5F01214ED5D610041A5BE /* ofxKinectInpainter.cpp */; };
+		EAF5F02414ED73040041A5BE /* geomutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAF5F02214ED73040041A5BE /* geomutils.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -343,6 +345,10 @@
 		EAC8153214D6D82600595518 /* ofxCvOpticalFlowLK.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCvOpticalFlowLK.cpp; sourceTree = "<group>"; };
 		EAC8153314D6D82600595518 /* ofxCvOpticalFlowLK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCvOpticalFlowLK.h; sourceTree = "<group>"; };
 		EAC8153414D6D82600595518 /* ofxCvTrackedBlob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCvTrackedBlob.h; sourceTree = "<group>"; };
+		EAF5F01214ED5D610041A5BE /* ofxKinectInpainter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxKinectInpainter.cpp; sourceTree = "<group>"; };
+		EAF5F01314ED5D610041A5BE /* ofxKinectInpainter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxKinectInpainter.h; sourceTree = "<group>"; };
+		EAF5F02214ED73040041A5BE /* geomutils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = geomutils.cpp; sourceTree = "<group>"; };
+		EAF5F02314ED73040041A5BE /* geomutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geomutils.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -377,6 +383,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				EAF5F00214ED5D610041A5BE /* ofxKinectInpainter */,
 				EA4CBCB114D6AD1500684485 /* xmlgui */,
 				EA8E87F814C4967B00940115 /* ofxOpenCv */,
 				EAC8152714D6D82600595518 /* ofxOpenCVExtensions */,
@@ -447,6 +454,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				EAF5F02214ED73040041A5BE /* geomutils.cpp */,
+				EAF5F02314ED73040041A5BE /* geomutils.h */,
 				EAB60DB214D99D5700AF3F6F /* contourutils.cpp */,
 				EAB60DB314D99D5700AF3F6F /* contourutils.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
@@ -1250,6 +1259,24 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		EAF5F00214ED5D610041A5BE /* ofxKinectInpainter */ = {
+			isa = PBXGroup;
+			children = (
+				EAF5F01114ED5D610041A5BE /* src */,
+			);
+			name = ofxKinectInpainter;
+			path = ../../../addons/ofxKinectInpainter;
+			sourceTree = "<group>";
+		};
+		EAF5F01114ED5D610041A5BE /* src */ = {
+			isa = PBXGroup;
+			children = (
+				EAF5F01214ED5D610041A5BE /* ofxKinectInpainter.cpp */,
+				EAF5F01314ED5D610041A5BE /* ofxKinectInpainter.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1370,6 +1397,8 @@
 				EAC8153914D6D82600595518 /* ofxCvOpticalFlowLK.cpp in Sources */,
 				EAB60DB414D99D5700AF3F6F /* contourutils.cpp in Sources */,
 				EA96600914E0037D00656E58 /* testAppVision.cpp in Sources */,
+				EAF5F01B14ED5D610041A5BE /* ofxKinectInpainter.cpp in Sources */,
+				EAF5F02414ED73040041A5BE /* geomutils.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

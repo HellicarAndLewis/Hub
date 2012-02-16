@@ -10,7 +10,7 @@ float Blob::zSmoothing = 0.4;
 bool isFullscreen = false;
 //--------------------------------------------------------------
 void testApp::setup(){
-	
+	centre = ofVec2f(320,240);
 	xScaleTop = 1;
 	xScaleBottom = 1;
 	yScaleTop = 1;
@@ -81,7 +81,7 @@ void testApp::setupGui() {
 	gui.addSlider("Background Hysteresis", backgroundHysteresis, 0, 0.1);
 	gui.addColumn();
 	gui.addToggle("Draw Blobs", drawBlobs);
-	gui.addSlider("Water Surface Level", waterThreshold, 0.75, 1);//->stepped = true;
+	gui.addSlider("Water Surface Level", waterThreshold, 0.65, 1);//->stepped = true;
 	gui.addSlider("Maximum Water Depth", maxWaterDepth, 0.75, 1);//->stepped = true;
 	gui.addSlider("Minimum Blob Size", minBlobSize, 10, KINECT_WIDTH/2)->stepped = true;
 	gui.addSlider("Maximum Blob Size", maxBlobSize, KINECT_WIDTH/2, KINECT_WIDTH)->stepped = true;
@@ -134,6 +134,11 @@ void testApp::setupMask() {
 		if(mask[i].x>KINECT_WIDTH) mask[i].x = KINECT_WIDTH;
 		if(mask[i].y>KINECT_HEIGHT) mask[i].y = KINECT_HEIGHT;
 	}
+	int numCentres = xml.getNumTags("centre");
+	if(numCentres>0) {
+		centre.x = xml.getAttribute("centre", "x", 0.0);
+		centre.y = xml.getAttribute("centre", "y", 0.0);
+	}
 	
 }
 
@@ -146,6 +151,9 @@ void testApp::saveMask() {
 		xml.addAttribute("point", "x", mask[i].x, i);
 		xml.addAttribute("point", "y", mask[i].y, i);
 	}
+	xml.addTag("centre");
+	xml.addAttribute("centre", "x", centre.x, 0);
+	xml.addAttribute("centre", "y", centre.y, 0);
 	xml.saveFile("mask.xml");
 	
 }
@@ -204,7 +212,15 @@ void testApp::draw(){
 			ofRect(mask[i].x-2, mask[i].y-2, 4, 4);
 			
 		}
-
+		
+		if(dragger==&centre) {
+			ofSetHexColor(0x00FF00);
+		} else {
+			ofSetHexColor(0xFFFFFF);
+		}
+		ofLine(centre.x-5, centre.y, centre.x+5, centre.y);
+		ofLine(centre.x, centre.y-5, centre.x, centre.y+5);
+		
 		ofFill();
 
 		for(map<int,Blob>::iterator it = blobs.begin();
@@ -263,6 +279,10 @@ void testApp::mouseMoved(int x, int y ){
 			dragger = &mask[i];
 			return;
 		}
+	}
+	if(centre.distanceSquared(mouse)<100) {
+		dragger = &centre;
+		return;
 	}
 	dragger = NULL;
 }
