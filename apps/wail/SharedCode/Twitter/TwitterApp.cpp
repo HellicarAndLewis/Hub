@@ -10,6 +10,7 @@ TwitterApp::TwitterApp()
 	:stream(twitter)
 	,twitter_listener(*this)
 	,uploader(twitter)
+	,initialized(false)
 {
 
 }
@@ -23,6 +24,7 @@ void TwitterApp::init(int oscPort) {
 	initOSC(oscPort);
 	initStoredSearchTerms();
 	uploader.startThread(true, false);
+	initialized = true;
 }
 
 void TwitterApp::initTwitter() {
@@ -35,6 +37,7 @@ void TwitterApp::initTwitter() {
 	string token_file = ofToDataPath("twitter_dewarshub.txt", true);
 	//string token_file = ofToDataPath("twitter.txt", true);
 	if(!twitter.loadTokens(token_file)) {
+		printf("get new token");
         string auth_url;
         twitter.requestToken(auth_url);
         twitter.handlePin(auth_url);
@@ -50,7 +53,8 @@ void TwitterApp::initOSC(int port) {
 
 void TwitterApp::initDB() {
 	//grant all on dewarscube_admin.* to dewarscube_admin@"%" identified by "dewarscube_admin"
-	if(!mysql.connect("dewarshub.demo.apollomedia.nl" , "dewarscube_admin", "dewarscube_admin", "dewarscube_admin")) {
+	if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin")) {
+	//if(!mysql.connect("dewarshub.demo.apollomedia.nl" , "dewarscube_admin", "dewarscube_admin", "dewarscube_admin")) {
 		exit(0);
 	}
 	
@@ -155,6 +159,10 @@ void TwitterApp::onNewSearchTerm(rtt::Tweet tweet, const string& term) {
 }
 
 void TwitterApp::update() {	
+	if(!initialized) {
+		printf("TwitterApp: make sure to call init() first!\n");
+		exit(0);
+	}
 	if(stream.isConnected()) {
 		stream.update();
 	}

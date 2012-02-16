@@ -93,7 +93,7 @@ public:
 	TwitterDB& getDB();	
 	
 private:
-
+	bool initialized;
 	void initDB();
 	void initTwitter();
 	void initOSC(int port);

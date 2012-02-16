@@ -6,12 +6,15 @@
 #include "Request.h"
 #include "ofMain.h"
 #include "Twitter.h"
+#include "curl.h"
+#include "jansson.h"
 
 namespace rc = roxlu::curl;
 namespace rcp = roxlu::curl::parameter;
 using std::string;
 
-const string URL_TWITTER_UPLOADER = "http://dewarshub.demo.apollomedia.nl/";
+//const string URL_TWITTER_UPLOADER = "http://dewarshub.demo.apollomedia.nl/";
+const string URL_TWITTER_UPLOADER = "http://dewarshub.localhost/";
 
 namespace roxlu {
 

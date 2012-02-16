@@ -7,6 +7,7 @@
  *
  */
 #pragma once
+#define USE_FTGL
 
 #include "ofMain.h"
 #include "ofxWWTweetParticle.h"
@@ -43,9 +44,18 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	ofxMPMFluid* fluidRef;
 	map<int,KinectTouch>* blobsRef;
 	
-	ofTrueTypeFont sharedFont;
-	ofTrueTypeFont sharedLargeFont;
-	ofTrueTypeFont sharedSearchFont;
+	// ofXFTGFont
+
+
+	#ifdef USE_FTGL
+		ofxFTGLFont sharedFont;
+		ofxFTGLFont sharedLargeFont;
+		ofxFTGLFont sharedSearchFont;
+	#else	
+		ofTrueTypeFont sharedFont;
+		ofTrueTypeFont sharedLargeFont;
+		ofTrueTypeFont sharedSearchFont;
+	#endif
 	
 	bool enableCaustics;
 	bool canSelectSearchTerms;

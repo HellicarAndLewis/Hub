@@ -119,8 +119,18 @@ void ofxMPMFluid::update(){
 }
 
 void ofxMPMFluid::threadedFunction(){
+	
 	while(isThreadRunning()){
-		
+	
+		// TODO: sorry commented this (roxlu), got EXC_BAD_ACCESS
+		// -------------------------------------------------------
+		printf("\n\n-----------------------------\n\n");
+		printf("ofxMPMFluid: threadedFunction <------------- remove these lines; commented out.\n");
+		printf("\n\n-----------------------------\n");	
+		sleep(10);	
+		continue;
+		// TODO: -----------------------------------------------
+				
 //		cout << "updating fluids" << endl;
 		
 		// Important: can't exceed maxNParticles!

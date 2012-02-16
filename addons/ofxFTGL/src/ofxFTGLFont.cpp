@@ -1,7 +1,14 @@
 #include "ofxFTGLFont.h"
 
+ofxFTGLFont::ofxFTGLFont()
+	:font(NULL)
+{
+
+}
+
 bool ofxFTGLFont::loadFont(string filename, float fontsize, bool _bAntiAliased, bool _bFullCharacterSet, bool makeContours){
-    font = new FTTextureFont(ofToDataPath(filename).c_str());
+  	printf("Load font....\n");
+	font = new FTTextureFont(ofToDataPath(filename).c_str());
     font->Outset(0.0f, fontsize);
     
     font->CharMap(ft_encoding_unicode);
@@ -21,6 +28,11 @@ bool ofxFTGLFont::loadFont(string filename, float fontsize, bool _bAntiAliased, 
 void ofxFTGLFont::setSize(int size){
     font->FaceSize(size);
 }
+
+const int ofxFTGLFont::getSize() const {
+	return font->FaceSize();
+}
+
 
 ofRectangle ofxFTGLFont::getStringBoundingBox(string s, float x, float y){
     FTBBox bbox = font->BBox(s.c_str());
@@ -60,7 +72,6 @@ void ofxFTGLFont::drawString(string s, float x, float y){
     glPushMatrix();
     glTranslatef(x, y, 0);
     glScalef(1,-1,1);
-    
-    font->Render(s.c_str(), getLength(s), FTPoint(), FTPoint(), FTGL::RENDER_FRONT | FTGL::RENDER_BACK);
+	font->Render(s.c_str(), getLength(s), FTPoint(), FTPoint(), FTGL::RENDER_FRONT | FTGL::RENDER_BACK);
     glPopMatrix();
 }

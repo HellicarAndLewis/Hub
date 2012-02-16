@@ -161,7 +161,7 @@ class Dewars {
 		if(!is_writable($this->config['upload_dir'])) {
 			$result['result'] = false;
 			$result['msg'] = 'upload dir is not writable';
-			echo json_encode($resul);
+			echo json_encode($result);
 			exit;
 		}
 			
@@ -194,7 +194,7 @@ class Dewars {
 		// insert into db.
 		$fields = array(
 			'file' 		=> $filename
-			,'user' 		=> $req['user']
+			,'user' 	=> $req['user']
 			,'message' 	=> $req['message']
 		);
 		$this->db->insert('uploads', $fields);

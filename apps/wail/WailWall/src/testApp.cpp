@@ -20,7 +20,8 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 
-	
+	ofSetLogLevel(OF_LOG_ERROR); // roxlu 16/02 Getting: OF: OF_LOG_WARNING: ofMap: avoiding possible divide by zero, check inputMin and inputMax
+ 
 	ofSetFrameRate(30);
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
@@ -93,7 +94,7 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 	// roxlu 02/07
-	ofSetFullscreen(true); 
+	ofSetFullscreen(false); 
 	
 	ofBackground(0);
 	ofRectangle renderPreview = screenManager.getRenderPreviewRect();
@@ -121,34 +122,12 @@ void testApp::draw(){
 	
 	if(shouldTakeScreenshot) {
 		// %Y-%m-%d-%H-%M-%S-%i
-		/*
-		string dirname = "thumbs/" +ofGetTimestampString("%m-%d");
-		ofDirectory dir(dirname);
-		dir.create(true);
-		
-		string filename = ofGetTimestampString() +"_" +ofToString(ofGetFrameNum()) +".png";
-		string filepath(dirname);
-		filepath.append("/");
-		filepath.append(filename);
-		
-		// pretty sure we can do this better
-		ofPixels pixels;
-		renderer.getFbo().readToPixels(pixels);
-		ofImage img;
-		img.setFromPixels(pixels);
-		img.saveImage(filepath);
-		
-		
-		renderer.getTweetManager().getTwitterApp().uploadScreenshot(ofToDataPath(filepath, true), "roxlu", "");
-		shouldTakeScreenshot = false;
-		*/
-		// %Y-%m-%d-%H-%M-%S-%i
 		string dirname = "thumbs/" +ofGetTimestampString("%m-%d");
 		ofDirectory dir(dirname);
 		dir.create(true);
 
 		string filename = ofGetTimestampString() +"_" +ofToString(ofGetFrameNum()) +".png";
-		string filepath(dirname);
+		string filepath(dirname);	
 		filepath.append("/");
 		filepath.append(filename);
 
@@ -159,7 +138,7 @@ void testApp::draw(){
 		img.setFromPixels(pixels);
 		img.saveImage(filepath);
 
-
+		printf(">>>> upload a photo.\n");
 		renderer.getTweetManager().getTwitterApp().uploadScreenshot(ofToDataPath(filepath, true), "roxlu", "");
 		shouldTakeScreenshot = false;
 	}

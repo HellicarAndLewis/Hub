@@ -192,6 +192,8 @@ GLuint FTTextureFontImpl::CreateTexture()
     CalculateTextureSize();
 
     int totalMemory = textureWidth * textureHeight;
+	printf("Total memory: %d, %dKb\n", totalMemory, totalMemory/1024);
+	
     unsigned char* textureMemory = new unsigned char[totalMemory];
     memset(textureMemory, 0, totalMemory);
 

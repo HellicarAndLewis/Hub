@@ -116,8 +116,8 @@ void ofxWWRenderer::setupGui(){
 }
 
 void ofxWWRenderer::update(){
-//	enableFluid = false;
-	enableFluid = true;
+	enableFluid = false;
+//	enableFluid = true;
 	if(enableFluid){
 		fluid.update();
 	}
@@ -261,6 +261,7 @@ void ofxWWRenderer::render(){
 }
 
 void ofxWWRenderer::renderDynamics(){
+	//enableFluid = false; // TODO: remove
 	
 	accumulator.begin();
 	ofEnableAlphaBlending();
