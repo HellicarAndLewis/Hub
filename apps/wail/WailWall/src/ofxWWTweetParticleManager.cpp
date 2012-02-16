@@ -462,8 +462,8 @@ void ofxWWTweetParticleManager::addCurrentRenderToScreenshotQueue() {
 		ofPixels pixels;
 		
 		renderer->getFbo().getTextureReference().bind();
-		glReadPixels(0, 0, renderer->getFbo().getWidth(), renderer->getFbo().getHeight(), GL_BGRA, GL_UNSIGNED_BYTE, 0);
-		GLubyte* ptr = (GLubyte*)glMapBuffer(GL_PIXEL_PACK_BUFFER_ARB,GL_READ_ONLY);
+		glReadPixels(0, 0, renderer->getFbo().getWidth(), renderer->getFbo().getHeight(), GL_RGBA, GL_UNSIGNED_BYTE, 0);
+		GLubyte* ptr = (GLubyte*)glMapBuffer(GL_PIXEL_PACK_BUFFER,GL_READ_ONLY);
 		
 		if(ptr) {
 			printf("XXXXXXXXXXX \n");
