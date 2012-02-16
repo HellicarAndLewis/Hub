@@ -7,6 +7,7 @@
  *
  */
 
+#include "ofxWWRenderer.h"
 #include "ofxWWTweetParticleManager.h"
 #include "ofxWebSimpleGuiToo.h"
 
@@ -14,13 +15,16 @@ ofxWWTweetParticleManager::ofxWWTweetParticleManager()
 	:shouldChangeSearchTermOn(0)
 	,changeSearchTermDelay(10)  
 	,currentSearchTermIndex(0)
+	,renderer(NULL)
 {
 	maxTweets = 100;
 	tweetSearchEndedTime = 0;
 	isDoingSearch = false;
 }
 
-void ofxWWTweetParticleManager::setup(){
+void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
+	renderer = ren;
+	
 	// Initialize twitter.	
 	// -------------------
 	cout << "init twitter" << endl;
@@ -67,6 +71,10 @@ void ofxWWTweetParticleManager::setup(){
 	for(int i = 0; i < fakeSearchTerms.size(); i++){
 		twitter.simulateSearch(fakeSearchTerms[i]);
 	}
+	
+	// test pbo
+	glGenBuffers(1,&pbo);
+
 }
 
 void ofxWWTweetParticleManager::keyPressed(ofKeyEventArgs& args) {
@@ -76,6 +84,11 @@ void ofxWWTweetParticleManager::keyPressed(ofKeyEventArgs& args) {
 		string term = fakeSearchTerms.at(dx);
 		printf("Using fake search term: %s\n", term.c_str());		
 		addSearchTerm("no_user", term );
+	}
+	else if(args.key == '@') {
+		// test screenshot
+		printf("trigger screenshot!!\n");
+		addCurrentRenderToScreenshotQueue();
 	}
 }
 
@@ -413,14 +426,57 @@ void ofxWWTweetParticleManager::searchForTerm(ofxWWSearchTerm& term){
 void ofxWWTweetParticleManager::finishSearch(){
 	
 	if(shouldTriggerScreenshot){
-		// TODO: trigger screenshot of current layout
+		addCurrentRenderToScreenshotQueue();
+		shouldTriggerScreenshot = false;
 	}
+	
 	isDoingSearch = false;
 	shouldTriggerScreenshot = false;
 	for(int i = 0; i < searchTerms.size(); i++){
 		searchTerms[i].selected = false;
 	}
 	tweetSearchEndedTime = ofGetElapsedTimef();
+}
+
+void ofxWWTweetParticleManager::addCurrentRenderToScreenshotQueue() {
+		glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo);
+// TODO: trigger screenshot of current layout
+		int now = ofGetElapsedTimeMillis();
+		// %Y-%m-%d-%H-%M-%S-%i
+		string dirname = "thumbs/" +ofGetTimestampString("%m-%d");
+		ofDirectory dir(dirname);
+		dir.create(true);
+
+		string filename = ofGetTimestampString() +"_" +ofToString(ofGetFrameNum()) +".png";
+		string filepath(dirname);	
+		filepath.append("/");
+		filepath.append(filename);
+
+		// pretty sure we can do this better
+		ofPixels pixels;
+		
+		renderer->getFbo().bind();
+		glReadPixels(0, 0, ofGetWidth(), ofGetHeight(), GL_BGRA, GL_UNSIGNED_BYTE, 0);
+		GLubyte* ptr = (GLubyte*)glMapBuffer(GL_PIXEL_PACK_BUFFER_ARB,GL_READ_ONLY);
+		//renderer->getFbo().readToPixels(pixels);
+		twitter.writeScreenshot(filepath, "roxlu", pixels);
+		int end = ofGetElapsedTimeMillis();
+		glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
+		ofPixels pix;
+		pix.setFromPixels(ptr, ofGetWidth(), ofGetHeight(), OF_IMAGE_COLOR_ALPHA);
+
+		printf("It took us: %d millis to add the image to the queue\n", (end-now));
+
+		printf("----------------> adding screenshot <----------------------\n");
+		/*
+		ofImage img;
+		img.setFromPixels(pixels);
+		img.saveImage(filepath);
+
+		printf(">>>> upload a photo.\n");
+		renderer.getTweetManager().getTwitterApp().uploadScreenshot(ofToDataPath(filepath, true), "roxlu", "");
+		*/		
+
 }
 
 float ofxWWTweetParticleManager::weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet){

@@ -122,6 +122,7 @@ void testApp::draw(){
 	
 	if(shouldTakeScreenshot) {
 		// %Y-%m-%d-%H-%M-%S-%i
+		/*
 		string dirname = "thumbs/" +ofGetTimestampString("%m-%d");
 		ofDirectory dir(dirname);
 		dir.create(true);
@@ -140,6 +141,7 @@ void testApp::draw(){
 
 		printf(">>>> upload a photo.\n");
 		renderer.getTweetManager().getTwitterApp().uploadScreenshot(ofToDataPath(filepath, true), "roxlu", "");
+		*/
 		shouldTakeScreenshot = false;
 	}
 	

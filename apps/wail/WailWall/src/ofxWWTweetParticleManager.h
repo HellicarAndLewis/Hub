@@ -18,11 +18,12 @@
 #include "ofxMPMFluid.h"
 #include "KinectTouchListener.h"
 
+class ofxWWRenderer;
 
 class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
   public:
 	ofxWWTweetParticleManager();
-	void setup();
+	void setup(ofxWWRenderer* ren);
 	void setupGui();
 	
 	void update();
@@ -131,6 +132,7 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	void attemptCausticConnection(ofVec2f pos1, float weight1, ofVec2f pos2, float weight2, float layerOpacity);
 	void setRandomCausticColor(float layerOpacity);
 	
+	void addCurrentRenderToScreenshotQueue();
 	void addSearchTerm(const string& user, const string& term);
 	ofxWWTweetParticle createParticleForTweet(const rtt::Tweet& tweet);
 	
@@ -140,5 +142,8 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	float tweetSearchEndedTime;
 	bool isDoingSearch;
 	bool shouldTriggerScreenshot;
+	
+	ofxWWRenderer* renderer;
+	GLuint pbo;
 
 };

@@ -23,6 +23,7 @@
 #include "TwitterOSCReceiver.h"
 #include "TwitterSearchTermQueue.h"
 #include "TwitterMySQL.h"
+#include "TwitterThreadedImageWriter.h"
 #include "IEventListener.h"
 
 namespace rtt = roxlu::twitter::type;
@@ -74,6 +75,7 @@ public:
 	bool getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany, vector<rtt::Tweet>& result);
 	void onNewSearchTerm(rtt::Tweet tweet, const string& term);
 	void uploadScreenshot(const string& filePath, const string& username, const string& message);
+	void writeScreenshot(const string& filePath, const string& username, ofPixels pixels);
 	void addDefaultListener();
 	void addCustomListener(rt::IEventListener& listener);
 	
@@ -108,6 +110,7 @@ private:
 	TwitterOSCReceiver 		osc_receiver;
 	TwitterSearchTermQueue 	search_queue;
 	TwitterMySQL 			mysql;
+	TwitterThreadedImageWriter image_writer;
 
 };
 
@@ -139,4 +142,8 @@ inline bool TwitterApp::setSearchTermAsUsed(const string& user, const string& te
 	return search_queue.setSearchTermAsUsed(user, term);
 }
 
+
+inline void TwitterApp::writeScreenshot(const string& filePath, const string& user, ofPixels pixels) {
+	image_writer.addPixels(filePath, user, pixels);
+}
 #endif

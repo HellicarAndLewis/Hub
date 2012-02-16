@@ -70,7 +70,7 @@ void ofxWWRenderer::setup(int width, int height){
 	justDrawWarpTexture = false;
 
 //	cout << "setting up tweets" << endl;
-	tweets.setup();
+	tweets.setup(this);
 }
 
 void ofxWWRenderer::setupGui(){
