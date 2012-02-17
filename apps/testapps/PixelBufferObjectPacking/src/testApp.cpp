@@ -13,10 +13,7 @@ void testApp::setup(){
 
 }
 
-//--------------------------------------------------------------
-void testApp::update(){
 
-}
 
 //--------------------------------------------------------------
 void testApp::draw(){
@@ -28,9 +25,7 @@ void testApp::draw(){
 	glLoadIdentity();
 	glTranslatef(0,0,-10);
 	
-	
 	glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo);
-	
 	
 	glColor3f(1,0,0.5);
 	float s = 3;
@@ -41,18 +36,27 @@ void testApp::draw(){
 		glVertex3f(-s, -s, 0);
 	glEnd();
 	
-	glReadPixels(0, 0, ofGetWidth(), ofGetHeight(), GL_BGRA, GL_UNSIGNED_BYTE, 0);
+	// the last 0 at the end is the offset in the buffer we want to read, this
+	// is because a pixel buffer is bound; 
+	// so the way glReadPixels works is changed when binding the
+	// pixel buffer.
+	glReadPixels(0, 0, ofGetWidth(), ofGetHeight(), GL_RGBA, GL_UNSIGNED_BYTE, 0);
+	
 	GLubyte* ptr = (GLubyte*)glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY);
 	if(ptr) {
-		printf("OK\n");
 		ofPixels pix;
-		pix.setFromPixels(ptr, ofGetWidth(), ofGetHeight(), OF_IMAGE_COLOR_ALPHA);
 		ofImage img;
+		pix.setFromPixels(ptr, ofGetWidth(), ofGetHeight(), OF_IMAGE_COLOR_ALPHA);
 		img.setFromPixels(pix);
 		img.saveImage(ofGetTimestampString() +".png");
 		//ofSaveImage(pix, "test.jpg");
 		glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
 	}
+}
+
+//--------------------------------------------------------------
+void testApp::update(){
+
 }
 
 //--------------------------------------------------------------
