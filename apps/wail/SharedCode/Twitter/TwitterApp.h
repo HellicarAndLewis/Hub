@@ -25,6 +25,7 @@
 #include "TwitterMySQL.h"
 #include "TwitterThreadedImageWriter.h"
 #include "IEventListener.h"
+#include "IStreamEventListener.h"
 
 namespace rtt = roxlu::twitter::type;
 namespace rt = roxlu::twitter;
@@ -52,7 +53,7 @@ public:
 
 extern ofEvent<TwitterAppEvent> twitter_app_dispatcher;
 
-class TwitterApp : public TwitterOSCReceiverListener {
+class TwitterApp : public TwitterOSCReceiverListener, public roxlu::twitter::IStreamEventListener {
 
 public:
 
@@ -93,6 +94,9 @@ public:
 	virtual void simulateSearch(const string& term);
 	
 	TwitterDB& getDB();	
+	TwitterThreadedImageWriter& getImageWriter();
+	virtual void onTwitterStreamDisconnected();
+	virtual void onTwitterStreamConnected();
 	
 private:
 	bool initialized;
@@ -144,6 +148,10 @@ inline bool TwitterApp::setSearchTermAsUsed(const string& user, const string& te
 
 
 inline void TwitterApp::writeScreenshot(const string& filePath, const string& user, ofPixels pixels) {
-	image_writer.addPixels(filePath, user, pixels);
+//	image_writer.addPixels(filePath, user, pixels);
+}
+
+inline TwitterThreadedImageWriter& TwitterApp::getImageWriter() {
+	return image_writer;
 }
 #endif

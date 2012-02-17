@@ -126,6 +126,13 @@ bool Stream::connect(const string& streamURL) {
 	CHECK_CURLM_ERROR(cm);	
 
 	connected = true;
+	
+	// let all listeners know we got connected.
+	vector<IStreamEventListener*>::iterator it = event_listeners.begin();
+	while(it != event_listeners.end()) {
+		(*it)->onTwitterStreamConnected();
+		++it;
+	}
 	return true;
 }
 
@@ -173,6 +180,13 @@ bool Stream::update() {
 			reconnect_on = seconds + reconnect_delay;
 			reconnect_delay *= reconnect_delay;
 			printf("Next time we disconnect we start after: %d seconds\n", reconnect_delay);
+			
+			// let all listeners know we got disconnected.
+			vector<IStreamEventListener*>::iterator it = event_listeners.begin();
+			while(it != event_listeners.end()) {
+				(*it)->onTwitterStreamDisconnected();
+				++it;
+			}
 		}
 		else {
 			time_t now = time(NULL);

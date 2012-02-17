@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Europe/London');
 function p($a) {
 	if (is_object($a) && get_class($a) !== 'stdClass') {
 		$a = array_merge(get_class_vars(get_class($a)), get_class_methods(get_class($a)));
@@ -12,6 +13,9 @@ function e($s) {
 }
 
 function l($s) {
+	if(!is_writable('log.txt')) {
+		die('log.txt is not writable');
+	}
 	$msg = date('Y:m:d H:i' ."\t", time()) .$s ."\n";
 	file_put_contents('log.txt', $msg, FILE_APPEND);
 }

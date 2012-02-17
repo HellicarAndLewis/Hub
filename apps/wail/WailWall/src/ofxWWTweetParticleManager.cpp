@@ -1,21 +1,14 @@
-/*
- *  ofxWWTweetManager.cpp
- *  WailWall
- *
- *  Created by James George on 1/30/12.
- *  Copyright 2012 __MyCompanyName__. All rights reserved.
- *
- */
-
 #include "ofxWWRenderer.h"
 #include "ofxWWTweetParticleManager.h"
 #include "ofxWebSimpleGuiToo.h"
+#include "Error.h"
 
 ofxWWTweetParticleManager::ofxWWTweetParticleManager()
 	:shouldChangeSearchTermOn(0)
 	,changeSearchTermDelay(10)  
 	,currentSearchTermIndex(0)
 	,renderer(NULL)
+	,screenshot_userdata(NULL)
 {
 	maxTweets = 100;
 	tweetSearchEndedTime = 0;
@@ -32,7 +25,6 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	
 	// Initialize twitter.	
 	// -------------------
-
 	twitter.init(4444);
 	twitter.addDefaultListener();
 	twitter.addCustomListener(*this);
@@ -74,18 +66,12 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	for(int i = 0; i < fakeSearchTerms.size(); i++){
 		twitter.simulateSearch(fakeSearchTerms[i]);
 	}
-	
-	// test pbo
-	glGenBuffers(1,&pbo);
-	glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo);
-	
-	int w = renderer->getFbo().getWidth();
-	int h = renderer->getFbo().getHeight();
-	int size = w * h * 4;
-	glBufferData(GL_PIXEL_PACK_BUFFER, size, NULL, GL_STATIC_READ);
-	
 	setupColors();
+}
 
+void ofxWWTweetParticleManager::setScreenshotCallback(takeScreenshotCallback func, void* userdata) {
+	screenshot_callback = func;
+	screenshot_userdata = userdata;
 }
 
 void ofxWWTweetParticleManager::keyPressed(ofKeyEventArgs& args) {
@@ -95,11 +81,6 @@ void ofxWWTweetParticleManager::keyPressed(ofKeyEventArgs& args) {
 		string term = fakeSearchTerms.at(dx);
 		printf("Using fake search term: %s\n", term.c_str());		
 		addSearchTerm("no_user", term );
-	}
-	else if(args.key == '@') {
-		// test screenshot
-		printf("trigger screenshot!!\n");
-		addCurrentRenderToScreenshotQueue();
 	}
 }
 
@@ -382,54 +363,10 @@ void ofxWWTweetParticleManager::finishSearch(){
 }
 
 void ofxWWTweetParticleManager::addCurrentRenderToScreenshotQueue() {
-		glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo);
-// TODO: trigger screenshot of current layout
-		int now = ofGetElapsedTimeMillis();
-		// %Y-%m-%d-%H-%M-%S-%i
-		string dirname = "thumbs/" +ofGetTimestampString("%m-%d");
-		ofDirectory dir(dirname);
-		dir.create(true);
-
-		string filename = ofGetTimestampString() +"_" +ofToString(ofGetFrameNum()) +".png";
-		string filepath(dirname);	
-		filepath.append("/");
-		filepath.append(filename);
-
-		// pretty sure we can do this better
-		ofPixels pixels;
-		
-		renderer->getFbo().getTextureReference().bind();
-		glReadPixels(0, 0, renderer->getFbo().getWidth(), renderer->getFbo().getHeight(), GL_RGBA, GL_UNSIGNED_BYTE, 0);
-		GLubyte* ptr = (GLubyte*)glMapBuffer(GL_PIXEL_PACK_BUFFER,GL_READ_ONLY);
-		
-		if(ptr) {
-			printf("XXXXXXXXXXX \n");
-//			ofPixels pix;
-//			pix.setFromPixels(ptr, renderer->getFbo().getWidth(), renderer->getFbo().getHeight(), OF_IMAGE_COLOR_ALPHA);
-//			ofImage img;
-//			img.setFromPixels(pix);
-//			img.saveImage("tester.jpg");
-			glUnmapBuffer(GL_PIXEL_PACK_BUFFER);			
-		}
-		//renderer->getFbo().readToPixels(pixels);
-		twitter.writeScreenshot(filepath, "roxlu", pixels);
-		int end = ofGetElapsedTimeMillis();
-
-		ofPixels pix;
-		pix.setFromPixels(ptr, ofGetWidth(), ofGetHeight(), OF_IMAGE_COLOR_ALPHA);
-
-		printf("It took us: %d millis to add the image to the queue\n", (end-now));
-
-		printf("----------------> adding screenshot <----------------------\n");
-		/*
-		ofImage img;
-		img.setFromPixels(pixels);
-		img.saveImage(filepath);
-
-		printf(">>>> upload a photo.\n");
-		renderer.getTweetManager().getTwitterApp().uploadScreenshot(ofToDataPath(filepath, true), "roxlu", "");
-		*/		
-
+	if(screenshot_userdata == NULL) {
+		return;
+	}
+	screenshot_callback("roxlu", screenshot_userdata);
 }
 
 float ofxWWTweetParticleManager::weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet){
@@ -851,3 +788,5 @@ void ofxWWTweetParticleManager::onStreamEvent(const rtt::StreamEvent& event){
 TwitterApp& ofxWWTweetParticleManager::getTwitterApp() {
 	return twitter;
 }
+
+

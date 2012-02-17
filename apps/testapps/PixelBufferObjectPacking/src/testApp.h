@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-
+#include "Error.h"
 class testApp : public ofBaseApp{
 
 	public:
@@ -19,4 +19,8 @@ class testApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		GLuint pbo;
+		GLuint tex;
+		bool save;
+		ofImage tex_img;
+		bool mapped;
 };

@@ -30,7 +30,11 @@ class DewarsAdmin {
 			exit;
 		}
 		if(isset($req['act'])) {
-			if($req['act'] == 'new_badword') {
+			if($req['act'] == 'twitter_status') {
+				echo json_encode($this->isTwitterConnectionAlive());
+				exit;
+			}
+			else if($req['act'] == 'new_badword') {
 				$new_id = $this->insertBadWord($req);
 				if($new_id) {
 					echo json_encode($new_id);
@@ -60,6 +64,7 @@ class DewarsAdmin {
 				echo json_encode($this->doCommand($req['command'], $req));
 				exit;
 			}
+			
 		}
 	}
 	
@@ -235,6 +240,15 @@ class DewarsAdmin {
     $m1->add_arg(28658.93, "d");
     $m2 = new OSCMessage("/bar", array(1, 2, array(1,2,3)
 		*/
+	}
+	
+	// -------------------------------------------------------------------------
+	// C O M M A N D S
+	// -------------------------------------------------------------------------
+	
+	private function isTwitterConnectionAlive() {
+		$row = $this->db->fetchRow('select value from settings where name = "twitter_connected"');
+		return $row['value'] == 'y';
 	}
 }
 

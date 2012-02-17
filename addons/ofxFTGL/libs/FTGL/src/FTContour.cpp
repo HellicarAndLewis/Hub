@@ -2,7 +2,7 @@
  * FTGL - OpenGL font library
  *
  * Copyright (c) 2001-2004 Henry Maddocks <ftgl@opengl.geek.nz>
- * Copyright (c) 2008 Sam Hocevar <sam@zoy.org>
+ * Copyright (c) 2008 Sam Hocevar <sam@hocevar.net>
  * Copyright (c) 2008 Éric Beets <ericbeets@free.fr>
  *
  * Permission is hereby granted, free of charge, to any person obtaining
@@ -228,6 +228,8 @@ FTContour::FTContour(FT_Vector* contour, char* tags, unsigned int n)
 
 void FTContour::buildFrontOutset(float outset)
 {
+    frontPointList.clear();
+
     for(size_t i = 0; i < PointCount(); ++i)
     {
         AddFrontPoint(Point(i) + Outset(i) * outset);
@@ -237,6 +239,8 @@ void FTContour::buildFrontOutset(float outset)
 
 void FTContour::buildBackOutset(float outset)
 {
+    backPointList.clear();
+
     for(size_t i = 0; i < PointCount(); ++i)
     {
         AddBackPoint(Point(i) + Outset(i) * outset);

@@ -8,11 +8,18 @@ TwitterThreadedImageWriter::TwitterThreadedImageWriter() {
 TwitterThreadedImageWriter::~TwitterThreadedImageWriter() {
 }
 
-void TwitterThreadedImageWriter::addPixels(const string& filePath, const string& user, ofPixels pixels) {
-	TwitterThreadedImageWriteData data = {filePath, user, pixels};
+void TwitterThreadedImageWriter::addPixels(const string& filePath, const string& user, unsigned char* pixels, int w, int h) {
+	// copy the image data.
+	int bpp = 3;
+	unsigned char* copy = new unsigned char[w*h*bpp];
+	memcpy(copy, pixels, (w*h*bpp)*sizeof(unsigned char));
+	
+	// add to queue.
+	TwitterThreadedImageWriteData data = {filePath, user, copy, w, h};
 	lock();
 		queue.push_back(data);
 	unlock();
+
 }
 
 void TwitterThreadedImageWriter::threadedFunction() {
@@ -21,10 +28,9 @@ void TwitterThreadedImageWriter::threadedFunction() {
 		
 		num = queue.size();
 		if(num == 0) {
-			sleep(3); 
+			sleep(1); 
 			continue;
 		}
-		
 		// get new pixels from the queue and remove it.
 		lock();
 			deque<TwitterThreadedImageWriteData>::iterator it = queue.begin();
@@ -33,7 +39,14 @@ void TwitterThreadedImageWriter::threadedFunction() {
 		unlock();
 	
 		// write it
-		printf("Writing image for: %s\n", data.user.c_str());
+		ofPixels pix;
+		pix.setFromPixels(data.pixels, data.w, data.h, OF_IMAGE_COLOR);
+		ofImage img;
+		img.setUseTexture(false);
+		img.setFromPixels(pix);
+		img.saveImage(data.filepath);
+		delete[] data.pixels;
+		printf("-------------- Writing image for: %s\n", data.user.c_str());
 		
 	}
 }

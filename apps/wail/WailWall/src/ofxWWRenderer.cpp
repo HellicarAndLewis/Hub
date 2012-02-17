@@ -16,6 +16,7 @@ void ofxWWRenderer::setup(int width, int height){
 	
 	//anything that diffuses in liquid gets drawn into here
 	accumulator.allocate(width, height, GL_RGB);
+	screenshotTarget.allocate(1024, 768, GL_RGB);
 	
 	//type layer
 	//draw everything into here that needs to be warped
@@ -71,6 +72,10 @@ void ofxWWRenderer::setup(int width, int height){
 
 //	cout << "setting up tweets" << endl;
 	tweets.setup(this);
+	
+	// roxlu: test screenshots
+	ofAddListener(ofEvents.keyPressed, this, &ofxWWRenderer::keyPressed);
+	test_screenshot = false;
 }
 
 void ofxWWRenderer::setupGui(){
@@ -202,6 +207,8 @@ void ofxWWRenderer::render(){
 	tweets.renderTweets();	
 	tweets.renderSearchTerms();
 	
+	glColor3f(1,0,0);
+	ofCircle(100,100,100);
 	//BLIT CONTENT
 //	blurShader.begin();
 //	blurShader.setUniform2f("sampleOffset", 0, (1-layer1Opacity)*2);
@@ -258,6 +265,19 @@ void ofxWWRenderer::render(){
 	}
 	
 	renderTarget.end();	
+	
+	// TODO: this is done in testApp now..
+	if(test_screenshot) {
+		//tweets.addCurrentRenderToScreenshotQueue();
+		test_screenshot = false;
+	}
+}
+
+//roxlu: testing screenshots
+void ofxWWRenderer::keyPressed(ofKeyEventArgs& args) {
+	if(args.key == '1') {
+		test_screenshot = true;
+	}
 }
 
 void ofxWWRenderer::renderDynamics(){

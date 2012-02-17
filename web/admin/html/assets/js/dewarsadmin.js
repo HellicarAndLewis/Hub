@@ -7,6 +7,7 @@ var DewarsAdmin = new Class({
 		this.initBadWordList();
 		this.initTrackList();
 		this.initCommands();
+		this.initTwitterStatusCheck();
 	}
 	
 	// --------------------------------------------------------------------
@@ -137,6 +138,27 @@ var DewarsAdmin = new Class({
 			});
 		});
 	}
+	
+	// --------------------------------------------------------------------
+	// T W I T T E R  S T A T U S
+	// --------------------------------------------------------------------
+	,initTwitterStatusCheck: function() {
+		var prev = -1;
+		var check = function() {
+			var req = new Request.JSON({
+					url:"/?act=twitter_status"
+					,onSuccess:function(r) {
+						if(r != prev) {
+							$('twitter_status').set('class',(r) ? 'connected' : 'disconnected');
+							prev = r;
+						}
+						console.log(r);
+					}
+				}).post();
+		}
+		check.periodical(500);
+	}
+	
 });
 document.addEvent('domready',function() {
 	admin = new DewarsAdmin();

@@ -102,6 +102,18 @@ input:focus, textarea:focus {
 
 }
 
+li#twitter_status {
+	background-color:red;
+	width:40px;
+	height:14px;
+}
+
+li#twitter_status.connected {
+	background-color:lightgreen;	
+}
+li#twitter_status,disonnected {
+	background-color:red;
+}
 /* 
  * Dewars Admin 
  * ----------------------------------------------------------------

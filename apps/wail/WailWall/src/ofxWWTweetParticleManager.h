@@ -18,6 +18,8 @@
 #include "ofxMPMFluid.h"
 #include "KinectTouchListener.h"
 
+typedef void (*takeScreenshotCallback)(const string& username, void* userdata);
+
 class ofxWWRenderer;
 
 class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
@@ -132,6 +134,12 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	int currentSearchTermIndex;
 	
 	void keyPressed(ofKeyEventArgs& args); //JG just used for simulating searches
+
+	// Screenshot
+	void addCurrentRenderToScreenshotQueue();
+	void setScreenshotCallback(takeScreenshotCallback func, void* user);
+	takeScreenshotCallback  screenshot_callback;
+	void* screenshot_userdata;
 	
   protected:
 	TwitterApp twitter;
@@ -158,12 +166,10 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	void attemptCausticConnection(ofVec2f pos1, float weight1, ofVec2f pos2, float weight2, float layerOpacity);
 	void setRandomCausticColor(float layerOpacity);
 	
-	void addCurrentRenderToScreenshotQueue();
 	void addSearchTerm(const string& user, const string& term);
 	ofxWWTweetParticle createParticleForTweet(const rtt::Tweet& tweet);
 	
-	
 	ofxWWRenderer* renderer;
-	GLuint pbo;
-
+	
+	
 };

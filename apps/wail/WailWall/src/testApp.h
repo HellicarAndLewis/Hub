@@ -46,6 +46,11 @@ public:
 	bool previewScreenLayout;
 	
 	// screenshots
+	GLuint pbo;
+	int screen_w;
+	int screen_h;
 	bool shouldTakeScreenshot;
+	string screenshotUsername;
+	static void theScreenshotCallback(const string& username, void* user);
 
 };
