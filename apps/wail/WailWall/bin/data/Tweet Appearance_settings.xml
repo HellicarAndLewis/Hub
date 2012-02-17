@@ -1,7 +1,7 @@
 <controls>
     <SliderInt_Tweet_Font_Size>
         <name>Tweet Font Size</name>
-        <value>56</value>
+        <value>57</value>
     </SliderInt_Tweet_Font_Size>
     <SliderInt_User_Font_Size>
         <name>User Font Size</name>
@@ -11,36 +11,24 @@
         <name>Word Wrap Length</name>
         <value>246.000000</value>
     </SliderFloat_Word_Wrap_Length>
+    <SliderFloat_User_Y_Shift>
+        <name>User Y Shift</name>
+        <value>99.000000</value>
+    </SliderFloat_User_Y_Shift>
+    <SliderFloat_Tweet_Y_Shift>
+        <name>Tweet Y Shift</name>
+        <value>-106.500000</value>
+    </SliderFloat_Tweet_Y_Shift>
+    <SliderFloat_Tweet_Line_Space>
+        <name>Tweet Line Space</name>
+        <value>11.200000</value>
+    </SliderFloat_Tweet_Line_Space>
     <SliderFloat_Dot_Size>
         <name>Dot Size</name>
-        <value>27.725000</value>
+        <value>45.950001</value>
     </SliderFloat_Dot_Size>
-    <SliderInt_User_Y_Shift>
-        <name>User Y Shift</name>
-        <value>100</value>
-    </SliderInt_User_Y_Shift>
-    <SliderInt_Tweet_Y_Shift>
-        <name>Tweet Y Shift</name>
-        <value>-84</value>
-    </SliderInt_Tweet_Y_Shift>
-    <SliderFloat_Wall_Repulsion_Dist>
-        <name>Wall Repulsion Dist</name>
-        <value>288.000000</value>
-    </SliderFloat_Wall_Repulsion_Dist>
-    <SliderFloat_Wall_Repulsion_Atten>
-        <name>Wall Repulsion Atten</name>
-        <value>0.115000</value>
-    </SliderFloat_Wall_Repulsion_Atten>
-    <SliderFloat_Tweet_Repulsion_Dist>
-        <name>Tweet Repulsion Dist</name>
-        <value>220.500000</value>
-    </SliderFloat_Tweet_Repulsion_Dist>
-    <SliderFloat_Tweet_Repulsion_Atten>
-        <name>Tweet Repulsion Atten</name>
-        <value>0.005000</value>
-    </SliderFloat_Tweet_Repulsion_Atten>
-    <SliderFloat_Fluid_Force_Scale>
-        <name>Fluid Force Scale</name>
-        <value>5.455000</value>
-    </SliderFloat_Fluid_Force_Scale>
+    <SliderFloat_Dot_Shift>
+        <name>Dot Shift</name>
+        <value>-29.000000</value>
+    </SliderFloat_Dot_Shift>
 </controls>

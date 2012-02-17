@@ -20,6 +20,11 @@ ofxWWTweetParticleManager::ofxWWTweetParticleManager()
 	maxTweets = 100;
 	tweetSearchEndedTime = 0;
 	isDoingSearch = false;
+	
+	tweetSearchMinWaitTime = 10;
+	tweetSearchDuration = 5;
+	tweetSearchStartTime = 0;
+	tweetSearchEndedTime = 0;
 }
 
 void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
@@ -63,7 +68,7 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	fakeSearchTerms.push_back("TED");
 	fakeSearchTerms.push_back("DEWARDS");
 	fakeSearchTerms.push_back("TECHNOLOGY");
-	fakeSearchTerms.push_back("SPIRTUALITY");
+	fakeSearchTerms.push_back("LOVE");
 	fakeSearchTerms.push_back("CULTURE");
 
 	for(int i = 0; i < fakeSearchTerms.size(); i++){
@@ -104,7 +109,7 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addToggle("Enable Caustics", enableCaustics);
 	
 	webGui.addPage("Tweet Lifecycle");
-	webGui.addSlider("Max Tweets", maxTweets, 5, 500);
+	webGui.addSlider("Max Tweets", maxTweets, 200, 2000);
 	webGui.addToggle("Clear Tweets", clearTweets);
 	webGui.addToggle("Draw Tweet Debug", drawTweetDebug);
 
@@ -112,29 +117,31 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addToggle("Flow Sideways", tweetsFlowLeftRight);
 	webGui.addSlider("Flow Speed", tweetFlowSpeed, -10, 10);	
 	webGui.addSlider("Flow Chaos", flowChaosScale, 0, 10);
-	
-	webGui.addPage("Tweet Appearance");
-	webGui.addSlider("Tweet Font Size", tweetFontSize, 20, 100);
-	webGui.addSlider("User Font Size", userFontSize, 20, 100);
-	webGui.addSlider("Word Wrap Length", wordWrapLength, 100, 300);
-	webGui.addSlider("Dot Size", dotSize, 5, 50);
-	webGui.addSlider("User Y Shift", userNameYOffset, -150, 150);
-	webGui.addSlider("Tweet Y Shift", tweetYOffset, -150, 150);
 	webGui.addSlider("Wall Repulsion Dist", wallRepulsionDistance, 0, 900);
 	webGui.addSlider("Wall Repulsion Atten", wallRepulsionAtten, 0, .2);
 	webGui.addSlider("Tweet Repulsion Dist", tweetRepulsionDistance, 0, 900);
 	webGui.addSlider("Tweet Repulsion Atten", tweetRepulsionAtten, 0, .2);
 	webGui.addSlider("Fluid Force Scale", fluidForceScale, 1., 100.);
 	
+	webGui.addPage("Tweet Appearance");
+	webGui.addSlider("Tweet Font Size", tweetFontSize, 20, 100);
+	webGui.addSlider("User Font Size", userFontSize, 20, 100);
+	webGui.addSlider("Word Wrap Length", wordWrapLength, 100, 300);
+	webGui.addSlider("User Y Shift", userNameYOffset, -150, 150);
+	webGui.addSlider("Tweet Y Shift", tweetYOffset, -150, 150);
+	webGui.addSlider("Tweet Line Space", tweetLineSpace, 0, 40);
+	webGui.addSlider("Dot Size", dotSize, 5, 50);
+	webGui.addSlider("Dot Shift", dotShift, -50, 50);
+	
 	webGui.addPage("Search Terms");
 	webGui.addSlider("Max Search Terms", maxSearchTerms, 5, 15);
-	webGui.addSlider("Search Font Size", searchTermFontSize, 40, 70);
+	webGui.addSlider("Search Font Size", searchTermFontSize, 100, 500);
 	webGui.addSlider("Search Min Opacity", searchMinOpacity, 0, .4);
-	webGui.addSlider("Touch Min Dist", searchTermMinDistance, 50, 500);
+	webGui.addSlider("Touch Min Dist", searchTermMinDistance, 50, 1000);
 	webGui.addSlider("Touch Min Hold", searchTermMinHoldTime, .5, 3.0);
 	webGui.addSlider("Search Duration", tweetSearchDuration, 2, 15);
 	webGui.addSlider("Search Time Between", tweetSearchMinWaitTime, 1, 20);
-	webGui.addSlider("Search Repulse Dist", searchTermRepulsionDistance, 0, 900);
+	webGui.addSlider("Search Repulse Dist", searchTermRepulsionDistance, 500, 2000);
 	webGui.addSlider("Search Repulse Atten", searchTermRepulsionAttenuation, 0, .2);
 	webGui.addSlider("Search Hand Attract", searchTermHandAttractionFactor, 0, .2);
 	webGui.addToggle("Search Debug", drawSearchDebug);
@@ -153,11 +160,18 @@ void ofxWWTweetParticleManager::setupGui(){
 
 void ofxWWTweetParticleManager::update(){
 
-	if(clearTweets){
-		tweets.clear();
-		clearTweets = false;
-	}
+	twitter.update();
 	
+	checkFonts();
+	
+	handleSearch();
+	
+	updateTweets();
+	
+	updateSearchTerms();
+}
+
+void ofxWWTweetParticleManager::checkFonts(){
 	#ifdef USE_FTGL
 	if(!sharedTweetFont.isLoaded() || tweetFontSize != sharedTweetFont.getSize()){
 		if(!sharedTweetFont.loadFont("fonts/montreal-ttf/Montreal-LightIta.ttf", tweetFontSize, true, true, false)){
@@ -168,11 +182,11 @@ void ofxWWTweetParticleManager::update(){
 	
 	if(!sharedSearchFont.isLoaded() || searchTermFontSize != sharedSearchFont.getSize()){
 		if(!sharedSearchFont.loadFont("fonts/montreal-ttf/Montreal-BoldIta.ttf", searchTermFontSize, true, true, false)){
-		  ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load search  font!");
+			ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load search  font!");
 		}	
 		cout << "search font allocating! " << searchTermFontSize << " " << sharedSearchFont.getSize() << endl;
 	}
-		
+	
 	if(!sharedUserFont.isLoaded() || userFontSize != sharedUserFont.getSize()){
 		if(!sharedUserFont.loadFont("fonts/montreal-ttf/Montreal-BoldIta.ttf", userFontSize, true, true, false)){
 			ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load search  font!");
@@ -182,50 +196,19 @@ void ofxWWTweetParticleManager::update(){
 	
 	#else 
 	//IF WE NEED TO REVERT CORRECT THIS
-//		if(!sharedFont.isLoaded() || fontSize != sharedFont.getSize() || int(fontSize*twoLineScaleup) != sharedLargeFont.getSize()){
-//			if(!sharedFont.loadFont("fonts/Tahoma.ttf", fontSize, true, true, false) ||
-//			   !sharedLargeFont.loadFont("fonts/Tahoma.ttf", fontSize*twoLineScaleup, true, true, false)){
-//				ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load font!");
-//			}
-//		}
-//		
-//		if(!sharedSearchFont.isLoaded() || searchTermFontSize != sharedSearchFont.getSize()){
-//			if(!sharedSearchFont.loadFont("fonts/Tahoma.ttf", searchTermFontSize, true, true, false)){
-//				ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load font!");
-//			}
-//		}
-	#endif
-	
-	twitter.update();
-	
-	for(int i = tweets.size()-1; i >= 0; i--){
-		//purge offscreen tweets
-		if(tweetsFlowLeftRight){
-			if((tweetFlowSpeed <= 0 && tweets[i].pos.x < -wallRepulsionDistance) || 
-			   (tweetFlowSpeed >= 0 && tweets[i].pos.x > simulationWidth+wallRepulsionDistance) )
-			{
-				tweets.erase(tweets.begin()+i);
-			}
-		}
-		else {
-			if((tweetFlowSpeed <= 0 && tweets[i].pos.y < -wallRepulsionDistance) || 
-			   (tweetFlowSpeed >= 0 && tweets[i].pos.y > simulationHeight+wallRepulsionDistance) )
-			{
-				tweets.erase(tweets.begin()+i);
-			}
-		}
-	}
-	
-
-	if(tweets.size() > maxTweets){
-		tweets.resize(maxTweets);
-	}
-	
-	handleSearch();
-	
-	updateTweets();
-	
-	updateSearchTerms();
+	//		if(!sharedFont.isLoaded() || fontSize != sharedFont.getSize() || int(fontSize*twoLineScaleup) != sharedLargeFont.getSize()){
+	//			if(!sharedFont.loadFont("fonts/Tahoma.ttf", fontSize, true, true, false) ||
+	//			   !sharedLargeFont.loadFont("fonts/Tahoma.ttf", fontSize*twoLineScaleup, true, true, false)){
+	//				ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load font!");
+	//			}
+	//		}
+	//		
+	//		if(!sharedSearchFont.isLoaded() || searchTermFontSize != sharedSearchFont.getSize()){
+	//			if(!sharedSearchFont.loadFont("fonts/Tahoma.ttf", searchTermFontSize, true, true, false)){
+	//				ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load font!");
+	//			}
+	//		}
+#endif
 }
 
 void ofxWWTweetParticleManager::handleSearch() {
@@ -371,15 +354,10 @@ void ofxWWTweetParticleManager::searchForTerm(ofxWWSearchTerm& term){
 	}
 	else {
 		//no tweets, just reclaim some random ones
-
 		for(int t = 0; t < 15; t++){
 			int randomTweet = ofRandom(tweets.size()-1);
 			tweets[randomTweet].isSearchTweet = true;
 			tweets[randomTweet].createdTime = ofGetElapsedTimef() + ofRandom(2);
-			/*
-				tweets[t].isSearchTweet = true;
-				tweets[t].createdTime = ofGetElapsedTimef() + ofRandom(2);
-			 */
 		}
 	}
 	
@@ -461,6 +439,36 @@ float ofxWWTweetParticleManager::weightBetweenPoints(ofVec2f touch, float normal
 
 void ofxWWTweetParticleManager::updateTweets(){
 	
+	for(int i = tweets.size()-1; i >= 0; i--){
+		//purge offscreen tweets
+		if(tweetsFlowLeftRight){
+			if((tweetFlowSpeed <= 0 && tweets[i].pos.x < -wallRepulsionDistance) || 
+			   (tweetFlowSpeed >= 0 && tweets[i].pos.x > simulationWidth+wallRepulsionDistance) )
+			{
+				if(tweets.size() > maxTweets){
+					tweets.erase(tweets.begin()+i);
+				}
+				else{
+					//wrap around
+					tweets[i].pos.x = tweetFlowSpeed > 0 ? -wallRepulsionDistance : simulationWidth + wallRepulsionDistance;
+				}
+			}
+		}
+		else {
+			if((tweetFlowSpeed <= 0 && tweets[i].pos.y < -wallRepulsionDistance) || 
+			   (tweetFlowSpeed >= 0 && tweets[i].pos.y > simulationHeight+wallRepulsionDistance) )
+			{
+				if(tweets.size() > maxTweets){
+					tweets.erase(tweets.begin()+i);
+				}
+				else{
+					//wrap around
+					tweets[i].pos.y = tweetFlowSpeed > 0 ? -wallRepulsionDistance : simulationHeight + wallRepulsionDistance;
+				}
+			}
+		}
+	}
+	
 	//hand reveal top level tweets
 	for(int i = 0; i < tweets.size(); i++){
 		tweets[i].selectionWeight = 0;
@@ -536,12 +544,28 @@ void ofxWWTweetParticleManager::updateTweets(){
 	//apply legibility fixes for visible tweets
 	for(int i = 0; i < tweets.size(); i++){
 		for(int j = 0; j < tweets.size(); j++){
-			if(j != i && tweets[i].selectionWeight > .5 && tweets[j].selectionWeight > .5){
+			if(j != i && tweets[i].selectionWeight > .1 && tweets[j].selectionWeight > .1){
 				//compare our corners to see if they are in their rect and then apply force if so
 				for(int c = 0; c < 4; c++){
 					ofVec2f corner = tweets[i].getBoundingCorner(c);
 					if(tweets[j].boundingRect.inside( corner )){
-						tweets[i].force.y += (corner.y - (tweets[j].boundingRect.y + tweets[j].totalHeight/2)) * tweetRepulsionAtten * 2;
+						ofVec2f myCenter = ofVec2f(tweets[i].boundingRect.x + tweets[i].totalWidth/2, 
+												   tweets[i].boundingRect.y + tweets[i].totalHeight/2);
+						ofVec2f otherCenter = ofVec2f(tweets[j].boundingRect.x + tweets[j].totalWidth/2, 
+													  tweets[j].boundingRect.y + tweets[j].totalHeight/2);
+						if(myCenter.x > otherCenter.x){
+							tweets[i].force.x -= (tweets[j].boundingRect.x+tweets[j].boundingRect.width - (myCenter.x+tweets[i].boundingRect.width/2) ) * tweetRepulsionAtten/2.;
+						}
+						else{
+							tweets[i].force.x += (tweets[j].boundingRect.x - (myCenter.x+tweets[i].boundingRect.width/2) ) * tweetRepulsionAtten/2.;
+						}
+						
+						if(myCenter.y > otherCenter.y){
+							tweets[i].force.y -= (tweets[j].boundingRect.y+tweets[j].boundingRect.height - (myCenter.y+tweets[i].boundingRect.height/2) ) * tweetRepulsionAtten/2.;
+						}
+						else{
+							tweets[i].force.y += (tweets[j].boundingRect.y - (myCenter.y+tweets[i].boundingRect.height/2) ) * tweetRepulsionAtten/2.;
+						}
 					}
 				}
 			}
@@ -558,6 +582,12 @@ void ofxWWTweetParticleManager::updateTweets(){
 }
 
 void ofxWWTweetParticleManager::updateSearchTerms(){
+		
+	if(clearTweets){
+		tweets.clear();
+		clearTweets = false;
+	}
+	
 		
 	//find the closest touch
 	for(int i = 0; i < searchTerms.size(); i++){
@@ -604,7 +634,7 @@ void ofxWWTweetParticleManager::updateSearchTerms(){
 	float squaredMinDistance = searchTermRepulsionDistance*searchTermRepulsionDistance;
 	for(int i = 0; i < searchTerms.size(); i++){
 		if(searchTerms[i].wallForceApplied){
-			continue;
+//			continue;
 		}
 		for(int j = 0; j < searchTerms.size(); j++){
 			if(i != j){

@@ -127,18 +127,19 @@ void ofxWWTweetParticle::drawDot(){
 	else {
 		//alpha = deathAttenuation * manager->tweetLayerOpacity;
 		alpha = manager->tweetLayerOpacity;
+		alpha *= ofMap(selectionWeight, 0, .5, 1.0, 0, true);
 	}
 	float scale = useBurstOne ? 1.2 : 1.0;
 	if(isSearchTweet){
 		scale *= 1.5;
 	}
 	
-	ofSetColor(255,255,255,alpha*255);
+	ofSetColor(255,255,255, alpha*255);
 	if(useBurstOne){
-		manager->burstOne.draw(pos.x, pos.y, manager->dotSize*1.2,manager->dotSize*1.2);
+		manager->burstOne.draw(pos.x+manager->dotShift, pos.y, manager->dotSize*1.2,manager->dotSize*1.2);
 	}
 	else{
-		manager->burstTwo.draw(pos.x, pos.y, manager->dotSize,manager->dotSize);
+		manager->burstTwo.draw(pos.x+manager->dotShift, pos.y, manager->dotSize,manager->dotSize);
 	}
 
 	ofPopStyle();
@@ -162,7 +163,7 @@ void ofxWWTweetParticle::drawText(){
 	
 	//USER -- use the same size as search ftm
 	ofVec2f userDrawPos = getUserDrawPos();
-	manager->sharedSearchFont.drawString(tweet.getScreenName(), userDrawPos.x,userDrawPos.y);
+	manager->sharedUserFont.drawString(tweet.getScreenName(), userDrawPos.x,userDrawPos.y);
 	
 	//TWEET
 	ofVec2f tweetDrawPos = getTweetLineOneDrawPos();
@@ -236,15 +237,15 @@ ofVec2f ofxWWTweetParticle::getBoundingCorner(int cornerIndex){
 }
 
 ofVec2f ofxWWTweetParticle::getUserDrawPos(){
-	return ofVec2f(pos.x - userNameWidth/2, pos.y + manager->userNameYOffset);
+	return ofVec2f(pos.x - userNameWidth/2, pos.y + manager->userNameYOffset * ofMap(selectionWeight,0,.3,0,1.0,true));
 }
 
 ofVec2f ofxWWTweetParticle::getTweetLineOneDrawPos(){
-	return ofVec2f(pos.x - lineOneWidth/2, pos.y + manager->tweetYOffset);
+	return ofVec2f(pos.x - lineOneWidth/2, pos.y + manager->tweetYOffset*ofMap(selectionWeight,0,.3,0,1.0,true));
 }
 
 ofVec2f ofxWWTweetParticle::getTweetLineTwoDrawPos(){
-	return ofVec2f(pos.x - lineTwoWidth/2, pos.y + manager->tweetYOffset + lineOneHeight);
+	return ofVec2f(pos.x - lineTwoWidth/2, pos.y + manager->tweetYOffset*ofMap(selectionWeight,0,.3,0,1.0,true) + lineOneHeight + manager->tweetLineSpace);
 }
 	
 ofVec2f ofxWWTweetParticle::getAtDrawPos(){

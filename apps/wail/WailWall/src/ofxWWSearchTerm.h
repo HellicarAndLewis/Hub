@@ -48,6 +48,7 @@ class ofxWWSearchTerm {
 	string term;
 	vector<ofxWWTweetParticle> associatedTweets;
 	
+	float searchTermWidth;
 	float killedTime;
 	bool dead;
 

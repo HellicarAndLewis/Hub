@@ -79,7 +79,7 @@ void ofxWWRenderer::setupGui(){
 	webGui.addSlider("Layer Barrier Z", layerBarrierZ, .25, .75);
 	webGui.addSlider("Layer Barrier Width", layerBarrierWidth, 0.05, .25);
 	webGui.addSlider("Touch Scale", tweets.touchSizeScale, .5, 2.0);
-	webGui.addSlider("Influence Width", tweets.touchInfluenceFalloff, 10., 500);
+	webGui.addSlider("Influence Width", tweets.touchInfluenceFalloff, 200, 5000);
 	webGui.addToggle("Draw Touch Debug", drawTouchDebug);
 	
 	webGui.addPage("Fluid");

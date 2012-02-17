@@ -88,9 +88,11 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	int tweetFontSize;
 	int searchTermFontSize;
 	float dotSize;
+	float dotShift;
 	float wordWrapLength;
-	int userNameYOffset;
-	int tweetYOffset;
+	float userNameYOffset;
+	float tweetYOffset;
+	float tweetLineSpace;
 	
 	bool clearTweets;
 	
@@ -140,6 +142,8 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	
 //	bool searchTermSelected;
 	int selectedSearchTermIndex;
+	
+	void checkFonts();
 	
 	void handleSearch();
 	void handleTouchSearch();

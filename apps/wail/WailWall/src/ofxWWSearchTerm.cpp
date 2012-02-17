@@ -52,6 +52,7 @@ void ofxWWSearchTerm::update(){
 		opacity *= ofMap(ofGetElapsedTimef(), killedTime, killedTime+manager->searchTermFadeOutTime, 1.0, 0, true);
 	}
 	
+	searchTermWidth = manager->sharedSearchFont.getStringBoundingBox(term, 0, 0).width;
 	pos += force;
 	force = ofVec2f(0,0);
 }
@@ -70,7 +71,7 @@ void ofxWWSearchTerm::draw(){
 	ofSetColor( baseColor.lerp(selectedColor, holdLerp) );
 			   
 	//TODO center this
-	manager->sharedSearchFont.drawString(term, pos.x, pos.y);
+	manager->sharedSearchFont.drawString(term, pos.x-searchTermWidth/2, pos.y);
 	
 	ofPopStyle();
 }
@@ -84,6 +85,9 @@ void ofxWWSearchTerm::drawDebug(){
 	
 	ofSetColor(255, 0, 0);
 	ofCircle(pos, manager->searchTermRepulsionDistance);
+
+	ofSetLineWidth(4);
+	ofRect(manager->sharedSearchFont.getStringBoundingBox(term, pos.x-searchTermWidth/2, pos.y) );
 
 	ofFill();
 	ofCircle(pos, 10);
