@@ -8,7 +8,6 @@
 #include "contourutils.h"
 #include "geomutils.h"
 
-float lastVisionCalculationDuration = 0;
 
 
 ofVec3f testApp::getBlobCoords(ofxCvTrackedBlob &blob) {
@@ -143,8 +142,22 @@ void testApp::doVision() {
 	float startTime = ofGetElapsedTimef();
 	float img[KINECT_WIDTH*KINECT_HEIGHT];
 	float *distPix = kinect.getDistancePixels();
+	
+	
+	float kinectRangeFar = 4000;
+	float kinectRangeNear = 500;
+	
+	
+	float denom = (kinectRangeFar - kinectRangeNear) * (maxWaterDepth - waterThreshold);
+	if(denom==0) denom = 0.0001;
+	float subtractor = kinectRangeFar - waterThreshold*(kinectRangeFar - kinectRangeNear);
+	
 	for(int i = 0; i < KINECT_WIDTH*KINECT_HEIGHT; i++) {
-		img[i] = ofMap(ofMap(distPix[i], 500, 4000, 1, 0), maxWaterDepth, waterThreshold, 1, 0);
+		
+		// this is slow
+		//img[i] = ofMap(ofMap(distPix[i], 500, 4000, 1, 0), maxWaterDepth, waterThreshold, 1, 0);
+		
+		img[i] = (subtractor - distPix[i])/denom;
 		if(img[i]>1) img[i] = 0;
 		if(img[i]<0) img[i] = 0;
 	}
@@ -263,13 +276,7 @@ void testApp::doVision() {
 	}
 	blobTracker.trackBlobs(contourFinder.blobs);
 	
-	lastVisionCalculationDuration = ofGetElapsedTimef() - startTime;
-	ofSetWindowTitle(
-					 "WailWell - "
-					 + ofToString(ofGetFrameRate(), 2) 
-					 + "fps - " 
-					 + ofToString(lastVisionCalculationDuration*1000, 0) 
-					 + "ms"); 
+	
 }
 
 void testApp::drawKinect() {

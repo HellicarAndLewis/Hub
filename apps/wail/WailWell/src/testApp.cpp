@@ -43,7 +43,7 @@ void testApp::setup(){
 	
 	
 	blobTracker.setListener(this);
-	ofSetFrameRate(30);
+	ofSetFrameRate(60);
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
 	
@@ -163,18 +163,30 @@ void testApp::exit() {
 
 
 
+float lastVisionCalculationDuration = 0;
 
 //--------------------------------------------------------------
 void testApp::update(){
+	
+	float startTime = ofGetElapsedTimef();
 	kinect.update();
 	if(kinect.isFrameNew()) {
 		doVision();
 	}
+	
+	lastVisionCalculationDuration = ofGetElapsedTimef() - startTime;
+	ofSetWindowTitle(
+					 "WailWell - "
+					 + ofToString(ofGetFrameRate(), 2) 
+					 + "fps - " 
+					 + ofToString(lastVisionCalculationDuration*1000, 0) 
+					 + "ms"); 
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	ofBackground(22, 33, 44);
+	
+	 ofBackground(22, 33, 44);
 	
 	glPushMatrix();
 	{
