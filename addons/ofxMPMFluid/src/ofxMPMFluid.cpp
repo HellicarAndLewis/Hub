@@ -104,7 +104,7 @@ void ofxMPMFluid::setup(int gridX, int gridY, int maxParticles){
 	//TODO: JG add and remove obstacles through API
 	obstacles.push_back( new ofxMPMObstacle(gridSizeX * 0.75, gridSizeY * 0.75, gridSizeX * 0.075) );
 	
-	startThread(false,false);
+	//startThread(false,false);
 }
 
 void ofxMPMFluid::applyForce(ofVec2f pos, ofVec2f vel){

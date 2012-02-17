@@ -11,4 +11,24 @@
         <name>Flow Chaos</name>
         <value>8.600000</value>
     </SliderFloat_Flow_Chaos>
+    <SliderFloat_Wall_Repulsion_Dist>
+        <name>Wall Repulsion Dist</name>
+        <value>207.000000</value>
+    </SliderFloat_Wall_Repulsion_Dist>
+    <SliderFloat_Wall_Repulsion_Atten>
+        <name>Wall Repulsion Atten</name>
+        <value>0.036000</value>
+    </SliderFloat_Wall_Repulsion_Atten>
+    <SliderFloat_Tweet_Repulsion_Dist>
+        <name>Tweet Repulsion Dist</name>
+        <value>882.000000</value>
+    </SliderFloat_Tweet_Repulsion_Dist>
+    <SliderFloat_Tweet_Repulsion_Atten>
+        <name>Tweet Repulsion Atten</name>
+        <value>0.009000</value>
+    </SliderFloat_Tweet_Repulsion_Atten>
+    <SliderFloat_Fluid_Force_Scale>
+        <name>Fluid Force Scale</name>
+        <value>8.920000</value>
+    </SliderFloat_Fluid_Force_Scale>
 </controls>

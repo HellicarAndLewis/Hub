@@ -19,16 +19,23 @@ class ofxWWSearchTerm {
 
 	void update();
 	void draw();
+	
+	void drawDebug();
+	
 	ofxWWTweetParticleManager* manager;
 
 	ofVec2f closestPoint;
+	int closestTouchID;
+	float closestDistanceSquared;
 	ofVec2f pos;
+	ofVec2f force;
 	
+	bool wallForceApplied;
 	//weight contributed by all surrounding touches
 	float touchWeight;
-
+	
 	bool touchPresent;
-	bool highlighted;
+	bool isHolding;
 	float holdStartTime;
 	
 	bool selected;
@@ -40,4 +47,9 @@ class ofxWWSearchTerm {
 	string user;
 	string term;
 	vector<ofxWWTweetParticle> associatedTweets;
+	
+	float searchTermWidth;
+	float killedTime;
+	bool dead;
+
 };

@@ -36,7 +36,7 @@ void ofxWWRenderer::setup(int width, int height){
 	ofClear(0);
 	accumulator.end();
 	
-	fluid.setup(width/20.0,height/20.0,100000);
+	//fluid.setup(width/20.0,height/20.0,100000);
 //	fluid.scaleFactor = 6.4;
 	tweets.fluidRef = &fluid;
 	tweets.blobsRef = blobs;
@@ -79,7 +79,7 @@ void ofxWWRenderer::setupGui(){
 	webGui.addSlider("Layer Barrier Z", layerBarrierZ, .25, .75);
 	webGui.addSlider("Layer Barrier Width", layerBarrierWidth, 0.05, .25);
 	webGui.addSlider("Touch Scale", tweets.touchSizeScale, .5, 2.0);
-	webGui.addSlider("Influence Width", tweets.touchInfluenceFalloff, 10., 500);
+	webGui.addSlider("Influence Width", tweets.touchInfluenceFalloff, 200, 5000);
 	webGui.addToggle("Draw Touch Debug", drawTouchDebug);
 	
 	webGui.addPage("Fluid");
@@ -198,7 +198,7 @@ void ofxWWRenderer::render(){
 	warpShader.end();
 	
 
-	tweets.renderTweetNodes();
+//	tweets.renderTweetNodes();
 	tweets.renderTweets();	
 	tweets.renderSearchTerms();
 	
@@ -281,47 +281,10 @@ void ofxWWRenderer::renderDynamics(){
 	blurShader.end();
 
 	if(enableFluid){
-		
 		fluid.draw(0,0,targetWidth,targetHeight);
-		
-//		ofPushMatrix();
-//		ofTranslate(fluid.offsetX, fluid.offsetY);
-//		ofScale(fluid.scaleFactor, fluid.scaleFactor, 1);
-//		vector<ofVec2f> verts;
-//		vector<ofVec2f> texcoords;
-//		vector<ofVec3f> colors;
-//		for(int i = 0; i < fluid.numParticles; i++){
-//			ofxMPMParticle* p = fluid.getParticles()[i];
-//			ofVec2f pos = ofVec2f(p->x, p->y);
-//			verts.push_back(pos);
-//			verts.push_back(ofVec2f(p->x - p->u, p->y - p->v));
-//			texcoords.push_back( texCoordAtPos(colorField, p->x, p->y) );
-//			texcoords.push_back( texCoordAtPos(colorField, p->x - p->u, p->y - p->v) );
-//		}
-//		
-//		colorField.getTextureReference().bind();
-//		
-//		glEnableClientState(GL_VERTEX_ARRAY);
-//		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-//		glVertexPointer(2, GL_FLOAT, 0, &(verts[0].x));
-//		glTexCoordPointer(2, GL_FLOAT, 0, &(texcoords[0].x));
-//		glDrawArrays(GL_LINES, 0, verts.size());
-//		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-//		glDisableClientState(GL_VERTEX_ARRAY);
-//		
-//		colorField.getTextureReference().unbind();
-//		
-//		ofPopMatrix();
 	}
-	
-	
+		
 	tweets.renderCaustics();
-//	tweets.renderTweetNodes();
-	
-//	ofSetColor(0,0,0, clearSpeed);
-//	ofRect(0, 0, targetWidth, targetHeight);
-
-	//ofSetColor(255,255,255, clearSpeed);
 	ofSetColor(255,255,255, clearSpeed);
 	gradientOverlay.draw(0,0,targetWidth,targetHeight);
 	
@@ -333,7 +296,6 @@ void ofxWWRenderer::renderDynamics(){
 void ofxWWRenderer::renderLayer1(){
 	layer1Target.begin();
 	ofClear(0,0,0,0);
-	tweets.renderTweetNodes();
 	tweets.renderTweets();	
 	layer1Target.end();
 }

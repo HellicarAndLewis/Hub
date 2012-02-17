@@ -1,50 +1,34 @@
 <controls>
-    <SliderFloat_Tweet_Font_Size>
+    <SliderInt_Tweet_Font_Size>
         <name>Tweet Font Size</name>
-        <value>80.565002</value>
-    </SliderFloat_Tweet_Font_Size>
+        <value>57</value>
+    </SliderInt_Tweet_Font_Size>
+    <SliderInt_User_Font_Size>
+        <name>User Font Size</name>
+        <value>84</value>
+    </SliderInt_User_Font_Size>
     <SliderFloat_Word_Wrap_Length>
         <name>Word Wrap Length</name>
-        <value>190.000000</value>
+        <value>246.000000</value>
     </SliderFloat_Word_Wrap_Length>
-    <SliderFloat_Dot_Size>
-        <name>Dot Size</name>
-        <value>40.549999</value>
-    </SliderFloat_Dot_Size>
-    <SliderFloat_Two_Line_Scale>
-        <name>Two Line Scale</name>
-        <value>1.875000</value>
-    </SliderFloat_Two_Line_Scale>
     <SliderFloat_User_Y_Shift>
         <name>User Y Shift</name>
-        <value>69.000000</value>
+        <value>99.000000</value>
     </SliderFloat_User_Y_Shift>
     <SliderFloat_Tweet_Y_Shift>
         <name>Tweet Y Shift</name>
-        <value>0.000000</value>
+        <value>-106.500000</value>
     </SliderFloat_Tweet_Y_Shift>
-    <SliderFloat_Wall_Repulsion_Dist>
-        <name>Wall Repulsion Dist</name>
-        <value>517.500000</value>
-    </SliderFloat_Wall_Repulsion_Dist>
-    <SliderFloat_Wall_Repulsion_Atten>
-        <name>Wall Repulsion Atten</name>
-        <value>0.200000</value>
-    </SliderFloat_Wall_Repulsion_Atten>
-    <SliderFloat_Tweet_Repulsion_Dist>
-        <name>Tweet Repulsion Dist</name>
-        <value>522.000000</value>
-    </SliderFloat_Tweet_Repulsion_Dist>
-    <SliderFloat_Tweet_Repulsion_Atten>
-        <name>Tweet Repulsion Atten</name>
-        <value>0.005000</value>
-    </SliderFloat_Tweet_Repulsion_Atten>
-    <SliderFloat_Y_Force_Bias>
-        <name>Y Force Bias</name>
-        <value>3.070000</value>
-    </SliderFloat_Y_Force_Bias>
-    <SliderFloat_Fluid_Force_Scale>
-        <name>Fluid Force Scale</name>
-        <value>5.455000</value>
-    </SliderFloat_Fluid_Force_Scale>
+    <SliderFloat_Tweet_Line_Space>
+        <name>Tweet Line Space</name>
+        <value>11.200000</value>
+    </SliderFloat_Tweet_Line_Space>
+    <SliderFloat_Dot_Size>
+        <name>Dot Size</name>
+        <value>45.950001</value>
+    </SliderFloat_Dot_Size>
+    <SliderFloat_Dot_Shift>
+        <name>Dot Shift</name>
+        <value>-29.000000</value>
+    </SliderFloat_Dot_Shift>
 </controls>

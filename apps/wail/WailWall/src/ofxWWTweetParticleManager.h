@@ -27,9 +27,8 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	void setupGui();
 	
 	void update();
-	
+
 	void renderTweets();
-	void renderTweetNodes();
 	void renderSearchTerms();
 
 	void renderCaustics();
@@ -39,6 +38,8 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	void onStreamEvent(const rtt::StreamEvent& event);
 	void onNewSearchTerm(TwitterAppEvent& event);
 
+	void setupColors();
+	
 	TwitterApp& getTwitterApp();
 	
 	//ofxFTGLFont sharedFont;
@@ -49,12 +50,12 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 
 
 	#ifdef USE_FTGL
-		ofxFTGLFont sharedFont;
-		ofxFTGLFont sharedLargeFont;
+		ofxFTGLFont sharedTweetFont;
+		ofxFTGLFont sharedUserFont;
 		ofxFTGLFont sharedSearchFont;
 	#else	
-		ofTrueTypeFont sharedFont;
-		ofTrueTypeFont sharedLargeFont;
+		ofTrueTypeFont sharedTweetFont;
+		ofTrueTypeFont sharedUserFont;
 		ofTrueTypeFont sharedSearchFont;
 	#endif
 	
@@ -67,6 +68,7 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	float simulationWidth;
 	float simulationHeight;
 	
+	bool drawTweetDebug;
 	int maxTweets;
 	float startFadeTime;
 	float fadeDuration;
@@ -76,26 +78,42 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	float tweetRepulsionDistance;
 	float tweetRepulsionAtten;
 	float fluidForceScale;
-	float yForceBias;
-
-	float twoLineScaleup;
-	float userNameYOffset;
-	float tweetYOffset;
-	
+		
 	bool tweetsFlowLeftRight; //otherwise up/down
 	float tweetFlowSpeed;
 	float flowChaosScale;
 	
+	//tweet rendering
+	int userFontSize;
+	int tweetFontSize;
+	int searchTermFontSize;
 	float dotSize;
-	float fontSize;
-	float searchTermFontSize;
+	float dotShift;
 	float wordWrapLength;
+	float userNameYOffset;
+	float tweetYOffset;
+	float tweetLineSpace;
 	
 	bool clearTweets;
 	
+	int maxSearchTerms;
 	float searchTermMinDistance;
 	float searchTermMinHoldTime;
-
+	float searchMinOpacity;
+	float searchTermRepulsionDistance;
+	float searchTermRepulsionAttenuation;
+	float searchTermHandAttractionFactor;
+	float searchTermFadeOutTime;
+	
+	bool drawSearchDebug;
+	
+	float tweetSearchMinWaitTime;
+	float tweetSearchDuration;
+	float tweetSearchStartTime;
+	float tweetSearchEndedTime;
+	bool isDoingSearch;
+	bool shouldTriggerScreenshot;
+	
 	vector<ofxWWTweetParticle> tweets;
 	vector<ofColor> causticColors;
 
@@ -103,6 +121,11 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	ofImage burstOne;
 	ofImage burstTwo;
 
+	//particle colors
+	ofColor atSignColor;
+	ofColor layerOneFontColor;
+	ofColor layerTwoFontColor;
+	
 	// search state vars
 	int shouldChangeSearchTermOn;	// when do show the next search term.
 	int changeSearchTermDelay; 		// after how many seconds do go to the next search term in queue.
@@ -120,6 +143,8 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 //	bool searchTermSelected;
 	int selectedSearchTermIndex;
 	
+	void checkFonts();
+	
 	void handleSearch();
 	void handleTouchSearch();
 	void handleTweetSearch();	
@@ -128,6 +153,7 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	
 	float weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet);
 	void updateTweets();
+	void updateSearchTerms();
 	
 	void attemptCausticConnection(ofVec2f pos1, float weight1, ofVec2f pos2, float weight2, float layerOpacity);
 	void setRandomCausticColor(float layerOpacity);
@@ -136,12 +162,6 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	void addSearchTerm(const string& user, const string& term);
 	ofxWWTweetParticle createParticleForTweet(const rtt::Tweet& tweet);
 	
-	float tweetSearchMinWaitTime;
-	float tweetSearchDuration;
-	float tweetSearchStartTime;
-	float tweetSearchEndedTime;
-	bool isDoingSearch;
-	bool shouldTriggerScreenshot;
 	
 	ofxWWRenderer* renderer;
 	GLuint pbo;
