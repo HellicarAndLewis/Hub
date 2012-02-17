@@ -1,5 +1,7 @@
 #include "testApp.h"
 #include "ofxWebSimpleGuiToo.h"
+#include "Error.h"
+
 //#include "pcrecpp.h"
 
 ///*******
@@ -57,7 +59,22 @@ void testApp::setup(){
 	//webGui.startServer();
 	webGui.loadFromXML();
 	webGui.setAutoSave(true);
+	
+	glGetError();
 
+	screen_w = ofGetWidth();
+	screen_h = ofGetHeight();
+	screen_w = 3840;
+	screen_h = 3072;
+	screen_w = 1024;
+	screen_h = 768;
+	int size = screen_w * screen_h * 3;
+	glGenBuffers(1,&pbo);  eglGetError();
+	glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo); eglGetError();
+	glBufferData(GL_PIXEL_PACK_BUFFER, size, NULL, GL_STATIC_READ); eglGetError();
+	
+	renderer.getTweetManager().setScreenshotCallback(&testApp::theScreenshotCallback, this);
+	
 }
 
 void testApp::exit() {
@@ -71,27 +88,15 @@ void testApp::update(){
 	
 	renderer.update();
 	renderer.render();
-	
-//	if(generateScreens){
-//		//danger zone for hand written files
-////		generateScreens = false;
-////		screenManager.generateScreens(5, 3);
-////		screenManager.saveScreens(screenSettingsFile);
-//	}
-//	
-//	if(shouldLoadScreens){
-//		shouldLoadScreens = false;
-//		screenManager.loadScreens(screenSettingsFile);
-//	}
-//	
-//	if(shouldSaveScreens){
-//		//danger zone for hand written files
-////		shouldSaveScreens = false;
-////		screenManager.saveScreens(screenSettingsFile);
-//	}	
 }
 
 //--------------------------------------------------------------
+void testApp::theScreenshotCallback(const string& username, void* userdata) {
+	testApp* app = static_cast<testApp*>(userdata);
+	app->screenshotUsername = username;
+	app->shouldTakeScreenshot = true;
+}
+
 void testApp::draw(){
 	// roxlu 02/07
 	ofSetFullscreen(false); 
@@ -103,6 +108,10 @@ void testApp::draw(){
 	renderer.getFbo().getTextureReference().bind();
 	screenManager.renderScreens();
 	renderer.getFbo().getTextureReference().unbind();
+	
+	renderer.getScreenshotFbo().bind();
+	renderer.getFbo().draw(0,0,1024,768);
+	renderer.getScreenshotFbo().unbind();
 
 	if(previewScreenLayout){
 		//draw preview rects
@@ -122,7 +131,7 @@ void testApp::draw(){
 	
 	if(shouldTakeScreenshot) {
 		// %Y-%m-%d-%H-%M-%S-%i
-		/*
+		
 		string dirname = "thumbs/" +ofGetTimestampString("%m-%d");
 		ofDirectory dir(dirname);
 		dir.create(true);
@@ -133,16 +142,23 @@ void testApp::draw(){
 		filepath.append(filename);
 
 		// pretty sure we can do this better
-		ofPixels pixels;
-		renderer.getFbo().readToPixels(pixels);
-		ofImage img;
-		img.setFromPixels(pixels);
-		img.saveImage(filepath);
-
-		printf(">>>> upload a photo.\n");
-		renderer.getTweetManager().getTwitterApp().uploadScreenshot(ofToDataPath(filepath, true), "roxlu", "");
-		*/
+		glGetError();
+		glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo); eglGetError();
+		renderer.getScreenshotFbo().getTextureReference().bind(); eglGetError();
+		glGetTexImage(GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGB, GL_UNSIGNED_BYTE, 0); eglGetError();
+		GLubyte* ptr = 	(GLubyte*) glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY);
+		
+		if(ptr) {
+			renderer.getTweetManager()
+					.getTwitterApp()
+					.getImageWriter()
+					.addPixels(filepath, screenshotUsername, ptr, screen_w, screen_h);
+		}
+		
+		glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
+		
 		shouldTakeScreenshot = false;
+		screenshotUsername.clear();
 	}
 	
 	/*
@@ -180,12 +196,6 @@ void testApp::keyPressed(int key){
 			simulator.setEnabled(!simulator.getEnabled());
 			break;
 		}
-		case 'p': {
-			// roxlu 02/07, test with screenshots
-			shouldTakeScreenshot = !shouldTakeScreenshot;
-			break;
-		}
-			
 		case OF_KEY_LEFT: {
 			webGui.prevPage();
 			break;

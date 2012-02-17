@@ -15,7 +15,7 @@ int main( ){
     }
     else {
         ofAppGlutWindow window;
-        ofSetupOpenGL( &window, 800, 600, OF_WINDOW );
+        ofSetupOpenGL( &window, 1280, 900, OF_WINDOW );
     }
 	
 //    ofAppGlutWindow window;

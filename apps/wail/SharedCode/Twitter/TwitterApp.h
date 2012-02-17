@@ -93,7 +93,7 @@ public:
 	virtual void simulateSearch(const string& term);
 	
 	TwitterDB& getDB();	
-	
+	TwitterThreadedImageWriter& getImageWriter();
 private:
 	bool initialized;
 	void initDB();
@@ -144,6 +144,10 @@ inline bool TwitterApp::setSearchTermAsUsed(const string& user, const string& te
 
 
 inline void TwitterApp::writeScreenshot(const string& filePath, const string& user, ofPixels pixels) {
-	image_writer.addPixels(filePath, user, pixels);
+//	image_writer.addPixels(filePath, user, pixels);
+}
+
+inline TwitterThreadedImageWriter& TwitterApp::getImageWriter() {
+	return image_writer;
 }
 #endif

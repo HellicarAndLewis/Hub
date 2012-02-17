@@ -203,7 +203,7 @@ void ofPixels_<PixelType>::swapRgb(){
 		PixelType * pixels_ptr = pixels;
 
 		while (cnt < sizePixels){
-			std::swap(pixels_ptr[0],pixels_ptr[2]);
+			//std::swap(pixels_ptr[0],pixels_ptr[2]);
 			cnt++;
 			pixels_ptr+=channels;
 		}

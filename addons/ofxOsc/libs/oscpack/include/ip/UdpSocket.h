@@ -130,7 +130,7 @@ public:
 };
 
 
-// UdpListeningReceiveSocket provides a simple way to bind one listener
+// UdpListeningReceiveSocket provides a simple way to 1bind one listener
 // to a single socket without having to manually set up a SocketReceiveMultiplexer
 
 class UdpListeningReceiveSocket : public UdpSocket{

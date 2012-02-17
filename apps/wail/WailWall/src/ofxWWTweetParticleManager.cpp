@@ -1,21 +1,14 @@
-/*
- *  ofxWWTweetManager.cpp
- *  WailWall
- *
- *  Created by James George on 1/30/12.
- *  Copyright 2012 __MyCompanyName__. All rights reserved.
- *
- */
-
 #include "ofxWWRenderer.h"
 #include "ofxWWTweetParticleManager.h"
 #include "ofxWebSimpleGuiToo.h"
+#include "Error.h"
 
 ofxWWTweetParticleManager::ofxWWTweetParticleManager()
 	:shouldChangeSearchTermOn(0)
 	,changeSearchTermDelay(10)  
 	,currentSearchTermIndex(0)
 	,renderer(NULL)
+	,screenshot_userdata(NULL)
 {
 	maxTweets = 100;
 	tweetSearchEndedTime = 0;
@@ -74,15 +67,17 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	for(int i = 0; i < fakeSearchTerms.size(); i++){
 		twitter.simulateSearch(fakeSearchTerms[i]);
 	}
-	
+
 	// test pbo
-	glGenBuffers(1,&pbo);
-	glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo);
+	glGetError();
+	glGenBuffers(1,&pbo); eglGetError();
+	glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo); eglGetError();
 	
-	int w = renderer->getFbo().getWidth();
-	int h = renderer->getFbo().getHeight();
-	int size = w * h * 4;
-	glBufferData(GL_PIXEL_PACK_BUFFER, size, NULL, GL_STATIC_READ);
+	screenshot_w = renderer->getFbo().getWidth(); eglGetError();
+	screenshot_h = renderer->getFbo().getHeight(); eglGetError();
+
+	int size = screenshot_w * screenshot_h * 3;
+	glBufferData(GL_PIXEL_PACK_BUFFER, size, NULL, GL_STATIC_READ); 
 	
 	setupColors();
 
@@ -382,54 +377,57 @@ void ofxWWTweetParticleManager::finishSearch(){
 }
 
 void ofxWWTweetParticleManager::addCurrentRenderToScreenshotQueue() {
-		glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo);
-// TODO: trigger screenshot of current layout
-		int now = ofGetElapsedTimeMillis();
-		// %Y-%m-%d-%H-%M-%S-%i
-		string dirname = "thumbs/" +ofGetTimestampString("%m-%d");
-		ofDirectory dir(dirname);
-		dir.create(true);
-
-		string filename = ofGetTimestampString() +"_" +ofToString(ofGetFrameNum()) +".png";
-		string filepath(dirname);	
-		filepath.append("/");
-		filepath.append(filename);
-
-		// pretty sure we can do this better
-		ofPixels pixels;
+	if(screenshot_userdata == NULL) {
+		return;
+	}
+	screenshot_callback("roxlu", screenshot_userdata);
 		
-		renderer->getFbo().getTextureReference().bind();
-		glReadPixels(0, 0, renderer->getFbo().getWidth(), renderer->getFbo().getHeight(), GL_RGBA, GL_UNSIGNED_BYTE, 0);
-		GLubyte* ptr = (GLubyte*)glMapBuffer(GL_PIXEL_PACK_BUFFER,GL_READ_ONLY);
-		
-		if(ptr) {
-			printf("XXXXXXXXXXX \n");
-//			ofPixels pix;
-//			pix.setFromPixels(ptr, renderer->getFbo().getWidth(), renderer->getFbo().getHeight(), OF_IMAGE_COLOR_ALPHA);
-//			ofImage img;
-//			img.setFromPixels(pix);
-//			img.saveImage("tester.jpg");
-			glUnmapBuffer(GL_PIXEL_PACK_BUFFER);			
-		}
-		//renderer->getFbo().readToPixels(pixels);
-		twitter.writeScreenshot(filepath, "roxlu", pixels);
-		int end = ofGetElapsedTimeMillis();
-
-		ofPixels pix;
-		pix.setFromPixels(ptr, ofGetWidth(), ofGetHeight(), OF_IMAGE_COLOR_ALPHA);
-
-		printf("It took us: %d millis to add the image to the queue\n", (end-now));
-
-		printf("----------------> adding screenshot <----------------------\n");
-		/*
-		ofImage img;
-		img.setFromPixels(pixels);
-		img.saveImage(filepath);
-
-		printf(">>>> upload a photo.\n");
-		renderer.getTweetManager().getTwitterApp().uploadScreenshot(ofToDataPath(filepath, true), "roxlu", "");
-		*/		
-
+//		glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo);
+//
+//		// TODO: trigger screenshot of current layout
+//		int now = ofGetElapsedTimeMillis();
+//		// %Y-%m-%d-%H-%M-%S-%i
+//		string dirname = "thumbs/" +ofGetTimestampString("%m-%d");
+//		ofDirectory dir(dirname);
+//		dir.create(true);
+//
+//		string filename = ofGetTimestampString() +"_" +ofToString(ofGetFrameNum()) +".png";
+//		string filepath(dirname);	
+//		filepath.append("/");
+//		filepath.append(filename);
+//		
+//
+//		// pretty sure we can do this better
+//		glGetError(); 
+//		ofImage image;
+//		glEnable(GL_TEXTURE_2D); eglGetError();
+//		image.loadImage("nice.jpg"); eglGetError();
+//		image.getTextureReference().bind();  eglGetError();
+//		//renderer->getFbo().getTextureReference(0).bind();
+//		
+//
+//		glGetTexImage(GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGB, GL_UNSIGNED_BYTE, 0); eglGetError();
+//		//glReadPixels(0, 0, screenshot_w, screenshot_h, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+//		GLubyte* ptr = (GLubyte*)glMapBuffer(GL_PIXEL_PACK_BUFFER,GL_READ_ONLY); eglGetError();
+//
+//		if(ptr) {
+//			
+//			//ofPixels pix;
+//			twitter.getImageWriter().addPixels(filepath, "roxlu", ptr,screenshot_w, screenshot_h);
+//			//pix.setFromPixels(ptr, image.getWidth(),image.getHeight(), OF_IMAGE_COLOR);
+//			
+//			//twitter.writeScreenshot(filepath, "roxlu", pix);
+//			//ofImage img;
+//			//img.setFromPixels(pix);
+//			//img.saveImage(ofGetTimestampString() +".jpg");
+//						
+//		}
+//		glUnmapBuffer(GL_PIXEL_PACK_BUFFER);	eglGetError();
+//		int end = ofGetElapsedTimeMillis();
+//
+//
+//		printf("It took us: %d millis to add the image to the queue\n", (end-now));
+//		printf("----------------> adding screenshot <----------------------\n");
 }
 
 float ofxWWTweetParticleManager::weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet){
@@ -850,4 +848,9 @@ void ofxWWTweetParticleManager::onStreamEvent(const rtt::StreamEvent& event){
 
 TwitterApp& ofxWWTweetParticleManager::getTwitterApp() {
 	return twitter;
+}
+
+void ofxWWTweetParticleManager::setScreenshotCallback(takeScreenshotCallback func, void* userdata) {
+	screenshot_callback = func;
+	screenshot_userdata = userdata;
 }

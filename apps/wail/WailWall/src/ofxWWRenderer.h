@@ -22,6 +22,7 @@ class ofxWWRenderer: public KinectTouchListener {
 	void render();
 	
 	ofFbo& getFbo();
+	ofFbo& getScreenshotFbo();
 
 	// touch stuff
 	//set by the testApp
@@ -37,7 +38,11 @@ class ofxWWRenderer: public KinectTouchListener {
 	float fakeZLevel;
 	
 	ofxWWTweetParticleManager& getTweetManager(); // roxlu 02/07
+	
 	void stopFluidThread();
+	
+	void keyPressed(ofKeyEventArgs& args); //roxlu: testing screenshots
+	bool test_screenshot; // roxlu: testing screenshots
 	
   protected:
 	int targetWidth;
@@ -50,6 +55,7 @@ class ofxWWRenderer: public KinectTouchListener {
 	ofFbo gradientOverlay;
 	ofFbo layer1Target;
 	ofFbo layer2Target;
+	ofFbo screenshotTarget;
 	
 	//pass functions
 	void typeLayer();
@@ -100,3 +106,7 @@ class ofxWWRenderer: public KinectTouchListener {
 	
 	
 };
+
+inline ofFbo& ofxWWRenderer::getScreenshotFbo() {
+	return screenshotTarget;
+}
