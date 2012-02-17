@@ -16,7 +16,7 @@ void ofxWWRenderer::setup(int width, int height){
 	
 	//anything that diffuses in liquid gets drawn into here
 	accumulator.allocate(width, height, GL_RGB);
-	screenshotTarget.allocate(1024, 768, GL_RGB);
+	screenshotTarget.allocate(width/4, height/4, GL_RGB);
 	
 	//type layer
 	//draw everything into here that needs to be warped

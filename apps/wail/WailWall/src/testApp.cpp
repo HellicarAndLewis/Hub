@@ -66,8 +66,13 @@ void testApp::setup(){
 	screen_h = ofGetHeight();
 	screen_w = 3840;
 	screen_h = 3072;
-	screen_w = 1024;
-	screen_h = 768;
+	
+	//screen_w = 1024;
+	//screen_h = 768;
+	
+	screen_w = screen_w / 4;
+	screen_h = screen_h / 4;
+	printf("================================= %d %d\n", renderer.getFbo().getWidth(), renderer.getFbo().getHeight());
 	int size = screen_w * screen_h * 3;
 	glGenBuffers(1,&pbo);  eglGetError();
 	glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo); eglGetError();
@@ -109,9 +114,11 @@ void testApp::draw(){
 	screenManager.renderScreens();
 	renderer.getFbo().getTextureReference().unbind();
 	
-	renderer.getScreenshotFbo().bind();
-	renderer.getFbo().draw(0,0,1024,768);
-	renderer.getScreenshotFbo().unbind();
+
+	renderer.getScreenshotFbo().begin();
+	renderer.getFbo().draw(0,0,screen_w, screen_h);
+	renderer.getScreenshotFbo().end();
+	
 
 	if(previewScreenLayout){
 		//draw preview rects
@@ -131,20 +138,20 @@ void testApp::draw(){
 	
 	if(shouldTakeScreenshot) {
 		// %Y-%m-%d-%H-%M-%S-%i
-		
 		string dirname = "thumbs/" +ofGetTimestampString("%m-%d");
 		ofDirectory dir(dirname);
 		dir.create(true);
 
-		string filename = ofGetTimestampString() +"_" +ofToString(ofGetFrameNum()) +".png";
+		string filename = ofGetTimestampString() +"_" +ofToString(ofGetFrameNum()) +".jpg";
 		string filepath(dirname);	
 		filepath.append("/");
 		filepath.append(filename);
-
+		
 		// pretty sure we can do this better
 		glGetError();
 		glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo); eglGetError();
 		renderer.getScreenshotFbo().getTextureReference().bind(); eglGetError();
+		
 		glGetTexImage(GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGB, GL_UNSIGNED_BYTE, 0); eglGetError();
 		GLubyte* ptr = 	(GLubyte*) glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY);
 		
@@ -156,7 +163,6 @@ void testApp::draw(){
 		}
 		
 		glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
-		
 		shouldTakeScreenshot = false;
 		screenshotUsername.clear();
 	}
@@ -194,6 +200,10 @@ void testApp::keyPressed(int key){
 		}
 		case 'm': {
 			simulator.setEnabled(!simulator.getEnabled());
+			break;
+		}
+		case 'p': {	
+			shouldTakeScreenshot = true;
 			break;
 		}
 		case OF_KEY_LEFT: {
