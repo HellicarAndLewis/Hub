@@ -156,7 +156,7 @@ void ofxWWTweetParticle::drawText(){
 	ofVec2f atPos = getAtDrawPos();
 	manager->sharedUserFont.drawString("@",atPos.x,atPos.y);
 
-	ofColor fontcolor = manager->atSignColor;
+	ofColor fontcolor = manager->layerOneFontColor;
 	fontcolor.a = opacity*255;
 	ofSetColor(fontcolor);
 	
@@ -217,16 +217,20 @@ void ofxWWTweetParticle::drawDebug(){
 
 ofVec2f ofxWWTweetParticle::getBoundingCorner(int cornerIndex){
 	if(cornerIndex == 0){
-		return ofVec2f(pos.x-totalWidth/2, pos.y-totalHeight/2);
+		//return ofVec2f(pos.x-totalWidth/2, pos.y-totalHeight/2);
+		return ofVec2f(boundingRect.x,boundingRect.y);
 	}
 	else if(cornerIndex == 1){
-		return ofVec2f(pos.x+totalWidth/2, pos.y-totalHeight/2);
+		return ofVec2f(boundingRect.x+boundingRect.width,boundingRect.y);
+		//return ofVec2f(pos.x+totalWidth/2, pos.y-totalHeight/2);
 	}
 	else if(cornerIndex == 2){
-		return ofVec2f(pos.x+totalWidth/2, pos.y+totalHeight/2);
+		return ofVec2f(boundingRect.x+boundingRect.width,boundingRect.y+boundingRect.height);
+		//return ofVec2f(pos.x+totalWidth/2, pos.y+totalHeight/2);
 	}
 	else if(cornerIndex == 3){
-		return ofVec2f(pos.x-totalWidth/2, pos.y+totalHeight/2);
+		return ofVec2f(boundingRect.x,boundingRect.y+boundingRect.height);
+		//return ofVec2f(pos.x-totalWidth/2, pos.y+totalHeight/2);
 	}
 	return pos; //shouldn't do this...
 }

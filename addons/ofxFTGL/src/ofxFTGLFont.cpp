@@ -36,7 +36,9 @@ const int ofxFTGLFont::getSize() const {
 
 ofRectangle ofxFTGLFont::getStringBoundingBox(string s, float x, float y){
     FTBBox bbox = font->BBox(s.c_str());
-    return ofRectangle(x + bbox.Lower().Xf(), y + bbox.Lower().Yf(), bbox.Upper().Xf(), bbox.Upper().Yf());
+    //return ofRectangle(x + bbox.Lower().Xf(), y + bbox.Lower().Yf(), bbox.Upper().Xf(), bbox.Upper().Yf());
+	return ofRectangle(x + bbox.Lower().Xf(), y+bbox.Lower().Yf(), bbox.Upper().Xf(), bbox.Upper().Yf());
+
 }
 
 int ofxFTGLFont::getWidth(string s) {

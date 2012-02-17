@@ -5,35 +5,35 @@
     </SliderInt_Tweet_Font_Size>
     <SliderInt_User_Font_Size>
         <name>User Font Size</name>
-        <value>82</value>
+        <value>84</value>
     </SliderInt_User_Font_Size>
     <SliderFloat_Word_Wrap_Length>
         <name>Word Wrap Length</name>
-        <value>190.000000</value>
+        <value>246.000000</value>
     </SliderFloat_Word_Wrap_Length>
     <SliderFloat_Dot_Size>
         <name>Dot Size</name>
-        <value>45.724998</value>
+        <value>27.725000</value>
     </SliderFloat_Dot_Size>
     <SliderInt_User_Y_Shift>
         <name>User Y Shift</name>
-        <value>129</value>
+        <value>100</value>
     </SliderInt_User_Y_Shift>
     <SliderInt_Tweet_Y_Shift>
         <name>Tweet Y Shift</name>
-        <value>-108</value>
+        <value>-84</value>
     </SliderInt_Tweet_Y_Shift>
     <SliderFloat_Wall_Repulsion_Dist>
         <name>Wall Repulsion Dist</name>
-        <value>517.500000</value>
+        <value>288.000000</value>
     </SliderFloat_Wall_Repulsion_Dist>
     <SliderFloat_Wall_Repulsion_Atten>
         <name>Wall Repulsion Atten</name>
-        <value>0.200000</value>
+        <value>0.115000</value>
     </SliderFloat_Wall_Repulsion_Atten>
     <SliderFloat_Tweet_Repulsion_Dist>
         <name>Tweet Repulsion Dist</name>
-        <value>522.000000</value>
+        <value>220.500000</value>
     </SliderFloat_Tweet_Repulsion_Dist>
     <SliderFloat_Tweet_Repulsion_Atten>
         <name>Tweet Repulsion Atten</name>

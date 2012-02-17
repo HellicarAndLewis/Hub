@@ -105,6 +105,13 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	
 	bool drawSearchDebug;
 	
+	float tweetSearchMinWaitTime;
+	float tweetSearchDuration;
+	float tweetSearchStartTime;
+	float tweetSearchEndedTime;
+	bool isDoingSearch;
+	bool shouldTriggerScreenshot;
+	
 	vector<ofxWWTweetParticle> tweets;
 	vector<ofColor> causticColors;
 
@@ -151,12 +158,6 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	void addSearchTerm(const string& user, const string& term);
 	ofxWWTweetParticle createParticleForTweet(const rtt::Tweet& tweet);
 	
-	float tweetSearchMinWaitTime;
-	float tweetSearchDuration;
-	float tweetSearchStartTime;
-	float tweetSearchEndedTime;
-	bool isDoingSearch;
-	bool shouldTriggerScreenshot;
 	
 	ofxWWRenderer* renderer;
 	GLuint pbo;
