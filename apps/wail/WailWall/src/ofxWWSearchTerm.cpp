@@ -15,6 +15,7 @@ ofxWWSearchTerm::ofxWWSearchTerm(){
 	isHolding = false;
 	manager = NULL;
 	touchWeight = 0;
+	dead = false;
 }
 
 void ofxWWSearchTerm::update(){
@@ -46,6 +47,11 @@ void ofxWWSearchTerm::update(){
 	}
 	
 	opacity += (targetOpacity - opacity)*.1;
+	//death attenuation
+	if(dead){
+		opacity *= ofMap(ofGetElapsedTimef(), killedTime, killedTime+manager->searchTermFadeOutTime, 1.0, 0, true);
+	}
+	
 	pos += force;
 	force = ofVec2f(0,0);
 }
@@ -53,8 +59,8 @@ void ofxWWSearchTerm::update(){
 void ofxWWSearchTerm::draw(){
 	
 	ofPushStyle();
+	ofSetLineWidth(4);
 	ofEnableAlphaBlending();
-//	opacity = 1.0;
 	ofColor selectedColor = ofColor::fromHex(0xe6ab38, opacity*255);
 	ofColor baseColor = ofColor(255,255,255,opacity*255);
 	float holdLerp = isHolding ? ofMap(ofGetElapsedTimef(), holdStartTime, holdStartTime+manager->searchTermMinHoldTime, .0, 1.0, true) : 0.0 ;
@@ -69,8 +75,12 @@ void ofxWWSearchTerm::drawDebug(){
 	ofPushStyle();
 	ofNoFill();
 	
-	ofSetColor(255);
+	ofSetColor(255, 255, 0);
 	ofCircle(pos, manager->searchTermMinDistance);
+	
+	ofSetColor(255, 0, 0);
+	ofCircle(pos, manager->searchTermRepulsionDistance);
+
 	ofFill();
 	ofCircle(pos, 10);
 	

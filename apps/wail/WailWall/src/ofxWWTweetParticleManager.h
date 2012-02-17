@@ -93,13 +93,15 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	
 	bool clearTweets;
 	
+	int maxSearchTerms;
 	float searchTermMinDistance;
 	float searchTermMinHoldTime;
 	float searchMinOpacity;
 	float searchTermRepulsionDistance;
 	float searchTermRepulsionAttenuation;
 	float searchTermHandAttractionFactor;
-
+	float searchTermFadeOutTime;
+	
 	bool drawSearchDebug;
 	
 	vector<ofxWWTweetParticle> tweets;

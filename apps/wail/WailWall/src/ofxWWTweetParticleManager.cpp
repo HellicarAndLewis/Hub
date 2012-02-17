@@ -130,6 +130,7 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Fluid Force Scale", fluidForceScale, 1., 100.);
 	
 	webGui.addPage("Search Terms");
+	webGui.addSlider("Max Search Terms", maxSearchTerms, 5, 15);
 	webGui.addSlider("Search Font Size", searchTermFontSize, 40, 70);
 	webGui.addSlider("Search Min Opacity", searchMinOpacity, 0, .4);
 	webGui.addSlider("Touch Min Dist", searchTermMinDistance, 50, 500);
@@ -315,6 +316,11 @@ void ofxWWTweetParticleManager::handleTweetSearch(){
 		shouldTriggerScreenshot = true;
 		selectedSearchTermIndex = searchTerms.size();
 		searchTerms.push_back(term);
+		
+		if(searchTerms.size() > maxSearchTerms){
+			searchTerms[0].dead = true;
+			searchTerms[0].killedTime = ofGetElapsedTimef();
+		}
 	}
 	//DO IDLE MODE SEARCHING	
 	else{
@@ -535,68 +541,78 @@ void ofxWWTweetParticleManager::updateTweets(){
 }
 
 void ofxWWTweetParticleManager::updateSearchTerms(){
-	if(!isDoingSearch){	
 		
-		//find the closest touch
-		for(int i = 0; i < searchTerms.size(); i++){
-			searchTerms[i].closestDistanceSquared = 99999;
-			map<int,KinectTouch>::iterator it;
-			for(it = blobsRef->begin(); it != blobsRef->end(); it++){
-				
-				ofVec2f point = ofVec2f(it->second.x*simulationWidth, it->second.y*simulationHeight);
-				float squareDistance = point.distanceSquared(searchTerms[i].pos);
-				if(squareDistance < searchTerms[i].closestDistanceSquared){
-					searchTerms[i].closestDistanceSquared = squareDistance;
-					searchTerms[i].closestPoint = point;
-					searchTerms[i].closestTouchID = it->first;
-				}
-			}
-		}
-		
-		
-		for(int i = 0; i < searchTerms.size(); i++){
-			//LEFT WALL
-			if (searchTerms[i].pos.x < wallRepulsionDistance) {
-				searchTerms[i].force.x += (wallRepulsionDistance - searchTerms[i].pos.x) * wallRepulsionAtten;
-			}
-			//RIGHT WALL
-			if ((searchTerms[i].pos.x) > (simulationWidth-wallRepulsionDistance)) {
-				searchTerms[i].force.x += ( (simulationWidth-wallRepulsionDistance) - (searchTerms[i].pos.x) ) * wallRepulsionAtten;
-			}
-			//TOP
-			if (searchTerms[i].pos.y < wallRepulsionDistance) {
-				searchTerms[i].force.y += (wallRepulsionDistance - searchTerms[i].pos.y) * wallRepulsionAtten;
-			}
+	//find the closest touch
+	for(int i = 0; i < searchTerms.size(); i++){
+		searchTerms[i].closestDistanceSquared = 99999;
+		map<int,KinectTouch>::iterator it;
+		for(it = blobsRef->begin(); it != blobsRef->end(); it++){
 			
-			//BOTTOM
-			if ((searchTerms[i].pos.y) > (simulationHeight-wallRepulsionDistance)) {
-				searchTerms[i].force.y += ( (simulationHeight-wallRepulsionDistance)  - searchTerms[i].pos.y) * wallRepulsionAtten;
-			}
-		}
-		
-		//now calculate repulsion forces
-		float squaredMinDistance = searchTermRepulsionDistance*searchTermRepulsionDistance;
-		for(int i = 0; i < searchTerms.size(); i++){
-			searchTerms[i].force = ofVec2f(0,0);
-			for(int j = 0; j < searchTerms.size(); j++){
-				if(i != j){
-					float distanceSquared = searchTerms[i].pos.distanceSquared( searchTerms[j].pos );
-					if(distanceSquared > squaredMinDistance){
-						continue;
-					}
-					
-					float distance = sqrtf(distanceSquared);
-					ofVec2f awayFromOther = (searchTerms[i].pos - searchTerms[j].pos)/distance;
-					ofVec2f force = (awayFromOther * ((searchTermRepulsionDistance - distance) * searchTermRepulsionAttenuation));
-					searchTerms[i].force += force;			
-				}
+			ofVec2f point = ofVec2f(it->second.x*simulationWidth, it->second.y*simulationHeight);
+			float squareDistance = point.distanceSquared(searchTerms[i].pos);
+			if(squareDistance < searchTerms[i].closestDistanceSquared){
+				searchTerms[i].closestDistanceSquared = squareDistance;
+				searchTerms[i].closestPoint = point;
+				searchTerms[i].closestTouchID = it->first;
 			}
 		}
 	}
 	
+
+	for(int i = 0; i < searchTerms.size(); i++){
+		searchTerms[i].wallForceApplied = false;
+		//LEFT WALL
+		if (searchTerms[i].pos.x < wallRepulsionDistance) {
+			searchTerms[i].force.x += (wallRepulsionDistance - searchTerms[i].pos.x) * wallRepulsionAtten;
+			searchTerms[i].wallForceApplied = true;
+		}
+		//RIGHT WALL
+		if ((searchTerms[i].pos.x) > (simulationWidth-wallRepulsionDistance)) {
+			searchTerms[i].force.x += ( (simulationWidth-wallRepulsionDistance) - (searchTerms[i].pos.x) ) * wallRepulsionAtten;
+			searchTerms[i].wallForceApplied = true;
+		}
+		//TOP
+		if (searchTerms[i].pos.y < wallRepulsionDistance) {
+			searchTerms[i].force.y += (wallRepulsionDistance - searchTerms[i].pos.y) * wallRepulsionAtten;
+			searchTerms[i].wallForceApplied = true;
+		}		
+		//BOTTOM
+		if ((searchTerms[i].pos.y) > (simulationHeight-wallRepulsionDistance)) {
+			searchTerms[i].force.y += ( (simulationHeight-wallRepulsionDistance)  - searchTerms[i].pos.y) * wallRepulsionAtten;
+			searchTerms[i].wallForceApplied = true;
+		}
+	}
+	
+	//now calculate repulsion forces
+	float squaredMinDistance = searchTermRepulsionDistance*searchTermRepulsionDistance;
+	for(int i = 0; i < searchTerms.size(); i++){
+		if(searchTerms[i].wallForceApplied){
+			continue;
+		}
+		for(int j = 0; j < searchTerms.size(); j++){
+			if(i != j){
+				float distanceSquared = searchTerms[i].pos.distanceSquared( searchTerms[j].pos );
+				if(distanceSquared > squaredMinDistance){
+					continue;
+				}
+				
+				float distance = sqrtf(distanceSquared);
+				ofVec2f awayFromOther = (searchTerms[i].pos - searchTerms[j].pos)/distance;
+				ofVec2f force = (awayFromOther * ((searchTermRepulsionDistance - distance) * searchTermRepulsionAttenuation));
+				searchTerms[i].force += force;			
+			}
+		}
+	}
+	
+	for(int i = searchTerms.size()-1; i >= 0; i--){
+		if(searchTerms[i].dead && ofGetElapsedTimef() - searchTerms[i].killedTime > searchTermFadeOutTime){
+			searchTerms.erase(searchTerms.begin()+i);
+		}
+	}
 	
 	for(int i = 0; i < searchTerms.size(); i++){
 		searchTerms[i].touchPresent = blobsRef->size() != 0;
+		//cout << "accumulated force is " << searchTerms[i].force  << endl;
 		searchTerms[i].update();
 	}
 }
@@ -630,14 +646,22 @@ void ofxWWTweetParticleManager::renderSearchTerms(){
 	
 	if(drawSearchDebug){
 		string searchTermDebugString = "";
-		searchTermDebugString += "# OF SEARCH TERMS: " + ofToString(searchTerms.size()) + "\n";
-		searchTermDebugString += "QUEUE " + ofToString(incomingSearchTerms.size()) + "\n";
-		searchTermDebugString += string("IS SEARCHING? ") + (isDoingSearch ? "YES" : "NO") + "\n";
+		searchTermDebugString += "# OF SEARCH TERMS: " + ofToString(searchTerms.size()) + "    ";
+		searchTermDebugString += "QUEUE " + ofToString(incomingSearchTerms.size()) + "    ";
+		searchTermDebugString += string("IS SEARCHING? ") + (isDoingSearch ? "YES" : "NO") + "    ";
 		if(isDoingSearch){
-			searchTermDebugString += "SEARCH TERM " + searchTerms[selectedSearchTermIndex].term + "\n";
+			searchTermDebugString += "SEARCH TERM " + searchTerms[selectedSearchTermIndex].term + "    ";
+			searchTermDebugString += "TIME REMAINING " + ofToString( tweetSearchDuration - (ofGetElapsedTimef() - tweetSearchStartTime), 2) + "    ";
 		}
-//		searchTermDebugString += "LAST SEARCH TIME " + (lastSe
-		sharedSearchFont.drawString(searchTermDebugString, 30, 30);
+		else{
+			searchTermDebugString += "NEXT SEARCH " + ofToString( tweetSearchMinWaitTime - (ofGetElapsedTimef() - tweetSearchEndedTime), 2) + "    ";
+		}
+		
+		sharedSearchFont.drawString(searchTermDebugString, wallRepulsionDistance+20, wallRepulsionDistance);
+		ofPushStyle();
+		ofNoFill();
+		ofRect(wallRepulsionDistance, wallRepulsionDistance, simulationWidth-wallRepulsionDistance*2, simulationHeight-wallRepulsionDistance*2);
+		ofPopStyle();
 	}
 }
 

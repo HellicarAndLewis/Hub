@@ -30,6 +30,7 @@ class ofxWWSearchTerm {
 	ofVec2f pos;
 	ofVec2f force;
 	
+	bool wallForceApplied;
 	//weight contributed by all surrounding touches
 	float touchWeight;
 	
@@ -42,9 +43,12 @@ class ofxWWSearchTerm {
 	
 	float scale;
 	float opacity;
-	float minOpacity;
 	
 	string user;
 	string term;
 	vector<ofxWWTweetParticle> associatedTweets;
+	
+	float killedTime;
+	bool dead;
+
 };

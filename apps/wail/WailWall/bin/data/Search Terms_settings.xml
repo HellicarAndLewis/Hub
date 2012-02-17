@@ -1,4 +1,8 @@
 <controls>
+    <SliderInt_Max_Search_Terms>
+        <name>Max Search Terms</name>
+        <value>9</value>
+    </SliderInt_Max_Search_Terms>
     <SliderFloat_Search_Font_Size>
         <name>Search Font Size</name>
         <value>50.950001</value>
@@ -9,7 +13,7 @@
     </SliderFloat_Search_Min_Opacity>
     <SliderFloat_Touch_Min_Dist>
         <name>Touch Min Dist</name>
-        <value>158.000000</value>
+        <value>340.250000</value>
     </SliderFloat_Touch_Min_Dist>
     <SliderFloat_Touch_Min_Hold>
         <name>Touch Min Hold</name>
@@ -25,15 +29,15 @@
     </SliderFloat_Search_Time_Between>
     <SliderFloat_Search_Repulse_Dist>
         <name>Search Repulse Dist</name>
-        <value>0.000000</value>
+        <value>900.000000</value>
     </SliderFloat_Search_Repulse_Dist>
     <SliderFloat_Search_Repulse_Atten>
         <name>Search Repulse Atten</name>
-        <value>0.000000</value>
+        <value>0.021000</value>
     </SliderFloat_Search_Repulse_Atten>
     <SliderFloat_Search_Hand_Attract>
         <name>Search Hand Attract</name>
-        <value>0.000000</value>
+        <value>0.087000</value>
     </SliderFloat_Search_Hand_Attract>
     <Toggle_Search_Debug>
         <name>Search Debug</name>
