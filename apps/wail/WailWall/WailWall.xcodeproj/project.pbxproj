@@ -190,6 +190,7 @@
 		483AECDD14ED813200633DA3 /* TwitterThreadedImageWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterThreadedImageWriter.h; path = ../../SharedCode/Twitter/TwitterThreadedImageWriter.h; sourceTree = "<group>"; };
 		4865DF8F14EDC7AA00512AF1 /* TwitterThreadedImageWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TwitterThreadedImageWriter.cpp; path = ../../SharedCode/Twitter/TwitterThreadedImageWriter.cpp; sourceTree = "<group>"; };
 		4895911314EEA5F10016CBD2 /* Error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Error.h; path = ../../../../addons/roxlu/Error.h; sourceTree = "<group>"; };
+		48A4840C14EEDB8300A718E1 /* IStreamEventListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IStreamEventListener.h; sourceTree = "<group>"; };
 		540A0E4E14E3BAC90072CB30 /* TwitterOSCReceiver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TwitterOSCReceiver.cpp; path = ../../SharedCode/Twitter/TwitterOSCReceiver.cpp; sourceTree = "<group>"; };
 		540A0E4F14E3BAC90072CB30 /* TwitterOSCReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterOSCReceiver.h; path = ../../SharedCode/Twitter/TwitterOSCReceiver.h; sourceTree = "<group>"; };
 		540A0E5014E3BAC90072CB30 /* TwitterOSCReceiverListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterOSCReceiverListener.h; path = ../../SharedCode/Twitter/TwitterOSCReceiverListener.h; sourceTree = "<group>"; };
@@ -775,6 +776,7 @@
 		54C8B9DB14E11511005896E1 /* Twitter */ = {
 			isa = PBXGroup;
 			children = (
+				48A4840C14EEDB8300A718E1 /* IStreamEventListener.h */,
 				54C8B9DC14E11511005896E1 /* IEventListener.h */,
 				54C8B9DD14E11511005896E1 /* parser */,
 				54C8B9E014E11511005896E1 /* Stream.cpp */,

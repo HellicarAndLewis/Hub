@@ -119,6 +119,9 @@ bool TwitterSearchTermQueue::addSearchTerm(const string& user, const string& sea
 	
 	TwitterSearchTerm* st = new TwitterSearchTerm(user, searchTerm, false);
 	terms.push_back(st);
+	
+	// and update the file
+	save();
 	return true;
 	
 }

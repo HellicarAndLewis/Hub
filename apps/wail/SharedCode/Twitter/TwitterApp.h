@@ -25,6 +25,7 @@
 #include "TwitterMySQL.h"
 #include "TwitterThreadedImageWriter.h"
 #include "IEventListener.h"
+#include "IStreamEventListener.h"
 
 namespace rtt = roxlu::twitter::type;
 namespace rt = roxlu::twitter;
@@ -52,7 +53,7 @@ public:
 
 extern ofEvent<TwitterAppEvent> twitter_app_dispatcher;
 
-class TwitterApp : public TwitterOSCReceiverListener {
+class TwitterApp : public TwitterOSCReceiverListener, public roxlu::twitter::IStreamEventListener {
 
 public:
 
@@ -94,6 +95,9 @@ public:
 	
 	TwitterDB& getDB();	
 	TwitterThreadedImageWriter& getImageWriter();
+	virtual void onTwitterStreamDisconnected();
+	virtual void onTwitterStreamConnected();
+	
 private:
 	bool initialized;
 	void initDB();

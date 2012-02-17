@@ -25,7 +25,6 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	
 	// Initialize twitter.	
 	// -------------------
-
 	twitter.init(4444);
 	twitter.addDefaultListener();
 	twitter.addCustomListener(*this);
@@ -67,20 +66,12 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	for(int i = 0; i < fakeSearchTerms.size(); i++){
 		twitter.simulateSearch(fakeSearchTerms[i]);
 	}
-
-	// test pbo
-	glGetError();
-	glGenBuffers(1,&pbo); eglGetError();
-	glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo); eglGetError();
-	
-	screenshot_w = renderer->getFbo().getWidth(); eglGetError();
-	screenshot_h = renderer->getFbo().getHeight(); eglGetError();
-
-	int size = screenshot_w * screenshot_h * 3;
-	glBufferData(GL_PIXEL_PACK_BUFFER, size, NULL, GL_STATIC_READ); 
-	
 	setupColors();
+}
 
+void ofxWWTweetParticleManager::setScreenshotCallback(takeScreenshotCallback func, void* userdata) {
+	screenshot_callback = func;
+	screenshot_userdata = userdata;
 }
 
 void ofxWWTweetParticleManager::keyPressed(ofKeyEventArgs& args) {
@@ -90,11 +81,6 @@ void ofxWWTweetParticleManager::keyPressed(ofKeyEventArgs& args) {
 		string term = fakeSearchTerms.at(dx);
 		printf("Using fake search term: %s\n", term.c_str());		
 		addSearchTerm("no_user", term );
-	}
-	else if(args.key == '@') {
-		// test screenshot
-		printf("trigger screenshot!!\n");
-		addCurrentRenderToScreenshotQueue();
 	}
 }
 
@@ -381,53 +367,6 @@ void ofxWWTweetParticleManager::addCurrentRenderToScreenshotQueue() {
 		return;
 	}
 	screenshot_callback("roxlu", screenshot_userdata);
-		
-//		glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo);
-//
-//		// TODO: trigger screenshot of current layout
-//		int now = ofGetElapsedTimeMillis();
-//		// %Y-%m-%d-%H-%M-%S-%i
-//		string dirname = "thumbs/" +ofGetTimestampString("%m-%d");
-//		ofDirectory dir(dirname);
-//		dir.create(true);
-//
-//		string filename = ofGetTimestampString() +"_" +ofToString(ofGetFrameNum()) +".png";
-//		string filepath(dirname);	
-//		filepath.append("/");
-//		filepath.append(filename);
-//		
-//
-//		// pretty sure we can do this better
-//		glGetError(); 
-//		ofImage image;
-//		glEnable(GL_TEXTURE_2D); eglGetError();
-//		image.loadImage("nice.jpg"); eglGetError();
-//		image.getTextureReference().bind();  eglGetError();
-//		//renderer->getFbo().getTextureReference(0).bind();
-//		
-//
-//		glGetTexImage(GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGB, GL_UNSIGNED_BYTE, 0); eglGetError();
-//		//glReadPixels(0, 0, screenshot_w, screenshot_h, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-//		GLubyte* ptr = (GLubyte*)glMapBuffer(GL_PIXEL_PACK_BUFFER,GL_READ_ONLY); eglGetError();
-//
-//		if(ptr) {
-//			
-//			//ofPixels pix;
-//			twitter.getImageWriter().addPixels(filepath, "roxlu", ptr,screenshot_w, screenshot_h);
-//			//pix.setFromPixels(ptr, image.getWidth(),image.getHeight(), OF_IMAGE_COLOR);
-//			
-//			//twitter.writeScreenshot(filepath, "roxlu", pix);
-//			//ofImage img;
-//			//img.setFromPixels(pix);
-//			//img.saveImage(ofGetTimestampString() +".jpg");
-//						
-//		}
-//		glUnmapBuffer(GL_PIXEL_PACK_BUFFER);	eglGetError();
-//		int end = ofGetElapsedTimeMillis();
-//
-//
-//		printf("It took us: %d millis to add the image to the queue\n", (end-now));
-//		printf("----------------> adding screenshot <----------------------\n");
 }
 
 float ofxWWTweetParticleManager::weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet){
@@ -850,7 +789,4 @@ TwitterApp& ofxWWTweetParticleManager::getTwitterApp() {
 	return twitter;
 }
 
-void ofxWWTweetParticleManager::setScreenshotCallback(takeScreenshotCallback func, void* userdata) {
-	screenshot_callback = func;
-	screenshot_userdata = userdata;
-}
+

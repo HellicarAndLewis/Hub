@@ -134,6 +134,8 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	int currentSearchTermIndex;
 	
 	void keyPressed(ofKeyEventArgs& args); //JG just used for simulating searches
+
+	// Screenshot
 	void addCurrentRenderToScreenshotQueue();
 	void setScreenshotCallback(takeScreenshotCallback func, void* user);
 	takeScreenshotCallback  screenshot_callback;
@@ -167,10 +169,7 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	void addSearchTerm(const string& user, const string& term);
 	ofxWWTweetParticle createParticleForTweet(const rtt::Tweet& tweet);
 	
-	
 	ofxWWRenderer* renderer;
-	GLuint pbo;
-	int screenshot_w;
-	int screenshot_h;
-
+	
+	
 };

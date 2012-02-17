@@ -16,6 +16,7 @@ TwitterApp::TwitterApp()
 }
 
 TwitterApp::~TwitterApp() {
+	onTwitterStreamDisconnected();
 }
 
 void TwitterApp::init(int oscPort) {
@@ -26,6 +27,10 @@ void TwitterApp::init(int oscPort) {
 	uploader.startThread(true, false);
 	image_writer.startThread(true, false);
 	initialized = true;
+	//mysql.setSetting("twitter_connected","n");
+	string res;
+	mysql.getSetting("twitter_connected", res);
+	printf("MYSQL: %s\n", res.c_str());
 }
 
 void TwitterApp::initTwitter() {
@@ -45,6 +50,8 @@ void TwitterApp::initTwitter() {
         twitter.accessToken();
         twitter.saveTokens(token_file);
 	}
+	
+	stream.addEventListener(this);	
 }
 
 void TwitterApp::initOSC(int port) {
@@ -54,9 +61,9 @@ void TwitterApp::initOSC(int port) {
 
 void TwitterApp::initDB() {
 	//grant all on dewarscube_admin.* to dewarscube_admin@"%" identified by "dewarscube_admin"
-	//if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin")) {
+	if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin")) {
 	//if(!mysql.connect("dewarshub.demo.apollomedia.nl" , "dewarscube_admin", "dewarscube_admin", "dewarscube_admin")) {
-	if(!mysql.connect("dewarshub.demo.apollomedia.nl" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin")) {
+	//if(!mysql.connect("dewarshub.demo.apollomedia.nl" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin")) {
 		exit(0);
 	}
 	
@@ -174,4 +181,12 @@ void TwitterApp::update() {
 // get the list of people to follow, separated by comma
 bool TwitterApp::getFollowers(vector<string>& result) {
 	return db.getFollowers(result);
+}
+
+void TwitterApp::onTwitterStreamDisconnected() {
+	mysql.setSetting("twitter_connected", "n");
+}
+
+void TwitterApp::onTwitterStreamConnected() {
+	mysql.setSetting("twitter_connected", "y");
 }

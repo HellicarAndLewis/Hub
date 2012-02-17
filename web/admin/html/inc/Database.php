@@ -79,7 +79,7 @@ class Database {
 	 * Fetch one field
 	 *
 	 */
-	public function fetchRow($sql, $values) {
+	public function fetchRow($sql, $values = null) {
 		$query = $this->getDB()->prepare($sql);
 		$query->setFetchMode(PDO::FETCH_ASSOC);
 		if(!$query->execute($values)) {

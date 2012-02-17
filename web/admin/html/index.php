@@ -25,6 +25,7 @@ $dewars->preExecute($_REQUEST);
 				<li class="<?php if($_REQUEST['act'] == 'badwords') echo "active"; ?>"><a href="/?act=badwords"><span>Bad words</span></a></li>
 				<li class="<?php if($_REQUEST['act'] == 'hashtags') echo "active"; ?>"><a href="/?act=hashtags"><span>Hash tags</span></a></li>
 				<li class="<?php if($_REQUEST['act'] == 'commands') echo "active"; ?>"><a href="/?act=commands"><span>Commands</span></a></li>
+				<li id="twitter_status"></li>
 			</ul>
 		</div>
 		<div id="wrapper">

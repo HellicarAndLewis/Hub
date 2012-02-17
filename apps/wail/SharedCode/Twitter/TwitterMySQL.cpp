@@ -60,7 +60,7 @@ bool TwitterMySQL::getBadWords(vector<string>& result) {
 
 bool TwitterMySQL::getTrackList(vector<string>& result) {
 	if(!connected) {
-		printf("MySQL.getBadWords: not (yet) connected.\n");
+		printf("MySQL.getTrackList: not (yet) connected.\n");
 		return false;
 	}
 	
@@ -85,5 +85,49 @@ bool TwitterMySQL::getTrackList(vector<string>& result) {
 	}
 	return true;
 }
+
+bool TwitterMySQL::getSetting(const string& name, string& result) {
+	if(!connected) {
+		printf("MySQL.getSetting: not (yet) connected.\n");
+		return false;
+	}
+	
+	string sql = "SELECT value FROM settings WHERE name = \"" +name +"\"";
+	int status = mysql_query(&conn, sql.c_str());
+	if(status != 0) {
+		printf("Error mysql:  %s\n", mysql_error(&conn));
+		return false;
+	}
+	
+	MYSQL_RES* res = mysql_store_result(&conn);
+	if(res == NULL) {
+		printf("Error mysql:  %s\n", mysql_error(&conn));
+		return false;
+	}
+	
+	MYSQL_ROW row;
+	row = mysql_fetch_row(res);
+	if(!row[0]) {
+		return false;
+	}
+	result = row[0];
+	return true;
+}
+
+bool TwitterMySQL::setSetting(const string& name, const string& value) {
+	if(!connected) {
+		printf("MySQL.getSetting: not (yet) connected.\n");
+		return false;
+	}
+	
+	string sql = "UPDATE settings SET value=\"" +value +"\" WHERE name=\"" +name +"\"";
+	int status = mysql_query(&conn, sql.c_str());
+	if(status != 0) {
+		printf("Error mysql:  %s\n", mysql_error(&conn));
+		return false;
+	}
+	return true;
+}
+
 
 } // roxlu
