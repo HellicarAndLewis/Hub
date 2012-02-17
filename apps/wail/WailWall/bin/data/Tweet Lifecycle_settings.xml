@@ -7,4 +7,8 @@
         <name>Clear Tweets</name>
         <value>0</value>
     </Toggle_Clear_Tweets>
+    <Toggle_Draw_Tweet_Debug>
+        <name>Draw Tweet Debug</name>
+        <value>1</value>
+    </Toggle_Draw_Tweet_Debug>
 </controls>

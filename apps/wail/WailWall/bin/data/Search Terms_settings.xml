@@ -3,10 +3,10 @@
         <name>Max Search Terms</name>
         <value>9</value>
     </SliderInt_Max_Search_Terms>
-    <SliderFloat_Search_Font_Size>
+    <SliderInt_Search_Font_Size>
         <name>Search Font Size</name>
-        <value>50.950001</value>
-    </SliderFloat_Search_Font_Size>
+        <value>61</value>
+    </SliderInt_Search_Font_Size>
     <SliderFloat_Search_Min_Opacity>
         <name>Search Min Opacity</name>
         <value>0.136000</value>

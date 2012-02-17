@@ -24,7 +24,8 @@ class ofxWWTweetParticle {
 	void update();
 	void drawDot();
 	void drawText();
-
+	void drawDebug();
+	
 	//controlled through update
 	ofVec2f pos;
 	ofVec2f lastPos;
@@ -40,8 +41,8 @@ class ofxWWTweetParticle {
 	
 	//calculated on set
 	bool isTwoLines;
-	float userNameWidth;
-//	string wordWrappedTweet;	
+
+	ofRectangle boundingRect; //updated every frame
 	float totalWidth;
 	float totalHeight;
 	
@@ -49,14 +50,28 @@ class ofxWWTweetParticle {
 	
 	bool isSearchTweet;
 	bool useBurstOne;
-	
+
+	string lineOne;
+	string lineTwo;
+
 	float lineOneWidth;
 	float lineOneHeight;
 	float lineTwoWidth;
-	string lineOne;
-	string lineTwo;
+	float lineTwoHeight;
+	float userNameWidth;
+	float userNameHeight;
 
 	float atSignWidth;
 	float atSignHeight;
 	
+	ofVec2f getBoundingCorner(int cornerIndex); //0-4 top left, top right, bot left, bottom right
+
+  protected:
+	ofVec2f getUserDrawPos();
+	ofVec2f getTweetLineOneDrawPos();
+	ofVec2f getTweetLineTwoDrawPos();
+	ofVec2f getAtDrawPos();
+	
+	void recalculateBoundingRects();
+
 };

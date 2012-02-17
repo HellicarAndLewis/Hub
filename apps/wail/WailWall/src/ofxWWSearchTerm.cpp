@@ -61,11 +61,15 @@ void ofxWWSearchTerm::draw(){
 	ofPushStyle();
 	ofSetLineWidth(4);
 	ofEnableAlphaBlending();
-	ofColor selectedColor = ofColor::fromHex(0xe6ab38, opacity*255);
-	ofColor baseColor = ofColor(255,255,255,opacity*255);
+	
+	//TEMP USE THIS FOR SEARCH
+	ofColor selectedColor = manager->atSignColor;
+	ofColor baseColor = manager->layerTwoFontColor;
+	baseColor.a = selectedColor.a = opacity*255;
 	float holdLerp = isHolding ? ofMap(ofGetElapsedTimef(), holdStartTime, holdStartTime+manager->searchTermMinHoldTime, .0, 1.0, true) : 0.0 ;
 	ofSetColor( baseColor.lerp(selectedColor, holdLerp) );
 			   
+	//TODO center this
 	manager->sharedSearchFont.drawString(term, pos.x, pos.y);
 	
 	ofPopStyle();

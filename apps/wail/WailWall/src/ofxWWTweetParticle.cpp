@@ -29,7 +29,7 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 	lineTwo = "";
 
 	//split tweet up
-	float tweetWidth = manager->sharedFont.getStringBoundingBox(tweet.getText(), 0, 0).width;
+	float tweetWidth = manager->sharedTweetFont.getStringBoundingBox(tweet.getText(), 0, 0).width;
 	if(tweetWidth > manager->wordWrapLength){
 		float curWidth = 0;
 		float wrapPoint = tweetWidth/2.0;
@@ -40,7 +40,7 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 		int wordsPassed = 0;
 		do {
 			ss >> token;
-			float newWidth = manager->sharedFont.getStringBoundingBox(token, 0, 0).width;
+			float newWidth = manager->sharedTweetFont.getStringBoundingBox(token, 0, 0).width;
 //			cout << "	width for " << token << " is " << newWidth << " currently " << curWidth << endl;;
 			if(!isTwoLines && (curWidth + newWidth) > wrapPoint){
 	//			cout << "wrapped! at word " << wordsPassed << endl;
@@ -58,29 +58,29 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 		} while(ss.good());
 
 		//wordWrappedTweet = lineOne + "\n" + lineTwo;
-		userNameWidth = manager->sharedLargeFont.getStringBoundingBox(tweet.getScreenName(), 0, 0).width;
-//		totalWidth = userNameWidth + manager->userNameXPad + wrapPoint;
-//		totalHeight = MAX(manager->sharedLargeFont.getStringBoundingBox(tweet.getScreenName(), 0, 0).height,
-//						  manager->sharedFont.getStringBoundingBox(wordWrappedTweet, 0, 0).height);
-		lineTwoWidth = manager->sharedFont.getStringBoundingBox(lineTwo,0,0).width;
+		userNameWidth = manager->sharedUserFont.getStringBoundingBox(tweet.getScreenName(), 0, 0).width;
+		lineTwoWidth = manager->sharedTweetFont.getStringBoundingBox(lineTwo,0,0).width;
+		lineTwoHeight = manager->sharedTweetFont.getStringBoundingBox(lineTwo,0,0).height;
 		if(!isTwoLines){
 			ofLogError("ofxWWTwitterParticle -- word wrapped didn't hit two lines ... ");
 		}
-		
 	}
 	else {
 		//wordWrappedTweet = tweet.getText();
 		lineOne = tweet.getText();		
-//		totalWidth = userNameWidth + manager->userNameXPad + tweetWidth;
-//		totalHeight = manager->sharedFont.getStringBoundingBox(tweet.getScreenName(), 0, 0).height;
+		lineTwoWidth = 0;
+		lineTwoHeight = 0;
 	}	
-	lineOneWidth = manager->sharedFont.getStringBoundingBox(lineOne,0,0).width;
-	lineOneHeight = manager->sharedFont.getStringBoundingBox(lineOne,0,0).height;
-	userNameWidth = manager->sharedLargeFont.getStringBoundingBox(tweet.getScreenName(), 0, 0).width;
 	
-	atSignWidth = manager->sharedLargeFont.getStringBoundingBox("@", 0, 0).width;
-	atSignHeight = manager->sharedLargeFont.getStringBoundingBox("@", 0, 0).height;
+	lineOneWidth = manager->sharedTweetFont.getStringBoundingBox(lineOne,0,0).width;
+	lineOneHeight = manager->sharedTweetFont.getStringBoundingBox(lineOne,0,0).height;
+	userNameWidth = manager->sharedUserFont.getStringBoundingBox(tweet.getScreenName(), 0, 0).width;
+	
+	atSignWidth = manager->sharedUserFont.getStringBoundingBox("@", 0, 0).width;
+	atSignHeight = manager->sharedUserFont.getStringBoundingBox("@", 0, 0).height;
 
+//	totalWidth  = MAX(lineOneWidth,lineTwoWidth);
+//	totalHeight = userNameHeight + atSignHeight + lineOneHeight + lineTwoHeight;
 }
 
 void ofxWWTweetParticle::update(){
@@ -102,7 +102,6 @@ void ofxWWTweetParticle::update(){
 	else {
 		//death attenuation
 		deathAttenuation = ofMap(ofGetElapsedTimef(), createdTime+manager->startFadeTime, createdTime+manager->startFadeTime+manager->fadeDuration, 1.0, 0.0, true);
-//		opacity *= deathAttenuation; //
 		opacity *= manager->tweetLayerOpacity;
 		if(deathAttenuation == 0) {
 			dead = true;
@@ -111,7 +110,10 @@ void ofxWWTweetParticle::update(){
 		//distance attenuation
 		opacity *= selectionWeight; 
 	}
-	//opacity = 1.0f;
+	
+	//eventually we can optimize with this:
+	//if(selectionWeight > 0)
+	recalculateBoundingRects();
 }
 
 void ofxWWTweetParticle::drawDot(){
@@ -147,18 +149,101 @@ void ofxWWTweetParticle::drawText(){
 	ofPushStyle();
 	ofEnableAlphaBlending();
 
+	ofColor atcolor = manager->atSignColor;
+	atcolor.a = opacity*255;
+	ofSetColor(atcolor);
 	//DRAW @ 
-	ofSetColor(ofColor::fromHex(0x6f2b1d, opacity*255)); //TODO set font color
-	manager->sharedLargeFont.drawString("@", pos.x - atSignWidth/2, pos.y - atSignHeight/2);
+	ofVec2f atPos = getAtDrawPos();
+	manager->sharedUserFont.drawString("@",atPos.x,atPos.y);
+
+	ofColor fontcolor = manager->atSignColor;
+	fontcolor.a = opacity*255;
+	ofSetColor(fontcolor);
 	
-	ofSetColor(ofColor::fromHex(0xe6ab38, opacity*255)); //TODO set font color
-	//USER NAME BELOW
-	manager->sharedLargeFont.drawString(tweet.getScreenName(), pos.x - userNameWidth/2, pos.y + manager->userNameYOffset);
-	//DRAW TWEET
-	manager->sharedFont.drawString(lineOne, pos.x - lineOneWidth/2, pos.y + manager->tweetYOffset);
+	//USER -- use the same size as search ftm
+	ofVec2f userDrawPos = getUserDrawPos();
+	manager->sharedSearchFont.drawString(tweet.getScreenName(), userDrawPos.x,userDrawPos.y);
+	
+	//TWEET
+	ofVec2f tweetDrawPos = getTweetLineOneDrawPos();
+	manager->sharedTweetFont.drawString(lineOne,tweetDrawPos.x,tweetDrawPos.y);
 	if(isTwoLines){
-		manager->sharedFont.drawString(lineTwo, pos.x - lineTwoWidth/2, pos.y + manager->tweetYOffset + lineOneHeight);		
+		tweetDrawPos = getTweetLineTwoDrawPos();
+		manager->sharedTweetFont.drawString(lineTwo,tweetDrawPos.x,tweetDrawPos.y);		
 	}
 	
 	ofPopStyle();
 }
+
+void ofxWWTweetParticle::recalculateBoundingRects(){
+	float minx,maxx,miny,maxy;
+	ofVec2f userDrawPos = getUserDrawPos();
+	ofRectangle userRect = manager->sharedUserFont.getStringBoundingBox(tweet.getScreenName(), userDrawPos.x, userDrawPos.y);
+	
+	ofVec2f tweetDrawPos = getTweetLineOneDrawPos();
+	ofRectangle tweetRect = manager->sharedTweetFont.getStringBoundingBox(lineOne, tweetDrawPos.x, tweetDrawPos.y);
+	
+	minx = MIN(tweetRect.x,userRect.x);
+	maxx = MAX(tweetRect.x+tweetRect.width,userRect.x+userRect.width);
+	miny = MIN(tweetRect.y,userRect.y);
+	maxy = MAX(tweetRect.y+tweetRect.height,userRect.y+userRect.height);
+	if(isTwoLines){
+		tweetDrawPos = getTweetLineTwoDrawPos();
+		tweetRect = manager->sharedTweetFont.getStringBoundingBox(lineTwo, tweetDrawPos.x, tweetDrawPos.y);
+		minx = MIN(tweetRect.x,minx);
+		maxx = MAX(tweetRect.x+tweetRect.width,maxx);
+		miny = MIN(tweetRect.y,miny);
+		maxy = MAX(tweetRect.y+tweetRect.height,maxy);
+	}
+	
+	boundingRect = ofRectangle(minx,miny,maxx-minx,maxy-miny);
+	totalWidth = boundingRect.width;
+	totalHeight = boundingRect.height;
+}
+
+void ofxWWTweetParticle::drawDebug(){
+	ofPushStyle();
+	ofNoFill();
+	ofSetLineWidth(4);
+	if(isSearchTweet){
+		ofSetColor(0, 255, 255);
+	}
+	else{
+		ofSetColor(255, 255, 255);	
+	}
+	ofRect(boundingRect);
+	ofPopStyle();
+}
+
+ofVec2f ofxWWTweetParticle::getBoundingCorner(int cornerIndex){
+	if(cornerIndex == 0){
+		return ofVec2f(pos.x-totalWidth/2, pos.y-totalHeight/2);
+	}
+	else if(cornerIndex == 1){
+		return ofVec2f(pos.x+totalWidth/2, pos.y-totalHeight/2);
+	}
+	else if(cornerIndex == 2){
+		return ofVec2f(pos.x+totalWidth/2, pos.y+totalHeight/2);
+	}
+	else if(cornerIndex == 3){
+		return ofVec2f(pos.x-totalWidth/2, pos.y+totalHeight/2);
+	}
+	return pos; //shouldn't do this...
+}
+
+ofVec2f ofxWWTweetParticle::getUserDrawPos(){
+	return ofVec2f(pos.x - userNameWidth/2, pos.y + manager->userNameYOffset);
+}
+
+ofVec2f ofxWWTweetParticle::getTweetLineOneDrawPos(){
+	return ofVec2f(pos.x - lineOneWidth/2, pos.y + manager->tweetYOffset);
+}
+
+ofVec2f ofxWWTweetParticle::getTweetLineTwoDrawPos(){
+	return ofVec2f(pos.x - lineTwoWidth/2, pos.y + manager->tweetYOffset + lineOneHeight);
+}
+	
+ofVec2f ofxWWTweetParticle::getAtDrawPos(){
+	return ofVec2f(pos.x - atSignWidth, pos.y + atSignHeight/2);//ADD SHIFT
+}
+
