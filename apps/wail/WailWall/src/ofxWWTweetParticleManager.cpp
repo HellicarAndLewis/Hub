@@ -502,18 +502,21 @@ void ofxWWTweetParticleManager::updateTweets(){
 	}
 	
 	//apply mutual repulsion
+	float tweetRepulsionDistanceSqr = tweetRepulsionDistance*tweetRepulsionDistance;
 	for(int i = 0; i < tweets.size(); i++){
 		tweets[i].force = ofVec2f(0,0);
 		for(int j = 0; j < tweets.size(); j++){
 			if(i != j){
 				ofVec2f awayFromOther = (tweets[i].pos - tweets[j].pos);
-				float distance = awayFromOther.length();
-				awayFromOther.normalize();
-				if(distance < tweetRepulsionDistance){
-					ofVec2f force = (awayFromOther * ((tweetRepulsionDistance - distance) * tweetRepulsionAtten));
-					force.y *= yForceBias;
-					tweets[i].force += force;
+				if(awayFromOther.lengthSquared() > tweetRepulsionDistanceSqr){
+					continue;
 				}
+				
+				float distance = awayFromOther.length();
+				awayFromOther /= distance; //normalize
+				ofVec2f force = (awayFromOther * ((tweetRepulsionDistance - distance) * tweetRepulsionAtten));
+//				force.y *= yForceBias;
+				tweets[i].force += force;
 			}
 		}
 	}
@@ -529,6 +532,11 @@ void ofxWWTweetParticleManager::updateTweets(){
 		}
 		//TODO add chaose;
 		tweets[i].force += forceVector;
+	}
+	
+	//apply legibility fixes for visible tweets
+	for(int i = 0; i < tweets.size(); i++){
+		
 	}
 	
 	for(int i = 0; i < tweets.size(); i++){
