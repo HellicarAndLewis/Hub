@@ -50,6 +50,7 @@ void TwitterApp::initTwitter() {
 	}
 	
 	stream.addEventListener(this);
+	removeTweetsFromConnectedAccount();
 }
 
 // removes 20 tweets per times!

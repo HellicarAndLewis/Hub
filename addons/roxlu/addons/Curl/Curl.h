@@ -101,7 +101,7 @@ inline void Curl::addResponseHeader(const string& name, const string& value) {
 	response_headers.insert(std::pair<string, string>(name, value));
 }
 
-inline bool Curl::getResponseHeader(const string& name, string& result) {
+inline bool Curl::getResponseHeader(const string& name, string& result) {	
 	map<string, string>::iterator it = response_headers.find(name);
 	if(it == response_headers.end()) {
 		return false;

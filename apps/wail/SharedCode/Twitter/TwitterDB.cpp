@@ -391,6 +391,9 @@ bool TwitterDB::getNextSendItemFromSendQueue(string& username, string& filename,
 	username = qr.getString(0);
 	filename = qr.getString(1);
 	id = qr.getInt(2);
+	if(id == 0) {
+		return false;
+	}
 	return true;
 	
 }
