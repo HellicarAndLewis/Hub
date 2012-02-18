@@ -5,14 +5,13 @@ void TwitterDBThread::threadedFunction() {
 	if(!db.open("twitter.db")) {
 		printf("Error: Cannot open twitter db.\n");
 	}
-	
+	printf("Info: opened database.\n");
 	if(!db.createTables()) {
 		printf("Error: Cannot create database.\n");
 	}
 
-
 	while(true) {
-		printf("DB Thread....\n");
+		// TODO: there must be a better way for this?
 		sleep(5);
 	}
 }

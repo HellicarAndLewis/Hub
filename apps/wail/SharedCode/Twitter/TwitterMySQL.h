@@ -4,9 +4,12 @@
 #include <string>
 #include <vector>
 #include "mysql.h"
+#include "Twitter.h"
 
 using std::string;
 using std::vector;
+
+namespace rtt = roxlu::twitter::type;
 
 namespace roxlu {
 
@@ -21,6 +24,9 @@ public:
 	bool getTrackList(vector<string>& result);
 	bool getSetting(const string& name, string& result);
 	bool setSetting(const string& name, const string& value);
+	
+	// TODO: trying to use just mysql w/o sqlite
+	bool insertTweet(const rtt::Tweet& tweet);
 	
 private:
 	bool connected;

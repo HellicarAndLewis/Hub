@@ -140,6 +140,7 @@ private:
 // DATABASE
 // -------------------------------
 inline bool TwitterApp::insertTweet(const rtt::Tweet& tweet) {
+	//mysql.insertTweet(tweet);
 	return db_thread.insertTweet(tweet);
 }
 

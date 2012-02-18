@@ -7,6 +7,7 @@
 
 class TwitterDBThread : public ofThread {
 public:
+	void init();
 	virtual void threadedFunction();
 	bool insertTweet(const rtt::Tweet& tweet);
 	

@@ -28,7 +28,7 @@ void TwitterApp::init(int oscPort) {
 	initStoredSearchTerms();
 	uploader.startThread(true, false);
 	image_writer.startThread(true, false);
-	db_thread.startThread(true, false);
+	
 	initialized = true;
 }
 
@@ -78,6 +78,8 @@ void TwitterApp::initDB() {
 		exit(0);
 	}
 	
+	db_thread.startThread(true, false);
+		
 	reloadHashTags();	
 	reloadBadWords();	
 }
@@ -113,6 +115,15 @@ void TwitterApp::simulateSearch(const string& term) {
 	tweet.setScreenName("roxlu");
 	tweet.setText("@dewarshub " +term);
 	twitter_listener.onStatusUpdate(tweet);
+	
+	/*
+	int start = ofGetElapsedTimeMillis();
+	vector<rtt::Tweet> found;
+	db_thread.getTweetsWithSearchTerm(term, 99999, 100, found);
+	int end = ofGetElapsedTimeMillis();
+	int diff = end - start;
+	printf("Testing search, found %zu item in %d millis\n", found.size(), diff );
+	*/
 }	
 				 			 
 // Bad words & hash tags				 

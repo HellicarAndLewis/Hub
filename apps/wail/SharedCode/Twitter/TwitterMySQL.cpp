@@ -1,4 +1,5 @@
 #include "TwitterMySQL.h"
+#include <sstream>
 
 namespace roxlu {
 
@@ -125,6 +126,57 @@ bool TwitterMySQL::setSetting(const string& name, const string& value) {
 	if(status != 0) {
 		printf("Error mysql:  %s\n", mysql_error(&conn));
 		return false;
+	}
+	return true;
+}
+
+// TODO: trying to check if MySQL is faster then sqlite.
+bool TwitterMySQL::insertTweet(const rtt::Tweet& tweet) {
+	MYSQL_STMT* stmt;
+	MYSQL_BIND param[3];
+	string sql = "insert into tweets(t_userid, t_screen_name, t_text, t_timestamp) values(?,?,?,UNIX_TIMESTAMP(NOW()))";
+
+	stmt = mysql_stmt_init(&conn);
+	if(!stmt) {
+		printf("Cannot create statement.\n");
+		return false;
+	}
+	
+	if(mysql_stmt_prepare(stmt, sql.c_str(), sql.length()) != 0) {
+		printf("Cannot prepare statement.\n");
+		return false;
+	}
+	
+	unsigned long s = tweet.user_id.length();
+	param[0].buffer_type = MYSQL_TYPE_STRING;
+	param[0].buffer = (void*)tweet.user_id.c_str();
+	param[0].buffer_length = 50;
+	param[0].length = &s;
+	param[0].is_null = 0;
+	
+	unsigned long size_name = tweet.screen_name.length();
+	param[1].buffer_type = MYSQL_TYPE_STRING;
+	param[1].buffer = (void*)tweet.screen_name.c_str();
+	param[1].buffer_length = 20;
+	param[1].length = &size_name;
+	param[1].is_null = 0;
+		
+	unsigned long size_text = tweet.text.length();
+	param[2].buffer_type = MYSQL_TYPE_STRING;
+	param[2].buffer = (void*)tweet.text.c_str();
+	param[2].buffer_length = size_text;
+	param[2].length = &size_text;
+	param[2].is_null = 0;
+	
+	int status = 0;
+	status = mysql_stmt_bind_param(stmt, param);
+	if(status) {
+		printf("Error: %s (errno: %d)\n", mysql_stmt_error(stmt), mysql_stmt_errno(stmt));
+	}
+	
+	status = mysql_stmt_execute(stmt);
+	if(status) {
+		printf("Error: %s (errno: %d)\n", mysql_stmt_error(stmt), mysql_stmt_errno(stmt));
 	}
 	return true;
 }

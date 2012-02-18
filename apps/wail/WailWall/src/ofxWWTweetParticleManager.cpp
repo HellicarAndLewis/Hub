@@ -54,6 +54,7 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	
 	//fakin' it
 	ofAddListener(ofEvents.keyPressed, this, &ofxWWTweetParticleManager::keyPressed);
+	/*
 	fakeSearchTerms.push_back("POLITICS");
 	fakeSearchTerms.push_back("ECONOMY");
 	fakeSearchTerms.push_back("BIOLOGY");
@@ -66,6 +67,7 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	for(int i = 0; i < fakeSearchTerms.size(); i++){
 		twitter.simulateSearch(fakeSearchTerms[i]);
 	}
+	*/
 	setupColors();
 }
 

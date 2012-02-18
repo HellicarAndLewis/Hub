@@ -263,7 +263,7 @@ bool TwitterDB::getTagID(const string& tag, int& result) {
 	}
 	qr.next();
 	result = qr.getInt(0);	
-	printf("found: %d\n", result);
+	printf("Found: %d\n", result);
 	return true;
 }
 
@@ -382,7 +382,7 @@ bool TwitterDB::getNextSendItemFromSendQueue(string& username, string& filename,
 		.execute(qr);
 	
 	if(!r) {
-		printf("Error: cannot send queue retrievequery.\n");
+		printf("Error: getNextSendItemFromSendQueue() not executed.\n");
 		return false;
 	}
 	
@@ -394,6 +394,5 @@ bool TwitterDB::getNextSendItemFromSendQueue(string& username, string& filename,
 	if(id == 0) {
 		return false;
 	}
-	return true;
-	
+	return true;	
 }
