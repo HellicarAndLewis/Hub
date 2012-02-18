@@ -13,8 +13,9 @@ echo_header();
 
 	// check writables and files we need
 	check_writable($base .'log.txt');
-	check_writable($baes .'assets/profile_images');
-	check_writable($baes .'assets/profile_images/original');
+	check_writable($baes .'uploads');
+	check_writable($baes .'uploads/thumb');
+	check_writable($baes .'uploads/tiny');
 	
 echo_footer();
 

@@ -9,8 +9,10 @@ ofEvent<TwitterAppEvent> twitter_app_dispatcher;
 TwitterApp::TwitterApp()
 	:stream(twitter)
 	,twitter_listener(*this)
-	,uploader(twitter)
+	,uploader(*this)
+	,image_writer(*this)
 	,initialized(false)
+	
 {
 
 }
@@ -26,11 +28,8 @@ void TwitterApp::init(int oscPort) {
 	initStoredSearchTerms();
 	uploader.startThread(true, false);
 	image_writer.startThread(true, false);
+	db_thread.startThread(true, false);
 	initialized = true;
-	//mysql.setSetting("twitter_connected","n");
-	string res;
-	mysql.getSetting("twitter_connected", res);
-	printf("MYSQL: %s\n", res.c_str());
 }
 
 void TwitterApp::initTwitter() {
@@ -67,14 +66,6 @@ void TwitterApp::initDB() {
 		exit(0);
 	}
 	
-	if(!db.open("twitter.db")) {
-		printf("Error: Cannot open twitter db.\n");
-	}
-	
-	if(!db.createTables()) {
-		printf("Error: Cannot create database.\n");
-	}
-
 	reloadHashTags();	
 	reloadBadWords();	
 }
@@ -180,7 +171,8 @@ void TwitterApp::update() {
 
 // get the list of people to follow, separated by comma
 bool TwitterApp::getFollowers(vector<string>& result) {
-	return db.getFollowers(result);
+	// TODO: fix db
+//	return db.getFollowers(result);
 }
 
 void TwitterApp::onTwitterStreamDisconnected() {

@@ -13,8 +13,10 @@ namespace rc = roxlu::curl;
 namespace rcp = roxlu::curl::parameter;
 using std::string;
 
-//const string URL_TWITTER_UPLOADER = "http://dewarshub.demo.apollomedia.nl/";
-const string URL_TWITTER_UPLOADER = "http://dewarshub.localhost/";
+const string URL_TWITTER_UPLOADER = "http://dewarshub.demo.apollomedia.nl/";
+//const string URL_TWITTER_UPLOADER = "http://dewarshub.localhost/";
+
+class TwitterApp;
 
 namespace roxlu {
 
@@ -26,7 +28,7 @@ struct UploadFileInfo {
 
 class TwitterPhotoUploader : public ofThread {
 public:
-	TwitterPhotoUploader(rt::Twitter& twitter);
+	TwitterPhotoUploader(TwitterApp& app);
 	void addFile(const string& file, const string& username, const string& message);
 	void threadedFunction();
 		
@@ -34,7 +36,7 @@ private:
 	void upload(const string& file);
 	deque<UploadFileInfo> upload_queue;
 	rc::Curl uploader_curl;
-	rt::Twitter& twitter;
+	TwitterApp& app;
 };
 
 } // roxlu

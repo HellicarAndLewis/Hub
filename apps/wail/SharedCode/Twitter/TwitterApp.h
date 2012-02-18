@@ -16,7 +16,9 @@
 #include <vector>
 #include "ofMain.h"
 #include "Twitter.h"
-#include "TwitterDB.h"
+#include "TwitterDBThread.h"
+
+//#include "TwitterDB.h"
 #include "TwitterPhotoUploader.h"
 #include "TwitterBadWords.h"
 #include "TwitterEventListener.h"
@@ -77,6 +79,14 @@ public:
 	void onNewSearchTerm(rtt::Tweet tweet, const string& term);
 	void uploadScreenshot(const string& filePath, const string& username, const string& message);
 	void writeScreenshot(const string& filePath, const string& username, ofPixels pixels);
+	
+	// db actions
+	bool insertTweet(const rtt::Tweet& tweet);
+	bool insertSendQueueItem(const string& username, const string& filename, int& newID);
+	bool setSendQueueItemAsSend(int queueID);
+	bool getNextSendItemFromSendQueue(string& username, string& filename, int& id);
+
+	
 	void addDefaultListener();
 	void addCustomListener(rt::IEventListener& listener);
 	
@@ -93,7 +103,8 @@ public:
 	virtual void onUpdateHashTags();
 	virtual void simulateSearch(const string& term);
 	
-	TwitterDB& getDB();	
+	rt::Twitter& getTwitter();
+//	TwitterDB& getDB();	
 	TwitterThreadedImageWriter& getImageWriter();
 	virtual void onTwitterStreamDisconnected();
 	virtual void onTwitterStreamConnected();
@@ -107,7 +118,8 @@ private:
 
 	rt::Twitter 			twitter;
 	rt::Stream				stream;
-	TwitterDB 				db;
+//	TwitterDB 				db;
+	TwitterDBThread			db_thread;
 	TwitterPhotoUploader 	uploader;
 	TwitterEventListener 	twitter_listener;
 	TwitterBadWords 		bad_words;
@@ -117,26 +129,47 @@ private:
 	TwitterThreadedImageWriter image_writer;
 
 };
+//`
+//inline TwitterDB& TwitterApp::getDB() {
+//	return db;
+//}
 
-inline TwitterDB& TwitterApp::getDB() {
-	return db;
+
+// DATABASE
+// -------------------------------
+inline bool TwitterApp::insertTweet(const rtt::Tweet& tweet) {
+	return db_thread.insertTweet(tweet);
 }
 
 inline bool TwitterApp::getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result) {
-	return db.getTweetsWithTag(tag, howMany, result);
+	return db_thread.getTweetsWithTag(tag, howMany, result);
 }
 
 inline bool TwitterApp::getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result) {
-	return db.getTweetsNewerThan(age, howMany, result);
+	return db_thread.getTweetsNewerThan(age, howMany, result);
 }
 
 inline bool TwitterApp::getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany, vector<rtt::Tweet>& result) {
-	return db.getTweetsWithSearchTerm(q, howMany, youngerThan, result);
+	return db_thread.getTweetsWithSearchTerm(q, howMany, youngerThan, result);
 }
 
-inline void TwitterApp::uploadScreenshot(const string& filePath, const string& username, const string& message) {
-	uploader.addFile(filePath, username, message);
+inline bool TwitterApp::insertSendQueueItem(const string& username, const string& filename, int& newID) {
+	return db_thread.insertSendQueueItem(username, filename, newID);
 }
+
+
+inline bool TwitterApp::setSendQueueItemAsSend(int queueID) {
+	return db_thread.setSendQueueItemAsSend(queueID);
+}
+
+inline bool TwitterApp::getNextSendItemFromSendQueue(string& username, string& filename, int& id) {
+	return db_thread.getNextSendItemFromSendQueue(username, filename, id);
+}
+
+
+//inline void TwitterApp::uploadScreenshot(const string& filePath, const string& username, const string& message) {
+//	uploader.addFile(filePath, username, message);
+//}
 
 inline bool TwitterApp::getUnusedSearchTerms(vector<TwitterSearchTerm*>& result) {
 	return search_queue.getUnusedSearchTerms(result);
@@ -153,5 +186,9 @@ inline void TwitterApp::writeScreenshot(const string& filePath, const string& us
 
 inline TwitterThreadedImageWriter& TwitterApp::getImageWriter() {
 	return image_writer;
+}
+
+inline rt::Twitter& TwitterApp::getTwitter() {
+	return twitter;
 }
 #endif

@@ -61,7 +61,9 @@ void TwitterEventListener::onStatusUpdate(const rtt::Tweet& tweet) {
 	}
 	else {
 		// store tweet in DB so the visual app can fetch it.
-		twitter_app.getDB().insertTweet(tweet);
+		// TODO: fix db
+		twitter_app.insertTweet(tweet);
+		//twitter_app.getDB().insertTweet(tweet);
 	}
 }
 

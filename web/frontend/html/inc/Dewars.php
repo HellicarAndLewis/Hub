@@ -16,11 +16,18 @@ class Dewars {
 	}
 	
 	public function execute($req) {
+		
 		if(isset($req['act'])) {
 			
 			if($req['act'] == 'upload') {
 				$this->handleUpload($req);
 				exit;			
+			}
+			else if($req['act'] == 'img') {
+				if(!$this->echoImage($req['hash'])) {
+					header('location:/');
+				}
+				exit;
 			}
 			else if($req['act'] == 'new_row') {
 				echo ($this->getNewRow($req['id']));
@@ -149,6 +156,15 @@ class Dewars {
 	}
 	
 	private function handleUpload($req) {
+
+		if(!isset($_FILES['photo'])) {
+			l('no photo found in upload');
+			$result['result'] = false;
+			$result['msg'] = 'no photo was uploaded; or found in post';
+			echo json_encode($result);
+			exit;
+
+		}
 		// Did we get a upload error.
 		if($_FILES['photo']['error'] != UPLOAD_ERR_OK) {
 			$result['result'] = false;
@@ -205,6 +221,8 @@ class Dewars {
 		// success
 		$result['result'] = true;
 		$result['msg'] = 'success';
+		$result['created_file'] = $filename;
+		$result['file_hash'] = md5('wail' .$this->db->lastID());
 		echo json_encode($result);
 		exit;
 	}
@@ -242,5 +260,45 @@ class Dewars {
 		}
 	}
 	
+	private function echoImage($hash) {
+		if(empty($hash)) {
+			return false;	
+		}
+		
+		$sql = 'select file, date_format(`date`,"%m.%d") as subdir from uploads where md5(concat("wail",id)) = "' .$hash .'" limit 1';
+		//e($sql);exit;
+		$query = $this->db->query($sql);
+		if(!$query) {
+			return false;
+		}
+		
+		$row = $this->db->execute($query);
+		if(!is_array($row)) {
+			return false;
+		}
+		
+		$row = current($row);
+		if(!is_array($row)) {
+			return false;
+		}
+		
+		if(empty($row['file'])) {
+			return false;
+		}
+		
+		$file = $this->config['upload_dir'] .'/' .$row['subdir'] .'/' .$row['file'];
+		if(!file_exists($file)) {
+			return false;
+		}
+
+		
+		header('Content-type: image/png');
+		header('Content-transfer-encoding: binary');
+		header('Content-length: '.filesize($file));
+		header('Cache-control: public, max-age=30');
+		readfile($file);
+		exit;	
+	}
+		
 }
 

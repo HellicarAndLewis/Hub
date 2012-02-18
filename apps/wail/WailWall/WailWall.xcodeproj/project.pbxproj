@@ -40,6 +40,7 @@
 		4818287B14EEF48600BAA8B9 /* FTSize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818285714EEF48600BAA8B9 /* FTSize.cpp */; };
 		4818287C14EEF48600BAA8B9 /* FTVectoriser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818285B14EEF48600BAA8B9 /* FTVectoriser.cpp */; };
 		4865DF9014EDC7AA00512AF1 /* TwitterThreadedImageWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4865DF8F14EDC7AA00512AF1 /* TwitterThreadedImageWriter.cpp */; };
+		489B329014EFD4620029AF26 /* TwitterDBThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 489B328F14EFD4610029AF26 /* TwitterDBThread.cpp */; };
 		540A0E5114E3BAC90072CB30 /* TwitterOSCReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 540A0E4E14E3BAC90072CB30 /* TwitterOSCReceiver.cpp */; };
 		5476571814E2CEE100DBC3D5 /* libpcre.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5476571014E2CEE100DBC3D5 /* libpcre.a */; };
 		5476571914E2CEE100DBC3D5 /* libpcrecpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5476571114E2CEE100DBC3D5 /* libpcrecpp.a */; };
@@ -278,6 +279,9 @@
 		483AECDD14ED813200633DA3 /* TwitterThreadedImageWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterThreadedImageWriter.h; path = ../../SharedCode/Twitter/TwitterThreadedImageWriter.h; sourceTree = "<group>"; };
 		4865DF8F14EDC7AA00512AF1 /* TwitterThreadedImageWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TwitterThreadedImageWriter.cpp; path = ../../SharedCode/Twitter/TwitterThreadedImageWriter.cpp; sourceTree = "<group>"; };
 		4895911314EEA5F10016CBD2 /* Error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Error.h; path = ../../../../addons/roxlu/Error.h; sourceTree = "<group>"; };
+		489B328D14EFD4000029AF26 /* TwitterDBThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterDBThread.h; sourceTree = "<group>"; };
+		489B328E14EFD4270029AF26 /* TwitterTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterTypes.h; sourceTree = "<group>"; };
+		489B328F14EFD4610029AF26 /* TwitterDBThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TwitterDBThread.cpp; sourceTree = "<group>"; };
 		48A4840C14EEDB8300A718E1 /* IStreamEventListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IStreamEventListener.h; sourceTree = "<group>"; };
 		540A0E4E14E3BAC90072CB30 /* TwitterOSCReceiver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TwitterOSCReceiver.cpp; path = ../../SharedCode/Twitter/TwitterOSCReceiver.cpp; sourceTree = "<group>"; };
 		540A0E4F14E3BAC90072CB30 /* TwitterOSCReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterOSCReceiver.h; path = ../../SharedCode/Twitter/TwitterOSCReceiver.h; sourceTree = "<group>"; };
@@ -1159,6 +1163,9 @@
 				4865DF8F14EDC7AA00512AF1 /* TwitterThreadedImageWriter.cpp */,
 				483AECDD14ED813200633DA3 /* TwitterThreadedImageWriter.h */,
 				4895911314EEA5F10016CBD2 /* Error.h */,
+				489B328E14EFD4270029AF26 /* TwitterTypes.h */,
+				489B328D14EFD4000029AF26 /* TwitterDBThread.h */,
+				489B328F14EFD4610029AF26 /* TwitterDBThread.cpp */,
 			);
 			name = App;
 			sourceTree = "<group>";
@@ -2022,6 +2029,7 @@
 				4818287A14EEF48600BAA8B9 /* FTPoint.cpp in Sources */,
 				4818287B14EEF48600BAA8B9 /* FTSize.cpp in Sources */,
 				4818287C14EEF48600BAA8B9 /* FTVectoriser.cpp in Sources */,
+				489B329014EFD4620029AF26 /* TwitterDBThread.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

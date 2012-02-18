@@ -1,8 +1,12 @@
 #include "TwitterThreadedImageWriter.h"
+#include "TwitterApp.h"
 
 namespace roxlu {
 
-TwitterThreadedImageWriter::TwitterThreadedImageWriter() {
+TwitterThreadedImageWriter::TwitterThreadedImageWriter(TwitterApp& app)
+	:app(app)
+//	,uploader(app)
+{
 }
 
 TwitterThreadedImageWriter::~TwitterThreadedImageWriter() {
@@ -24,6 +28,7 @@ void TwitterThreadedImageWriter::addPixels(const string& filePath, const string&
 
 void TwitterThreadedImageWriter::threadedFunction() {
 	size_t num = 0;
+	int new_queue_id = 0;
 	while(true) {
 		
 		num = queue.size();
@@ -40,11 +45,18 @@ void TwitterThreadedImageWriter::threadedFunction() {
 	
 		// write it
 		ofPixels pix;
-		pix.setFromPixels(data.pixels, data.w, data.h, OF_IMAGE_COLOR);
 		ofImage img;
+		pix.setFromPixels(data.pixels, data.w, data.h, OF_IMAGE_COLOR);
 		img.setUseTexture(false);
 		img.setFromPixels(pix);
 		img.saveImage(data.filepath);
+		
+		// add the user to the outgoing send queue
+		// TODO: fix db
+		if(!app.insertSendQueueItem(data.user, data.filepath, new_queue_id)) {
+			printf("Error: cannot add item to send queue for user: %s and file: %s\n", data.user.c_str(), data.filepath.c_str());
+		}
+		
 		delete[] data.pixels;
 		printf("-------------- Writing image for: %s\n", data.user.c_str());
 		

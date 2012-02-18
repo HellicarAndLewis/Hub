@@ -56,6 +56,29 @@ bool TwitterDB::createTables() {
 	
 	result = db.query("CREATE INDEX dx_tweet_timestamp ON tweets(t_timestamp)");
 	
+	// SEND QUEUE
+	// -------------
+	result = db.query(
+		"CREATE TABLE IF NOT EXISTS send_queue( "						\
+			" sq_id					INTEGER PRIMARY KEY AUTOINCREMENT"	\
+			",sq_screen_name		VARCHAR(50)"						\
+			",sq_image_file			VARCHAR(200)"						\
+			",sq_created_timestamp	TIMESTAMP"							\
+			",sq_send				INTEGER DEFAULT 0"					\
+		");"
+	);
+
+	if(!result) {
+		printf("Error: cannot create send_queue table.\n");
+		return false;
+	}
+
+	
+	
+	// The tweet tags are used as a backup for searching tweets which contain
+	// a specific tweet
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
 	// TAGS
 	// -------------
 	result = db.query(
@@ -152,7 +175,7 @@ bool TwitterDB::insertTweet(const rtt::Tweet& tweet) {
 }
 
 
-// FOLLOWERS
+// FOLLOWERS (not used in WailWall project)
 // -----------------------------------------------------------------------------
 bool TwitterDB::insertFollower(const rtt::StreamEvent& event) {
 	bool result = db.insert("follow")
@@ -321,4 +344,53 @@ bool TwitterDB::getTweetsWithSearchTerm(const string& q, int youngerThan, int ho
 	int diff = end - start;
 	printf("Searched for %s and found %zu rows in %d ms.\n", q.c_str(), result.size(), diff);
 	return true;
+}
+
+
+
+// SEND QUEUE
+// -----------------------------------------------------------------------------
+bool TwitterDB::insertSendQueueItem(const string& username, const string& filename, int& newID) {
+	bool result = db.insert("send_queue")
+					.use("sq_screen_name", username)
+					.use("sq_image_file", filename)
+					.useTimestamp("sq_created_timestamp")
+					.execute();
+	if(!result) {
+		printf("Error: cannot insert to send queue\n");
+		return false;
+	}
+	newID = db.lastInsertID();
+	return true;
+}
+
+
+bool TwitterDB::setSendQueueItemAsSend(int queueID) {
+	stringstream ss;
+	ss << "UPDATE send_queue SET sq_send = 1 WHERE sq_id = \"" << queueID << "\"";
+	return db.query(ss.str());
+}
+
+bool TwitterDB::getNextSendItemFromSendQueue(string& username, string& filename, int& id) {
+	QueryResult qr(db);
+	
+	bool r = db.select("sq_screen_name, sq_image_file, sq_id")
+		.from("send_queue")
+		.where("sq_send = 0")
+		.limit(1)
+		.order("sq_created_timestamp asc")
+		.execute(qr);
+	
+	if(!r) {
+		printf("Error: cannot send queue retrievequery.\n");
+		return false;
+	}
+	
+	// step to the first row
+	qr.next();
+	username = qr.getString(0);
+	filename = qr.getString(1);
+	id = qr.getInt(2);
+	return true;
+	
 }

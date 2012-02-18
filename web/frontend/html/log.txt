@@ -1,0 +1,19 @@
+2012:02:18 10:45	test
+2012:02:18 10:45	upload function executed
+2012:02:18 10:47	upload function executed
+2012:02:18 10:47	no photo found in upload
+2012:02:18 10:51	execute: upload
+2012:02:18 10:51	upload function executed
+2012:02:18 10:51	no photo found in upload
+2012:02:18 10:51	upload function executed
+2012:02:18 10:51	upload function executed
+2012:02:18 10:52	upload function executed
+2012:02:18 10:52	upload function executed
+2012:02:18 10:52	upload function executed
+2012:02:18 10:52	upload function executed
+2012:02:18 10:52	upload function executed
+2012:02:18 10:54	upload function executed
+2012:02:18 10:54	upload function executed
+2012:02:18 10:58	upload function executed
+2012:02:18 10:59	upload function executed
+2012:02:18 13:51	

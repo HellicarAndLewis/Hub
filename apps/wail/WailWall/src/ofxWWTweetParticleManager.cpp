@@ -366,7 +366,7 @@ void ofxWWTweetParticleManager::addCurrentRenderToScreenshotQueue() {
 	if(screenshot_userdata == NULL) {
 		return;
 	}
-	screenshot_callback("roxlu", screenshot_userdata);
+	screenshot_callback("roxlutest", screenshot_userdata);
 }
 
 float ofxWWTweetParticleManager::weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet){
