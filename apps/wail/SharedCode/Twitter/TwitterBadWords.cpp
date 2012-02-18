@@ -14,14 +14,12 @@ bool TwitterBadWords::reloadWordsFile(const string& filePath) {
 	std::ifstream ifs(filePath.c_str());
 	if(!ifs.is_open()) {
 		printf("Error: cannot open '%s'\n", filePath.c_str());
-		exit(0);
 		return false;
 	}	
 	
 	string line;
 	while(std::getline(ifs,line)) {
 		if(line.length()) {
-			//bad_words.push_back("(^|\\s)" +line +"(\\s|$)");
 			bad_words.push_back(line);
 		}
 	}

@@ -35,6 +35,8 @@ JSON::~JSON() {
 	printf("~JSON()");
 }
 
+
+
 bool JSON::parseStatus(json_t* root, rtt::Tweet& tweet) {
 	// text
 	json_t* node =	json_object_get(root, "text");
@@ -327,6 +329,37 @@ bool JSON::parseUser(json_t* root, rtt::User& user) {
 	}
 	
 
+	return true;
+}
+
+// Parse a array of status messages (i.e. when you need the statusesHomeTimeline)
+bool JSON::parseStatusArray(const string& json, vector<rtt::Tweet>& result) {
+	json_error_t error;
+	json_t* root = json_loads(json.c_str(), 0, &error);
+
+	if(!root) {
+		printf("Error: on line: %d, %s\n", error.line, error.text);
+		json_decref(root);
+		return false;
+	}
+	
+	if(!json_is_array(root)) {
+		json_decref(root);
+		return false;
+	}
+	size_t num = json_array_size(root);
+	json_t* val = NULL;
+	for(int i = 0; i < num; ++i) {
+		val = json_array_get(root, i);
+		if(val == NULL || !json_is_object(val)) {
+			continue;
+		}
+		rtt::Tweet tweet;
+	 	if(parseStatus(val, tweet)) {
+			result.push_back(tweet);
+		}
+	}
+	json_decref(root);
 	return true;
 }
 

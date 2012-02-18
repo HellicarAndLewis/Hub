@@ -63,6 +63,7 @@ http://urbanoalvarez.es/blog/2008/04/04/bad-words-list/ and we replace all
 "*", ";" and "+" signs from the list as we're using regexps to match any 
 of these characters. To "yoyodilo" will be filtered out.
 
+
 HASHTAGS
 --------
 
@@ -71,3 +72,60 @@ bin/data/twitter_hashtags.txt. Make sure to -not- use the # sign as it's not
 necessary and the connection will break on it. All tweets that contain a 
 word from this file will be retrieved (please read the twitter streaming 
 information on dev.twitter.com on the specifics of the streaming server).
+
+
+CODE FLOW
+---------
+
+TwitterApp: 	
+	
+	big proxy between all other stuff.. this is what you is 
+	interfaced against int the rest of the application.
+
+
+TwitterEventListener:
+
+	Using a Twitter and Stream object we connect to the twitter server. When
+	a new tweet is received form the stream, this class is called. This class
+	call the DB which insert the tweet after checking for bad words.
+	
+
+TwitterThreadedImageWriter:
+
+	People on twitter can send a tweet like: "@dewarshub [search term]". when
+	we receive this search term it's add to a search term queue which is
+	handled in the ofxWWTweetParticleManager. When there is no physical 
+	interaction with the plinth, the application switches to a mode where it
+	checks the queue with search terms. When there is a new search term it
+	highlights these in the visualization. Once a new search term is being
+	activated we copy the pixels to this image writer class. This class writes
+	the pixels to an image and adds it to the twitter-send-queue database.
+	
+	
+TwitterPhotoUploader:
+
+	Once a screenshot has been taken and stored on disk the TwitterThreadedImageWriter
+	adds a new entry to the send_queue table. In TwitterPhotoUploader we 
+	poll this table and check if there are images which we need to send back
+	to the user who posted the search term. When we find one AND we did not
+	exceet the rate limit of twitter we will post a tweet (using the currently
+	connected twitter user; i.e. the one who granted access)
+
+	
+TwitterOSCReceiver:
+
+	The OSC receiver receives events form the admin website. The website
+	runs on localhost and sends OSC events. These events i.e. update the 
+	list with bad words, the works to track etc..
+	
+	
+TwitterMySQL:
+
+	Used to retrieve badwords and hashtags which are maintained with the 
+	website. This is just querying the MySQL database which runs on localhost
+	
+
+	
+		
+				
+

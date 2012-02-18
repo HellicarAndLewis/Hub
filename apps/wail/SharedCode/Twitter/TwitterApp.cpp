@@ -42,7 +42,6 @@ void TwitterApp::initTwitter() {
 	string token_file = ofToDataPath("twitter_dewarshub.txt", true);
 	//string token_file = ofToDataPath("twitter.txt", true);
 	if(!twitter.loadTokens(token_file)) {
-		printf("get new token");
         string auth_url;
         twitter.requestToken(auth_url);
         twitter.handlePin(auth_url);
@@ -50,7 +49,19 @@ void TwitterApp::initTwitter() {
         twitter.saveTokens(token_file);
 	}
 	
-	stream.addEventListener(this);	
+	stream.addEventListener(this);
+}
+
+// removes 20 tweets per times!
+void TwitterApp::removeTweetsFromConnectedAccount() {
+	twitter.statusesUserTimeline();
+	vector<rtt::Tweet> result;
+	twitter.getJSON().parseStatusArray(twitter.getResponse(), result);
+	for(int i = 0; i < result.size(); ++i) {
+		rtt::Tweet& tweet = result[i];
+		printf("> %s %s\n", tweet.getText().c_str(), tweet.getTweetID().c_str());
+		twitter.statusesDestroy(tweet.getTweetID());
+	}
 }
 
 void TwitterApp::initOSC(int port) {

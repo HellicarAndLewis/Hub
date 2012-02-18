@@ -287,6 +287,9 @@ public:
 	roxlu::twitter::parser::JSON& getJSON();
 	string& getResponse();	
 	rco::oAuth& getoAuth();
+	long getHTTPResponseCode();
+	string getHTTPResponseMessage();
+	bool getResponseHeader(const string& name, string& result);
 	
 private:
 	bool doGet(const string& url, rcp::Collection* defaultParams = NULL, rcp::Collection* extraParams = NULL);
@@ -390,6 +393,18 @@ inline string Twitter::getTwitterPassword() {
 	
 inline roxlu::twitter::parser::JSON& Twitter::getJSON() {
 	return json;
+}
+
+inline long Twitter::getHTTPResponseCode() {
+	return twitcurl.getHTTPResponseCode();
+}
+
+inline string Twitter::getHTTPResponseMessage() {
+	return twitcurl.getHTTPResponseMessage();
+}
+
+inline bool Twitter::getResponseHeader(const string& name, string& result) {
+	return twitcurl.getResponseHeader(name, result);
 }
 	
 }} // roxlu::twitter

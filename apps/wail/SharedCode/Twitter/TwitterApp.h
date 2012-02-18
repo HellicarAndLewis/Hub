@@ -103,6 +103,8 @@ public:
 	virtual void onUpdateHashTags();
 	virtual void simulateSearch(const string& term);
 	
+	void removeTweetsFromConnectedAccount();
+	
 	rt::Twitter& getTwitter();
 //	TwitterDB& getDB();	
 	TwitterThreadedImageWriter& getImageWriter();
