@@ -110,10 +110,21 @@ void TwitterPhotoUploader::threadedFunction() {
 			
 			// when correctly uploaded we can do a tweet
 			if(correctly_uploaded) {
+			
+				// get filepath
+				string created_file = "";
+				json_t* filepath_node = json_object_get(root, "created_file");
+				if(filepath_node != NULL && json_is_string(filepath_node)) {
+					created_file = json_string_value(filepath_node);
+				}
+				
+				// get hash
 				json_t* node = json_object_get(root, "file_hash");
 				if(node != NULL && json_is_string(node)) {
 					string file_hash = json_string_value(node);
-					string photo_url = URL_TWITTER_UPLOADER +"?act=img&hash=" +file_hash;
+					//string photo_url = URL_TWITTER_UPLOADER +"?act=img&hash=" +file_hash;
+					string photo_url = URL_TWITTER_UPLOADER +"" +created_file;
+					
 					string message = "Hi @" +username +" check your search result here " +photo_url;
 					printf("+++++++++++++ Tweet:  %s\n", message.c_str());
 					app.getTwitter().statusesUpdate(message);

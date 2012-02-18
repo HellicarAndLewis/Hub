@@ -221,7 +221,7 @@ class Dewars {
 		// success
 		$result['result'] = true;
 		$result['msg'] = 'success';
-		$result['created_file'] = $filename;
+		$result['created_file'] = $dir .'/' .$filename;
 		$result['file_hash'] = md5('wail' .$this->db->lastID());
 		echo json_encode($result);
 		exit;
