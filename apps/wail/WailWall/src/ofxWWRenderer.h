@@ -49,7 +49,8 @@ class ofxWWRenderer: public KinectTouchListener {
 	int targetHeight;
 	
 	//render targers
-	ofFbo accumulator;
+	int accumbuf;
+	ofFbo accumulator[2];
 	ofFbo warpMap;
 	ofFbo renderTarget;
 	ofFbo gradientOverlay;
@@ -69,6 +70,8 @@ class ofxWWRenderer: public KinectTouchListener {
 	//sub objects
 	ofxMPMFluid fluid;
 	ofxWWTweetParticleManager tweets;	
+	
+	ofShader alphaFade;
 	
 	//shader business
 	ofShader blurShader;
@@ -96,9 +99,12 @@ class ofxWWRenderer: public KinectTouchListener {
 	//ofVec2f texCoordAtPos(ofImage& image, float x, float y);
 
 	//used as a map into the fluid sim
+	bool useBackgroundSetA;
 	ofImage colorField;
-	ofImage layerOneBackground;
-	ofImage layerTwoBackground;
+	ofImage layerOneBackgroundA;
+	ofImage layerTwoBackgroundA;
+	ofImage layerOneBackgroundB;
+	ofImage layerTwoBackgroundB;
 	
 	bool drawTouchDebug;
 	

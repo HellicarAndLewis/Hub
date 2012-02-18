@@ -61,7 +61,10 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 		ofTrueTypeFont sharedSearchFont;
 	#endif
 	
+	
 	bool enableCaustics;
+	float causticFadeSpeed;
+	
 	bool canSelectSearchTerms;
 	float tweetLayerOpacity;
 	float touchSizeScale;

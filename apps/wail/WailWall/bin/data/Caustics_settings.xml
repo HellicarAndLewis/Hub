@@ -1,0 +1,10 @@
+<controls>
+    <Toggle_Enable_Caustics>
+        <name>Enable Caustics</name>
+        <value>1</value>
+    </Toggle_Enable_Caustics>
+    <SliderFloat_Caustic_Fade>
+        <name>Caustic Fade</name>
+        <value>0.014450</value>
+    </SliderFloat_Caustic_Fade>
+</controls>

@@ -90,6 +90,7 @@ void ofxWWTweetParticleManager::setupGui(){
 	
 	webGui.addPage("Caustics");
 	webGui.addToggle("Enable Caustics", enableCaustics);
+	webGui.addSlider("Caustic Fade", causticFadeSpeed, .002, .5);
 	
 	webGui.addPage("Tweet Lifecycle");
 	webGui.addSlider("Max Tweets", maxTweets, 200, 2000);

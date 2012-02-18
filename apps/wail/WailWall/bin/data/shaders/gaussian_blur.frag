@@ -29,13 +29,15 @@ void main()
 	weights[20] = 0.00916792765601138;
 
 
-	vec3 sum = vec3( 0.0, 0.0, 0.0 );
+	vec3 sum = vec3( 0.0, 0.0, 0.0);
 	vec2 baseOffset = -10.0 * sampleOffset;
 	vec2 offset = vec2( 0.0, 0.0 );
 	for( int s = 0; s < 21; ++s ) {
-		sum += texture2DRect( tex0, gl_TexCoord[0].st + baseOffset + offset ).rgb * weights[s];
+		sum += texture2DRect( tex0, gl_TexCoord[0].st + baseOffset + offset ).rgb  * weights[s];
 		offset += sampleOffset;
 	}
+//	gl_FragColor.rgb =  vec3( 0.0, 0.0, 0.0);
 	gl_FragColor.rgb = sum;
 	gl_FragColor.a = 1.0;
+//	gl_FragColor.a *= .99999;//attenuate alpha
 }
