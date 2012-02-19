@@ -2,7 +2,8 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
-
+	
+	ofSetVerticalSync(true);
 	ofSetFrameRate(30);
 
 	
@@ -48,19 +49,19 @@ void testApp::setup(){
 //	for (int i = 0; i < 20; i++) {
 //		addDrop(ofRandomuf()*512, ofRandomuf()*512, 10, (i & 1) ? -0.01 : -0.01);
 //	}
-	delta = .5;
+	delta = 1.0;
 	
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
 	
-
 //	for (int i = 0; i < 10; i++) {
-//		addDrop(ofRandomuf()*512, ofRandomuf()*512, 0.03 * 512, (i & 1) ? 0.01 * 512 : -0.01 * 512);
+		addDrop(ofRandomuf()*512, ofRandomuf()*512, 20, ofGetFrameNum() % 2 == 0 ? 1.1 : -1.1);
 //	}
 	
-	addDrop(ofGetMouseX(), ofGetMouseY(), 10, ofGetFrameNum() % 2 == 0 ? -.2 : .2);
+	
+//	addDrop(ofGetMouseX(), ofGetMouseY(), 20, ofGetFrameNum() % 2 == 0 ? -.2 : .2);
 	//addDrop(ofGetMouseX(), ofGetMouseY(), 10, .01);
 	
 	stepSimulation();
