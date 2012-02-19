@@ -57,7 +57,8 @@ void testApp::setup(){
 void testApp::update(){
 	
 //	for (int i = 0; i < 10; i++) {
-		addDrop(ofRandomuf()*512, ofRandomuf()*512, 20, ofGetFrameNum() % 2 == 0 ? 1.1 : -1.1);
+	if(ofRandomuf() > .5)
+		addDrop(ofRandomuf()*512, ofRandomuf()*512, 20, ofGetFrameNum() % 2 == 0 ? 0.02 : -0.02);
 //	}
 	
 	
@@ -101,8 +102,7 @@ void testApp::updateNormals(){
 	
 	waterTex[waterswapcur].end();
 	
-	swapWaterTexture();	
-	
+	swapWaterTexture();		
 }
 
 void testApp::updateCaustics(){
@@ -114,8 +114,8 @@ void testApp::updateCaustics(){
 	light.normalize();
 	
 	caustics.begin();
-	//caustics.setUniform3f("light", light.x, light.y, light.z);
-	caustics.setUniform3f("light", -.2, 1., 0);
+	caustics.setUniform3f("light", light.x, light.y, light.z);
+//	caustics.setUniform3f("light", -.2, 0., 1.);
 	waterTex[waterswapcur].draw(0, 0);
 	caustics.end();
 	
