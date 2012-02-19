@@ -34,6 +34,7 @@ TwitterEventListener::~TwitterEventListener() {
  *
  */
 void TwitterEventListener::onStatusUpdate(const rtt::Tweet& tweet) {
+	
 	string bad_word;
 	if(twitter_app.containsBadWord(tweet.text, bad_word)) {
 		printf("[censored][%s] %s\n",bad_word.c_str(), tweet.getText().c_str());
