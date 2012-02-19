@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxCaustics.h"
 
 class testApp : public ofBaseApp{
 
@@ -18,23 +19,6 @@ class testApp : public ofBaseApp{
 	void windowResized(int w, int h);
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
-	
-	ofShader caustics;
-	ofShader updater;
-	ofShader normals;
-	ofShader drop;
-	
-	int waterswapcur;
-	int waterswapnxt;
-	
-	ofFbo waterTex[2];
-	ofFbo causticTex;
-	
-	void addDrop(float x, float y, float radius, float strength);
-	void stepSimulation();
-	void updateNormals();
-	void updateCaustics();
-	
-	void swapWaterTexture();
-	float delta;
+
+	ofxCaustics caustics;
 };

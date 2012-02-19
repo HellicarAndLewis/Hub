@@ -1,8 +1,6 @@
-#version 120
-
 uniform sampler2DRect texture;
 uniform vec2 delta;
-//varying vec2 coord;
+uniform float drag;
 
 void main() {
   /* get vertex info */
@@ -19,7 +17,7 @@ void main() {
   ) * 0.25;
   
   info.g += (average - info.r)*2.0;
-  info.g *= .95;
+  info.g *= drag;
   
   /* move the vertex along the velocity */
   info.r += info.g;

@@ -49,6 +49,9 @@ void ofxWWRenderer::setup(int width, int height){
 	tweets.fluidRef = &fluid;
 	tweets.blobsRef = blobs;
 	
+	caustics.shaderPath = "shaders/";
+	caustics.setup(width/8, height/8);
+	
 	colorField.loadImage("images/color_palette.png");
 	fluid.sampleTexture = &colorField;
 	layerOneBackgroundA.loadImage("images/BGGradientA_layer1.png");
@@ -101,6 +104,14 @@ void ofxWWRenderer::setupGui(){
 	webGui.addSlider("Influence Width", tweets.touchInfluenceFalloff, 200, 5000);
 	webGui.addToggle("Draw Touch Debug", drawTouchDebug);
 	
+	webGui.addPage("Caustics");
+	webGui.addToggle("Enable Caustics", enableCaustics);
+	webGui.addSlider("Delta", caustics.delta, .1, 1.0);
+	webGui.addSlider("Drag", caustics.drag, .8, .999);
+	webGui.addSlider("Light X", caustics.light.x, -1.0, 1.0);
+	webGui.addSlider("Light Y", caustics.light.y, -1.0, 1.0);
+	webGui.addSlider("Light Z", caustics.light.z, -1.0, 1.0);
+	
 	webGui.addPage("Fluid");
 	webGui.addToggle("Enable Fluid",	enableFluid);
 	webGui.addSlider("Force Scale",		fluid.forceScale,	1.0, 200); 
@@ -140,6 +151,14 @@ void ofxWWRenderer::update(){
 //	enableFluid = true;
 	if(enableFluid){
 		fluid.update();
+	}
+	
+	if(enableCaustics){
+		//TEMPORARY random force
+		if(ofRandomuf() > .5)
+			caustics.addDrop(ofRandomuf()*1024, ofRandomuf()*1024, 20, ofGetFrameNum() % 2 == 0 ? 0.02 : -0.02);
+		
+		caustics.update();
 	}
 	
 	float maxTouchZ = 0;
@@ -372,8 +391,8 @@ void ofxWWRenderer::renderGradientOverlay(){
 		layerTwoBackgroundB.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
 		ofSetColor(255, 255, 255, layer1Opacity*255);				
 		layerOneBackgroundB.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
-		
 	}
+	caustics.getTextureRef().draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
 	gradientOverlay.end();
 	ofPopStyle();
 	
