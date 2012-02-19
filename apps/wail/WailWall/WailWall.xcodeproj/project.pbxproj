@@ -98,6 +98,7 @@
 		A6AF048214DB33EF006816A8 /* libjansson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6AF041914DB33EF006816A8 /* libjansson.a */; };
 		A6AF048314DB33EF006816A8 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6AF043D14DB33EF006816A8 /* libcrypto.a */; };
 		A6AF048414DB33EF006816A8 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6AF043E14DB33EF006816A8 /* libssl.a */; };
+		A6C628B814F193C9000C1C14 /* ofxCaustics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6C628B614F193C9000C1C14 /* ofxCaustics.cpp */; };
 		A6FDBDF914D9F46E0003EBE5 /* noise.frag in Sources */ = {isa = PBXBuildFile; fileRef = A6FDBDF714D9F46E0003EBE5 /* noise.frag */; };
 		A6FDBDFA14D9F46E0003EBE5 /* noise.vert in Sources */ = {isa = PBXBuildFile; fileRef = A6FDBDF814D9F46E0003EBE5 /* noise.vert */; };
 		A6FDBF6614DA171E0003EBE5 /* gaussian_blur.frag in Sources */ = {isa = PBXBuildFile; fileRef = A6FDBF6414DA171E0003EBE5 /* gaussian_blur.frag */; };
@@ -553,6 +554,8 @@
 		A6AF046214DB33EF006816A8 /* x509.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x509.h; sourceTree = "<group>"; };
 		A6AF046314DB33EF006816A8 /* x509_vfy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x509_vfy.h; sourceTree = "<group>"; };
 		A6AF046414DB33EF006816A8 /* x509v3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x509v3.h; sourceTree = "<group>"; };
+		A6C628B614F193C9000C1C14 /* ofxCaustics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCaustics.cpp; sourceTree = "<group>"; };
+		A6C628B714F193C9000C1C14 /* ofxCaustics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCaustics.h; sourceTree = "<group>"; };
 		A6FDBDEF14D9F46E0003EBE5 /* DisplayLayout.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = DisplayLayout.xml; sourceTree = "<group>"; };
 		A6FDBDF714D9F46E0003EBE5 /* noise.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = noise.frag; sourceTree = "<group>"; };
 		A6FDBDF814D9F46E0003EBE5 /* noise.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = noise.vert; sourceTree = "<group>"; };
@@ -1373,6 +1376,24 @@
 			path = openssl;
 			sourceTree = "<group>";
 		};
+		A6C6286914F1932C000C1C14 /* ofxCaustics */ = {
+			isa = PBXGroup;
+			children = (
+				A6C628A114F1932C000C1C14 /* src */,
+			);
+			name = ofxCaustics;
+			path = ../../../addons/ofxCaustics;
+			sourceTree = SOURCE_ROOT;
+		};
+		A6C628A114F1932C000C1C14 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				A6C628B714F193C9000C1C14 /* ofxCaustics.h */,
+				A6C628B614F193C9000C1C14 /* ofxCaustics.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		A6FDBDED14D9F46E0003EBE5 /* data */ = {
 			isa = PBXGroup;
 			children = (
@@ -1402,6 +1423,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				A6C6286914F1932C000C1C14 /* ofxCaustics */,
 				E70140E914E54B89007926C9 /* ofxCocoaWindow */,
 				EAAD76E314E2DD5200EF1CC3 /* ofxWebServer */,
 				EAAD76FB14E2DD5200EF1CC3 /* ofxWebSimpleGuiToo */,
@@ -2028,6 +2050,7 @@
 				489B329014EFD4620029AF26 /* TwitterDBThread.cpp in Sources */,
 				A602AAB914F057F000EAD6E3 /* alphafade.frag in Sources */,
 				A602AABA14F057F000EAD6E3 /* alphafade.vert in Sources */,
+				A6C628B814F193C9000C1C14 /* ofxCaustics.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

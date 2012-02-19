@@ -50,10 +50,10 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	burstTwo.loadImage("images/burst2.png");
 	
 	canSelectSearchTerms = false;
-	enableCaustics = true;
+	enableCaustics = false;
 	
-	//fakin' it
 	ofAddListener(ofEvents.keyPressed, this, &ofxWWTweetParticleManager::keyPressed);
+	//fakin' it
 	/*
 	fakeSearchTerms.push_back("POLITICS");
 	fakeSearchTerms.push_back("ECONOMY");
@@ -88,9 +88,9 @@ void ofxWWTweetParticleManager::keyPressed(ofKeyEventArgs& args) {
 
 void ofxWWTweetParticleManager::setupGui(){
 	
-	webGui.addPage("Caustics");
-	webGui.addToggle("Enable Caustics", enableCaustics);
-	webGui.addSlider("Caustic Fade", causticFadeSpeed, .002, .5);
+//	webGui.addPage("Caustics");
+//	webGui.addToggle("Enable Caustics", enableCaustics);
+//	webGui.addSlider("Caustic Fade", causticFadeSpeed, .002, .5);
 	
 	webGui.addPage("Tweet Lifecycle");
 	webGui.addSlider("Max Tweets", maxTweets, 200, 2000);
