@@ -12,13 +12,14 @@ ofxCaustics::ofxCaustics(){
 	light = ofVec3f(0,1,1).normalized();
 	delta = 1.0;	
 	drag = .95;
+	shaderPath = "";
 }
 
-void ofxCaustics::setup(int textureSize){
-	drop.load("dropshader");
-	updater.load("updateshader");
-	normals.load("updatenormals");
-	caustics.load("caustics");
+void ofxCaustics::setup(int textureWidth, int textureHeight){
+	drop.load(shaderPath+"dropshader");
+	updater.load(shaderPath+"updateshader");
+	normals.load(shaderPath+"updatenormals");
+	caustics.load(shaderPath+"caustics");
 	
 	caustics.begin();
 	caustics.setUniform1f("water", 0);
@@ -36,13 +37,13 @@ void ofxCaustics::setup(int textureSize){
 	drop.setUniform1f("texture", 0);
 	drop.end();
 	
-	causticTex.allocate(textureSize, textureSize, GL_RGBA32F_ARB);
+	causticTex.allocate(textureWidth, textureHeight, GL_RGBA32F_ARB);
 	causticTex.begin();
 	ofClear(0);
 	causticTex.end();
 	
 	for(int i = 0; i < 2; i++){
-		waterTex[i].allocate(textureSize, textureSize, GL_RGBA32F_ARB);
+		waterTex[i].allocate(textureWidth, textureHeight, GL_RGBA32F_ARB);
 		waterTex[i].begin();
 		ofClear(0,0,0,0);
 		waterTex[i].end();
@@ -90,8 +91,8 @@ void ofxCaustics::stepSimulation(){
 	waterTex[waterswapcur].begin();
 	
 	updater.begin();
-	updater.setUniform2f("delta", delta,delta);
-	updater.setUniform1f("drag", drag);
+	updater.setUniform2f("delta",delta,delta);
+	updater.setUniform1f("drag",drag);
 	waterTex[waterswapnxt].draw(0, 0);
 	
 	updater.end();
@@ -105,7 +106,7 @@ void ofxCaustics::updateNormals(){
 	waterTex[waterswapcur].begin();
 	
 	normals.begin();
-	normals.setUniform2f("delta", delta,delta);
+	normals.setUniform2f("delta",delta,delta);
 	
 	waterTex[waterswapnxt].draw(0, 0);
 	
@@ -122,8 +123,8 @@ void ofxCaustics::updateCaustics(){
 	ofClear(0);
 	
 	caustics.begin();
-	light.normalize();
-	caustics.setUniform3f("light", light.x, light.y, light.z);
+	ofVec3f unit = light.normalized();
+	caustics.setUniform3f("light", unit.x, unit.y, unit.z);
 	
 	waterTex[waterswapcur].draw(0, 0);
 	caustics.end();

@@ -12,6 +12,7 @@
 #include "ofxMPMFluid.h"
 #include "ofxWWTweetParticleManager.h"
 #include "KinectTouchListener.h"
+#include "ofxCaustics.h"
 
 class ofxWWRenderer: public KinectTouchListener {
   public:
@@ -48,6 +49,7 @@ class ofxWWRenderer: public KinectTouchListener {
 	int targetWidth;
 	int targetHeight;
 	
+
 	//render targers
 	int accumbuf;
 	ofFbo accumulator[2];
@@ -66,6 +68,10 @@ class ofxWWRenderer: public KinectTouchListener {
 	
 	void renderLayer1();
 	void renderLayer2();
+	
+	
+	ofxCaustics caustics;
+	bool enableCaustics;
 	
 	//sub objects
 	ofxMPMFluid fluid;
@@ -95,8 +101,6 @@ class ofxWWRenderer: public KinectTouchListener {
 	ofShader warpShader;
 	float warpAmount;
 	bool justDrawWarpTexture;
-		
-	//ofVec2f texCoordAtPos(ofImage& image, float x, float y);
 
 	//used as a map into the fluid sim
 	bool useBackgroundSetA;
@@ -109,8 +113,6 @@ class ofxWWRenderer: public KinectTouchListener {
 	bool drawTouchDebug;
 	
 	float layer1Opacity; //this is smoothed
-	
-	
 };
 
 inline ofFbo& ofxWWRenderer::getScreenshotFbo() {

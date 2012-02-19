@@ -3,8 +3,24 @@
         <name>Enable Caustics</name>
         <value>1</value>
     </Toggle_Enable_Caustics>
-    <SliderFloat_Caustic_Fade>
-        <name>Caustic Fade</name>
-        <value>0.014450</value>
-    </SliderFloat_Caustic_Fade>
+    <SliderFloat_Delta>
+        <name>Delta</name>
+        <value>1.000000</value>
+    </SliderFloat_Delta>
+    <SliderFloat_Drag>
+        <name>Drag</name>
+        <value>0.951240</value>
+    </SliderFloat_Drag>
+    <SliderFloat_Light_X>
+        <name>Light X</name>
+        <value>-0.010000</value>
+    </SliderFloat_Light_X>
+    <SliderFloat_Light_Y>
+        <name>Light Y</name>
+        <value>-0.540000</value>
+    </SliderFloat_Light_Y>
+    <SliderFloat_Light_Z>
+        <name>Light Z</name>
+        <value>0.010000</value>
+    </SliderFloat_Light_Z>
 </controls>

@@ -13,13 +13,15 @@ class ofxCaustics {
   public:
 	
 	ofxCaustics();
-	void setup(int textureSize);
+	void setup(int textureWidth, int textureHeight);
 	void update();
 	
 	void addDrop(float x, float y, float radius, float strength);
 	void draw(int x, int y);
 	
 	ofTexture& getTextureRef();
+	
+	string shaderPath; //extra path to shader directory;
 	float delta; //should be between .1 and 1.0, affects propagation speed
 	float drag; //should be between about .9 and .999, affects wave slowdown
 	ofVec3f light; 
