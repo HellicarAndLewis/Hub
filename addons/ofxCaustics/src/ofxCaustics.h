@@ -19,7 +19,7 @@ class ofxCaustics {
 	void addDrop(float x, float y, float radius, float strength);
 	void draw(int x, int y);
 	
-	ofTexture& getTextureRef();
+	ofTexture& getTextureReference();
 	
 	string shaderPath; //extra path to shader directory;
 	float delta; //should be between .1 and 1.0, affects propagation speed

@@ -58,7 +58,6 @@ void ofxWWRenderer::setup(int width, int height){
 	layerTwoBackgroundA.loadImage("images/BGGradientA_layer2.png");
 	layerOneBackgroundB.loadImage("images/BGGradientB_layer1.png");
 	layerTwoBackgroundB.loadImage("images/BGGradientB_layer2.png");
-
 	
 	layer1Opacity = 1.0;
 	
@@ -111,6 +110,7 @@ void ofxWWRenderer::setupGui(){
 	webGui.addSlider("Light X", caustics.light.x, -1.0, 1.0);
 	webGui.addSlider("Light Y", caustics.light.y, -1.0, 1.0);
 	webGui.addSlider("Light Z", caustics.light.z, -1.0, 1.0);
+	webGui.addToggle("Draw Debug Texture", drawCausticsDebug);
 	
 	webGui.addPage("Fluid");
 	webGui.addToggle("Enable Fluid",	enableFluid);
@@ -148,7 +148,7 @@ void ofxWWRenderer::setupGui(){
 
 void ofxWWRenderer::update(){
 	enableFluid = false;
-//	enableFluid = true;
+
 	if(enableFluid){
 		fluid.update();
 	}
@@ -193,7 +193,7 @@ void ofxWWRenderer::render(){
 	renderTarget.begin();
 	ofClear(0);
 	ofEnableAlphaBlending();
-	gradientOverlay.draw(0,0,targetWidth,targetHeight);
+//	gradientOverlay.draw(0,0,targetWidth,targetHeight);
 						 
 	//BLIT DYNAMICS
 	warpShader.begin();
@@ -204,7 +204,7 @@ void ofxWWRenderer::render(){
 	accumulator[accumbuf].getTextureReference().bind();
 	
 	glActiveTexture(GL_TEXTURE1_ARB);
-	warpMap.getTextureReference().bind();
+	caustics.getTextureReference().bind();
 	
 	//draw a quad the size of the frame
 	glBegin(GL_QUADS);
@@ -215,22 +215,22 @@ void ofxWWRenderer::render(){
 	glVertex2f( 0, 0 );
 	
 	glMultiTexCoord2d(GL_TEXTURE0_ARB, accumulator[accumbuf].getWidth(), 0);
-	glMultiTexCoord2d(GL_TEXTURE1_ARB, warpMap.getWidth(), 0);
+	glMultiTexCoord2d(GL_TEXTURE1_ARB, caustics.getTextureReference().getWidth(), 0);
 	glVertex2f( targetWidth, 0 );
 	
 	glMultiTexCoord2d(GL_TEXTURE0_ARB, accumulator[accumbuf].getWidth(), accumulator[accumbuf].getHeight());
-	glMultiTexCoord2d(GL_TEXTURE1_ARB, warpMap.getWidth(), warpMap.getHeight());
+	glMultiTexCoord2d(GL_TEXTURE1_ARB, caustics.getTextureReference().getWidth(), caustics.getTextureReference().getHeight());
 	glVertex2f( targetWidth, targetHeight );
 	
 	glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, accumulator[accumbuf].getHeight());
-	glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, warpMap.getHeight());
+	glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, caustics.getTextureReference().getHeight());
 	glVertex2f( 0, targetHeight );
 	
 	glEnd();
 	
 	//deactive and clean up
 	glActiveTexture(GL_TEXTURE1_ARB);
-	warpMap.getTextureReference().unbind();
+	caustics.getTextureReference().unbind();
 	
 	glActiveTexture(GL_TEXTURE0_ARB);
 	accumulator[accumbuf].getTextureReference().unbind();
@@ -299,11 +299,13 @@ void ofxWWRenderer::renderDynamics(){
 	
 	ofPushStyle();
 	ofSetColor(255, 255, 255);
+
+	gradientOverlay.draw(0,0,targetWidth,targetHeight);
 	
-	alphaFade.begin();
-	alphaFade.setUniform1f("fadeSpeed", tweets.causticFadeSpeed);
-	accumulator[(accumbuf+1)%2].draw(0,0); //this x offset causes the blur to cascade away
-	alphaFade.end();
+//	alphaFade.begin();
+//	alphaFade.setUniform1f("fadeSpeed", tweets.causticFadeSpeed);
+//	accumulator[(accumbuf+1)%2].draw(0,0); //this x offset causes the blur to cascade away
+//	alphaFade.end();
 	
 //	blurShader.begin();
 //	blurShader.setUniform2f("sampleOffset", 0, blurAmount);
@@ -382,7 +384,10 @@ void ofxWWRenderer::renderGradientOverlay(){
 	gradientOverlay.begin();
 	ofClear(0, 0, 0);
 
-	if(useBackgroundSetA){
+	if(drawCausticsDebug){
+		caustics.getTextureReference().draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());	
+	}
+	else if(useBackgroundSetA){
 		layerTwoBackgroundA.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
 		ofSetColor(255, 255, 255, layer1Opacity*255);				
 		layerOneBackgroundA.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
@@ -392,7 +397,8 @@ void ofxWWRenderer::renderGradientOverlay(){
 		ofSetColor(255, 255, 255, layer1Opacity*255);				
 		layerOneBackgroundB.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
 	}
-	caustics.getTextureRef().draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
+	
+
 	gradientOverlay.end();
 	ofPopStyle();
 	

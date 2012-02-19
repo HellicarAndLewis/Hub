@@ -193,6 +193,7 @@ void ofxWWTweetParticleManager::checkFonts(){
 	//			}
 	//		}
 #endif
+	
 }
 
 void ofxWWTweetParticleManager::handleSearch() {
@@ -422,29 +423,28 @@ void ofxWWTweetParticleManager::updateTweets(){
 		}
 	}
 	
-	
 	///ANIMATE tweet
 	//apply wall forces
 	for(int i = 0; i < tweets.size(); i++){
 		if(!tweetsFlowLeftRight){
 			//LEFT WALL
 			if (tweets[i].pos.x < wallRepulsionDistance) {
-				tweets[i].force.x += (wallRepulsionDistance - tweets[i].pos.x) * wallRepulsionAtten * tweets[i].deathAttenuation;
+				tweets[i].force.x += (wallRepulsionDistance - tweets[i].pos.x) * wallRepulsionAtten;
 			}
 			//RIGHT WALL
-			if ((tweets[i].pos.x + tweets[i].totalWidth) > (simulationWidth-wallRepulsionDistance)) {
-				tweets[i].force.x += ( (simulationWidth-wallRepulsionDistance) - (tweets[i].pos.x + tweets[i].totalWidth) ) * wallRepulsionAtten * tweets[i].deathAttenuation;
+			if ((tweets[i].pos.x) > (simulationWidth-wallRepulsionDistance)) {
+				tweets[i].force.x += ( (simulationWidth-wallRepulsionDistance) - (tweets[i].pos.x + tweets[i].totalWidth) ) * wallRepulsionAtten;
 			}
 		}
 		else {
 			//TOP
 			if (tweets[i].pos.y < wallRepulsionDistance) {
-				tweets[i].force.y += (wallRepulsionDistance - tweets[i].pos.y) * wallRepulsionAtten * tweets[i].deathAttenuation;
+				tweets[i].force.y += (wallRepulsionDistance - tweets[i].pos.y) * wallRepulsionAtten;
 			}
 			
 			//BOTTOM
-			if ((tweets[i].pos.y + tweets[i].totalHeight) > (simulationHeight-wallRepulsionDistance)) {
-				tweets[i].force.y += ( (simulationHeight-wallRepulsionDistance)  - (tweets[i].pos.y + tweets[i].totalHeight)) * wallRepulsionAtten * tweets[i].deathAttenuation;
+			if ((tweets[i].pos.y) > (simulationHeight-wallRepulsionDistance)) {
+				tweets[i].force.y += ( (simulationHeight-wallRepulsionDistance)  - (tweets[i].pos.y + tweets[i].totalHeight)) * wallRepulsionAtten;
 			}
 		}
 	}
@@ -452,7 +452,6 @@ void ofxWWTweetParticleManager::updateTweets(){
 	//apply mutual repulsion
 	float tweetRepulsionDistanceSqr = tweetRepulsionDistance*tweetRepulsionDistance;
 	for(int i = 0; i < tweets.size(); i++){
-		tweets[i].force = ofVec2f(0,0);
 		for(int j = 0; j < tweets.size(); j++){
 			if(i != j){
 				ofVec2f awayFromOther = (tweets[i].pos - tweets[j].pos);
@@ -528,7 +527,6 @@ void ofxWWTweetParticleManager::updateSearchTerms(){
 		clearTweets = false;
 	}
 	
-		
 	//find the closest touch
 	for(int i = 0; i < searchTerms.size(); i++){
 		searchTerms[i].closestDistanceSquared = 99999;
@@ -639,16 +637,17 @@ void ofxWWTweetParticleManager::renderSearchTerms(){
 	
 	if(drawSearchDebug){
 		string searchTermDebugString = "";
-		searchTermDebugString += "# OF SEARCH TERMS: " + ofToString(searchTerms.size()) + "    ";
+		searchTermDebugString + "SEARCH TERMS: " + ofToString(searchTerms.size()) + "    ";
 		searchTermDebugString += "QUEUE " + ofToString(incomingSearchTerms.size()) + "    ";
-		searchTermDebugString += string("IS SEARCHING? ") + (isDoingSearch ? "YES" : "NO") + "    ";
+		searchTermDebugString += string("SEARCHING? ") + (isDoingSearch ? "YES" : "NO") + "    ";
 		if(isDoingSearch){
-			searchTermDebugString += "SEARCH TERM " + searchTerms[selectedSearchTermIndex].term + "    ";
-			searchTermDebugString += "TIME REMAINING " + ofToString( tweetSearchDuration - (ofGetElapsedTimef() - tweetSearchStartTime), 2) + "    ";
+			searchTermDebugString += "TERM " + searchTerms[selectedSearchTermIndex].term + "    ";
+			searchTermDebugString += "TIME " + ofToString( tweetSearchDuration - (ofGetElapsedTimef() - tweetSearchStartTime), 2) + "    ";
 		}
 		else{
-			searchTermDebugString += "NEXT SEARCH " + ofToString( tweetSearchMinWaitTime - (ofGetElapsedTimef() - tweetSearchEndedTime), 2) + "    ";
+			searchTermDebugString += "NEXT " + ofToString( tweetSearchMinWaitTime - (ofGetElapsedTimef() - tweetSearchEndedTime), 2) + "    ";
 		}
+		searchTermDebugString += "TWEETS " + ofToString(tweets.size());
 		
 		sharedUserFont.drawString(searchTermDebugString, wallRepulsionDistance+20, wallRepulsionDistance);
 		ofPushStyle();

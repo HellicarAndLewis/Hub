@@ -83,7 +83,7 @@ void ofxCaustics::draw(int x, int y){
 	causticTex.draw(waterTex[waterswapcur].getWidth(),0);
 }
 
-ofTexture& ofxCaustics::getTextureRef(){
+ofTexture& ofxCaustics::getTextureReference(){
 	return causticTex.getTextureReference();
 }
 

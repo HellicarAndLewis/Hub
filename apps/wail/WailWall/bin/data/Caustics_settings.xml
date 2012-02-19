@@ -9,7 +9,7 @@
     </SliderFloat_Delta>
     <SliderFloat_Drag>
         <name>Drag</name>
-        <value>0.951240</value>
+        <value>0.913430</value>
     </SliderFloat_Drag>
     <SliderFloat_Light_X>
         <name>Light X</name>
@@ -17,10 +17,14 @@
     </SliderFloat_Light_X>
     <SliderFloat_Light_Y>
         <name>Light Y</name>
-        <value>-0.540000</value>
+        <value>-0.740000</value>
     </SliderFloat_Light_Y>
     <SliderFloat_Light_Z>
         <name>Light Z</name>
-        <value>0.010000</value>
+        <value>0.030000</value>
     </SliderFloat_Light_Z>
+    <Toggle_Draw_Debug_Texture>
+        <name>Draw Debug Texture</name>
+        <value>0</value>
+    </Toggle_Draw_Debug_Texture>
 </controls>

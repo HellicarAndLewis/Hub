@@ -72,6 +72,7 @@ class ofxWWRenderer: public KinectTouchListener {
 	
 	ofxCaustics caustics;
 	bool enableCaustics;
+	bool drawCausticsDebug;
 	
 	//sub objects
 	ofxMPMFluid fluid;
