@@ -28,26 +28,28 @@ void testApp::setup(){
 	drop.setUniform1f("texture", 0);
 	drop.end();
 	
-	causticTex.allocate(512, 512, GL_RGBA);
+	causticTex.allocate(512, 512, GL_RGBA32F_ARB);
 	causticTex.begin();
 	ofClear(0);
 	causticTex.end();
 	
 	for(int i = 0; i < 2; i++){
-		waterTex[i].allocate(512, 512, GL_RGBA);
+		waterTex[i].allocate(512, 512, GL_RGBA32F_ARB);
 		waterTex[i].begin();
-		ofClear(128,0,0,0);
+		ofClear(0,0,0,0);
 		waterTex[i].end();
 	}
 	waterswapcur = 0;
 	waterswapnxt = 1;
 	
-//	addDrop(512/2, 512/2, 40, .005); 
+	addDrop(512/2, 512/2, 40, .01); 
 //	addDrop(512/2, 512/2, 20, -.005);
 	
-	for (int i = 0; i < 20; i++) {
+//	for (int i = 0; i < 20; i++) {
 //		addDrop(ofRandomuf()*512, ofRandomuf()*512, 10, (i & 1) ? -0.01 : -0.01);
-	}
+//	}
+	delta = .5;
+	
 }
 
 //--------------------------------------------------------------
@@ -58,22 +60,22 @@ void testApp::update(){
 //		addDrop(ofRandomuf()*512, ofRandomuf()*512, 0.03 * 512, (i & 1) ? 0.01 * 512 : -0.01 * 512);
 //	}
 	
-	addDrop(ofGetMouseX(), ofGetMouseY(), 10, ofGetFrameNum() % 2 == 0 ? -.02 : .02);
+	addDrop(ofGetMouseX(), ofGetMouseY(), 10, ofGetFrameNum() % 2 == 0 ? -.2 : .2);
 	//addDrop(ofGetMouseX(), ofGetMouseY(), 10, .01);
 	
 	stepSimulation();
-//	stepSimulation();
+	stepSimulation();
 	updateNormals();
 	updateCaustics();	
 }
 
 void testApp::stepSimulation(){
 	waterTex[waterswapcur].begin();
-	ofClear(0);
+//	ofClear(0);
 
 	updater.begin();
 
-	updater.setUniform2f("delta", 1.,1.);
+	updater.setUniform2f("delta", delta,delta);
 	
 	waterTex[waterswapnxt].draw(0, 0);
 	
@@ -87,10 +89,10 @@ void testApp::stepSimulation(){
 
 void testApp::updateNormals(){
 	waterTex[waterswapcur].begin();
-	ofClear(0);
+//	ofClear(0);
 
 	normals.begin();
-	normals.setUniform2f("delta", 1.,1.);
+	normals.setUniform2f("delta", delta,delta);
 	
 	waterTex[waterswapnxt].draw(0, 0);
 	
@@ -107,11 +109,12 @@ void testApp::updateCaustics(){
 	causticTex.begin();
 	ofClear(0);
 	
-	ofVec3f light(ofGetMouseX(), ofGetMouseY(), ofRandomf());
+	ofVec3f light(ofGetMouseX(), 0, ofGetMouseY());
 	light.normalize();
 	
 	caustics.begin();
-	caustics.setUniform3f("light", light.x, light.y, light.z);
+	//caustics.setUniform3f("light", light.x, light.y, light.z);
+	caustics.setUniform3f("light", -.2, 1., 0);
 	waterTex[waterswapcur].draw(0, 0);
 	caustics.end();
 	
@@ -121,7 +124,7 @@ void testApp::updateCaustics(){
 void testApp::addDrop(float x, float y, float radius, float strength){
 	
 	waterTex[waterswapcur].begin();
-	ofClear(0);
+//	ofClear(0);
 	
 	drop.begin();
 	drop.setUniform2f("center", x, y);
