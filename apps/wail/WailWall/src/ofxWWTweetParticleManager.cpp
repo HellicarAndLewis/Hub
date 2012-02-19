@@ -332,7 +332,7 @@ void ofxWWTweetParticleManager::searchForTerm(ofxWWSearchTerm& term){
 	vector<rtt::Tweet> found_tweets;
 	if(twitter.getTweetsWithSearchTerm(term.term, 100000, 100, found_tweets)) {
 		for(int i = 0; i < found_tweets.size(); ++i) {
-			printf("[found] %s\n", found_tweets[i].getText().c_str());
+			//printf("[found] %s\n", found_tweets[i].getText().c_str());
 			// TODO: This is where we need to create or fill a new tweet. @James lets talk about this
 		}
 	}

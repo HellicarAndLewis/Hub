@@ -1,7 +1,7 @@
 <controls>
     <SliderInt_Tweet_Font_Size>
         <name>Tweet Font Size</name>
-        <value>57</value>
+        <value>44</value>
     </SliderInt_Tweet_Font_Size>
     <SliderInt_User_Font_Size>
         <name>User Font Size</name>

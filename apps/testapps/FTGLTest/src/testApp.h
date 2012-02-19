@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxFTGLFont.h"
+#include "utf8.h"
 
 class testApp : public ofBaseApp{
 

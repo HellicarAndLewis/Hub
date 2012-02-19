@@ -11,8 +11,7 @@ TwitterApp::TwitterApp()
 	,twitter_listener(*this)
 	,uploader(*this)
 	,image_writer(*this)
-	,initialized(false)
-	
+	,initialized(false)	
 {
 
 }
@@ -50,7 +49,7 @@ void TwitterApp::initTwitter() {
 	}
 	
 	stream.addEventListener(this);
-	removeTweetsFromConnectedAccount();
+	//removeTweetsFromConnectedAccount();
 }
 
 // removes 20 tweets per times!
@@ -73,7 +72,6 @@ void TwitterApp::initOSC(int port) {
 void TwitterApp::initDB() {
 	//grant all on dewarscube_admin.* to dewarscube_admin@"%" identified by "dewarscube_admin"
 	if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin")) {
-	//if(!mysql.connect("dewarshub.demo.apollomedia.nl" , "dewarscube_admin", "dewarscube_admin", "dewarscube_admin")) {
 	//if(!mysql.connect("dewarshub.demo.apollomedia.nl" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin")) {
 		exit(0);
 	}
@@ -115,15 +113,6 @@ void TwitterApp::simulateSearch(const string& term) {
 	tweet.setScreenName("roxlu");
 	tweet.setText("@dewarshub " +term);
 	twitter_listener.onStatusUpdate(tweet);
-	
-	/*
-	int start = ofGetElapsedTimeMillis();
-	vector<rtt::Tweet> found;
-	db_thread.getTweetsWithSearchTerm(term, 99999, 100, found);
-	int end = ofGetElapsedTimeMillis();
-	int diff = end - start;
-	printf("Testing search, found %zu item in %d millis\n", found.size(), diff );
-	*/
 }	
 				 			 
 // Bad words & hash tags				 
@@ -192,6 +181,7 @@ void TwitterApp::update() {
 	osc_receiver.update();
 }
 
+// TODO: remove this; not used in Wailwall
 // get the list of people to follow, separated by comma
 bool TwitterApp::getFollowers(vector<string>& result) {
 	// TODO: fix db
@@ -204,4 +194,14 @@ void TwitterApp::onTwitterStreamDisconnected() {
 
 void TwitterApp::onTwitterStreamConnected() {
 	mysql.setSetting("twitter_connected", "y");
+}
+
+// Just for testing.
+void TwitterApp::executeSearchTest() {
+	int start = ofGetElapsedTimeMillis();
+	vector<rtt::Tweet> found;
+	db_thread.getTweetsWithSearchTerm("love", 99999, 100, found);
+	int end = ofGetElapsedTimeMillis();
+	int diff = end - start;
+	printf("Testing search, found %zu item in %d millis\n", found.size(), diff );
 }
