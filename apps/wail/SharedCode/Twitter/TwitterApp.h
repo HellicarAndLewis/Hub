@@ -106,7 +106,6 @@ public:
 	void removeTweetsFromConnectedAccount();
 	
 	rt::Twitter& getTwitter();
-//	TwitterDB& getDB();	
 	TwitterThreadedImageWriter& getImageWriter();
 	virtual void onTwitterStreamDisconnected();
 	virtual void onTwitterStreamConnected();
@@ -117,7 +116,8 @@ private:
 	void initTwitter();
 	void initOSC(int port);
 	void initStoredSearchTerms();
-
+	void executeSearchTest();
+	
 	rt::Twitter 			twitter;
 	rt::Stream				stream;
 //	TwitterDB 				db;

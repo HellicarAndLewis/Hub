@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxFTGLFont.h"
+#include "utf8.h"
 
 class testApp : public ofBaseApp{
 
@@ -21,5 +22,6 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
 		ofxFTGLFont font;
+		string message;
 		
 };

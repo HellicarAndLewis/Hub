@@ -1,4 +1,4 @@
-/*
+ /*
  * FTGL - OpenGL font library
  *
  * Copyright (c) 2001-2004 Henry Maddocks <ftgl@opengl.geek.nz>
@@ -116,8 +116,11 @@ FTPoint FTGlyphContainer::Render(const unsigned int charCode,
     if(!face->Error())
     {
         unsigned int index = charMap->GlyphListIndex(charCode);
-        if (index < glyphs.size())
-            kernAdvance += glyphs[index]->Render(penPosition, renderMode);
+        if (index < glyphs.size()) {
+			if(index != 0) { // roxlu, it crashes when index is zero.
+	            kernAdvance += glyphs[index]->Render(penPosition, renderMode);
+			}
+		}
     }
 
     return kernAdvance;

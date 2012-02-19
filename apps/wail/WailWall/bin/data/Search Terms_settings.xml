@@ -5,7 +5,7 @@
     </SliderInt_Max_Search_Terms>
     <SliderInt_Search_Font_Size>
         <name>Search Font Size</name>
-        <value>164</value>
+        <value>216</value>
     </SliderInt_Search_Font_Size>
     <SliderFloat_Search_Min_Opacity>
         <name>Search Min Opacity</name>
@@ -13,7 +13,7 @@
     </SliderFloat_Search_Min_Opacity>
     <SliderFloat_Touch_Min_Dist>
         <name>Touch Min Dist</name>
-        <value>340.250000</value>
+        <value>947.750000</value>
     </SliderFloat_Touch_Min_Dist>
     <SliderFloat_Touch_Min_Hold>
         <name>Touch Min Hold</name>
@@ -41,6 +41,6 @@
     </SliderFloat_Search_Hand_Attract>
     <Toggle_Search_Debug>
         <name>Search Debug</name>
-        <value>1</value>
+        <value>0</value>
     </Toggle_Search_Debug>
 </controls>
