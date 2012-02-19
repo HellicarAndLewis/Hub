@@ -40,14 +40,14 @@ void main() {
 	vec3 ray = refract(-light, normal, IOR_AIR / IOR_WATER);
 //	oldPos = project(gl_Vertex.xzy, refractedLight, refractedLight);
 //	newPos = project(gl_Vertex.xzy + vec3(0.0, info.r, 0.0), ray, refractedLight);
-	vec3 oldPos = project(vec3(gl_TexCoord[0].st,0), refractedLight, refractedLight);
-	vec3 newPos = project(vec3(gl_TexCoord[0].st,0) + vec3(0.0, info.r, 0.0), ray, refractedLight);
+	vec3 oldPos = project(vec3(gl_TexCoord[0].st,0.), refractedLight, refractedLight);
+	vec3 newPos = project(vec3(gl_TexCoord[0].st,0.) + vec3(0.0, info.r, 0.0), ray, refractedLight);
 
 	/* if the triangle gets smaller, it gets brighter, and vice versa */
 	float oldArea = length(dFdx(oldPos)) * length(dFdy(oldPos));
 	float newArea = length(dFdx(newPos)) * length(dFdy(newPos));
 	
-	gl_FragColor = vec4(oldArea / newArea * .2, 0.0, 0.0, 0.0);	
+	gl_FragColor = vec4(oldArea / newArea * .2);//, 0.0, 0.0, 0.0);	
 	//gl_FragColor = vec4(normal,1.0);
 	
 //	vec4 info = texture2DRect(water, gl_TexCoord[0].st);

@@ -36,4 +36,5 @@ class testApp : public ofBaseApp{
 	void updateCaustics();
 	
 	void swapWaterTexture();
+	float delta;
 };
