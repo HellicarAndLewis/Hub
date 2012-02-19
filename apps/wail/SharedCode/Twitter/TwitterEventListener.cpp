@@ -35,12 +35,27 @@ TwitterEventListener::~TwitterEventListener() {
  */
 void TwitterEventListener::onStatusUpdate(const rtt::Tweet& tweet) {
 	string bad_word;
+	bool to_dewarshub = false;
+	for(int i = 0; i < tweet.user_mentions.size(); ++i) {
+		if(tweet.user_mentions[i] == "dewarshub") {
+			to_dewarshub = true;
+			break;
+		}
+		//printf("> %s\n", tweet.user_mentions[i].c_str());
+	}
+	if(to_dewarshub) {
+		printf("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+		printf("%s\n", tweet.text.c_str());
+		printf("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+	}
 	if(twitter_app.containsBadWord(tweet.text, bad_word)) {
-		printf("[censored][%s] %s\n",bad_word.c_str(), tweet.getText().c_str());
+		//printf("[censored][%s] %s\n",bad_word.c_str(), tweet.getText().c_str());
 		//printf("# [ censored ] : %s\n", tweet.text.c_str());
+		printf("[censored]\n");
 		return;
 	}
-	printf("[ok] %s \n", tweet.getText().c_str());
+	printf("[ok]\n");
+//	printf("[ok] %s \n", tweet.getText().c_str());
 
 	// Check for search term; we first lowercase the tweet.
 	string search_query;
