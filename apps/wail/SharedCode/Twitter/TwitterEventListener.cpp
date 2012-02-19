@@ -54,8 +54,8 @@ void TwitterEventListener::onStatusUpdate(const rtt::Tweet& tweet) {
 		printf("[censored]\n");
 		return;
 	}
-	printf("[ok]\n");
-//	printf("[ok] %s \n", tweet.getText().c_str());
+//	printf("[ok]\n");
+	printf("[ok] %s \n", tweet.getText().c_str());
 
 	// Check for search term; we first lowercase the tweet.
 	string search_query;

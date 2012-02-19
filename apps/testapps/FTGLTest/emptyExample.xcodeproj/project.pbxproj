@@ -91,6 +91,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		483C49ED14F1883700FD804B /* checked.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = checked.h; sourceTree = "<group>"; };
+		483C49EE14F1883700FD804B /* core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core.h; sourceTree = "<group>"; };
+		483C49EF14F1883700FD804B /* unchecked.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unchecked.h; sourceTree = "<group>"; };
+		483C49F014F1883700FD804B /* utf8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utf8.h; sourceTree = "<group>"; };
 		48A4847014EEEC2B00A718E1 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		48A4847214EEEC2B00A718E1 /* ofxFTGLFont.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxFTGLFont.cpp; sourceTree = "<group>"; };
 		48A4847314EEEC2B00A718E1 /* ofxFTGLFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxFTGLFont.h; sourceTree = "<group>"; };
@@ -263,6 +267,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		483C49EC14F1883700FD804B /* utf8 */ = {
+			isa = PBXGroup;
+			children = (
+				483C49ED14F1883700FD804B /* checked.h */,
+				483C49EE14F1883700FD804B /* core.h */,
+				483C49EF14F1883700FD804B /* unchecked.h */,
+			);
+			path = utf8;
+			sourceTree = "<group>";
+		};
 		489F456F14F15A62007FE910 /* iconv */ = {
 			isa = PBXGroup;
 			children = (
@@ -543,6 +557,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				483C49EC14F1883700FD804B /* utf8 */,
+				483C49F014F1883700FD804B /* utf8.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
