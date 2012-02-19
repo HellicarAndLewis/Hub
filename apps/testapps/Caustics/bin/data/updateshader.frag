@@ -19,23 +19,23 @@ void main() {
 	texture2DRect(texture, gl_TexCoord[0].st + dy).r
   ) * 0.25;
   
-  info.g += (average - info.r)*2.0;
-
-  info.r += (info.g - .5);
-  
-  info.g += (.5 - info.g) * .01;
+//  info.g += (average - info.r)*2.0;
+//
+//  info.r += (info.g - .5);
+//  
+//  info.g += (.5 - info.g) * .01;
   
 //  //WORKING
 //  /* change the velocity to move toward the average */
-//  info.g += (average - info.r) * 2.0;
-//  
-//  /* attenuate the velocity a little so waves do not last forever */
-//  //info.g += (.5 - info.g) * .01;
-//  info.g *= .9;
-//  
-//  /* move the vertex along the velocity */
-//  info.r += info.g;
-//  info.r = clamp(info.r,0.,1.);
+  info.g += (average - info.r) * 2.0;
+  
+  /* attenuate the velocity a little so waves do not last forever */
+  //info.g += (.5 - info.g) * .01;
+  info.g *= .9;
+  
+  /* move the vertex along the velocity */
+  info.r += info.g;
+  info.r = clamp(info.r,0.,1.);
 
   gl_FragColor = info;
   //gl_FragColor = vec4(gl_TexCoord[0].s, gl_TexCoord[0].t, 0., 1.0);
