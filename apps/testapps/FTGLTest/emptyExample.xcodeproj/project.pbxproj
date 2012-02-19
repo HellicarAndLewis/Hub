@@ -263,6 +263,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		489F456F14F15A62007FE910 /* iconv */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = iconv;
+			sourceTree = "<group>";
+		};
 		48A4841314EEEC2B00A718E1 /* ofxFTGL */ = {
 			isa = PBXGroup;
 			children = (
@@ -470,6 +477,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				489F456F14F15A62007FE910 /* iconv */,
 				48A4841314EEEC2B00A718E1 /* ofxFTGL */,
 			);
 			name = addons;

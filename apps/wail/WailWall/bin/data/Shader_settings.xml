@@ -5,11 +5,11 @@
     </Toggle_Use_Background_A>
     <SliderFloat_Blur_Diffuse>
         <name>Blur Diffuse</name>
-        <value>4.300000</value>
+        <value>5.200000</value>
     </SliderFloat_Blur_Diffuse>
     <SliderFloat_Clear_Speed>
         <name>Clear Speed</name>
-        <value>2.325000</value>
+        <value>6.225000</value>
     </SliderFloat_Clear_Speed>
     <SliderFloat_Warp_Amount>
         <name>Warp Amount</name>
