@@ -13,9 +13,13 @@
 void ofxWWRenderer::setup(int width, int height){
 	targetWidth = width;
 	targetHeight = height;
-	
+
+	accumbuf = 0;
 	//anything that diffuses in liquid gets drawn into here
-	accumulator.allocate(width, height, GL_RGB);
+	accumulator[0].allocate(width, height, GL_RGBA);
+	accumulator[1].allocate(width, height, GL_RGBA);
+	//glowTarget.allocate(width, height, GL_RGBA);
+	
 	screenshotTarget.allocate(width/4, height/4, GL_RGB);
 	
 	//type layer
@@ -33,27 +37,37 @@ void ofxWWRenderer::setup(int width, int height){
 	tweets.simulationWidth = width;
 	tweets.simulationHeight = height;
 	
-	accumulator.begin();
+	accumulator[0].begin();
 	ofClear(0);
-	accumulator.end();
+	accumulator[0].end();
+	accumulator[1].begin();
+	ofClear(0);
+	accumulator[1].end();
 	
-	//fluid.setup(width/20.0,height/20.0,100000);
+//	fluid.setup(width/20.0,height/20.0,100000);
 //	fluid.scaleFactor = 6.4;
 	tweets.fluidRef = &fluid;
 	tweets.blobsRef = blobs;
 	
 	colorField.loadImage("images/color_palette.png");
 	fluid.sampleTexture = &colorField;
-	layerOneBackground.loadImage("images/layerOneBG.png");
-	layerTwoBackground.loadImage("images/layerTwoBG.png");
+	layerOneBackgroundA.loadImage("images/BGGradientA_layer1.png");
+	layerTwoBackgroundA.loadImage("images/BGGradientA_layer2.png");
+	layerOneBackgroundB.loadImage("images/BGGradientB_layer1.png");
+	layerTwoBackgroundB.loadImage("images/BGGradientB_layer2.png");
 
 	
 	layer1Opacity = 1.0;
 	
+	alphaFade.load("shaders/alphafade");
+	alphaFade.begin();
+	alphaFade.setUniform1i("self", 0);
+	alphaFade.end();
+	
 	permutationImage.loadImage("shaders/permtexture.png");
 	noiseShader.load("shaders/noise");
 	noiseShader.begin();
-	noiseShader.setUniform1f("permTexture", 0);
+	noiseShader.setUniform1i("permTexture", 0);
 	noiseShader.end();
 	
 	blurShader.load("shaders/gaussian_blur");
@@ -105,6 +119,7 @@ void ofxWWRenderer::setupGui(){
 	webGui.addToggle("Do Obstacles",	fluid.bDoObstacles); 
 	
 	webGui.addPage("Shader");
+	webGui.addToggle("Use Background A", useBackgroundSetA);
 	webGui.addSlider("Blur Diffuse", blurAmount, 0, 10);
 	webGui.addSlider("Clear Speed", clearSpeed, 0, 15);
 	webGui.addSlider("Warp Amount", warpAmount, 0, 75);
@@ -159,14 +174,15 @@ void ofxWWRenderer::render(){
 	renderTarget.begin();
 	ofClear(0);
 	ofEnableAlphaBlending();
-			
+	gradientOverlay.draw(0,0,targetWidth,targetHeight);
+						 
 	//BLIT DYNAMICS
 	warpShader.begin();
 	warpShader.setUniform1f("warpScale", warpAmount);
 	//our shader uses two textures, the top layer and the alpha
 	//we can load two textures into a shader using the multi texture coordinate extensions
 	glActiveTexture(GL_TEXTURE0_ARB);
-	accumulator.getTextureReference().bind();
+	accumulator[accumbuf].getTextureReference().bind();
 	
 	glActiveTexture(GL_TEXTURE1_ARB);
 	warpMap.getTextureReference().bind();
@@ -177,17 +193,17 @@ void ofxWWRenderer::render(){
 	//move the mask around with the mouse by modifying the texture coordinates
 	glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, 0);
 	glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, 0);
-	glVertex2f( 0, 0);
+	glVertex2f( 0, 0 );
 	
-	glMultiTexCoord2d(GL_TEXTURE0_ARB, accumulator.getWidth(), 0);
+	glMultiTexCoord2d(GL_TEXTURE0_ARB, accumulator[accumbuf].getWidth(), 0);
 	glMultiTexCoord2d(GL_TEXTURE1_ARB, warpMap.getWidth(), 0);
-	glVertex2f( targetWidth, 0);
+	glVertex2f( targetWidth, 0 );
 	
-	glMultiTexCoord2d(GL_TEXTURE0_ARB, accumulator.getWidth(), accumulator.getHeight());
+	glMultiTexCoord2d(GL_TEXTURE0_ARB, accumulator[accumbuf].getWidth(), accumulator[accumbuf].getHeight());
 	glMultiTexCoord2d(GL_TEXTURE1_ARB, warpMap.getWidth(), warpMap.getHeight());
 	glVertex2f( targetWidth, targetHeight );
 	
-	glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, accumulator.getHeight());
+	glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, accumulator[accumbuf].getHeight());
 	glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, warpMap.getHeight());
 	glVertex2f( 0, targetHeight );
 	
@@ -198,39 +214,13 @@ void ofxWWRenderer::render(){
 	warpMap.getTextureReference().unbind();
 	
 	glActiveTexture(GL_TEXTURE0_ARB);
-	accumulator.getTextureReference().unbind();
+	accumulator[accumbuf].getTextureReference().unbind();
+	accumbuf = (accumbuf+1)%2;
 	
 	warpShader.end();
 	
-
-//	tweets.renderTweetNodes();
 	tweets.renderTweets();	
 	tweets.renderSearchTerms();
-	
-	glColor3f(1,0,0);
-	ofCircle(100,100,100);
-	//BLIT CONTENT
-//	blurShader.begin();
-//	blurShader.setUniform2f("sampleOffset", 0, (1-layer1Opacity)*2);
-//	layer1Target.draw(0,0);
-//	blurShader.end();
-//	
-//	blurShader.begin();
-//	blurShader.setUniform2f("sampleOffset", (1-layer1Opacity)*2, 0);
-//	layer1Target.draw(0,0);
-//	blurShader.end();
-//	
-//	
-//	blurShader.begin();
-//	blurShader.setUniform2f("sampleOffset", 0, layer1Opacity*2);
-//	layer1Target.draw(0,0);
-//	blurShader.end();
-//	
-//	blurShader.begin();
-//	blurShader.setUniform2f("sampleOffset", layer1Opacity*2, 0);
-//	layer1Target.draw(0,0);
-//	blurShader.end();
-	
 	
 	
 	//DEBUG
@@ -283,34 +273,38 @@ void ofxWWRenderer::keyPressed(ofKeyEventArgs& args) {
 void ofxWWRenderer::renderDynamics(){
 	//enableFluid = false; // TODO: remove
 	
-	accumulator.begin();
-	ofEnableAlphaBlending();
+	accumulator[accumbuf].begin();
+	
+	ofClear(0);
+	ofDisableAlphaBlending();
 	
 	ofPushStyle();
 	ofSetColor(255, 255, 255);
 	
+	alphaFade.begin();
+	alphaFade.setUniform1f("fadeSpeed", tweets.causticFadeSpeed);
+	accumulator[(accumbuf+1)%2].draw(0,0); //this x offset causes the blur to cascade away
+	alphaFade.end();
 	
-	blurShader.begin();
-	blurShader.setUniform2f("sampleOffset", 0, blurAmount);
-	accumulator.draw(7,0); //this x offset causes the blur to cascade away
-	blurShader.end();
+//	blurShader.begin();
+//	blurShader.setUniform2f("sampleOffset", 0, blurAmount);
+//	accumulator[(accumbuf+1)%2].draw(7,0); //this x offset causes the blur to cascade away
+//	blurShader.end();
 
-	blurShader.begin();
-	blurShader.setUniform2f("sampleOffset", blurAmount, 0);
-	accumulator.draw(3,0); //this x offset causes the blur to cascade away
-	blurShader.end();
+//	blurShader.begin();
+//	blurShader.setUniform2f("sampleOffset", blurAmount, 0);
+//	accumulator[(accumbuf+1)%2].draw(3,0); //this x offset causes the blur to cascade away
+//	blurShader.end();
 
 	if(enableFluid){
 		fluid.draw(0,0,targetWidth,targetHeight);
 	}
-		
+
 	tweets.renderCaustics();
-	ofSetColor(255,255,255, clearSpeed);
-	gradientOverlay.draw(0,0,targetWidth,targetHeight);
 	
 	ofPopStyle();
 	
-	accumulator.end();
+	accumulator[accumbuf].end();
 }
 
 void ofxWWRenderer::renderLayer1(){
@@ -328,7 +322,6 @@ void ofxWWRenderer::renderLayer2(){
 	
 	layer2Target.end();
 }
-
 
 void ofxWWRenderer::renderWarpMap(){
 	
@@ -370,10 +363,17 @@ void ofxWWRenderer::renderGradientOverlay(){
 	gradientOverlay.begin();
 	ofClear(0, 0, 0);
 
-	layerTwoBackground.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
-	ofSetColor(255, 255, 255, layer1Opacity*255);				
-	layerOneBackground.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
-	
+	if(useBackgroundSetA){
+		layerTwoBackgroundA.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
+		ofSetColor(255, 255, 255, layer1Opacity*255);				
+		layerOneBackgroundA.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
+	}
+	else{
+		layerTwoBackgroundB.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
+		ofSetColor(255, 255, 255, layer1Opacity*255);				
+		layerOneBackgroundB.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
+		
+	}
 	gradientOverlay.end();
 	ofPopStyle();
 	
