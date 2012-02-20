@@ -123,7 +123,7 @@ private:
 //	TwitterDB 				db;
 	TwitterDBThread			db_thread;
 	TwitterPhotoUploader 	uploader;
-	TwitterEventListener 	twitter_listener;
+//	TwitterEventListener 	twitter_listener;
 	TwitterBadWords 		bad_words;
 	TwitterOSCReceiver 		osc_receiver;
 	TwitterSearchTermQueue 	search_queue;

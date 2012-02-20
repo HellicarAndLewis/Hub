@@ -279,6 +279,7 @@ public:
 	// Event system.
 	void addEventListener(IEventListener& listener);
 	void addEventListener(IEventListener* listener);
+	vector<IEventListener*>& getEventListeners();
 	void onStatusUpdate(const rtt::Tweet& tweet);
 	void onStatusDestroy(const rtt::StatusDestroy& destroy);
 	void onStreamEvent(const rtt::StreamEvent& event);
@@ -405,6 +406,10 @@ inline string Twitter::getHTTPResponseMessage() {
 
 inline bool Twitter::getResponseHeader(const string& name, string& result) {
 	return twitcurl.getResponseHeader(name, result);
+}
+
+inline vector<IEventListener*>& Twitter::getEventListeners() {
+	return listeners;
 }
 	
 }} // roxlu::twitter

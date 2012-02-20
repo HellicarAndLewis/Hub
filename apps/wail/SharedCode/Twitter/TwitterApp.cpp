@@ -8,7 +8,7 @@ ofEvent<TwitterAppEvent> twitter_app_dispatcher;
 
 TwitterApp::TwitterApp()
 	:stream(twitter)
-	,twitter_listener(*this)
+//	,twitter_listener(*this)
 	,uploader(*this)
 	,image_writer(*this)
 	,initialized(false)	
@@ -115,7 +115,11 @@ void TwitterApp::simulateSearch(const string& term) {
 	rtt::Tweet tweet;
 	tweet.setScreenName("roxlu");
 	tweet.setText("@dewarshub " +term);
-	twitter_listener.onStatusUpdate(tweet);
+	vector<roxlu::twitter::IEventListener*>& listeners = twitter.getEventListeners();
+	for(int i = 0; i < listeners.size(); ++i) {
+		listeners[i]->onStatusUpdate(tweet);
+	}
+	//twitter_listener.onStatusUpdate(tweet);
 }	
 				 			 
 // Bad words & hash tags				 
@@ -159,7 +163,7 @@ bool TwitterApp::connect(){
 
 void TwitterApp::addDefaultListener(){
 	//addCustomListener(twitter_listener);
-	twitter.addEventListener(twitter_listener);
+	//twitter.addEventListener(twitter_listener);
 }
 
 void TwitterApp::addCustomListener(rt::IEventListener& listener){
