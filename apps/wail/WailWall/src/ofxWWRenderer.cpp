@@ -96,7 +96,8 @@ void ofxWWRenderer::setup(int width, int height){
 	
 //	cout << "setting up tweets" << endl;
 	tweets.setup(this);
-	
+
+	callToAction.setup(&tweets);
 	// roxlu: test screenshots
 	ofAddListener(ofEvents.keyPressed, this, &ofxWWRenderer::keyPressed);
 	test_screenshot = false;
@@ -272,6 +273,8 @@ void ofxWWRenderer::render(){
 
 	tweets.renderTweets();	
 	tweets.renderSearchTerms();
+	
+	callToAction.draw();
 	
 	//DEBUG
 	if(justDrawWarpTexture){
@@ -459,7 +462,10 @@ void ofxWWRenderer::touchDown(const KinectTouch &touch) {
 }
 
 void ofxWWRenderer::touchMoved(const KinectTouch &touch) {
+
+	printf("Touch moved\n");
 	fluid.applyForce(ofVec2f(touch.x, touch.y), ofVec2f(touch.vel.x, touch.vel.y));
+	callToAction.justInteracted();
 }
 
 void ofxWWRenderer::touchUp(const KinectTouch &touch) {
