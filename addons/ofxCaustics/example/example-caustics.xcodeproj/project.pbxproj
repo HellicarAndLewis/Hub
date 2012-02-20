@@ -15,6 +15,8 @@
 		A602AB2B14F064C700EAD6E3 /* caustics.vert in Sources */ = {isa = PBXBuildFile; fileRef = A602AB2914F064C700EAD6E3 /* caustics.vert */; };
 		A602AE8414F091F200EAD6E3 /* updatenormals.frag in Sources */ = {isa = PBXBuildFile; fileRef = A602AE8214F091F200EAD6E3 /* updatenormals.frag */; };
 		A602AE8514F091F200EAD6E3 /* updatenormals.vert in Sources */ = {isa = PBXBuildFile; fileRef = A602AE8314F091F200EAD6E3 /* updatenormals.vert */; };
+		A62F010B14F2144800559EF9 /* underwater.frag in Sources */ = {isa = PBXBuildFile; fileRef = A62F010914F2144800559EF9 /* underwater.frag */; };
+		A62F010C14F2144800559EF9 /* underwater.vert in Sources */ = {isa = PBXBuildFile; fileRef = A62F010A14F2144800559EF9 /* underwater.vert */; };
 		A6C628C814F19525000C1C14 /* ofxCaustics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6C628C614F19525000C1C14 /* ofxCaustics.cpp */; };
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
@@ -74,6 +76,8 @@
 		A602AB2914F064C700EAD6E3 /* caustics.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = caustics.vert; sourceTree = "<group>"; };
 		A602AE8214F091F200EAD6E3 /* updatenormals.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = updatenormals.frag; sourceTree = "<group>"; };
 		A602AE8314F091F200EAD6E3 /* updatenormals.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = updatenormals.vert; sourceTree = "<group>"; };
+		A62F010914F2144800559EF9 /* underwater.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = underwater.frag; sourceTree = "<group>"; };
+		A62F010A14F2144800559EF9 /* underwater.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = underwater.vert; sourceTree = "<group>"; };
 		A6C628C614F19525000C1C14 /* ofxCaustics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxCaustics.cpp; path = ../src/ofxCaustics.cpp; sourceTree = SOURCE_ROOT; };
 		A6C628C714F19525000C1C14 /* ofxCaustics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxCaustics.h; path = ../src/ofxCaustics.h; sourceTree = SOURCE_ROOT; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
@@ -127,6 +131,8 @@
 		A602AB1E14F062F000EAD6E3 /* data */ = {
 			isa = PBXGroup;
 			children = (
+				A62F010914F2144800559EF9 /* underwater.frag */,
+				A62F010A14F2144800559EF9 /* underwater.vert */,
 				A602AE8214F091F200EAD6E3 /* updatenormals.frag */,
 				A602AE8314F091F200EAD6E3 /* updatenormals.vert */,
 				A602AB2814F064C700EAD6E3 /* caustics.frag */,
@@ -208,8 +214,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				A6C628C614F19525000C1C14 /* ofxCaustics.cpp */,
 				A6C628C714F19525000C1C14 /* ofxCaustics.h */,
+				A6C628C614F19525000C1C14 /* ofxCaustics.cpp */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
@@ -321,6 +327,8 @@
 				A602AE8414F091F200EAD6E3 /* updatenormals.frag in Sources */,
 				A602AE8514F091F200EAD6E3 /* updatenormals.vert in Sources */,
 				A6C628C814F19525000C1C14 /* ofxCaustics.cpp in Sources */,
+				A62F010B14F2144800559EF9 /* underwater.frag in Sources */,
+				A62F010C14F2144800559EF9 /* underwater.vert in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

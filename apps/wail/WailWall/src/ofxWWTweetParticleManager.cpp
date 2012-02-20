@@ -54,7 +54,7 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	
 	ofAddListener(ofEvents.keyPressed, this, &ofxWWTweetParticleManager::keyPressed);
 	//fakin' it
-	/*
+
 	fakeSearchTerms.push_back("POLITICS");
 	fakeSearchTerms.push_back("ECONOMY");
 	fakeSearchTerms.push_back("BIOLOGY");
@@ -67,7 +67,7 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	for(int i = 0; i < fakeSearchTerms.size(); i++){
 		twitter.simulateSearch(fakeSearchTerms[i]);
 	}
-	*/
+
 	setupColors();
 }
 
@@ -122,7 +122,7 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Dot Size", dotSize, 5, 50);
 	webGui.addSlider("Dot Shift", dotShift, -50, 50);
 	
-	webGui.addPage("Search Terms");
+	webGui.addPage("Search Term Timing");
 	webGui.addSlider("Max Search Terms", maxSearchTerms, 5, 15);
 	webGui.addSlider("Search Font Size", searchTermFontSize, 100, 500);
 	webGui.addSlider("Search Min Opacity", searchMinOpacity, 0, .4);
@@ -130,11 +130,13 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Touch Min Hold", searchTermMinHoldTime, .5, 3.0);
 	webGui.addSlider("Search Duration", tweetSearchDuration, 2, 15);
 	webGui.addSlider("Search Time Between", tweetSearchMinWaitTime, 1, 20);
+	webGui.addToggle("Search Debug", drawSearchDebug);
+	
+	webGui.addPage("Search Term Animation");
 	webGui.addSlider("Wall Repulsion Dist", wallRepulsionDistance, 0, 900);
 	webGui.addSlider("Search Repulse Dist", searchTermRepulsionDistance, 500, 2000);
 	webGui.addSlider("Search Repulse Atten", searchTermRepulsionAttenuation, 0, .2);
-	webGui.addSlider("Search Hand Attract", searchTermHandAttractionFactor, 0, .2);
-	webGui.addToggle("Search Debug", drawSearchDebug);
+	webGui.addSlider("Search Hand Attract", searchTermHandAttractionFactor, 0, .1);
 	
 	//TODO set up in XML
 	//ONLY CAN HAVE 4 right now
@@ -341,6 +343,11 @@ void ofxWWTweetParticleManager::searchForTerm(ofxWWSearchTerm& term){
 		for(int i = 0; i < found_tweets.size(); ++i) {
 			//printf("[found] %s\n", found_tweets[i].getText().c_str());
 			// TODO: This is where we need to create or fill a new tweet. @James lets talk about this
+			int randomTweet = ofRandom(tweets.size()-1);
+			tweets.at(randomTweet).setTweet(found_tweets[i]);
+			tweets.at(randomTweet).isSearchTweet = true;
+			tweets.at(randomTweet).createdTime = ofGetElapsedTimef() + ofRandom(2);
+			
 		}
 	}
 	else {
@@ -488,7 +495,6 @@ void ofxWWTweetParticleManager::updateTweets(){
 		else{
 			forceVector.y += (tweetFlowSpeed + tweets[i].speedAdjust) * (1-tweets[i].clampedSelectionWeight);
 		}
-		//TODO add chaose;
 		tweets[i].force += forceVector;
 	}
 	
@@ -528,9 +534,14 @@ void ofxWWTweetParticleManager::updateTweets(){
 //		fluidRef->applyForce(tweets[i].pos/ofVec2f(simulationWidth,simulationHeight), tweets[i].force/ofVec2f(simulationWidth,simulationHeight) * fluidForceScale * tweetLayerOpacity * tweets[i].deathAttenuation );
 //	}
 	
+	numSearchTermTweets = 0;
 	for(int i = 0; i < tweets.size(); i++){
 		tweets[i].update();
+		if (tweets[i].isSearchTweet) {
+			numSearchTermTweets++;
+		}
 	}
+	
 }
 
 void ofxWWTweetParticleManager::updateSearchTerms(){
@@ -541,17 +552,25 @@ void ofxWWTweetParticleManager::updateSearchTerms(){
 	}
 	
 	//find the closest touch
-	for(int i = 0; i < searchTerms.size(); i++){
-		searchTerms[i].closestDistanceSquared = 99999;
-		map<int,KinectTouch>::iterator it;
-		for(it = blobsRef->begin(); it != blobsRef->end(); it++){
+	if(!blobsRef->empty() && canSelectSearchTerms){
+		for(int i = 0; i < searchTerms.size(); i++){
+			searchTerms[i].closestDistanceSquared = 9999999;
+			map<int,KinectTouch>::iterator it;
+			for(it = blobsRef->begin(); it != blobsRef->end(); it++){
+				ofVec2f point = ofVec2f(it->second.x*simulationWidth, it->second.y*simulationHeight);
+				float squareDistance = point.distanceSquared(searchTerms[i].pos);
+				if(squareDistance < searchTerms[i].closestDistanceSquared){
+					searchTerms[i].closestDistanceSquared = squareDistance;
+					searchTerms[i].closestPoint = point;
+					searchTerms[i].closestTouchID = it->first;
+				}
+			}
 			
-			ofVec2f point = ofVec2f(it->second.x*simulationWidth, it->second.y*simulationHeight);
-			float squareDistance = point.distanceSquared(searchTerms[i].pos);
-			if(squareDistance < searchTerms[i].closestDistanceSquared){
-				searchTerms[i].closestDistanceSquared = squareDistance;
-				searchTerms[i].closestPoint = point;
-				searchTerms[i].closestTouchID = it->first;
+			//attract to hand
+			ofVec2f directionToHand = searchTerms[i].closestPoint - searchTerms[i].pos;
+			float distanceToHand = directionToHand.length();
+			if(distanceToHand < searchTermMinDistance){
+				searchTerms[i].force += directionToHand * searchTermHandAttractionFactor;
 			}
 		}
 	}
@@ -608,6 +627,8 @@ void ofxWWTweetParticleManager::updateSearchTerms(){
 		}
 	}
 	
+	//apply a float and a wobble
+	
 	for(int i = 0; i < searchTerms.size(); i++){
 		searchTerms[i].touchPresent = blobsRef->size() != 0;
 		//cout << "accumulated force is " << searchTerms[i].force  << endl;
@@ -660,7 +681,8 @@ void ofxWWTweetParticleManager::renderSearchTerms(){
 		else{
 			searchTermDebugString += "NEXT " + ofToString( tweetSearchMinWaitTime - (ofGetElapsedTimef() - tweetSearchEndedTime), 2) + "    ";
 		}
-		searchTermDebugString += "TWEETS " + ofToString(tweets.size());
+		searchTermDebugString += "TWEETS " + ofToString(tweets.size()) + "	";
+		searchTermDebugString += "SEARCH TWEETS " + ofToString(numSearchTermTweets);
 		
 		sharedUserFont.drawString(searchTermDebugString, wallRepulsionDistance+20, wallRepulsionDistance);
 		ofPushStyle();

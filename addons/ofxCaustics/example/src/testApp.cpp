@@ -6,7 +6,7 @@ void testApp::setup(){
 	ofSetVerticalSync(true);
 	ofSetFrameRate(30);
 
-	caustics.setup(512);
+	caustics.setup(512,512);
 }
 
 //--------------------------------------------------------------

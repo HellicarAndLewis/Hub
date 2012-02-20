@@ -1,48 +1,32 @@
 <controls>
     <SliderInt_Max_Search_Terms>
         <name>Max Search Terms</name>
-        <value>9</value>
+        <value>10</value>
     </SliderInt_Max_Search_Terms>
     <SliderInt_Search_Font_Size>
         <name>Search Font Size</name>
-        <value>216</value>
+        <value>134</value>
     </SliderInt_Search_Font_Size>
     <SliderFloat_Search_Min_Opacity>
         <name>Search Min Opacity</name>
-        <value>0.136000</value>
+        <value>0.040000</value>
     </SliderFloat_Search_Min_Opacity>
     <SliderFloat_Touch_Min_Dist>
         <name>Touch Min Dist</name>
-        <value>947.750000</value>
+        <value>539.250000</value>
     </SliderFloat_Touch_Min_Dist>
     <SliderFloat_Touch_Min_Hold>
         <name>Touch Min Hold</name>
-        <value>1.312500</value>
+        <value>2.437500</value>
     </SliderFloat_Touch_Min_Hold>
     <SliderFloat_Search_Duration>
         <name>Search Duration</name>
-        <value>8.370000</value>
+        <value>9.930000</value>
     </SliderFloat_Search_Duration>
     <SliderFloat_Search_Time_Between>
         <name>Search Time Between</name>
-        <value>5.845000</value>
+        <value>10.000000</value>
     </SliderFloat_Search_Time_Between>
-    <SliderFloat_Wall_Repulsion_Dist>
-        <name>Wall Repulsion Dist</name>
-        <value>657.000000</value>
-    </SliderFloat_Wall_Repulsion_Dist>
-    <SliderFloat_Search_Repulse_Dist>
-        <name>Search Repulse Dist</name>
-        <value>900.000000</value>
-    </SliderFloat_Search_Repulse_Dist>
-    <SliderFloat_Search_Repulse_Atten>
-        <name>Search Repulse Atten</name>
-        <value>0.021000</value>
-    </SliderFloat_Search_Repulse_Atten>
-    <SliderFloat_Search_Hand_Attract>
-        <name>Search Hand Attract</name>
-        <value>0.006000</value>
-    </SliderFloat_Search_Hand_Attract>
     <Toggle_Search_Debug>
         <name>Search Debug</name>
         <value>1</value>

@@ -90,8 +90,6 @@ void ofxWWTweetParticle::update(){
 	pos += force;
 	force = ofVec2f(0,0);
 	
-	pos += ofVec2f(ofSignedNoise(pos.y/manager->tweetFlowDamp, ofGetElapsedTimef()/manager->tweetChaosSpeed) * (.9-clampedSelectionWeight)*manager->tweetFlowAmp, 
-				   ofSignedNoise(pos.x/manager->tweetFlowDamp, ofGetElapsedTimef()/manager->tweetChaosSpeed) * (.9-clampedSelectionWeight)*manager->tweetFlowAmp);
 	
 	//birth attenuation just to stop snapping on
 	opacity = ofMap(ofGetElapsedTimef(), createdTime, createdTime+.5, .0, 1.0, true);
@@ -104,6 +102,8 @@ void ofxWWTweetParticle::update(){
 		}
 	}
 	else {
+		pos += ofVec2f(ofSignedNoise(pos.y/manager->tweetFlowDamp, ofGetElapsedTimef()/manager->tweetChaosSpeed) * (.9-clampedSelectionWeight)*manager->tweetFlowAmp, 
+					   ofSignedNoise(pos.x/manager->tweetFlowDamp, ofGetElapsedTimef()/manager->tweetChaosSpeed) * (.9-clampedSelectionWeight)*manager->tweetFlowAmp);
 		//death attenuation
 		deathAttenuation = ofMap(ofGetElapsedTimef(), createdTime+manager->startFadeTime, createdTime+manager->startFadeTime+manager->fadeDuration, 1.0, 0.0, true);
 		opacity *= manager->tweetLayerOpacity;

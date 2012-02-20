@@ -174,6 +174,7 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	void attemptConnection(ofVec2f pos1, float weight1, ofVec2f pos2, float weight2, float layerOpacity);
 	void setRandomCausticColor(float layerOpacity);
 	
+	int numSearchTermTweets; //for debugging
 	void addSearchTerm(const string& user, const string& term);
 	ofxWWTweetParticle createParticleForTweet(const rtt::Tweet& tweet);
 	

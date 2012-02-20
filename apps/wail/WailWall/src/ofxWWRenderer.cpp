@@ -189,10 +189,16 @@ void ofxWWRenderer::update(){
 		caustics.addDrop(dropPoint.x, dropPoint.y, dropScale, ofGetFrameNum() % 2 == 0 ? dropForce : -dropForce);
 		
 	}
-
-	float targetOpacity = ofMap(maxTouchZ, layerBarrierZ-layerBarrierWidth/2, layerBarrierZ+layerBarrierWidth/2, 1.0, 0.0, true);
+	float targetOpacity;
+	if(tweets.isDoingSearch){
+		targetOpacity = 0.;
+	}
+	else{
+		targetOpacity = ofMap(maxTouchZ, layerBarrierZ-layerBarrierWidth/2, layerBarrierZ+layerBarrierWidth/2, 1.0, 0.0, true);
+	}
 	layer1Opacity += (targetOpacity - layer1Opacity) * .1; //dampen
 	tweets.tweetLayerOpacity = layer1Opacity;
+
 	tweets.canSelectSearchTerms = maxTouchZ > layerBarrierZ;
 		
 	tweets.update();
@@ -384,6 +390,7 @@ void ofxWWRenderer::renderLayer2(){
 	layer2Target.end();
 }
 
+//JG NO LONGER USED
 void ofxWWRenderer::renderWarpMap(){
 	
 	warpMap.begin();
@@ -422,14 +429,16 @@ void ofxWWRenderer::renderWarpMap(){
 void ofxWWRenderer::renderGradientOverlay(){
 	ofPushStyle();
 	gradientOverlay.begin();
-	ofClear(0, 0, 0);
-
+	ofClear(0);
+	ofEnableAlphaBlending();
+	
 	if(useBackgroundSetA){
 		layerTwoBackgroundA.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
 		ofSetColor(255, 255, 255, layer1Opacity*255);		
+		//ofSetColor(255, 255, 255, (sin(ofGetElapsedTimef())*.5 + .5) *255);		
 //		cout << "layer1Opacity " << layer1Opacity << endl;
 		layerOneBackgroundA.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
-	}
+	}  
 	else{
 		layerTwoBackgroundB.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
 		ofSetColor(255, 255, 255, layer1Opacity*255);				
