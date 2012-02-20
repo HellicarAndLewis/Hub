@@ -32,6 +32,7 @@ class ofxWWTweetParticle {
 	ofVec2f force;
 	
 	float selectionWeight; //influence from hand
+	float clampedSelectionWeight;
 	
 	float scale;
 	float opacity;	

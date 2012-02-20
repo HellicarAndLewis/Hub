@@ -103,6 +103,8 @@
 		A6C629BA14F1A9C5000C1C14 /* blendcaustics.vert in Sources */ = {isa = PBXBuildFile; fileRef = A6C629B814F1A9C5000C1C14 /* blendcaustics.vert */; };
 		A6C62A2814F1C7C9000C1C14 /* caustics.frag in Sources */ = {isa = PBXBuildFile; fileRef = A6C62A2614F1C7C9000C1C14 /* caustics.frag */; };
 		A6C62A2914F1C7C9000C1C14 /* caustics.vert in Sources */ = {isa = PBXBuildFile; fileRef = A6C62A2714F1C7C9000C1C14 /* caustics.vert */; };
+		A6C62B3E14F1E5CC000C1C14 /* updateshader.frag in Sources */ = {isa = PBXBuildFile; fileRef = A6C62B3C14F1E5CC000C1C14 /* updateshader.frag */; };
+		A6C62B3F14F1E5CC000C1C14 /* updateshader.vert in Sources */ = {isa = PBXBuildFile; fileRef = A6C62B3D14F1E5CC000C1C14 /* updateshader.vert */; };
 		A6FDBDF914D9F46E0003EBE5 /* noise.frag in Sources */ = {isa = PBXBuildFile; fileRef = A6FDBDF714D9F46E0003EBE5 /* noise.frag */; };
 		A6FDBDFA14D9F46E0003EBE5 /* noise.vert in Sources */ = {isa = PBXBuildFile; fileRef = A6FDBDF814D9F46E0003EBE5 /* noise.vert */; };
 		A6FDBF6614DA171E0003EBE5 /* gaussian_blur.frag in Sources */ = {isa = PBXBuildFile; fileRef = A6FDBF6414DA171E0003EBE5 /* gaussian_blur.frag */; };
@@ -564,6 +566,8 @@
 		A6C629B814F1A9C5000C1C14 /* blendcaustics.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = blendcaustics.vert; sourceTree = "<group>"; };
 		A6C62A2614F1C7C9000C1C14 /* caustics.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = caustics.frag; sourceTree = "<group>"; };
 		A6C62A2714F1C7C9000C1C14 /* caustics.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = caustics.vert; sourceTree = "<group>"; };
+		A6C62B3C14F1E5CC000C1C14 /* updateshader.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = updateshader.frag; sourceTree = "<group>"; };
+		A6C62B3D14F1E5CC000C1C14 /* updateshader.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = updateshader.vert; sourceTree = "<group>"; };
 		A6FDBDEF14D9F46E0003EBE5 /* DisplayLayout.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = DisplayLayout.xml; sourceTree = "<group>"; };
 		A6FDBDF714D9F46E0003EBE5 /* noise.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = noise.frag; sourceTree = "<group>"; };
 		A6FDBDF814D9F46E0003EBE5 /* noise.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = noise.vert; sourceTree = "<group>"; };
@@ -1415,6 +1419,8 @@
 		A6FDBDF614D9F46E0003EBE5 /* shaders */ = {
 			isa = PBXGroup;
 			children = (
+				A6C62B3C14F1E5CC000C1C14 /* updateshader.frag */,
+				A6C62B3D14F1E5CC000C1C14 /* updateshader.vert */,
 				A6C62A2614F1C7C9000C1C14 /* caustics.frag */,
 				A6C62A2714F1C7C9000C1C14 /* caustics.vert */,
 				A6FDBE2E14D9F9310003EBE5 /* permtexture.png */,
@@ -2067,6 +2073,8 @@
 				A6C629BA14F1A9C5000C1C14 /* blendcaustics.vert in Sources */,
 				A6C62A2814F1C7C9000C1C14 /* caustics.frag in Sources */,
 				A6C62A2914F1C7C9000C1C14 /* caustics.vert in Sources */,
+				A6C62B3E14F1E5CC000C1C14 /* updateshader.frag in Sources */,
+				A6C62B3F14F1E5CC000C1C14 /* updateshader.vert in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

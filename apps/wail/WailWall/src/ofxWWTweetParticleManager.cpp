@@ -413,14 +413,19 @@ void ofxWWTweetParticleManager::updateTweets(){
 	//hand reveal top level tweets
 	for(int i = 0; i < tweets.size(); i++){
 		tweets[i].selectionWeight = 0;
+		
 		map<int,KinectTouch>::iterator it;
 		for(it = blobsRef->begin(); it != blobsRef->end(); it++){
-			if(tweets[i].selectionWeight < 1){
-				ofVec2f touchpoint = ofVec2f(it->second.x*simulationWidth, it->second.y*simulationHeight);
-				float weightBetween = weightBetweenPoints(ofVec2f(it->second.x*simulationWidth, it->second.y*simulationHeight), it->second.size, tweets[i].pos);
-				tweets[i].selectionWeight = MIN(tweets[i].selectionWeight + weightBetween, 1.0);
+			float maxRadiusSquared = powf(it->second.z * simulationHeight*touchSizeScale+touchInfluenceFalloff/2, 2.0f);
+			ofVec2f touchpoint = ofVec2f(it->second.x*simulationWidth, it->second.y*simulationHeight);
+			if(touchpoint.distanceSquared(tweets[i].pos) < maxRadiusSquared){			
+				float weightBetween = weightBetweenPoints(touchpoint, it->second.size, tweets[i].pos);
+				tweets[i].selectionWeight += weightBetween;
 			}
 		}
+		
+		tweets[i].clampedSelectionWeight = MIN(tweets[i].selectionWeight, 1.0);
+		 
 	}
 	
 	///ANIMATE tweet
@@ -469,14 +474,15 @@ void ofxWWTweetParticleManager::updateTweets(){
 		}
 	}
 	*/	
+	
 	//apply flow
 	for(int i = 0; i < tweets.size(); i++){
 		ofVec2f forceVector(0,0);
 		if(tweetsFlowLeftRight){
-			forceVector.x += (tweetFlowSpeed + tweets[i].speedAdjust) * (1-tweets[i].selectionWeight);
+			forceVector.x += (tweetFlowSpeed + tweets[i].speedAdjust) * (1-tweets[i].clampedSelectionWeight);
 		}
 		else{
-			forceVector.y += (tweetFlowSpeed + tweets[i].speedAdjust) * (1-tweets[i].selectionWeight);
+			forceVector.y += (tweetFlowSpeed + tweets[i].speedAdjust) * (1-tweets[i].clampedSelectionWeight);
 		}
 		//TODO add chaose;
 		tweets[i].force += forceVector;
@@ -485,7 +491,8 @@ void ofxWWTweetParticleManager::updateTweets(){
 	//apply legibility fixes for visible tweets
 	for(int i = 0; i < tweets.size(); i++){
 		for(int j = 0; j < tweets.size(); j++){
-			if(j != i && tweets[i].selectionWeight > .0 && tweets[j].selectionWeight > .0){
+			if(j != i && tweets[i].selectionWeight > 0 && tweets[j].selectionWeight > 0 &&
+						 tweets[i].selectionWeight <= tweets[j].selectionWeight){
 				//compare our corners to see if they are in their rect and then apply force if so
 				for(int c = 0; c < 4; c++){
 					ofVec2f corner = tweets[i].getBoundingCorner(c);
@@ -495,17 +502,17 @@ void ofxWWTweetParticleManager::updateTweets(){
 						ofVec2f otherCenter = ofVec2f(tweets[j].boundingRect.x + tweets[j].totalWidth/2, 
 													  tweets[j].boundingRect.y + tweets[j].totalHeight/2);
 						if(myCenter.x > otherCenter.x){
-							tweets[i].force.x -= (tweets[j].boundingRect.x+tweets[j].boundingRect.width - (myCenter.x+tweets[i].boundingRect.width/2) ) * tweetRepulsionAtten/2.;
+							tweets[i].force.x -= (tweets[j].boundingRect.x+tweets[j].boundingRect.width - (myCenter.x+tweets[i].boundingRect.width/2) ) * tweetRepulsionAtten;
 						}
 						else{
-							tweets[i].force.x += (tweets[j].boundingRect.x - (myCenter.x+tweets[i].boundingRect.width/2) ) * tweetRepulsionAtten/2.;
+							tweets[i].force.x += (tweets[j].boundingRect.x - (myCenter.x+tweets[i].boundingRect.width/2) ) * tweetRepulsionAtten;
 						}
 						
 						if(myCenter.y > otherCenter.y){
-							tweets[i].force.y -= (tweets[j].boundingRect.y+tweets[j].boundingRect.height - (myCenter.y+tweets[i].boundingRect.height/2) ) * tweetRepulsionAtten/2.;
+							tweets[i].force.y -= (tweets[j].boundingRect.y+tweets[j].boundingRect.height - (myCenter.y+tweets[i].boundingRect.height/2) ) * tweetRepulsionAtten;
 						}
 						else{
-							tweets[i].force.y += (tweets[j].boundingRect.y - (myCenter.y+tweets[i].boundingRect.height/2) ) * tweetRepulsionAtten/2.;
+							tweets[i].force.y += (tweets[j].boundingRect.y - (myCenter.y+tweets[i].boundingRect.height/2) ) * tweetRepulsionAtten;
 						}
 					}
 				}
@@ -671,8 +678,8 @@ void ofxWWTweetParticleManager::renderCaustics(){
 		for(int i = 0; i < tweets.size(); i++){
 			for(int j = 0; j < tweets.size(); j++){
 				if(j != i){
-					attemptCausticConnection(tweets[i].pos, tweets[i].selectionWeight,
-											 tweets[j].pos, tweets[j].selectionWeight, tweetLayerOpacity);
+					attemptCausticConnection(tweets[i].pos, tweets[i].clampedSelectionWeight,
+											 tweets[j].pos, tweets[j].clampedSelectionWeight, tweetLayerOpacity);
 				}
 			}
 		}	

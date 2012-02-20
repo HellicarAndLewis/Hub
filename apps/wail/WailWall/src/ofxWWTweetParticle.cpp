@@ -96,7 +96,7 @@ void ofxWWTweetParticle::update(){
 	if(isSearchTweet){
 		opacity *= (1-manager->tweetLayerOpacity);
 		if(!manager->canSelectSearchTerms){
-			isSearchTweet = false; //this will kill the tweet
+			isSearchTweet = false; 
 		}
 	}
 	else {
@@ -108,12 +108,13 @@ void ofxWWTweetParticle::update(){
 		}
 		
 		//distance attenuation
-		opacity *= selectionWeight; 
+		opacity *= clampedSelectionWeight; 
 	}
 	
 	//eventually we can optimize with this:
-	//if(selectionWeight > 0)
-	recalculateBoundingRects();
+	if(selectionWeight > 0){
+		recalculateBoundingRects();
+	}
 }
 
 void ofxWWTweetParticle::drawDot(){
@@ -127,7 +128,7 @@ void ofxWWTweetParticle::drawDot(){
 	else {
 		//alpha = deathAttenuation * manager->tweetLayerOpacity;
 		alpha = manager->tweetLayerOpacity;
-		alpha *= ofMap(selectionWeight, 0, .5, 1.0, 0, true);
+		alpha *= ofMap(clampedSelectionWeight, 0, .5, 1.0, 0, true);
 	}
 	float scale = useBurstOne ? 1.2 : 1.0;
 	if(isSearchTweet){
@@ -241,15 +242,15 @@ ofVec2f ofxWWTweetParticle::getBoundingCorner(int cornerIndex){
 }
 
 ofVec2f ofxWWTweetParticle::getUserDrawPos(){
-	return ofVec2f(pos.x - userNameWidth/2, pos.y + manager->userNameYOffset * ofMap(selectionWeight,0,.3,0,1.0,true));
+	return ofVec2f(pos.x - userNameWidth/2, pos.y + manager->userNameYOffset * ofMap(clampedSelectionWeight,0,.3,0,1.0,true));
 }
 
 ofVec2f ofxWWTweetParticle::getTweetLineOneDrawPos(){
-	return ofVec2f(pos.x - lineOneWidth/2, pos.y + manager->tweetYOffset*ofMap(selectionWeight,0,.3,0,1.0,true));
+	return ofVec2f(pos.x - lineOneWidth/2, pos.y + manager->tweetYOffset*ofMap(clampedSelectionWeight,0,.3,0,1.0,true));
 }
 
 ofVec2f ofxWWTweetParticle::getTweetLineTwoDrawPos(){
-	return ofVec2f(pos.x - lineTwoWidth/2, pos.y + manager->tweetYOffset*ofMap(selectionWeight,0,.3,0,1.0,true) + lineOneHeight + manager->tweetLineSpace);
+	return ofVec2f(pos.x - lineTwoWidth/2, pos.y + manager->tweetYOffset*ofMap(clampedSelectionWeight,0,.3,0,1.0,true) + lineOneHeight + manager->tweetLineSpace);
 }
 	
 ofVec2f ofxWWTweetParticle::getAtDrawPos(){

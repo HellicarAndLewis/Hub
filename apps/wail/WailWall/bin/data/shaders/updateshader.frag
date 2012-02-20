@@ -18,9 +18,11 @@ void main() {
   
   info.g += (average - info.r)*2.0;
   info.g *= drag;
+//  info.g = clamp(info.g, 0, .999);
   
   /* move the vertex along the velocity */
   info.r += info.g;
-
+  info.r = clamp(info.r, 0., .999);
+  
   gl_FragColor = info;
 }
