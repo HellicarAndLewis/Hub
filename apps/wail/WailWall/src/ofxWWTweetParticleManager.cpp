@@ -258,38 +258,7 @@ void ofxWWTweetParticleManager::handleTweetSearch(){
 			searchTerms[0].killedTime = ofGetElapsedTimef();
 		}
 	}
-	//DO IDLE MODE SEARCHING	
-	else{
-		//DO IDLE MODE SEARCHING
-		// TODO: maybe add a count member somehere?
-		if(!searchTerms.size()) {
-			return;
-		}
-		
-		// When do we need to change to the next search term:
-		// --------------------------------------------------
-		int now = ofGetElapsedTimef();
-		bool change = false;
-		if(shouldChangeSearchTermOn == 0) {
-			shouldChangeSearchTermOn = now + changeSearchTermDelay;
-			change = true;
-		}
-		else if(now > shouldChangeSearchTermOn) {
-			shouldChangeSearchTermOn = now + changeSearchTermDelay;
-			printf("Current search term index: %d\n", currentSearchTermIndex);
-			currentSearchTermIndex = (++currentSearchTermIndex) % searchTerms.size();
-			printf("Next search term index: %d\n", currentSearchTermIndex);
-			change = true;
-		}
-		
-		// When we need to change, make the next search term active, and load tweets.
-		// --------------------------------------------------------------------------
-		if(change) {
-			searchForTerm( searchTerms[currentSearchTermIndex] );
-			shouldTriggerScreenshot = false;
-			selectedSearchTermIndex = currentSearchTermIndex;
-		}
-	}
+	
 }
 
 void ofxWWTweetParticleManager::searchForTerm(ofxWWSearchTerm& term){
@@ -762,6 +731,8 @@ ofxWWTweetParticle ofxWWTweetParticleManager::createParticleForTweet(const rtt::
 }
 					
 void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
+	
+	printf("\n\n\nSearch term here!!!\n\n\n");
 	addSearchTerm(event.tweet.getScreenName(), event.search_term);
 }
 
