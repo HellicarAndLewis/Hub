@@ -354,6 +354,7 @@ void ofxWWTweetParticleManager::searchForTerm(ofxWWSearchTerm& term){
 		//no tweets, just reclaim some random ones
 		for(int t = 0; t < 15; t++){
 			int randomTweet = ofRandom(tweets.size()-1);
+			printf("++++++++++++++++++++++ %zu\n", tweets.size());
 			tweets[randomTweet].isSearchTweet = true;
 			tweets[randomTweet].createdTime = ofGetElapsedTimef() + ofRandom(2);
 		}

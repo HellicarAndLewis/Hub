@@ -1,7 +1,7 @@
 <controls>
     <SliderInt_Max_Search_Terms>
         <name>Max Search Terms</name>
-        <value>10</value>
+        <value>15</value>
     </SliderInt_Max_Search_Terms>
     <SliderInt_Search_Font_Size>
         <name>Search Font Size</name>
@@ -21,11 +21,11 @@
     </SliderFloat_Touch_Min_Hold>
     <SliderFloat_Search_Duration>
         <name>Search Duration</name>
-        <value>9.930000</value>
+        <value>2.975000</value>
     </SliderFloat_Search_Duration>
     <SliderFloat_Search_Time_Between>
         <name>Search Time Between</name>
-        <value>10.000000</value>
+        <value>3.755000</value>
     </SliderFloat_Search_Time_Between>
     <Toggle_Search_Debug>
         <name>Search Debug</name>
