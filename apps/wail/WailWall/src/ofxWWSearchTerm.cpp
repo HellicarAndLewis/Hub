@@ -47,6 +47,7 @@ void ofxWWSearchTerm::update(){
 	}
 	
 	opacity += (targetOpacity - opacity)*.1;
+	//printf("opacity: %f\n", opacity);
 	//opacity = targetOpacity;
 	//death attenuation
 	if(dead){
