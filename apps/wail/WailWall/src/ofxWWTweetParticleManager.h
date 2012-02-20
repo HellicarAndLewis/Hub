@@ -18,11 +18,18 @@
 #include "ofxMPMFluid.h"
 #include "KinectTouchListener.h"
 
+#include "TweetProvider.h"
+#include "TweetProviderStream.h"
+#include "TweetProviderDB.h"
+#include "TweetProviderListener.h"
+
+
 typedef void (*takeScreenshotCallback)(const string& username, void* userdata);
 
 class ofxWWRenderer;
 
-class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
+class ofxWWTweetParticleManager : public TweetProviderListener {
+// : public roxlu::twitter::IEventListener {
   public:
 	ofxWWTweetParticleManager();
 	void setup(ofxWWRenderer* ren);
@@ -35,11 +42,13 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 
 	void renderConnections();
 	
+	void onNewTweet(const rtt::Tweet& tweet);
+	/*
 	void onStatusUpdate(const rtt::Tweet& tweet);
 	void onStatusDestroy(const rtt::StatusDestroy& destroy);
 	void onStreamEvent(const rtt::StreamEvent& event);
+ */
 	void onNewSearchTerm(TwitterAppEvent& event);
-
 	void setupColors();
 	
 	TwitterApp& getTwitterApp();
@@ -192,5 +201,9 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	
 	ofxWWRenderer* renderer;
 	
-	
+	// providers for tweets
+	void setCurrentProvider(TweetProvider* prov);
+	TweetProvider* current_provider;
+	TweetProviderStream* stream_provider;
+	TweetProviderDB* db_provider;
 };
