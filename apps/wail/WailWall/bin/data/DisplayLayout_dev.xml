@@ -10,7 +10,7 @@
 	<!-- the destination rectangle is where this actually gets displayed on the screen -->
 	<!-- which is our triplehead canvas laid out lengthwise at 3 * 320 x 256 (dev testing numbers) -->
     <dest>
-        <x>25</x>
+        <x>1920</x>
         <y>745</y>
         <width>960</width>
         <height>256</height>
@@ -18,10 +18,10 @@
 
 	<!-- 1080p output render -->
     <preview>
-        <x>25</x> <!-- assuming it's TH2G + Cinema Display to the left of this display -->
-        <y>25</y>
-        <width>1280</width>
-        <height>720</height>
+        <x>0</x> <!-- assuming it's TH2G + Cinema Display to the left of this display -->
+        <y>0</y>
+        <width>1920</width>
+        <height>1080</height>
     </preview>
 
 	<gui>

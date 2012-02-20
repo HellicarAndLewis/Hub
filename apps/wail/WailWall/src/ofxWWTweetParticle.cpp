@@ -23,13 +23,15 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 	scale = 1.0;
 	opacity = 1.0;
 	dead = false;
-	
+	isTwoLines = false;
 	useBurstOne = ofRandomuf() > .8;
 	lineOne = "";
 	lineTwo = "";
-
+	lineOneWidth = lineOneHeight = lineTwoWidth = lineTwoHeight = 0;
+	
 	//split tweet up
 	float tweetWidth = manager->sharedTweetFont.getStringBoundingBox(tweet.getText(), 0, 0).width;
+
 	if(tweetWidth > manager->wordWrapLength){
 		float curWidth = 0;
 		float wrapPoint = tweetWidth/2.0;
@@ -57,6 +59,8 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 			
 		} while(ss.good());
 
+		
+		
 		//wordWrappedTweet = lineOne + "\n" + lineTwo;
 		userNameWidth = manager->sharedUserFont.getStringBoundingBox(tweet.getScreenName(), 0, 0).width;
 		lineTwoWidth = manager->sharedTweetFont.getStringBoundingBox(lineTwo,0,0).width;
@@ -71,7 +75,7 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 		lineTwoWidth = 0;
 		lineTwoHeight = 0;
 	}	
-	
+
 	lineOneWidth = manager->sharedTweetFont.getStringBoundingBox(lineOne,0,0).width;
 	lineOneHeight = manager->sharedTweetFont.getStringBoundingBox(lineOne,0,0).height;
 	userNameWidth = manager->sharedUserFont.getStringBoundingBox(tweet.getScreenName(), 0, 0).width;
