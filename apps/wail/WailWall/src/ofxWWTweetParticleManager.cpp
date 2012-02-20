@@ -13,14 +13,13 @@ ofxWWTweetParticleManager::ofxWWTweetParticleManager()
 	,stream_provider(NULL)
 	,db_provider(NULL)
 {
+	lastSearchTermTime = 0;
 	maxTweets = 100;
-	tweetSearchEndedTime = 0;
+
 	isDoingSearch = false;
 	
 	tweetSearchMinWaitTime = 10;
 	tweetSearchDuration = 5;
-	tweetSearchStartTime = 0;
-	tweetSearchEndedTime = 0;
 	callToActionTime = 5;
 }
 
@@ -215,25 +214,16 @@ void ofxWWTweetParticleManager::checkFonts(){
 }
 
 void ofxWWTweetParticleManager::handleSearch() {
-	/*
-	if(isDoingSearch){
-		if(ofGetElapsedTimef() - tweetSearchStartTime > tweetSearchDuration){
-			finishSearch();
-		}
-	}
-	else {
-		if(blobsRef->size() > 0){
-			handleTouchSearch();
-		}
-		else{
+	
+		//if(blobsRef->size() > 0){
+		//	handleTouchSearch();
+		//} else {
 			handleTweetSearch();
-		}
-	}
-	*/
+		//}
 }
 
 void ofxWWTweetParticleManager::handleTouchSearch() {
-	/*
+	
 	bool searchDebug = false;
 	if(searchDebug) cout << "++++++ SEARCH DEBUG QUERY " << endl;
 	
@@ -247,14 +237,17 @@ void ofxWWTweetParticleManager::handleTouchSearch() {
 			break;
 		}
 	}
-	*/
+	
 }
 
 void ofxWWTweetParticleManager::handleTweetSearch(){
-/*
-	if(ofGetElapsedTimef() - tweetSearchEndedTime < tweetSearchMinWaitTime){
+
+	
+	// don't allow this to happen too often
+	if(ofGetElapsedTimef() - lastSearchTermTime < tweetSearchMinWaitTime){
 		return;
 	}
+	lastSearchTermTime = ofGetElapsedTimef();
 	
 	if(!incomingSearchTerms.empty()){
 		ofxWWSearchTerm term = incomingSearchTerms.front();
@@ -270,7 +263,7 @@ void ofxWWTweetParticleManager::handleTweetSearch(){
 			searchTerms[0].killedTime = ofGetElapsedTimef();
 		}
 	}
-*.
+
 }
 
 void ofxWWTweetParticleManager::searchForTerm(ofxWWSearchTerm& term){
@@ -318,7 +311,6 @@ void ofxWWTweetParticleManager::finishSearch(){
 	for(int i = 0; i < searchTerms.size(); i++){
 		searchTerms[i].selected = false;
 	}
-	tweetSearchEndedTime = ofGetElapsedTimef();
 }
 
 void ofxWWTweetParticleManager::addCurrentRenderToScreenshotQueue() {
@@ -603,10 +595,10 @@ void ofxWWTweetParticleManager::renderSearchTerms(){
 		searchTermDebugString += string("SEARCHING? ") + (isDoingSearch ? "YES" : "NO") + "    ";
 		if(isDoingSearch){
 			searchTermDebugString += "TERM " + searchTerms[selectedSearchTermIndex].term + "    ";
-			searchTermDebugString += "TIME " + ofToString( tweetSearchDuration - (ofGetElapsedTimef() - tweetSearchStartTime), 2) + "    ";
+		//	searchTermDebugString += "TIME " + ofToString( tweetSearchDuration - (ofGetElapsedTimef() - tweetSearchStartTime), 2) + "    ";
 		}
 		else{
-			searchTermDebugString += "NEXT " + ofToString( tweetSearchMinWaitTime - (ofGetElapsedTimef() - tweetSearchEndedTime), 2) + "    ";
+		//	searchTermDebugString += "NEXT " + ofToString( tweetSearchMinWaitTime - (ofGetElapsedTimef() - tweetSearchEndedTime), 2) + "    ";
 		}
 		searchTermDebugString += "TWEETS " + ofToString(tweets.size()) + "	";
 		searchTermDebugString += "SEARCH TWEETS " + ofToString(numSearchTermTweets);
