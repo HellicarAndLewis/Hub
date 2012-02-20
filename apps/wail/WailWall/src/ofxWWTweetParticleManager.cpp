@@ -375,7 +375,7 @@ void ofxWWTweetParticleManager::addCurrentRenderToScreenshotQueue() {
 
 float ofxWWTweetParticleManager::weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet){
 	float touchMid = normalizedSize*simulationHeight*touchSizeScale;
-	return ofMap(touch.distance(tweet), touchMid-touchInfluenceFalloff/2., touchMid+touchInfluenceFalloff/2., 1.0, 0.0, true);
+	return MAX( ofMap(touch.distance(tweet), touchMid-touchInfluenceFalloff/2., touchMid+touchInfluenceFalloff/2., 1.0, 0.0, false), 0.0);
 }
 
 void ofxWWTweetParticleManager::updateTweets(){
@@ -423,9 +423,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 				tweets[i].selectionWeight += weightBetween;
 			}
 		}
-		
 		tweets[i].clampedSelectionWeight = MIN(tweets[i].selectionWeight, 1.0);
-		 
 	}
 	
 	///ANIMATE tweet
