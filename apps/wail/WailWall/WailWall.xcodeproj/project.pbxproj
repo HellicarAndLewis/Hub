@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F082DE514F290E1005008A4 /* CallToAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F082DE314F290E1005008A4 /* CallToAction.cpp */; };
 		4818285D14EEF48600BAA8B9 /* FTBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818280414EEF48600BAA8B9 /* FTBuffer.cpp */; };
 		4818285E14EEF48600BAA8B9 /* FTCharmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818280514EEF48600BAA8B9 /* FTCharmap.cpp */; };
 		4818285F14EEF48600BAA8B9 /* FTCleanup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818280814EEF48600BAA8B9 /* FTCleanup.cpp */; };
@@ -202,6 +203,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1F082DE314F290E1005008A4 /* CallToAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CallToAction.cpp; sourceTree = "<group>"; };
+		1F082DE414F290E1005008A4 /* CallToAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallToAction.h; sourceTree = "<group>"; };
 		1FE6C33914F2604B007F7B84 /* DisplayLayout_dev.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = DisplayLayout_dev.xml; path = bin/data/DisplayLayout_dev.xml; sourceTree = "<group>"; };
 		1FE6C33A14F27E38007F7B84 /* TweetProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetProvider.h; sourceTree = "<group>"; };
 		4818280314EEF48600BAA8B9 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
@@ -1213,6 +1216,8 @@
 		A6AF015114DAF02B006816A8 /* Visuals */ = {
 			isa = PBXGroup;
 			children = (
+				1F082DE314F290E1005008A4 /* CallToAction.cpp */,
+				1F082DE414F290E1005008A4 /* CallToAction.h */,
 				48972C9214F2813800FD9099 /* Providers */,
 				A621C65A14D74D1B008AA7F0 /* ofxWWSearchTerm.h */,
 				A621C65B14D74D1B008AA7F0 /* ofxWWSearchTerm.cpp */,
@@ -2105,6 +2110,7 @@
 				48972C8E14F2803600FD9099 /* TweetProviderStream.cpp in Sources */,
 				48972C9114F2811200FD9099 /* TweetProviderDB.cpp in Sources */,
 				48972C9414F284F100FD9099 /* TweetProvider.cpp in Sources */,
+				1F082DE514F290E1005008A4 /* CallToAction.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
