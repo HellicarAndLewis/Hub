@@ -140,8 +140,7 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	
 	float tweetSearchMinWaitTime;
 	float tweetSearchDuration;
-	float tweetSearchStartTime;
-	float tweetSearchEndedTime;
+
 	bool isDoingSearch;
 	bool shouldTriggerScreenshot;
 	
@@ -185,7 +184,6 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	void handleSearch();
 	void handleTouchSearch();
 	void handleTweetSearch();	
-	void searchForTerm(ofxWWSearchTerm& term);	
 	void finishSearch();
 	
 	float weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet);
@@ -207,4 +205,6 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	TweetProviderStream* stream_provider;
 	TweetProviderDB* db_provider;
 	
+	
+	float lastSearchTermTime;
 };
