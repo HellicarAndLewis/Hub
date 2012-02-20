@@ -699,7 +699,8 @@ void ofxWWTweetParticleManager::setupColors(){
 
 void ofxWWTweetParticleManager::onNewTweet(const rtt::Tweet& tweet) {
 	printf(">> [ok] : %s\n", tweet.getText().c_str());	
-	createParticleForTweet(tweet);
+	ofxWWTweetParticle particle = createParticleForTweet(tweet);
+	tweets.push_back(particle);
 }
 /*
 void ofxWWTweetParticleManager::onStatusUpdate(const rtt::Tweet& tweet){

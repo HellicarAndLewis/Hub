@@ -5,7 +5,7 @@
     </Toggle_Flow_Sideways>
     <SliderFloat_Flow_Speed>
         <name>Flow Speed</name>
-        <value>21.300003</value>
+        <value>6.900002</value>
     </SliderFloat_Flow_Speed>
     <SliderFloat_Flow_Variance>
         <name>Flow Variance</name>
