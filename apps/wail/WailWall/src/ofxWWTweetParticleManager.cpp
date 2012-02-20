@@ -21,6 +21,7 @@ ofxWWTweetParticleManager::ofxWWTweetParticleManager()
 	tweetSearchDuration = 5;
 	tweetSearchStartTime = 0;
 	tweetSearchEndedTime = 0;
+	callToActionTime = 5;
 }
 
 void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
@@ -130,8 +131,16 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Search Min Opacity", searchMinOpacity, 0, .4);
 	webGui.addSlider("Touch Min Dist", searchTermMinDistance, 50, 1000);
 	webGui.addSlider("Touch Min Hold", searchTermMinHoldTime, .5, 3.0);
+	
+	// do we need these anymore?
 	webGui.addSlider("Search Duration", tweetSearchDuration, 2, 15);
 	webGui.addSlider("Search Time Between", tweetSearchMinWaitTime, 1, 20);
+	
+	
+	webGui.addSlider("Call to action time", callToActionTime, 5, 60);
+	
+	
+	
 	webGui.addToggle("Search Debug", drawSearchDebug);
 	
 	webGui.addPage("Search Term Animation");
@@ -389,11 +398,14 @@ void ofxWWTweetParticleManager::updateTweets(){
 		}
 	}
 	
+	
+	map<int,KinectTouch>::iterator it;
+	
 	//hand reveal top level tweets
 	for(int i = 0; i < tweets.size(); i++){
 		tweets[i].selectionWeight = 0;
 		
-		map<int,KinectTouch>::iterator it;
+		
 		for(it = blobsRef->begin(); it != blobsRef->end(); it++){
 			float maxRadiusSquared = powf(it->second.z * simulationHeight*touchSizeScale+touchInfluenceFalloff/2, 2.0f);
 			ofVec2f touchpoint = ofVec2f(it->second.x*simulationWidth, it->second.y*simulationHeight);
@@ -581,7 +593,7 @@ void ofxWWTweetParticleManager::updateSearchTerms(){
 }
 
 void ofxWWTweetParticleManager::renderTweets(){
-	/*
+	
 	for(int i = 0; i < tweets.size(); i++){
 		if(!tweets[i].isSearchTweet){
 			tweets[i].drawText();
@@ -591,11 +603,11 @@ void ofxWWTweetParticleManager::renderTweets(){
 			}
 		}
 	}
-	 */
+	 
 }
 
 void ofxWWTweetParticleManager::renderSearchTerms(){	
-	/*
+	
 	for(int i = 0; i < tweets.size(); i++){
 		if(tweets[i].isSearchTweet){
 			tweets[i].drawText();
@@ -637,7 +649,7 @@ void ofxWWTweetParticleManager::renderSearchTerms(){
 		ofRect(wallRepulsionDistance, wallRepulsionDistance, simulationWidth-wallRepulsionDistance*2, simulationHeight-wallRepulsionDistance*2);
 		ofPopStyle();
 	}
-	 */
+	 
 }
 
 void ofxWWTweetParticleManager::renderConnections(){

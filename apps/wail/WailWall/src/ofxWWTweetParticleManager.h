@@ -57,9 +57,14 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	ofxMPMFluid* fluidRef;
 	map<int,KinectTouch>* blobsRef;
 	
+
+
+	
+	
+	
+	
 	// ofXFTGFont
-
-
+	
 	#ifdef USE_FTGL
 		ofxFTGLFont sharedTweetFont;
 		ofxFTGLFont sharedUserFont;
@@ -69,6 +74,13 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 		ofTrueTypeFont sharedUserFont;
 		ofTrueTypeFont sharedSearchFont;
 	#endif
+	
+	
+	
+	// this is how much inactive time triggers
+	// a call to action.
+	float callToActionTime;
+	
 	
 	
 	bool enableCaustics;

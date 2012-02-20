@@ -13,6 +13,7 @@
 #include "ofxWWTweetParticleManager.h"
 #include "KinectTouchListener.h"
 #include "ofxCaustics.h"
+#include "CallToAction.h"
 
 class ofxWWRenderer: public KinectTouchListener {
   public:
@@ -126,7 +127,11 @@ class ofxWWRenderer: public KinectTouchListener {
 	float layer1Opacity; //this is smoothed
 	
 	ofVec2f randomPointInCircle(ofVec2f position, float radius);
-
+	
+	
+	// this takes care of call-to-action
+	// timing and drawing
+	CallToAction callToAction;
 };
 
 inline ofFbo& ofxWWRenderer::getScreenshotFbo() {
