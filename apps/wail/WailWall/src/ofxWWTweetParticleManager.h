@@ -169,6 +169,8 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	takeScreenshotCallback  screenshot_callback;
 	void* screenshot_userdata;
 	
+	void touchUp();
+	
   protected:
 	TwitterApp twitter;
 	
@@ -207,4 +209,6 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	
 	
 	float lastSearchTermTime;
+	float should_take_picture_on;
+	
 };

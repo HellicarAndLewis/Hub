@@ -41,6 +41,7 @@ class ofxWWSearchTerm {
 	
 	float scale;
 	float opacity;
+	int selected_counter;
 	
 	string user;
 	string term;
@@ -49,5 +50,5 @@ class ofxWWSearchTerm {
 	float searchTermWidth;
 	float killedTime;
 	bool dead;
-
+	bool took_screenshot;
 };

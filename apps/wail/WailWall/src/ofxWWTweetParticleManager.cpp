@@ -6,7 +6,7 @@
 ofxWWTweetParticleManager::ofxWWTweetParticleManager()
 	:shouldChangeSearchTermOn(0)
 	,changeSearchTermDelay(10)  
-	,currentSearchTermIndex(0)
+	,currentSearchTermIndex(-1)
 	,renderer(NULL)
 	,screenshot_userdata(NULL)
 	,current_provider(NULL)
@@ -21,6 +21,7 @@ ofxWWTweetParticleManager::ofxWWTweetParticleManager()
 	tweetSearchMinWaitTime = 10;
 	tweetSearchDuration = 5;
 	callToActionTime = 5;
+	should_take_picture_on = FLT_MAX;
 }
 
 void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
@@ -168,6 +169,11 @@ void ofxWWTweetParticleManager::update(){
 	updateTweets();
 	
 	updateSearchTerms();
+	
+	if(ofGetElapsedTimef() > should_take_picture_on) {
+		screenshot_callback("joelgethinlewis", screenshot_userdata);
+		should_take_picture_on = FLT_MAX;
+	}
 }
 
 void ofxWWTweetParticleManager::checkFonts(){
@@ -268,7 +274,7 @@ void ofxWWTweetParticleManager::handleTweetSearch(){
 		incomingSearchTerms.pop();
 
 		shouldTriggerScreenshot = true;
-		selectedSearchTermIndex = searchTerms.size();
+		//selectedSearchTermIndex = searchTerms.size();
 		searchTerms.push_back(term);
 		
 		if(searchTerms.size() > maxSearchTerms){
@@ -298,7 +304,7 @@ void ofxWWTweetParticleManager::addCurrentRenderToScreenshotQueue() {
 		return;
 	}
 	// TODO: add correct username
-	screenshot_callback("roxlutest", screenshot_userdata);
+	screenshot_callback("joelgethinlewis", screenshot_userdata);
 }
 
 float ofxWWTweetParticleManager::weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet){
@@ -447,6 +453,10 @@ void ofxWWTweetParticleManager::updateSearchTerms(){
 		clearTweets = false;
 	}
 	
+	
+	int closestSearchTerm = -1;
+	float closestDistanceSq = FLT_MAX;
+	
 	//find the closest touch
 	if(!blobsRef->empty() && canSelectSearchTerms){
 		for(int i = 0; i < searchTerms.size(); i++){
@@ -460,6 +470,18 @@ void ofxWWTweetParticleManager::updateSearchTerms(){
 					searchTerms[i].closestPoint = point;
 					searchTerms[i].closestTouchID = it->first;
 				}
+				
+				
+				//printf("tweet %f\n", tweetLayerOpacity);
+				// we can choose a selectedSearchTermIndex here
+				if(tweetLayerOpacity<=0.2) {
+					if(squareDistance < 800*800 && closestDistanceSq>squareDistance) {
+					//	printf("hand low enough\n");
+						closestSearchTerm = i;
+						closestDistanceSq = squareDistance;
+//						searchTerms[i].selected = true;
+					}
+				}
 			}
 			
 			//attract to hand
@@ -470,8 +492,30 @@ void ofxWWTweetParticleManager::updateSearchTerms(){
 			}
 		}
 	}
+	if(tweetLayerOpacity<=0.2) {
 	
-
+		for(int i = 0; i < searchTerms.size(); i++){
+			if(i==closestSearchTerm) { 
+				
+				++searchTerms[i].selected_counter;
+				if(searchTerms[i].selected_counter>60) {
+					searchTerms[i].selected = true;	
+					selectedSearchTermIndex = closestSearchTerm;
+					
+				}
+			} else {
+				searchTerms[i].selected = false;
+				searchTerms[i].selected_counter = 0;
+			}
+		}
+	} else {
+		if(selectedSearchTermIndex!=-1 && searchTerms.size()) {
+			searchTerms[selectedSearchTermIndex].selected = true;
+			searchTerms[selectedSearchTermIndex].selected_counter = 60;
+		}
+	}
+	
+	
 	for(int i = 0; i < searchTerms.size(); i++){
 		searchTerms[i].wallForceApplied = false;
 		//LEFT WALL
@@ -695,7 +739,8 @@ void ofxWWTweetParticleManager::addSearchTerm(const string& user, const string& 
 	searchTerm.term = term;
 	searchTerm.user = user;
 	printf(">>>>>>>>>>>>>>>>>>>>>>>> %s <<<<<<<<<<<<<<<<<<<<<<<<<<\n", searchTerm.term.c_str());
-	incomingSearchTerms.push(searchTerm);	
+	incomingSearchTerms.push(searchTerm);
+	should_take_picture_on = ofGetElapsedTimef()+1.5;
 }
 /*
 void ofxWWTweetParticleManager::onStatusDestroy(const rtt::StatusDestroy& destroy){
@@ -718,4 +763,8 @@ TwitterApp& ofxWWTweetParticleManager::getTwitterApp() {
 	return twitter;
 }
 
+
+void ofxWWTweetParticleManager::touchUp() {
+	selectedSearchTermIndex = -1;
+}
 

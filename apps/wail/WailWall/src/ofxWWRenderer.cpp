@@ -463,13 +463,13 @@ void ofxWWRenderer::touchDown(const KinectTouch &touch) {
 
 void ofxWWRenderer::touchMoved(const KinectTouch &touch) {
 
-	printf("Touch moved\n");
 	fluid.applyForce(ofVec2f(touch.x, touch.y), ofVec2f(touch.vel.x, touch.vel.y));
 	callToAction.justInteracted();
 }
 
 void ofxWWRenderer::touchUp(const KinectTouch &touch) {
 //	tweets.resetTouches();
+	tweets.touchUp();
 }
 
 ofxWWTweetParticleManager& ofxWWRenderer::getTweetManager() {
