@@ -34,7 +34,6 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	}
 	twitter.addListener(this, &ofxWWTweetParticleManager::onNewSearchTerm);
 
-	cout << "adding unused terms" << endl;
 	// Get previously received search terms.
 	// -------------------------------------
 	vector<TwitterSearchTerm*> stored_search_terms;
@@ -50,9 +49,9 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	burstTwo.loadImage("images/burst2.png");
 	
 	canSelectSearchTerms = false;
+	setupColors();
 	
 	ofAddListener(ofEvents.keyPressed, this, &ofxWWTweetParticleManager::keyPressed);
-	setupColors();
 }
 
 void ofxWWTweetParticleManager::setScreenshotCallback(takeScreenshotCallback func, void* userdata) {
@@ -71,11 +70,6 @@ void ofxWWTweetParticleManager::keyPressed(ofKeyEventArgs& args) {
 }
 
 void ofxWWTweetParticleManager::setupGui(){
-	
-//	webGui.addPage("Caustics");
-//	webGui.addToggle("Enable Caustics", enableCaustics);
-//	webGui.addSlider("Caustic Fade", causticFadeSpeed, .002, .5);
-	
 	webGui.addPage("Tweet Lifecycle");
 	webGui.addSlider("Max Tweets", maxTweets, 200, 2000);
 	webGui.addToggle("Clear Tweets", clearTweets);
@@ -109,7 +103,6 @@ void ofxWWTweetParticleManager::setupGui(){
 //	webGui.addHexColor("Layer One Font Color", layerOneFontColor);
 //	webGui.addHexColor("Layer Two Font Color", layerTwoFontColor
 					   
-					   
 	webGui.addPage("Search Term Timing");
 	webGui.addSlider("Max Search Terms", maxSearchTerms, 5, 15);
 	webGui.addSlider("Search Font Size", searchTermFontSize, 100, 500);
@@ -126,15 +119,11 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Search Repulse Atten", searchTermRepulsionAttenuation, 0, .2);
 	webGui.addSlider("Search Hand Attract", searchTermHandAttractionFactor, 0, .1);
 	
-	//TODO set up in XML
-	//ONLY CAN HAVE 4 right now
-	//least to most common
+	//TODO set up in XML ONLY CAN HAVE 4 right now , least to most common
 	causticColors.push_back(ofColor::fromHex(0xf8edc0)); //LIGHT YELLOW
 	causticColors.push_back(ofColor::fromHex(0xe35a35)); //BRIGHT ORANGE
 	causticColors.push_back(ofColor::fromHex(0xad3e1c)); //MID ORANGE
 	causticColors.push_back(ofColor::fromHex(0x500a03)); //DEEP BROWN
-	
-//	printf("After loader: %f\n", tweetFont);
 }
 
 
@@ -153,46 +142,47 @@ void ofxWWTweetParticleManager::update(){
 
 void ofxWWTweetParticleManager::checkFonts(){
 	#ifdef USE_FTGL
-	if(!sharedTweetFont.isLoaded() || tweetFontSize != sharedTweetFont.getSize()){
-		if(!sharedTweetFont.loadFont("fonts/montreal-ttf/Montreal-LightIta.ttf", tweetFontSize, true, true, false)){
-			ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load tweet font!");
-		}	
-		cout << "tweet font allocating! " << tweetFontSize << " " << sharedTweetFont.getSize() << endl;
-	}
-	
-	if(!sharedSearchFont.isLoaded() || searchTermFontSize != sharedSearchFont.getSize()){
-		if(!sharedSearchFont.loadFont("fonts/montreal-ttf/Montreal-BoldIta.ttf", searchTermFontSize, true, true, false)){
-			ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load search  font!");
-		}	
-		cout << "search font allocating! " << searchTermFontSize << " " << sharedSearchFont.getSize() << endl;
-	}
-	
-	if(!sharedUserFont.isLoaded() || userFontSize != sharedUserFont.getSize()){
-		if(!sharedUserFont.loadFont("fonts/montreal-ttf/Montreal-BoldIta.ttf", userFontSize, true, true, false)){
-			ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load search  font!");
-		}	
-		cout << "user font allocating! " << userFontSize << " " << sharedUserFont.getSize() << endl;
-	}
+		if(!sharedTweetFont.isLoaded() || tweetFontSize != sharedTweetFont.getSize()){
+			if(!sharedTweetFont.loadFont("fonts/montreal-ttf/Montreal-LightIta.ttf", tweetFontSize, true, true, false)){
+				ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load tweet font!");
+			}	
+			cout << "tweet font allocating! " << tweetFontSize << " " << sharedTweetFont.getSize() << endl;
+		}
+		
+		if(!sharedSearchFont.isLoaded() || searchTermFontSize != sharedSearchFont.getSize()){
+			if(!sharedSearchFont.loadFont("fonts/montreal-ttf/Montreal-BoldIta.ttf", searchTermFontSize, true, true, false)){
+				ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load search  font!");
+			}	
+			cout << "search font allocating! " << searchTermFontSize << " " << sharedSearchFont.getSize() << endl;
+		}
+		
+		if(!sharedUserFont.isLoaded() || userFontSize != sharedUserFont.getSize()){
+			if(!sharedUserFont.loadFont("fonts/montreal-ttf/Montreal-BoldIta.ttf", userFontSize, true, true, false)){
+				ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load search  font!");
+			}	
+			cout << "user font allocating! " << userFontSize << " " << sharedUserFont.getSize() << endl;
+		}
 	
 	#else 
-	//IF WE NEED TO REVERT CORRECT THIS
-	//		if(!sharedFont.isLoaded() || fontSize != sharedFont.getSize() || int(fontSize*twoLineScaleup) != sharedLargeFont.getSize()){
-	//			if(!sharedFont.loadFont("fonts/Tahoma.ttf", fontSize, true, true, false) ||
-	//			   !sharedLargeFont.loadFont("fonts/Tahoma.ttf", fontSize*twoLineScaleup, true, true, false)){
-	//				ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load font!");
-	//			}
-	//		}
-	//		
-	//		if(!sharedSearchFont.isLoaded() || searchTermFontSize != sharedSearchFont.getSize()){
-	//			if(!sharedSearchFont.loadFont("fonts/Tahoma.ttf", searchTermFontSize, true, true, false)){
-	//				ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load font!");
-	//			}
-	//		}
-#endif
+	
+			if(!sharedFont.isLoaded() || fontSize != sharedFont.getSize() || int(fontSize*twoLineScaleup) != sharedLargeFont.getSize()){
+				if(!sharedFont.loadFont("fonts/Tahoma.ttf", fontSize, true, true, false) ||
+				   !sharedLargeFont.loadFont("fonts/Tahoma.ttf", fontSize*twoLineScaleup, true, true, false)){
+					ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load font!");
+				}
+			}
+			
+			if(!sharedSearchFont.isLoaded() || searchTermFontSize != sharedSearchFont.getSize()){
+				if(!sharedSearchFont.loadFont("fonts/Tahoma.ttf", searchTermFontSize, true, true, false)){
+					ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load font!");
+				}
+			}
+	#endif
 	
 }
 
 void ofxWWTweetParticleManager::handleSearch() {
+	/*
 	if(isDoingSearch){
 		if(ofGetElapsedTimef() - tweetSearchStartTime > tweetSearchDuration){
 			finishSearch();
@@ -206,11 +196,11 @@ void ofxWWTweetParticleManager::handleSearch() {
 			handleTweetSearch();
 		}
 	}
-	
+	*/
 }
 
 void ofxWWTweetParticleManager::handleTouchSearch() {
-
+	/*
 	bool searchDebug = false;
 	if(searchDebug) cout << "++++++ SEARCH DEBUG QUERY " << endl;
 	
@@ -222,52 +212,12 @@ void ofxWWTweetParticleManager::handleTouchSearch() {
 			selectedSearchTermIndex = i;
 			shouldTriggerScreenshot = false;
 			break;
-			
-			/*
-			if(searchDebug) cout << "++++++ SEARCH DEBUG SELECTED SEARCH TERM " << searchTerms[i].term << endl;
-
-			searchTermSelected = true;
-			selectedSearchTerm = i;
-			//TODO: Run Real Query
-			vector<rtt::Tweet> result;
-			twitter.getTweetsNewerThan(1000000, 25, result);
-			if(searchDebug) cout << "++++++ SEARCH DEBUG SELECTED SEARCH TERM RETURNED: " << result.size() << endl;
-			if(result.size() != 0){
-				if(searchDebug) cout << "++++++ SEARCH DEBUG FOUND REAL RESULTS: " << endl;
-				for(int t = 0; t < result.size(); t++){
-					if(t < tweets.size()){
-						//reappropriate tweet
-						if(searchDebug) cout << "++++++ REAPPROPRIATING TWEET" << endl;
-						//tweets[t].setTweet( result[t] );
-						tweets[t].isSearchTweet = true;
-					}
-					else{
-						if(searchDebug) cout << "++++++ GENERATING TWEET" << endl;
-						//generate tweet
-						ofxWWTweetParticle tweetParticle = createParticleForTweet(result[t]);
-						tweetParticle.isSearchTweet = true;
-						//searchTweets.push_back( tweetParticle );
-						tweets.push_back( tweetParticle );
-					}
-				}
-			}
-			//THIS IS A HACK BC QUERY SOMETIMES RETURNS 0
-			else {
-				if(searchDebug) cout << "++++++ SEARCH DEBUG CREATING FAKED RESULTS: " << endl;
-				for(int t = 0; t < MIN(15, tweets.size()); t++){
-					tweets[t].isSearchTweet = true;
-					tweets[t].createdTime = ofGetElapsedTimef() + ofRandom(2);
-				}
-			}
-			break;
-			*/
 		}
 	}
-	
+	*/
 }
 
 void ofxWWTweetParticleManager::handleTweetSearch(){
-	
 	if(ofGetElapsedTimef() - tweetSearchEndedTime < tweetSearchMinWaitTime){
 		return;
 	}
@@ -321,7 +271,6 @@ void ofxWWTweetParticleManager::handleTweetSearch(){
 }
 
 void ofxWWTweetParticleManager::searchForTerm(ofxWWSearchTerm& term){
-	
 	cout << "Searching for " << term.term << " by " << term.user << endl;
 	
 	twitter.setSearchTermAsUsed(term.user, term.term);
@@ -329,7 +278,6 @@ void ofxWWTweetParticleManager::searchForTerm(ofxWWSearchTerm& term){
 	vector<rtt::Tweet> found_tweets;
 	if(twitter.getTweetsWithSearchTerm(term.term, 100000, 20, found_tweets)) {
 		for(int i = 0; i < found_tweets.size(); ++i) {
-			//printf("[found] %s\n", found_tweets[i].getText().c_str());
 			// TODO: This is where we need to create or fill a new tweet. @James lets talk about this
 			int randomTweet = ofRandom(tweets.size()-1);
 			tweets.at(randomTweet).setTweet(found_tweets[i]);
@@ -371,6 +319,7 @@ void ofxWWTweetParticleManager::addCurrentRenderToScreenshotQueue() {
 	if(screenshot_userdata == NULL) {
 		return;
 	}
+	// TODO: add correct username
 	screenshot_callback("roxlutest", screenshot_userdata);
 }
 
@@ -452,28 +401,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 			}
 		}
 	}
-	
-	//apply mutual repulsion
-	/*
-	 //JG took this out in favor of moving through noise
-	float tweetRepulsionDistanceSqr = tweetRepulsionDistance*tweetRepulsionDistance;
-	for(int i = 0; i < tweets.size(); i++){
-		for(int j = 0; j < tweets.size(); j++){
-			if(i != j){
-				ofVec2f awayFromOther = (tweets[i].pos - tweets[j].pos);
-				if(awayFromOther.lengthSquared() > tweetRepulsionDistanceSqr){
-					continue;
-				}
-				
-				float distance = awayFromOther.length();
-				awayFromOther /= distance; //normalize
-				ofVec2f force = (awayFromOther * ((tweetRepulsionDistance - distance) * tweetRepulsionAtten));
-				tweets[i].force += force;
-			}
-		}
-	}
-	*/	
-	
+		
 	//apply flow
 	for(int i = 0; i < tweets.size(); i++){
 		if(tweets[i].isSearchTweet){
@@ -520,11 +448,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 			}
 		}
 	}
-	
-//	for(int i = 0; i < tweets.size(); i++){
-//		fluidRef->applyForce(tweets[i].pos/ofVec2f(simulationWidth,simulationHeight), tweets[i].force/ofVec2f(simulationWidth,simulationHeight) * fluidForceScale * tweetLayerOpacity * tweets[i].deathAttenuation );
-//	}
-	
+		
 	numSearchTermTweets = 0;
 	for(int i = 0; i < tweets.size(); i++){
 		tweets[i].update();
@@ -628,6 +552,7 @@ void ofxWWTweetParticleManager::updateSearchTerms(){
 }
 
 void ofxWWTweetParticleManager::renderTweets(){
+	/*
 	for(int i = 0; i < tweets.size(); i++){
 		if(!tweets[i].isSearchTweet){
 			tweets[i].drawText();
@@ -637,9 +562,11 @@ void ofxWWTweetParticleManager::renderTweets(){
 			}
 		}
 	}
+	 */
 }
 
 void ofxWWTweetParticleManager::renderSearchTerms(){	
+	/*
 	for(int i = 0; i < tweets.size(); i++){
 		if(tweets[i].isSearchTweet){
 			tweets[i].drawText();
@@ -681,6 +608,7 @@ void ofxWWTweetParticleManager::renderSearchTerms(){
 		ofRect(wallRepulsionDistance, wallRepulsionDistance, simulationWidth-wallRepulsionDistance*2, simulationHeight-wallRepulsionDistance*2);
 		ofPopStyle();
 	}
+	 */
 }
 
 void ofxWWTweetParticleManager::renderConnections(){
