@@ -339,7 +339,7 @@ void ofxWWTweetParticleManager::searchForTerm(ofxWWSearchTerm& term){
 	twitter.setSearchTermAsUsed(term.user, term.term);
 	
 	vector<rtt::Tweet> found_tweets;
-	if(twitter.getTweetsWithSearchTerm(term.term, 100000, 100, found_tweets)) {
+	if(twitter.getTweetsWithSearchTerm(term.term, 100000, 20, found_tweets)) {
 		for(int i = 0; i < found_tweets.size(); ++i) {
 			//printf("[found] %s\n", found_tweets[i].getText().c_str());
 			// TODO: This is where we need to create or fill a new tweet. @James lets talk about this
@@ -488,6 +488,9 @@ void ofxWWTweetParticleManager::updateTweets(){
 	
 	//apply flow
 	for(int i = 0; i < tweets.size(); i++){
+		if(tweets[i].isSearchTweet){
+			continue;
+		}
 		ofVec2f forceVector(0,0);
 		if(tweetsFlowLeftRight){
 			forceVector.x += (tweetFlowSpeed + tweets[i].speedAdjust) * (1-tweets[i].clampedSelectionWeight);
@@ -817,7 +820,8 @@ void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
 
 void ofxWWTweetParticleManager::addSearchTerm(const string& user, const string& term) {
 	ofxWWSearchTerm searchTerm;
-	searchTerm.pos = ofVec2f(ofRandom(simulationWidth-wordWrapLength/2.), ofRandom(simulationHeight));
+	searchTerm.pos = ofVec2f(ofRandom(wallRepulsionDistance, simulationWidth-wallRepulsionDistance), 
+							 ofRandom(wallRepulsionDistance, simulationHeight-wallRepulsionDistance));
 	searchTerm.manager = this;
 	searchTerm.term = term;
 	searchTerm.user = user;

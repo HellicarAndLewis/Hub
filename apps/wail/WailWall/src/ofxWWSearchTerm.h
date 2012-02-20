@@ -31,8 +31,6 @@ class ofxWWSearchTerm {
 	ofVec2f force;
 	
 	bool wallForceApplied;
-	//weight contributed by all surrounding touches
-	float touchWeight;
 	
 	bool touchPresent;
 	bool isHolding;
