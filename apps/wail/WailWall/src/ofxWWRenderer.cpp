@@ -173,8 +173,15 @@ void ofxWWRenderer::update(){
 			maxTouchZ = it->second.z;
 			
 		}	
-		caustics.addDrop(caustics.getTextureReference().getWidth()*it->second.x, 
-						 caustics.getTextureReference().getHeight()*it->second.y, dropScale, ofGetFrameNum() % 2 == 0 ? dropForce : -dropForce);
+		
+//		caustics.addDrop(caustics.getTextureReference().getWidth()*it->second.x, 
+//						 caustics.getTextureReference().getHeight()*it->second.y, dropScale, ofGetFrameNum() % 2 == 0 ? dropForce : -dropForce);
+		ofVec2f touchCenter = ofVec2f(caustics.getTextureReference().getWidth()*it->second.x,
+									  caustics.getTextureReference().getHeight()*it->second.y);
+		
+		ofVec2f dropPoint = randomPointInCircle(ofVec2f(touchCenter.x,touchCenter.y), it->second.size*caustics.getTextureReference().getHeight()/2.0);
+		caustics.addDrop(dropPoint.x, dropPoint.y, dropScale, ofGetFrameNum() % 2 == 0 ? dropForce : -dropForce);
+		
 	}
 
 	float targetOpacity = ofMap(maxTouchZ, layerBarrierZ-layerBarrierWidth/2, layerBarrierZ+layerBarrierWidth/2, 1.0, 0.0, true);
@@ -436,4 +443,14 @@ ofxWWTweetParticleManager& ofxWWRenderer::getTweetManager() {
 
 void ofxWWRenderer::stopFluidThread(){
 	fluid.stopThread(true);
+}
+
+ofVec2f ofxWWRenderer::randomPointInCircle(ofVec2f position, float radius){
+	float randomRadius = radius * ofRandomuf();
+	float randomAngle = ofRandom(360.*DEG_TO_RAD);
+	
+	float x = randomRadius * cos(randomAngle);
+	float y = randomRadius * sin(randomAngle);
+	
+	return position + ofVec2f(x,y);
 }

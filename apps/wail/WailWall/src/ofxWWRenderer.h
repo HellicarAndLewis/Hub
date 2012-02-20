@@ -120,6 +120,9 @@ class ofxWWRenderer: public KinectTouchListener {
 	bool drawTouchDebug;
 	
 	float layer1Opacity; //this is smoothed
+	
+	ofVec2f randomPointInCircle(ofVec2f position, float radius);
+
 };
 
 inline ofFbo& ofxWWRenderer::getScreenshotFbo() {

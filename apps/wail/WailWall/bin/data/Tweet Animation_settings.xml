@@ -5,16 +5,32 @@
     </Toggle_Flow_Sideways>
     <SliderFloat_Flow_Speed>
         <name>Flow Speed</name>
-        <value>7.200001</value>
+        <value>10.000000</value>
     </SliderFloat_Flow_Speed>
-    <SliderFloat_Flow_Chaos>
-        <name>Flow Chaos</name>
-        <value>7.850000</value>
-    </SliderFloat_Flow_Chaos>
-    <SliderFloat_Wall_Repulsion_Dist>
-        <name>Wall Repulsion Dist</name>
-        <value>220.500000</value>
-    </SliderFloat_Wall_Repulsion_Dist>
+    <SliderFloat_Flow_Variance>
+        <name>Flow Variance</name>
+        <value>4.400000</value>
+    </SliderFloat_Flow_Variance>
+    <SliderFloat_Flow_Chaos_Speed>
+        <name>Flow Chaos Speed</name>
+        <value>251.800003</value>
+    </SliderFloat_Flow_Chaos_Speed>
+    <SliderFloat_Flow_Chaos_Amp>
+        <name>Flow Chaos Amp</name>
+        <value>8.800000</value>
+    </SliderFloat_Flow_Chaos_Amp>
+    <SliderFloat_Flow_Chaos_Damp>
+        <name>Flow Chaos Damp</name>
+        <value>282.294983</value>
+    </SliderFloat_Flow_Chaos_Damp>
+    <SliderFloat_Flow_Rotate_Amp>
+        <name>Flow Rotate Amp</name>
+        <value>37.200001</value>
+    </SliderFloat_Flow_Rotate_Amp>
+    <SliderFloat_Flow_Rotate_Damp>
+        <name>Flow Rotate Damp</name>
+        <value>225.399994</value>
+    </SliderFloat_Flow_Rotate_Damp>
     <SliderFloat_Wall_Repulsion_Atten>
         <name>Wall Repulsion Atten</name>
         <value>0.093000</value>
@@ -27,8 +43,4 @@
         <name>Tweet Repulsion Atten</name>
         <value>0.039000</value>
     </SliderFloat_Tweet_Repulsion_Atten>
-    <SliderFloat_Fluid_Force_Scale>
-        <name>Fluid Force Scale</name>
-        <value>12.385000</value>
-    </SliderFloat_Fluid_Force_Scale>
 </controls>

@@ -29,11 +29,11 @@
     </SliderFloat_Glow_Amount>
     <SliderFloat_Drop_Scale>
         <name>Drop Scale</name>
-        <value>99.099998</value>
+        <value>22.150002</value>
     </SliderFloat_Drop_Scale>
     <SliderFloat_Drop_Force>
         <name>Drop Force</name>
-        <value>0.755245</value>
+        <value>0.140860</value>
     </SliderFloat_Drop_Force>
     <Toggle_Draw_Debug_Texture>
         <name>Draw Debug Texture</name>
