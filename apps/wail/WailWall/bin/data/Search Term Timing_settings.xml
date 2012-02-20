@@ -27,6 +27,10 @@
         <name>Search Time Between</name>
         <value>10.000000</value>
     </SliderFloat_Search_Time_Between>
+    <SliderFloat_Call_to_action_time>
+        <name>Call to action time</name>
+        <value>5.000000</value>
+    </SliderFloat_Call_to_action_time>
     <Toggle_Search_Debug>
         <name>Search Debug</name>
         <value>0</value>

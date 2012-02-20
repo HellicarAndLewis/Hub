@@ -58,6 +58,7 @@ void TweetProviderStream::onStatusUpdate(const rtt::Tweet& tweet) {
 	}
 	
 	if(isEnabled()) {
+		printf("--------------------------------------------------\n");
 		onNewTweet(tweet);
 	}
 }
