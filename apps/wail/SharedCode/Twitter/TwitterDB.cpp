@@ -324,7 +324,7 @@ bool TwitterDB::getTweetsWithSearchTerm(const string& q, int youngerThan, int ho
 	QueryResult qr(db);
 	int start = ofGetElapsedTimeMillis();
 	bool r = db.select("t_text")
-		.from("tweet_texts")
+		.from("tweet_texts, t_screen_name")
 		.where(where.str())
 		.join("tweets on t_id = id")
 		.limit(howMany)
@@ -338,11 +338,12 @@ bool TwitterDB::getTweetsWithSearchTerm(const string& q, int youngerThan, int ho
 	while(qr.next()) {
 		rtt::Tweet tweet;
 		tweet.setText(qr.getString(0));
+		tweet.setScreenName(qr.getString(0));
 		result.push_back(tweet);
 	}
 	int end = ofGetElapsedTimeMillis();	
 	int diff = end - start;
-	printf("Searched for %s and found %zu rows in %d ms.\n", q.c_str(), result.size(), diff);
+	printf("Searched for %s and found %zu rows in %d ms. Using younger than: %d and max %d many rows.\n", q.c_str(), result.size(), diff, youngerThan, howMany);
 	return true;
 }
 

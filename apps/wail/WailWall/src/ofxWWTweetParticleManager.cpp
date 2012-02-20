@@ -825,6 +825,7 @@ void ofxWWTweetParticleManager::addSearchTerm(const string& user, const string& 
 	searchTerm.manager = this;
 	searchTerm.term = term;
 	searchTerm.user = user;
+	printf(">>>>>>>>>>>>>>>>>>>>>>>> %s <<<<<<<<<<<<<<<<<<<<<<<<<<\n", searchTerm.term.c_str());
 	incomingSearchTerms.push(searchTerm);	
 }
 

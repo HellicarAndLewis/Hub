@@ -1,7 +1,7 @@
 <controls>
     <Toggle_Enable_Caustics>
         <name>Enable Caustics</name>
-        <value>1</value>
+        <value>0</value>
     </Toggle_Enable_Caustics>
     <SliderFloat_Delta>
         <name>Delta</name>

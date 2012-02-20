@@ -104,7 +104,7 @@ void testApp::theScreenshotCallback(const string& username, void* userdata) {
 
 void testApp::draw(){
 	// roxlu 02/07
-	ofSetFullscreen(false); 
+	//ofSetFullscreen(false); 
 	
 	ofBackground(0);
 	ofRectangle renderPreview = screenManager.getRenderPreviewRect();

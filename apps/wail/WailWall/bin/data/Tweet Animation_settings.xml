@@ -1,11 +1,11 @@
 <controls>
     <Toggle_Flow_Sideways>
         <name>Flow Sideways</name>
-        <value>1</value>
+        <value>0</value>
     </Toggle_Flow_Sideways>
     <SliderFloat_Flow_Speed>
         <name>Flow Speed</name>
-        <value>10.000000</value>
+        <value>-10.800001</value>
     </SliderFloat_Flow_Speed>
     <SliderFloat_Flow_Variance>
         <name>Flow Variance</name>
