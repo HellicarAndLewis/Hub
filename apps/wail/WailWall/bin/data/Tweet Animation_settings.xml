@@ -5,23 +5,23 @@
     </Toggle_Flow_Sideways>
     <SliderFloat_Flow_Speed>
         <name>Flow Speed</name>
-        <value>-10.800001</value>
+        <value>21.300003</value>
     </SliderFloat_Flow_Speed>
     <SliderFloat_Flow_Variance>
         <name>Flow Variance</name>
-        <value>4.400000</value>
+        <value>3.350000</value>
     </SliderFloat_Flow_Variance>
     <SliderFloat_Flow_Chaos_Speed>
         <name>Flow Chaos Speed</name>
-        <value>251.800003</value>
+        <value>355.149994</value>
     </SliderFloat_Flow_Chaos_Speed>
     <SliderFloat_Flow_Chaos_Amp>
         <name>Flow Chaos Amp</name>
-        <value>8.800000</value>
+        <value>4.315000</value>
     </SliderFloat_Flow_Chaos_Amp>
     <SliderFloat_Flow_Chaos_Damp>
         <name>Flow Chaos Damp</name>
-        <value>282.294983</value>
+        <value>290.275024</value>
     </SliderFloat_Flow_Chaos_Damp>
     <SliderFloat_Flow_Rotate_Amp>
         <name>Flow Rotate Amp</name>
@@ -37,10 +37,10 @@
     </SliderFloat_Wall_Repulsion_Atten>
     <SliderFloat_Tweet_Repulsion_Dist>
         <name>Tweet Repulsion Dist</name>
-        <value>85.500000</value>
+        <value>81.000000</value>
     </SliderFloat_Tweet_Repulsion_Dist>
     <SliderFloat_Tweet_Repulsion_Atten>
         <name>Tweet Repulsion Atten</name>
-        <value>0.039000</value>
+        <value>0.122000</value>
     </SliderFloat_Tweet_Repulsion_Atten>
 </controls>
