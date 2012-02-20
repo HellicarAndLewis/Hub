@@ -9,6 +9,9 @@ ofxWWTweetParticleManager::ofxWWTweetParticleManager()
 	,currentSearchTermIndex(0)
 	,renderer(NULL)
 	,screenshot_userdata(NULL)
+	,current_provider(NULL)
+	,stream_provider(NULL)
+	,db_provider(NULL)
 {
 	maxTweets = 100;
 	tweetSearchEndedTime = 0;
@@ -27,7 +30,7 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	// -------------------
 	twitter.init(4444);
 	twitter.addDefaultListener();
-	twitter.addCustomListener(*this);
+	//twitter.addCustomListener(*this);
 	
 	if(!twitter.connect()) {
 		printf("Error: cannot connect to twitter stream.\n");
@@ -50,6 +53,15 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	
 	canSelectSearchTerms = false;
 	setupColors();
+	
+	// Create tweet providers
+	// ----------------------
+	stream_provider = new TweetProviderStream(twitter);
+	db_provider = new TweetProviderDB(twitter);
+	stream_provider->addListener(this);
+	db_provider->addListener(this);
+	setCurrentProvider(stream_provider);
+	twitter.addCustomListener(*stream_provider); // stream provider wants to listen to incoming tweets.
 	
 	ofAddListener(ofEvents.keyPressed, this, &ofxWWTweetParticleManager::keyPressed);
 }
@@ -128,8 +140,9 @@ void ofxWWTweetParticleManager::setupGui(){
 
 
 void ofxWWTweetParticleManager::update(){
-
 	twitter.update();
+	current_provider->update();
+	
 	
 	checkFonts();
 	
@@ -688,6 +701,10 @@ void ofxWWTweetParticleManager::setupColors(){
 	
 }
 
+void ofxWWTweetParticleManager::onNewTweet(const rtt::Tweet& tweet) {
+	printf(">> [ok] : %s\n", tweet.getText().c_str());	
+}
+/*
 void ofxWWTweetParticleManager::onStatusUpdate(const rtt::Tweet& tweet){
 	string bad_word;
 	if(twitter.containsBadWord(tweet.getText(), bad_word)) {
@@ -696,6 +713,8 @@ void ofxWWTweetParticleManager::onStatusUpdate(const rtt::Tweet& tweet){
 	ofxWWTweetParticle tweetParticle = createParticleForTweet(tweet);
 	tweets.push_back( tweetParticle );	
 }
+*/
+
 
 ofxWWTweetParticle ofxWWTweetParticleManager::createParticleForTweet(const rtt::Tweet& tweet){
 	ofxWWTweetParticle tweetParticle;
@@ -734,6 +753,7 @@ void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
 	addSearchTerm(event.tweet.getScreenName(), event.search_term);
 }
 
+
 void ofxWWTweetParticleManager::addSearchTerm(const string& user, const string& term) {
 	ofxWWSearchTerm searchTerm;
 	searchTerm.pos = ofVec2f(ofRandom(wallRepulsionDistance, simulationWidth-wallRepulsionDistance), 
@@ -744,13 +764,22 @@ void ofxWWTweetParticleManager::addSearchTerm(const string& user, const string& 
 	printf(">>>>>>>>>>>>>>>>>>>>>>>> %s <<<<<<<<<<<<<<<<<<<<<<<<<<\n", searchTerm.term.c_str());
 	incomingSearchTerms.push(searchTerm);	
 }
-
+/*
 void ofxWWTweetParticleManager::onStatusDestroy(const rtt::StatusDestroy& destroy){
 }
 
 void ofxWWTweetParticleManager::onStreamEvent(const rtt::StreamEvent& event){
 }
+*/
 
+// toggle to a new provider.
+void ofxWWTweetParticleManager::setCurrentProvider(TweetProvider* prov) {
+	if(current_provider != NULL) {
+		current_provider->disable();
+	}
+	current_provider = prov;
+	current_provider->enable();
+}
 
 TwitterApp& ofxWWTweetParticleManager::getTwitterApp() {
 	return twitter;

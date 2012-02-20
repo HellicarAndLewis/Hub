@@ -48,7 +48,9 @@ void TwitterApp::initTwitter() {
         twitter.saveTokens(token_file);
 	}
 	
+	// We listen to "connection" events of the stream.
 	stream.addEventListener(this);
+	
 	//removeTweetsFromConnectedAccount();
 }
 
@@ -156,12 +158,14 @@ bool TwitterApp::connect(){
 }
 
 void TwitterApp::addDefaultListener(){
-	addCustomListener(twitter_listener);
+	//addCustomListener(twitter_listener);
+	twitter.addEventListener(twitter_listener);
 }
 
 void TwitterApp::addCustomListener(rt::IEventListener& listener){
 	twitter.addEventListener(listener);
 }
+
 
 void TwitterApp::onNewSearchTerm(rtt::Tweet tweet, const string& term) {
 	// When we added a new search term to the queue, pass it through!
