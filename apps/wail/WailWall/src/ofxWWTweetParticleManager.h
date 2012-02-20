@@ -194,4 +194,5 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	TweetProvider* current_provider;
 	TweetProviderStream* stream_provider;
 	TweetProviderDB* db_provider;
+	
 };

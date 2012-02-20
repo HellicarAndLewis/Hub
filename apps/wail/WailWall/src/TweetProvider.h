@@ -13,6 +13,8 @@ class TweetProvider {
 public:
 
 	virtual void update() = 0;
+	virtual void activate() = 0;
+	virtual void deactivate() = 0;
 	
 	void addListener(TweetProviderListener* l);
 	
@@ -20,10 +22,12 @@ public:
 	
 	void enable() {
 		is_enabled = true;
+		activate();
 	}
 	
 	void disable() {
 		is_enabled = false;
+		deactivate();
 	}
 	
 	bool isEnabled() {

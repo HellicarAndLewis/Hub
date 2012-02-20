@@ -1,7 +1,6 @@
 #include "TweetProviderStream.h"
 TweetProviderStream::TweetProviderStream(TwitterApp& app) 
 	:app(app)
-	,dispatch_events(false)
 {
 }
 
@@ -25,7 +24,10 @@ void TweetProviderStream::onStatusUpdate(const rtt::Tweet& tweet) {
 		printf("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
 	}
 	if(app.containsBadWord(tweet.text, bad_word)) {
-		printf("[censored][%s] %s\n",bad_word.c_str(), tweet.getText().c_str());
+		if(isEnabled()) { // only log when enabled
+			printf("[censored][%s] %s\n",bad_word.c_str(), tweet.getText().c_str());
+		}	
+		
 		//printf("# [ censored ] : %s\n", tweet.text.c_str());
 		//printf("[censored]\n");
 		return;
@@ -60,6 +62,11 @@ void TweetProviderStream::onStatusUpdate(const rtt::Tweet& tweet) {
 	}
 }
 
+void TweetProviderStream::activate() {
+}
+
+void TweetProviderStream::deactivate() {
+}
 
 void TweetProviderStream::onStatusDestroy(const rtt::StatusDestroy& destroy) {
 

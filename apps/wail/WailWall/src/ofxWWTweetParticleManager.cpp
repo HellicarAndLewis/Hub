@@ -79,6 +79,15 @@ void ofxWWTweetParticleManager::keyPressed(ofKeyEventArgs& args) {
 		printf("Using fake search term: %s\n", term.c_str());		
 		addSearchTerm("no_user", term );
 	}
+	else if(args.key == '3') {
+		printf("Going to stream provider.\n");
+		setCurrentProvider(stream_provider);
+	}
+	else if(args.key == '4') {
+		printf("Going to DB provider (and passing the new search term)\n");
+		db_provider->fillWithTweetsWhichContainTerm("love");
+		setCurrentProvider(db_provider);
+	}
 }
 
 void ofxWWTweetParticleManager::setupGui(){
@@ -155,6 +164,7 @@ void ofxWWTweetParticleManager::update(){
 
 void ofxWWTweetParticleManager::checkFonts(){
 	#ifdef USE_FTGL
+	
 		if(!sharedTweetFont.isLoaded() || tweetFontSize != sharedTweetFont.getSize()){
 			if(!sharedTweetFont.loadFont("fonts/montreal-ttf/Montreal-LightIta.ttf", tweetFontSize, true, true, false)){
 				ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load tweet font!");
@@ -190,6 +200,7 @@ void ofxWWTweetParticleManager::checkFonts(){
 					ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load font!");
 				}
 			}
+			
 	#endif
 	
 }
@@ -231,6 +242,7 @@ void ofxWWTweetParticleManager::handleTouchSearch() {
 }
 
 void ofxWWTweetParticleManager::handleTweetSearch(){
+/*
 	if(ofGetElapsedTimef() - tweetSearchEndedTime < tweetSearchMinWaitTime){
 		return;
 	}
@@ -281,11 +293,15 @@ void ofxWWTweetParticleManager::handleTweetSearch(){
 			selectedSearchTermIndex = currentSearchTermIndex;
 		}
 	}
+	*/
 }
 
 void ofxWWTweetParticleManager::searchForTerm(ofxWWSearchTerm& term){
 	cout << "Searching for " << term.term << " by " << term.user << endl;
+	// TODO: make sure we set search terms as used (!?)
+
 	
+	/*
 	twitter.setSearchTermAsUsed(term.user, term.term);
 	
 	vector<rtt::Tweet> found_tweets;
@@ -310,7 +326,7 @@ void ofxWWTweetParticleManager::searchForTerm(ofxWWSearchTerm& term){
 	
 	tweetSearchStartTime = ofGetElapsedTimef();
 	isDoingSearch = true;
-
+*/
 }
 
 void ofxWWTweetParticleManager::finishSearch(){
@@ -703,6 +719,7 @@ void ofxWWTweetParticleManager::setupColors(){
 
 void ofxWWTweetParticleManager::onNewTweet(const rtt::Tweet& tweet) {
 	printf(">> [ok] : %s\n", tweet.getText().c_str());	
+	createParticleForTweet(tweet);
 }
 /*
 void ofxWWTweetParticleManager::onStatusUpdate(const rtt::Tweet& tweet){
@@ -751,6 +768,7 @@ ofxWWTweetParticle ofxWWTweetParticleManager::createParticleForTweet(const rtt::
 					
 void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
 	addSearchTerm(event.tweet.getScreenName(), event.search_term);
+	db_provider->setSearchInfoForNewParticles(event.tweet.getScreenName(), event.search_term);
 }
 
 
