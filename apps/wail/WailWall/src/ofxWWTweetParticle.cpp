@@ -86,12 +86,12 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 void ofxWWTweetParticle::update(){
 	
 	lastPos = pos;
-	force.rotate(ofSignedNoise(pos.x/200.0,pos.y/200.0,ofGetElapsedTimef()/20.)*20 );
+	force.rotate(ofSignedNoise(pos.x/manager->tweetRotateDamp,pos.y/manager->tweetRotateDamp,ofGetElapsedTimef()/manager->tweetChaosSpeed)*manager->tweetRotateAmp );
 	pos += force;
 	force = ofVec2f(0,0);
 	
-	pos += ofVec2f(ofSignedNoise(pos.x/200.0, ofGetElapsedTimef()/200.) * (1.-clampedSelectionWeight), 
-				   ofSignedNoise(pos.y/200.0, ofGetElapsedTimef()/200.) * (1.-clampedSelectionWeight));
+	pos += ofVec2f(ofSignedNoise(pos.y/manager->tweetFlowDamp, ofGetElapsedTimef()/manager->tweetChaosSpeed) * (.9-clampedSelectionWeight)*manager->tweetFlowAmp, 
+				   ofSignedNoise(pos.x/manager->tweetFlowDamp, ofGetElapsedTimef()/manager->tweetChaosSpeed) * (.9-clampedSelectionWeight)*manager->tweetFlowAmp);
 	
 	//birth attenuation just to stop snapping on
 	opacity = ofMap(ofGetElapsedTimef(), createdTime, createdTime+.5, .0, 1.0, true);

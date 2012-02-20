@@ -99,13 +99,18 @@ void ofxWWTweetParticleManager::setupGui(){
 
 	webGui.addPage("Tweet Animation");
 	webGui.addToggle("Flow Sideways", tweetsFlowLeftRight);
-	webGui.addSlider("Flow Speed", tweetFlowSpeed, -10, 10);	
-	webGui.addSlider("Flow Chaos", flowChaosScale, 0, 10);
-	webGui.addSlider("Wall Repulsion Dist", wallRepulsionDistance, 0, 900);
+	webGui.addSlider("Flow Speed", tweetFlowSpeed, -30, 30);	
+	webGui.addSlider("Flow Variance", tweetFlowVariance, 0, 10);
+	webGui.addSlider("Flow Chaos Speed", tweetChaosSpeed, 10, 400);
+	webGui.addSlider("Flow Chaos Amp", tweetFlowAmp, 1, 40);
+	webGui.addSlider("Flow Chaos Damp", tweetFlowDamp, 1, 400);
+	webGui.addSlider("Flow Rotate Amp", tweetRotateAmp, 0, 40);
+	webGui.addSlider("Flow Rotate Damp", tweetRotateDamp, 40, 400);
+					 
 	webGui.addSlider("Wall Repulsion Atten", wallRepulsionAtten, 0, .2);
 	webGui.addSlider("Tweet Repulsion Dist", tweetRepulsionDistance, 0, 900);
 	webGui.addSlider("Tweet Repulsion Atten", tweetRepulsionAtten, 0, .2);
-	webGui.addSlider("Fluid Force Scale", fluidForceScale, 1., 100.);
+	//webGui.addSlider("Fluid Force Scale", fluidForceScale, 1., 100.);
 	
 	webGui.addPage("Tweet Appearance");
 	webGui.addSlider("Tweet Font Size", tweetFontSize, 20, 100);
@@ -125,6 +130,7 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Touch Min Hold", searchTermMinHoldTime, .5, 3.0);
 	webGui.addSlider("Search Duration", tweetSearchDuration, 2, 15);
 	webGui.addSlider("Search Time Between", tweetSearchMinWaitTime, 1, 20);
+	webGui.addSlider("Wall Repulsion Dist", wallRepulsionDistance, 0, 900);
 	webGui.addSlider("Search Repulse Dist", searchTermRepulsionDistance, 500, 2000);
 	webGui.addSlider("Search Repulse Atten", searchTermRepulsionAttenuation, 0, .2);
 	webGui.addSlider("Search Hand Attract", searchTermHandAttractionFactor, 0, .2);
@@ -767,7 +773,7 @@ ofxWWTweetParticle ofxWWTweetParticleManager::createParticleForTweet(const rtt::
 		}
 	}
 	
-	tweetParticle.speedAdjust = ofRandom(-flowChaosScale, flowChaosScale);
+	tweetParticle.speedAdjust = ofRandom(-tweetFlowVariance, tweetFlowVariance);
 
 	//tweetParticle.pos = ofVec2f(ofRandom(simulationWidth-wordWrapLength), ofRandom(simulationHeight));
 	tweetParticle.setTweet(tweet);
