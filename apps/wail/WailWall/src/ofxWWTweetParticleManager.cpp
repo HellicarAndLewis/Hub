@@ -347,7 +347,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 				}
 				else{  
 					//wrap around
-					tweets[i].pos.x = tweetFlowSpeed > 0 ? -wallRepulsionDistance : simulationWidth + wallRepulsionDistance;
+					//tweets[i].pos.x = tweetFlowSpeed > 0 ? -wallRepulsionDistance : simulationWidth + wallRepulsionDistance;
 				}
 			}
 		}
@@ -360,7 +360,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 				}
 				else{
 					//wrap around
-					tweets[i].pos.y = tweetFlowSpeed > 0 ? -wallRepulsionDistance : simulationHeight + wallRepulsionDistance;
+					//tweets[i].pos.y = tweetFlowSpeed > 0 ? -wallRepulsionDistance : simulationHeight + wallRepulsionDistance;
 				}
 			}
 		}
@@ -747,11 +747,10 @@ ofxWWTweetParticle ofxWWTweetParticleManager::createParticleForTweet(const rtt::
 	return tweetParticle;
 }
 					
-void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
-	
+void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {	
 	printf("\n\n\nSearch term here!!!\n\n\n");
 	addSearchTerm(event.tweet.getScreenName(), event.search_term);
-	db_provider->setSearchInfoForNewParticles(event.tweet.getScreenName(), event.search_term);
+	
 }
 
 
@@ -764,6 +763,11 @@ void ofxWWTweetParticleManager::addSearchTerm(const string& user, const string& 
 	searchTerm.user = user;
 	printf(">>>>>>>>>>>>>>>>>>>>>>>> %s <<<<<<<<<<<<<<<<<<<<<<<<<<\n", searchTerm.term.c_str());
 	incomingSearchTerms.push(searchTerm);	
+	if(db_provider != NULL) {
+		//printf("+++++++++++ updating new particles.\n");
+		//setSearchInfoForNewParticles
+		//db_provider->setSearchInfoForNewParticles(user, term );
+	}
 }
 /*
 void ofxWWTweetParticleManager::onStatusDestroy(const rtt::StatusDestroy& destroy){
