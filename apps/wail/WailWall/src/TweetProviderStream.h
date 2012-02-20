@@ -10,9 +10,9 @@ class TweetProviderStream : public TweetProvider, public roxlu::twitter::IEventL
 public:
 	TweetProviderStream(TwitterApp& app);
 	virtual void update();
+	virtual void activate();
+	virtual void deactivate();
 
-	void disableEvents();
-	void enableEvents();
 	
 	virtual void onStatusUpdate(const rtt::Tweet& tweet);
 	virtual void onStatusDestroy(const rtt::StatusDestroy& destroy);
@@ -21,6 +21,6 @@ public:
 private:
 
 	TwitterApp& app;
-	bool dispatch_events;
+
 };
 #endif
