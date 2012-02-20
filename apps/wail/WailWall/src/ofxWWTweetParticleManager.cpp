@@ -50,7 +50,7 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	burstTwo.loadImage("images/burst2.png");
 	
 	canSelectSearchTerms = false;
-	enableCaustics = false;
+	//enableCaustics = false;
 	
 	ofAddListener(ofEvents.keyPressed, this, &ofxWWTweetParticleManager::keyPressed);
 	//fakin' it
@@ -670,20 +670,22 @@ void ofxWWTweetParticleManager::renderSearchTerms(){
 	}
 }
 
-void ofxWWTweetParticleManager::renderCaustics(){
-	if(!enableCaustics){
-		return;
-	}
+void ofxWWTweetParticleManager::renderConnections(){
 	
 	ofPushStyle();
 	ofSetLineWidth(2);
 	
 	if(tweetLayerOpacity > 0){
+//		cout << "testing connections!!" << endl;
 		for(int i = 0; i < tweets.size(); i++){
+			if(tweets[i].clampedSelectionWeight <= 0){
+				continue;
+			}
+			
 			for(int j = 0; j < tweets.size(); j++){
 				if(j != i){
-					attemptCausticConnection(tweets[i].pos, tweets[i].clampedSelectionWeight,
-											 tweets[j].pos, tweets[j].clampedSelectionWeight, tweetLayerOpacity);
+					attemptConnection(tweets[i].pos, tweets[i].clampedSelectionWeight,
+									  tweets[j].pos, tweets[j].clampedSelectionWeight, tweetLayerOpacity);
 				}
 			}
 		}	
@@ -693,7 +695,7 @@ void ofxWWTweetParticleManager::renderCaustics(){
 		for(int i = 0; i < tweets.size(); i++){
 			if(tweets[i].isSearchTweet){
 //				cout << "++++++ DRAWING CAUSTICS BETWEEN " << tweets[i].pos << " " << searchTerms[selectedSearchTerm].pos << endl;
-				attemptCausticConnection(tweets[i].pos, 1.0, searchTerms[selectedSearchTermIndex].pos, 1.0, 1-tweetLayerOpacity);
+				attemptConnection(tweets[i].pos, 1.0, searchTerms[selectedSearchTermIndex].pos, 1.0, 1-tweetLayerOpacity);
 			}
 		}
 	}
@@ -701,7 +703,9 @@ void ofxWWTweetParticleManager::renderCaustics(){
 	ofPopStyle();	
 }
 
-void ofxWWTweetParticleManager::attemptCausticConnection(ofVec2f pos1, float weight1, ofVec2f pos2, float weight2, float layerOpacity){
+void ofxWWTweetParticleManager::attemptConnection(ofVec2f pos1, float weight1, ofVec2f pos2, float weight2, float layerOpacity){
+//	ofLine(pos1, pos2);
+//	cout << "drawing line!!" << endl;
 	float chanceOfSynapse = weight1 * weight2;
 	if(ofRandomuf() + .5 < chanceOfSynapse){
 		setRandomCausticColor(layerOpacity);
@@ -710,6 +714,11 @@ void ofxWWTweetParticleManager::attemptCausticConnection(ofVec2f pos1, float wei
 }
 
 void ofxWWTweetParticleManager::setRandomCausticColor(float layerOpacity){
+	
+	//JG just returned white for now
+	ofSetColor(255);
+	return;
+	
 	float diceroll = ofRandomuf();
 	if(diceroll < .1){
 		ofSetColor(causticColors[0], 100*layerOpacity);

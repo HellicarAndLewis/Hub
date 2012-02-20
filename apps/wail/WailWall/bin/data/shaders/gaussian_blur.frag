@@ -38,6 +38,6 @@ void main()
 	}
 //	gl_FragColor.rgb =  vec3( 0.0, 0.0, 0.0);
 	gl_FragColor.rgb = sum;
-	gl_FragColor.a = 1.0;
-//	gl_FragColor.a *= .99999;//attenuate alpha
+//	gl_FragColor.a = 1.0;
+	gl_FragColor.a *= .995;//attenuate alpha
 }

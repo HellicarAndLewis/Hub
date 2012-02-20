@@ -92,6 +92,8 @@ void ofxWWRenderer::setup(int width, int height){
 	enableFluid = false;
 	justDrawWarpTexture = false;
 
+	halo.loadImage("images/halo.png");
+	
 //	cout << "setting up tweets" << endl;
 	tweets.setup(this);
 	
@@ -120,6 +122,10 @@ void ofxWWRenderer::setupGui(){
 	webGui.addSlider("Drop Scale", dropScale, 10, 100);
 	webGui.addSlider("Drop Force", dropForce, .001, 1.0);
 	webGui.addToggle("Draw Debug Texture", drawCausticsDebug);
+	
+	webGui.addPage("Connections");
+	webGui.addToggle("Draw Connections", enableConnections);
+	webGui.addSlider("Fade Decay", fadeSpeed, .002, .01);
 	
 	webGui.addPage("Fluid");
 	webGui.addToggle("Enable Fluid",	enableFluid);
@@ -252,10 +258,12 @@ void ofxWWRenderer::render(){
 	glActiveTexture(GL_TEXTURE0_ARB);
 	//accumulator[accumbuf].getTextureReference().unbind();
 	gradientOverlay.getTextureReference().unbind();
-	accumbuf = (accumbuf+1)%2;
 	
 	glowShader.end();
 	
+	accumulator[accumbuf].draw(0, 0);
+	accumbuf = (accumbuf+1)%2;
+
 	tweets.renderTweets();	
 	tweets.renderSearchTerms();
 	
@@ -268,13 +276,14 @@ void ofxWWRenderer::render(){
 		caustics.getTextureReference().draw(0, 0, targetWidth, targetHeight);
 	}
 	
+	float maxTouchRadius = targetHeight*tweets.touchSizeScale;	
+	map<int,KinectTouch>::iterator it;
 	if(drawTouchDebug){ 
 		ofPushStyle();
 		ofNoFill();
-		map<int,KinectTouch>::iterator it;
 		for(it = blobs->begin(); it != blobs->end(); it++){
 			ofVec2f touchCenter = ofVec2f( it->second.x*targetWidth, it->second.y*targetHeight );
-			float maxTouchRadius = targetHeight*tweets.touchSizeScale;
+
 			ofSetColor(255, 255, 255);
 			ofCircle(touchCenter, it->second.size*maxTouchRadius);			
 			ofSetColor(0, 255, 0);
@@ -287,27 +296,33 @@ void ofxWWRenderer::render(){
 			ofScale(10, 10);
 			ofDrawBitmapString("Z:"+ofToString(it->second.z,4), ofVec2f(0,0));
 			ofPopMatrix();
-//			for(int i = 0; i < tweets.tweets.size(); i++){
-//				ofLine(touchCenter, tweets.tweets[i].pos);
-//			}
 		}
 		ofPopStyle();
 	}
 	
+	ofPushStyle();
+	ofSetColor(255, 255, 255, 40);
+	for(it = blobs->begin(); it != blobs->end(); it++){
+		ofVec2f touchCenter = ofVec2f( it->second.x*targetWidth, it->second.y*targetHeight );
+		float radius = it->second.size*maxTouchRadius;
+		halo.draw(ofRectangle(touchCenter.x-radius,touchCenter.y-radius, radius*2,radius*2));
+	}
+	ofPopStyle();
+	
 	renderTarget.end();	
 	
-	// TODO: this is done in testApp now..
-	if(test_screenshot) {
-		//tweets.addCurrentRenderToScreenshotQueue();
-		test_screenshot = false;
-	}
+//	// TODO: this is done in testApp now..
+//	if(test_screenshot) {
+//		//tweets.addCurrentRenderToScreenshotQueue();
+//		test_screenshot = false;
+//	}
 }
 
 //roxlu: testing screenshots
 void ofxWWRenderer::keyPressed(ofKeyEventArgs& args) {
-	if(args.key == '1') {
-		test_screenshot = true;
-	}
+//	if(args.key == '1') {
+//		test_screenshot = true;
+//	}
 }
 
 void ofxWWRenderer::renderDynamics(){
@@ -315,23 +330,23 @@ void ofxWWRenderer::renderDynamics(){
 	
 	accumulator[accumbuf].begin();
 	
-	ofClear(0);
-	ofDisableAlphaBlending();
 	
 	ofPushStyle();
 	ofSetColor(255, 255, 255);
 
+	ofClear(0);
+	ofDisableAlphaBlending();
 	
-//	alphaFade.begin();
-//	alphaFade.setUniform1f("fadeSpeed", tweets.causticFadeSpeed);
-//	accumulator[(accumbuf+1)%2].draw(0,0); //this x offset causes the blur to cascade away
-//	alphaFade.end();
+	alphaFade.begin();
+	alphaFade.setUniform1f("fadeSpeed", fadeSpeed);
+	accumulator[(accumbuf+1)%2].draw(0,0); //this x offset causes the blur to cascade away
+	alphaFade.end();
 	
 //	blurShader.begin();
 //	blurShader.setUniform2f("sampleOffset", 0, blurAmount);
 //	accumulator[(accumbuf+1)%2].draw(7,0); //this x offset causes the blur to cascade away
 //	blurShader.end();
-
+//
 //	blurShader.begin();
 //	blurShader.setUniform2f("sampleOffset", blurAmount, 0);
 //	accumulator[(accumbuf+1)%2].draw(3,0); //this x offset causes the blur to cascade away
@@ -341,8 +356,13 @@ void ofxWWRenderer::renderDynamics(){
 		fluid.draw(0,0,targetWidth,targetHeight);
 	}
 
-	tweets.renderCaustics();
+	if(enableConnections){
+		tweets.renderConnections();
+	}
 	
+//	for(int i = 0; i < 10; i++){
+//		ofCircle(ofRandom(targetWidth), ofRandom(targetHeight), ofRandom(20));
+//	}
 	ofPopStyle();
 	
 	accumulator[accumbuf].end();

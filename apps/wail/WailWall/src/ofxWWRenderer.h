@@ -69,7 +69,6 @@ class ofxWWRenderer: public KinectTouchListener {
 	void renderLayer1();
 	void renderLayer2();
 	
-	
 	ofxCaustics caustics;
 	bool enableCaustics;
 	bool drawCausticsDebug;
@@ -80,7 +79,10 @@ class ofxWWRenderer: public KinectTouchListener {
 	ofxMPMFluid fluid;
 	ofxWWTweetParticleManager tweets;	
 	
+	//for rendering connections
 	ofShader alphaFade;
+	bool enableConnections;
+	float fadeSpeed;
 	
 	//shader business
 	ofShader blurShader;
@@ -116,6 +118,8 @@ class ofxWWRenderer: public KinectTouchListener {
 	ofImage layerTwoBackgroundA;
 	ofImage layerOneBackgroundB;
 	ofImage layerTwoBackgroundB;
+	
+	ofImage halo;
 	
 	bool drawTouchDebug;
 	

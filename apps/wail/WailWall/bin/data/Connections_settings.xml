@@ -1,0 +1,10 @@
+<controls>
+    <Toggle_Draw_Connections>
+        <name>Draw Connections</name>
+        <value>0</value>
+    </Toggle_Draw_Connections>
+    <SliderFloat_Fade_Decay>
+        <name>Fade Decay</name>
+        <value>0.010000</value>
+    </SliderFloat_Fade_Decay>
+</controls>

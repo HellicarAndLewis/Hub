@@ -33,7 +33,7 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	void renderTweets();
 	void renderSearchTerms();
 
-	void renderCaustics();
+	void renderConnections();
 	
 	void onStatusUpdate(const rtt::Tweet& tweet);
 	void onStatusDestroy(const rtt::StatusDestroy& destroy);
@@ -171,7 +171,7 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	void updateTweets();
 	void updateSearchTerms();
 	
-	void attemptCausticConnection(ofVec2f pos1, float weight1, ofVec2f pos2, float weight2, float layerOpacity);
+	void attemptConnection(ofVec2f pos1, float weight1, ofVec2f pos2, float weight2, float layerOpacity);
 	void setRandomCausticColor(float layerOpacity);
 	
 	void addSearchTerm(const string& user, const string& term);
