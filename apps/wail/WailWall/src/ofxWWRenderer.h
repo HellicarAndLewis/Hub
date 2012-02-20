@@ -73,6 +73,8 @@ class ofxWWRenderer: public KinectTouchListener {
 	ofxCaustics caustics;
 	bool enableCaustics;
 	bool drawCausticsDebug;
+	float dropScale;
+	float dropForce;
 	
 	//sub objects
 	ofxMPMFluid fluid;
@@ -103,6 +105,10 @@ class ofxWWRenderer: public KinectTouchListener {
 	float warpAmount;
 	bool justDrawWarpTexture;
 
+	//combine the caustics together
+	ofShader glowShader;
+	float glowAmount;
+	
 	//used as a map into the fluid sim
 	bool useBackgroundSetA;
 	ofImage colorField;

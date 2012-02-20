@@ -1,5 +1,5 @@
 <settings>
-    <setting id="View" value="1"></setting>
+    <setting id="View" value="0"></setting>
     <setting id="Blur Size" value="6.000000000"></setting>
     <setting id="Blur Iterations" value="6.000000000"></setting>
     <setting id="Erode Image" value="true"></setting>
@@ -7,16 +7,16 @@
     <setting id="Accumulate Background" value=""></setting>
     <setting id="Background Hysteresis" value="0.059708741"></setting>
     <setting id="Draw Blobs" value="true"></setting>
-    <setting id="Water Surface Level" value="0.651699007"></setting>
-    <setting id="Maximum Water Depth" value="0.998786390"></setting>
+    <setting id="Water Surface Level" value="0.867475748"></setting>
+    <setting id="Maximum Water Depth" value="0.972087383"></setting>
     <setting id="Minimum Blob Size" value="27.000000000"></setting>
     <setting id="Maximum Blob Size" value="623.000000000"></setting>
     <setting id="Blob XY Smoothing" value="0.796116531"></setting>
     <setting id="Blob Z Smoothing" value="0.354368925"></setting>
-    <setting id="Blob x top frustrum factor" value="6.436892986"></setting>
-    <setting id="Blob y top frustrum factor" value="4.330097198"></setting>
+    <setting id="Blob x top frustrum factor" value="3.412621260"></setting>
+    <setting id="Blob y top frustrum factor" value="3.208737850"></setting>
     <setting id="Blob x bottom frustrum factor" value="1.781553388"></setting>
     <setting id="Blob y bottom frustrum factor" value="2.121359348"></setting>
-    <setting id="Flip X" value="false"></setting>
+    <setting id="Flip X" value="true"></setting>
     <setting id="Flip Y" value="false"></setting>
 </settings>

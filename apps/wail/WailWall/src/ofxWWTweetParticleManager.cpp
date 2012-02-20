@@ -389,7 +389,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 				if(tweets.size() > maxTweets){
 					tweets.erase(tweets.begin()+i);
 				}
-				else{
+				else{  
 					//wrap around
 					tweets[i].pos.x = tweetFlowSpeed > 0 ? -wallRepulsionDistance : simulationWidth + wallRepulsionDistance;
 				}
@@ -428,28 +428,30 @@ void ofxWWTweetParticleManager::updateTweets(){
 	for(int i = 0; i < tweets.size(); i++){
 		if(!tweetsFlowLeftRight){
 			//LEFT WALL
-			if (tweets[i].pos.x < wallRepulsionDistance) {
-				tweets[i].force.x += (wallRepulsionDistance - tweets[i].pos.x) * wallRepulsionAtten;
+			if (tweets[i].pos.x < 0) {
+				tweets[i].force.x += (-tweets[i].pos.x) * wallRepulsionAtten;
 			}
 			//RIGHT WALL
-			if ((tweets[i].pos.x) > (simulationWidth-wallRepulsionDistance)) {
-				tweets[i].force.x += ( (simulationWidth-wallRepulsionDistance) - (tweets[i].pos.x + tweets[i].totalWidth) ) * wallRepulsionAtten;
+			if ((tweets[i].pos.x) > (simulationWidth)) {
+				tweets[i].force.x += ( simulationWidth - (tweets[i].pos.x) ) * wallRepulsionAtten;
 			}
 		}
 		else {
 			//TOP
-			if (tweets[i].pos.y < wallRepulsionDistance) {
-				tweets[i].force.y += (wallRepulsionDistance - tweets[i].pos.y) * wallRepulsionAtten;
+			if (tweets[i].pos.y < 0) {
+				tweets[i].force.y += (-tweets[i].pos.y) * wallRepulsionAtten;
 			}
 			
 			//BOTTOM
-			if ((tweets[i].pos.y) > (simulationHeight-wallRepulsionDistance)) {
-				tweets[i].force.y += ( (simulationHeight-wallRepulsionDistance)  - (tweets[i].pos.y + tweets[i].totalHeight)) * wallRepulsionAtten;
+			if ((tweets[i].pos.y) > (simulationHeight)) {
+				tweets[i].force.y += ( (simulationHeight)  - (tweets[i].pos.y)) * wallRepulsionAtten;
 			}
 		}
 	}
 	
 	//apply mutual repulsion
+	/*
+	 //JG took this out in favor of moving through noise
 	float tweetRepulsionDistanceSqr = tweetRepulsionDistance*tweetRepulsionDistance;
 	for(int i = 0; i < tweets.size(); i++){
 		for(int j = 0; j < tweets.size(); j++){
@@ -466,7 +468,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 			}
 		}
 	}
-		
+	*/	
 	//apply flow
 	for(int i = 0; i < tweets.size(); i++){
 		ofVec2f forceVector(0,0);
@@ -483,7 +485,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 	//apply legibility fixes for visible tweets
 	for(int i = 0; i < tweets.size(); i++){
 		for(int j = 0; j < tweets.size(); j++){
-			if(j != i && tweets[i].selectionWeight > .1 && tweets[j].selectionWeight > .1){
+			if(j != i && tweets[i].selectionWeight > .0 && tweets[j].selectionWeight > .0){
 				//compare our corners to see if they are in their rect and then apply force if so
 				for(int c = 0; c < 4; c++){
 					ofVec2f corner = tweets[i].getBoundingCorner(c);
@@ -511,9 +513,9 @@ void ofxWWTweetParticleManager::updateTweets(){
 		}
 	}
 	
-	for(int i = 0; i < tweets.size(); i++){
-		fluidRef->applyForce(tweets[i].pos/ofVec2f(simulationWidth,simulationHeight), tweets[i].force/ofVec2f(simulationWidth,simulationHeight) * fluidForceScale * tweetLayerOpacity * tweets[i].deathAttenuation );
-	}
+//	for(int i = 0; i < tweets.size(); i++){
+//		fluidRef->applyForce(tweets[i].pos/ofVec2f(simulationWidth,simulationHeight), tweets[i].force/ofVec2f(simulationWidth,simulationHeight) * fluidForceScale * tweetLayerOpacity * tweets[i].deathAttenuation );
+//	}
 	
 	for(int i = 0; i < tweets.size(); i++){
 		tweets[i].update();

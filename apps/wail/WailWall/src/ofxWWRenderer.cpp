@@ -50,7 +50,7 @@ void ofxWWRenderer::setup(int width, int height){
 	tweets.blobsRef = blobs;
 	
 	caustics.shaderPath = "shaders/";
-	caustics.setup(width/8, height/8);
+	caustics.setup(width/4, height/4);
 	
 	colorField.loadImage("images/color_palette.png");
 	fluid.sampleTexture = &colorField;
@@ -83,6 +83,12 @@ void ofxWWRenderer::setup(int width, int height){
 	warpShader.setUniform1i("warp",1);
 	warpShader.end();
 
+	glowShader.load("shaders/blendcaustics");
+	glowShader.begin();
+	glowShader.setUniform1i("base",0);
+	glowShader.setUniform1i("caustics",1);	
+	glowShader.end();
+	
 	enableFluid = false;
 	justDrawWarpTexture = false;
 
@@ -110,6 +116,9 @@ void ofxWWRenderer::setupGui(){
 	webGui.addSlider("Light X", caustics.light.x, -1.0, 1.0);
 	webGui.addSlider("Light Y", caustics.light.y, -1.0, 1.0);
 	webGui.addSlider("Light Z", caustics.light.z, -1.0, 1.0);
+	webGui.addSlider("Glow Amount", glowAmount, 0, 10); 
+	webGui.addSlider("Drop Scale", dropScale, 10, 100);
+	webGui.addSlider("Drop Force", dropForce, .001, 1.0);
 	webGui.addToggle("Draw Debug Texture", drawCausticsDebug);
 	
 	webGui.addPage("Fluid");
@@ -154,10 +163,6 @@ void ofxWWRenderer::update(){
 	}
 	
 	if(enableCaustics){
-		//TEMPORARY random force
-		if(ofRandomuf() > .5)
-			caustics.addDrop(ofRandomuf()*1024, ofRandomuf()*1024, 20, ofGetFrameNum() % 2 == 0 ? 0.02 : -0.02);
-		
 		caustics.update();
 	}
 	
@@ -166,11 +171,13 @@ void ofxWWRenderer::update(){
 	for(it = blobs->begin(); it != blobs->end(); it++){
 		if(it->second.z > maxTouchZ){
 			maxTouchZ = it->second.z;
-		}		
+			
+		}	
+		caustics.addDrop(caustics.getTextureReference().getWidth()*it->second.x, 
+						 caustics.getTextureReference().getHeight()*it->second.y, dropScale, ofGetFrameNum() % 2 == 0 ? dropForce : -dropForce);
 	}
 
 	float targetOpacity = ofMap(maxTouchZ, layerBarrierZ-layerBarrierWidth/2, layerBarrierZ+layerBarrierWidth/2, 1.0, 0.0, true);
-
 	layer1Opacity += (targetOpacity - layer1Opacity) * .1; //dampen
 	tweets.tweetLayerOpacity = layer1Opacity;
 	tweets.canSelectSearchTerms = maxTouchZ > layerBarrierZ;
@@ -187,21 +194,24 @@ void ofxWWRenderer::render(){
 	//effects
 	renderGradientOverlay();
 	renderDynamics();
-	renderWarpMap();
+//	renderWarpMap();
 	
 	//blit to main render target
 	renderTarget.begin();
 	ofClear(0);
 	ofEnableAlphaBlending();
-//	gradientOverlay.draw(0,0,targetWidth,targetHeight);
-						 
+	//gradientOverlay.draw(0,0,targetWidth,targetHeight);
+					
+
 	//BLIT DYNAMICS
-	warpShader.begin();
-	warpShader.setUniform1f("warpScale", warpAmount);
+	glowShader.begin();
+	//warpShader.setUniform1f("warpScale", warpAmount);
+	glowShader.setUniform1f("glowScale", glowAmount);
 	//our shader uses two textures, the top layer and the alpha
 	//we can load two textures into a shader using the multi texture coordinate extensions
 	glActiveTexture(GL_TEXTURE0_ARB);
-	accumulator[accumbuf].getTextureReference().bind();
+	//accumulator[accumbuf].getTextureReference().bind();
+	gradientOverlay.getTextureReference().bind();
 	
 	glActiveTexture(GL_TEXTURE1_ARB);
 	caustics.getTextureReference().bind();
@@ -214,15 +224,15 @@ void ofxWWRenderer::render(){
 	glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, 0);
 	glVertex2f( 0, 0 );
 	
-	glMultiTexCoord2d(GL_TEXTURE0_ARB, accumulator[accumbuf].getWidth(), 0);
+	glMultiTexCoord2d(GL_TEXTURE0_ARB, gradientOverlay.getWidth(), 0);
 	glMultiTexCoord2d(GL_TEXTURE1_ARB, caustics.getTextureReference().getWidth(), 0);
 	glVertex2f( targetWidth, 0 );
 	
-	glMultiTexCoord2d(GL_TEXTURE0_ARB, accumulator[accumbuf].getWidth(), accumulator[accumbuf].getHeight());
+	glMultiTexCoord2d(GL_TEXTURE0_ARB, gradientOverlay.getWidth(), gradientOverlay.getHeight());
 	glMultiTexCoord2d(GL_TEXTURE1_ARB, caustics.getTextureReference().getWidth(), caustics.getTextureReference().getHeight());
 	glVertex2f( targetWidth, targetHeight );
 	
-	glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, accumulator[accumbuf].getHeight());
+	glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, gradientOverlay.getHeight());
 	glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, caustics.getTextureReference().getHeight());
 	glVertex2f( 0, targetHeight );
 	
@@ -233,18 +243,22 @@ void ofxWWRenderer::render(){
 	caustics.getTextureReference().unbind();
 	
 	glActiveTexture(GL_TEXTURE0_ARB);
-	accumulator[accumbuf].getTextureReference().unbind();
+	//accumulator[accumbuf].getTextureReference().unbind();
+	gradientOverlay.getTextureReference().unbind();
 	accumbuf = (accumbuf+1)%2;
 	
-	warpShader.end();
+	glowShader.end();
 	
 	tweets.renderTweets();	
 	tweets.renderSearchTerms();
 	
-	
 	//DEBUG
 	if(justDrawWarpTexture){
 		warpMap.draw(0,0);	
+	}
+	
+	if(drawCausticsDebug){
+		caustics.getTextureReference().draw(0, 0, targetWidth, targetHeight);
 	}
 	
 	if(drawTouchDebug){ 
@@ -300,7 +314,6 @@ void ofxWWRenderer::renderDynamics(){
 	ofPushStyle();
 	ofSetColor(255, 255, 255);
 
-	gradientOverlay.draw(0,0,targetWidth,targetHeight);
 	
 //	alphaFade.begin();
 //	alphaFade.setUniform1f("fadeSpeed", tweets.causticFadeSpeed);
@@ -384,12 +397,10 @@ void ofxWWRenderer::renderGradientOverlay(){
 	gradientOverlay.begin();
 	ofClear(0, 0, 0);
 
-	if(drawCausticsDebug){
-		caustics.getTextureReference().draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());	
-	}
-	else if(useBackgroundSetA){
+	if(useBackgroundSetA){
 		layerTwoBackgroundA.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
-		ofSetColor(255, 255, 255, layer1Opacity*255);				
+		ofSetColor(255, 255, 255, layer1Opacity*255);		
+//		cout << "layer1Opacity " << layer1Opacity << endl;
 		layerOneBackgroundA.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
 	}
 	else{
@@ -398,7 +409,6 @@ void ofxWWRenderer::renderGradientOverlay(){
 		layerOneBackgroundB.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
 	}
 	
-
 	gradientOverlay.end();
 	ofPopStyle();
 	

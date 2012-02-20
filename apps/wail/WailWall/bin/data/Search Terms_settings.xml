@@ -41,6 +41,6 @@
     </SliderFloat_Search_Hand_Attract>
     <Toggle_Search_Debug>
         <name>Search Debug</name>
-        <value>0</value>
+        <value>1</value>
     </Toggle_Search_Debug>
 </controls>

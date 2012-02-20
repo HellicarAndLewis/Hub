@@ -89,6 +89,7 @@ ofTexture& ofxCaustics::getTextureReference(){
 
 void ofxCaustics::stepSimulation(){
 	waterTex[waterswapcur].begin();
+	ofDisableAlphaBlending();
 	
 	updater.begin();
 	updater.setUniform2f("delta",delta,delta);
@@ -104,6 +105,7 @@ void ofxCaustics::stepSimulation(){
 
 void ofxCaustics::updateNormals(){
 	waterTex[waterswapcur].begin();
+	ofDisableAlphaBlending();
 	
 	normals.begin();
 	normals.setUniform2f("delta",delta,delta);

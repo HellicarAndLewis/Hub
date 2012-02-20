@@ -39,5 +39,5 @@ void main() {
 	float oldArea = length(dFdx(oldPos)) * length(dFdy(oldPos));
 	float newArea = length(dFdx(newPos)) * length(dFdy(newPos));
 	
-	gl_FragColor = vec4(oldArea / newArea * .2);//, 0.0, 0.0, 0.0);	
+	gl_FragColor = vec4(oldArea / newArea * .2, 0.0, 0.0, 1.0);//, 0.0, 0.0, 0.0);	
 }

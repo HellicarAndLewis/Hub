@@ -1,7 +1,7 @@
 <controls>
     <Toggle_Flow_Sideways>
         <name>Flow Sideways</name>
-        <value>0</value>
+        <value>1</value>
     </Toggle_Flow_Sideways>
     <SliderFloat_Flow_Speed>
         <name>Flow Speed</name>
@@ -9,23 +9,23 @@
     </SliderFloat_Flow_Speed>
     <SliderFloat_Flow_Chaos>
         <name>Flow Chaos</name>
-        <value>2.450000</value>
+        <value>7.850000</value>
     </SliderFloat_Flow_Chaos>
     <SliderFloat_Wall_Repulsion_Dist>
         <name>Wall Repulsion Dist</name>
-        <value>562.500000</value>
+        <value>220.500000</value>
     </SliderFloat_Wall_Repulsion_Dist>
     <SliderFloat_Wall_Repulsion_Atten>
         <name>Wall Repulsion Atten</name>
-        <value>0.200000</value>
+        <value>0.093000</value>
     </SliderFloat_Wall_Repulsion_Atten>
     <SliderFloat_Tweet_Repulsion_Dist>
         <name>Tweet Repulsion Dist</name>
-        <value>301.500000</value>
+        <value>85.500000</value>
     </SliderFloat_Tweet_Repulsion_Dist>
     <SliderFloat_Tweet_Repulsion_Atten>
         <name>Tweet Repulsion Atten</name>
-        <value>0.051000</value>
+        <value>0.039000</value>
     </SliderFloat_Tweet_Repulsion_Atten>
     <SliderFloat_Fluid_Force_Scale>
         <name>Fluid Force Scale</name>
