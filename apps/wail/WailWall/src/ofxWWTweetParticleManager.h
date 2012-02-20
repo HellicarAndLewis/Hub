@@ -184,7 +184,6 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	void handleSearch();
 	void handleTouchSearch();
 	void handleTweetSearch();	
-	void searchForTerm(ofxWWSearchTerm& term);	
 	void finishSearch();
 	
 	float weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet);

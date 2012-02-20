@@ -9,7 +9,7 @@
     </SliderInt_Search_Font_Size>
     <SliderFloat_Search_Min_Opacity>
         <name>Search Min Opacity</name>
-        <value>0.382000</value>
+        <value>0.400000</value>
     </SliderFloat_Search_Min_Opacity>
     <SliderFloat_Touch_Min_Dist>
         <name>Touch Min Dist</name>
