@@ -14,23 +14,23 @@ ofxWWSearchTerm::ofxWWSearchTerm(){
 	selected = false;
 	isHolding = false;
 	manager = NULL;
-	touchWeight = 0;
 	dead = false;
+	opacity  = .0;
 }
 
 void ofxWWSearchTerm::update(){
-	float targetOpacity;
+	
 	if(!touchPresent){
-		targetOpacity = manager->searchMinOpacity;
 		isHolding = false;
-		selected = false;
 	}
-	else if(selected){
-		targetOpacity = 1.0;
+	
+	float targetOpacity;	
+	if(selected){
+		//targetOpacity = 1.0;
+		opacity = 1.0;
 	}
-	// there is a touch && we aren't yet selected, calculate th new opacity
 	else {
-		targetOpacity = 1 - manager->tweetLayerOpacity;
+		targetOpacity = (1 - manager->tweetLayerOpacity)+manager->searchMinOpacity;
 		float distance = closestPoint.distance(pos);
 		
 		if(!isHolding && distance < manager->searchTermMinDistance){
@@ -47,6 +47,7 @@ void ofxWWSearchTerm::update(){
 	}
 	
 	opacity += (targetOpacity - opacity)*.1;
+	//opacity = targetOpacity;
 	//death attenuation
 	if(dead){
 		opacity *= ofMap(ofGetElapsedTimef(), killedTime, killedTime+manager->searchTermFadeOutTime, 1.0, 0, true);
@@ -67,7 +68,14 @@ void ofxWWSearchTerm::draw(){
 	ofColor selectedColor = manager->atSignColor;
 	ofColor baseColor = manager->layerTwoFontColor;
 	baseColor.a = selectedColor.a = opacity*255;
-	float holdLerp = isHolding ? ofMap(ofGetElapsedTimef(), holdStartTime, holdStartTime+manager->searchTermMinHoldTime, .0, 1.0, true) : 0.0 ;
+	float holdLerp = 0.0;
+	if(selected){
+		holdLerp = 1.0;
+	}
+	else if(isHolding){
+		holdLerp = ofMap(ofGetElapsedTimef(), holdStartTime, holdStartTime+manager->searchTermMinHoldTime, .0, 1.0, true);
+	}
+	
 	ofSetColor( baseColor.lerp(selectedColor, holdLerp) );
 			   
 	//TODO center this

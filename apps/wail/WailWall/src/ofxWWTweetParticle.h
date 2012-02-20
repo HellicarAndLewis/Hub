@@ -73,6 +73,7 @@ class ofxWWTweetParticle {
 	ofVec2f getTweetLineTwoDrawPos();
 	ofVec2f getAtDrawPos();
 	
+	float typePlacementTweenPos();
 	void recalculateBoundingRects();
 
 };

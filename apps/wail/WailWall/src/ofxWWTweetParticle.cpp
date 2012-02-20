@@ -97,7 +97,7 @@ void ofxWWTweetParticle::update(){
 	//interaction tweet layer attenuation
 	if(isSearchTweet){
 		opacity *= (1-manager->tweetLayerOpacity);
-		if(!manager->canSelectSearchTerms){
+		if(!manager->isDoingSearch){
 			isSearchTweet = false; 
 		}
 	}
@@ -127,13 +127,14 @@ void ofxWWTweetParticle::drawDot(){
 	ofSetRectMode(OF_RECTMODE_CENTER);
 	float alpha;
 	if(isSearchTweet){
-		alpha = 1-manager->tweetLayerOpacity;
+		alpha = 1.0;
 	}
 	else {
 		//alpha = deathAttenuation * manager->tweetLayerOpacity;
 		alpha = manager->tweetLayerOpacity;
 		alpha *= ofMap(clampedSelectionWeight, 0, .5, 1.0, 0, true);
 	}
+	
 	float scale = useBurstOne ? 1.2 : 1.0;
 	if(isSearchTweet){
 		scale *= 1.5;
@@ -246,18 +247,22 @@ ofVec2f ofxWWTweetParticle::getBoundingCorner(int cornerIndex){
 }
 
 ofVec2f ofxWWTweetParticle::getUserDrawPos(){
-	return ofVec2f(pos.x - userNameWidth/2, pos.y + manager->userNameYOffset * ofMap(clampedSelectionWeight,0,.3,0,1.0,true));
+	return ofVec2f(pos.x - userNameWidth/2, pos.y + manager->userNameYOffset * typePlacementTweenPos());
 }
 
 ofVec2f ofxWWTweetParticle::getTweetLineOneDrawPos(){
-	return ofVec2f(pos.x - lineOneWidth/2, pos.y + manager->tweetYOffset*ofMap(clampedSelectionWeight,0,.3,0,1.0,true));
+	return ofVec2f(pos.x - lineOneWidth/2, pos.y + manager->tweetYOffset * typePlacementTweenPos());
 }
 
 ofVec2f ofxWWTweetParticle::getTweetLineTwoDrawPos(){
-	return ofVec2f(pos.x - lineTwoWidth/2, pos.y + manager->tweetYOffset*ofMap(clampedSelectionWeight,0,.3,0,1.0,true) + lineOneHeight + manager->tweetLineSpace);
+	return ofVec2f(pos.x - lineTwoWidth/2, pos.y + manager->tweetYOffset*typePlacementTweenPos() + lineOneHeight + manager->tweetLineSpace);
 }
 	
 ofVec2f ofxWWTweetParticle::getAtDrawPos(){
 	return ofVec2f(pos.x - atSignWidth, pos.y + atSignHeight/2);//ADD SHIFT
+}
+
+float ofxWWTweetParticle::typePlacementTweenPos(){
+	return isSearchTweet ? 1.0 : ofMap(clampedSelectionWeight,0,.3,0,1.0,true);
 }
 
