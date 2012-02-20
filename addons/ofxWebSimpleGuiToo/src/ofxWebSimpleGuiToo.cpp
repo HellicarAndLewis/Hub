@@ -73,6 +73,11 @@ void ofxWebSimpleGuiToo::httpGet(string url) {
 			//	vector<string> ss = ofSplitString(value, ",");
 			//	for(int i = 0; i < 4; i++) 
 			//		t->values[i] = atof(ss[i].c_str());
+			}  else if(ctrl->controlType=="HexColorPicker") {
+					ofxSimpleGuiHexColorPicker *t = (ofxSimpleGuiHexColorPicker*) ctrl;
+					vector<string> ss = ofSplitString(value, ",");
+					for(int i = 0; i < 3; i++) 
+						t->setValue(atof(ss[i].c_str()), i);
 
 			} else if(ctrl->controlType=="Slider2D") {
 				ofxSimpleGuiSlider2d *t = (ofxSimpleGuiSlider2d*) ctrl;
@@ -153,6 +158,12 @@ string ofxWebSimpleGuiToo::describeControl(ofxSimpleGuiControl *ctrl) {
 		
 	//	desc += ", \"value\":\""
 	//	+ofToString(t->values[0])+","+ofToString(t->values[1])+","+ofToString(t->values[2])+","+ofToString(t->values[3])+"\"";
+	} else if(ctrl->controlType=="HexColorPicker") {
+		ofxSimpleGuiHexColorPicker *t = (ofxSimpleGuiHexColorPicker*)ctrl;
+		
+		
+			desc += ", \"value\":\""
+			+ofToString(t->getValue(0))+","+ofToString(t->getValue(1))+","+ofToString(t->getValue(2))+"\"";
 		
 	}
 	desc += "}";
