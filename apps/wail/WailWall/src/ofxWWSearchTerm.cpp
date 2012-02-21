@@ -26,6 +26,7 @@ ofxWWSearchTerm::ofxWWSearchTerm(){
 
 void ofxWWSearchTerm::update(){
 	
+	selection.update();
 	if(!touchPresent){
 		isHolding = false;
 	}
@@ -71,6 +72,7 @@ void ofxWWSearchTerm::draw(){
 		p = 1.0 - MIN(1,diff / tween_duration);
 	}
 	
+	p = selection.getValue();
 	ofSetColor( baseColor.lerp(selectedColor, p) );
 			   
 	//TODO center this
@@ -114,4 +116,15 @@ void ofxWWSearchTerm::highlight() {
 		highlighted_on = ofGetElapsedTimeMillis() + tween_duration;
 		is_highlighting = true;
 	}
+}
+
+void ofxWWSearchTerm::warmUp() {
+	selection.warmUp();
+	printf("warm up\n");
+}
+void ofxWWSearchTerm::select() {
+	selection.setTarget(1);
+}
+void ofxWWSearchTerm::deselect() {
+	selection.setTarget(0);
 }
