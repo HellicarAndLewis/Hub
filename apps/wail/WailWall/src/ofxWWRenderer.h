@@ -61,12 +61,14 @@ class ofxWWRenderer: public KinectTouchListener {
 	ofFbo layer1Target;
 	ofFbo layer2Target;
 	ofFbo screenshotTarget;
+    ofFbo background;
 	
 	//pass functions
 	void typeLayer();
 	void renderWarpMap();
 	void renderDynamics();
 	void renderGradientOverlay();
+    void renderBackground();
 	
 	void renderLayer1();
 	void renderLayer2();
@@ -133,6 +135,9 @@ class ofxWWRenderer: public KinectTouchListener {
 	// this takes care of call-to-action
 	// timing and drawing
 	CallToAction callToAction;
+    
+    int surfaceColourHex;
+    int bottomColourHex;
 };
 
 inline ofFbo& ofxWWRenderer::getScreenshotFbo() {

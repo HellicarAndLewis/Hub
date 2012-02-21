@@ -30,6 +30,10 @@ void ofxWWRenderer::setup(int width, int height){
 	renderTarget.allocate(width, height, GL_RGB);
 	
 	gradientOverlay.allocate(width/8, height/8, GL_RGB);
+    background.allocate(width/8, height/8, GL_RGB); //going to be scaled anyway, and a single colour
+    
+    surfaceColourHex = 0xffffff;
+    bottomColourHex = 0x000000;
 	
 	layer1Target.allocate(width, height, GL_RGBA);
 	layer2Target.allocate(width, height, GL_RGBA);
@@ -158,6 +162,10 @@ void ofxWWRenderer::setupGui(){
 	webGui.addSlider("Noise Wobble Amplitude X", noiseWobbleAmplitudeX, 0, 100);
 	webGui.addSlider("Noise Wobble Amplitude Y", noiseWobbleAmplitudeY, 0, 100);
 	webGui.addToggle("Just Draw Warp", justDrawWarpTexture);
+    
+    webGui.addPage("Colours");
+    webGui.addHexColor("Surface Background", surfaceColourHex);
+    webGui.addHexColor("Bottom Background", bottomColourHex);
 
 	tweets.setupGui();
 }
@@ -443,7 +451,25 @@ void ofxWWRenderer::renderGradientOverlay(){
 	
 	gradientOverlay.end();
 	ofPopStyle();
+}
+
+void ofxWWRenderer::renderBackground(){
+	ofPushStyle();
+	background.begin();
+	ofClear(0);
+	ofEnableAlphaBlending();
+    
+    ofColor surface = ofColor::fromHex(surfaceColourHex);
+    ofColor bottom = ofColor::fromHex(bottomColourHex);
+    
+    surface.lerp(bottom, layer1Opacity);
+    
+    ofSetColor(surface);
+    
+    ofRect(0, 0, background.getWidth(), background.getHeight());
 	
+	background.end();
+	ofPopStyle();    
 }
 
 ofFbo& ofxWWRenderer::getFbo(){

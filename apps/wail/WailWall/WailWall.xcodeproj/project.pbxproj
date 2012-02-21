@@ -71,6 +71,7 @@
 		54F29A7214EA945D003A8397 /* libmysqlclient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54F29A7114EA945D003A8397 /* libmysqlclient.a */; };
 		54F29A7514EA9507003A8397 /* TwitterMySQL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54F29A7314EA9507003A8397 /* TwitterMySQL.cpp */; };
 		54F29A7814EA950C003A8397 /* TwitterSearchTermQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54F29A7614EA950C003A8397 /* TwitterSearchTermQueue.cpp */; };
+		5DB011B814F40718008325B5 /* ofxSimpleGuiHexColorPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DB011B614F40718008325B5 /* ofxSimpleGuiHexColorPicker.cpp */; };
 		A602AAB914F057F000EAD6E3 /* alphafade.frag in Sources */ = {isa = PBXBuildFile; fileRef = A602AAB714F057F000EAD6E3 /* alphafade.frag */; };
 		A602AABA14F057F000EAD6E3 /* alphafade.vert in Sources */ = {isa = PBXBuildFile; fileRef = A602AAB814F057F000EAD6E3 /* alphafade.vert */; };
 		A621C4C914D73342008AA7F0 /* ofxMPMFluid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A621C4BF14D73342008AA7F0 /* ofxMPMFluid.cpp */; };
@@ -437,6 +438,8 @@
 		54F29A7614EA950C003A8397 /* TwitterSearchTermQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TwitterSearchTermQueue.cpp; path = ../../SharedCode/Twitter/TwitterSearchTermQueue.cpp; sourceTree = "<group>"; };
 		54F29A7714EA950C003A8397 /* TwitterSearchTermQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterSearchTermQueue.h; path = ../../SharedCode/Twitter/TwitterSearchTermQueue.h; sourceTree = "<group>"; };
 		54F29A7F14EACDC8003A8397 /* TwitterSearchTerm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterSearchTerm.h; path = ../../SharedCode/Twitter/TwitterSearchTerm.h; sourceTree = "<group>"; };
+		5DB011B614F40718008325B5 /* ofxSimpleGuiHexColorPicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSimpleGuiHexColorPicker.cpp; sourceTree = "<group>"; };
+		5DB011B714F40718008325B5 /* ofxSimpleGuiHexColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSimpleGuiHexColorPicker.h; sourceTree = "<group>"; };
 		A602AAB714F057F000EAD6E3 /* alphafade.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = alphafade.frag; sourceTree = "<group>"; };
 		A602AAB814F057F000EAD6E3 /* alphafade.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = alphafade.vert; sourceTree = "<group>"; };
 		A621C4BF14D73342008AA7F0 /* ofxMPMFluid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMPMFluid.cpp; sourceTree = "<group>"; };
@@ -1687,6 +1690,8 @@
 		EA8E878414C492ED00940115 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				5DB011B614F40718008325B5 /* ofxSimpleGuiHexColorPicker.cpp */,
+				5DB011B714F40718008325B5 /* ofxSimpleGuiHexColorPicker.h */,
 				EA8E878514C492ED00940115 /* ofxSimpleGuiButton.cpp */,
 				EA8E878614C492ED00940115 /* ofxSimpleGuiButton.h */,
 				EA8E878714C492ED00940115 /* ofxSimpleGuiColorPicker.cpp */,
@@ -2135,6 +2140,7 @@
 				1F082DE514F290E1005008A4 /* CallToAction.cpp in Sources */,
 				1F082DF214F2D6D2005008A4 /* ofxWWSearchTermManager.cpp in Sources */,
 				4848E59014F2FDF000AA5553 /* TwitterMentionsThread.cpp in Sources */,
+				5DB011B814F40718008325B5 /* ofxSimpleGuiHexColorPicker.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
