@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1F082DE514F290E1005008A4 /* CallToAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F082DE314F290E1005008A4 /* CallToAction.cpp */; };
 		1F082DF214F2D6D2005008A4 /* ofxWWSearchTermManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F082DF114F2D6D1005008A4 /* ofxWWSearchTermManager.cpp */; };
+		1F58DC4314F40DEB00767916 /* Colours.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F58DC4214F40DEB00767916 /* Colours.cpp */; };
 		4818285D14EEF48600BAA8B9 /* FTBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818280414EEF48600BAA8B9 /* FTBuffer.cpp */; };
 		4818285E14EEF48600BAA8B9 /* FTCharmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818280514EEF48600BAA8B9 /* FTCharmap.cpp */; };
 		4818285F14EEF48600BAA8B9 /* FTCleanup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818280814EEF48600BAA8B9 /* FTCleanup.cpp */; };
@@ -211,6 +212,8 @@
 		1F082DF114F2D6D1005008A4 /* ofxWWSearchTermManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxWWSearchTermManager.cpp; sourceTree = "<group>"; };
 		1F082DF314F2D6FD005008A4 /* ofxWWSearchTermManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxWWSearchTermManager.h; sourceTree = "<group>"; };
 		1F2E091514F3DA9D0035A851 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
+		1F58DC4214F40DEB00767916 /* Colours.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Colours.cpp; sourceTree = "<group>"; };
+		1F58DC4414F40DF500767916 /* Colours.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colours.h; sourceTree = "<group>"; };
 		1FC55C4514F400D000AC4E26 /* FuzzySelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FuzzySelection.h; sourceTree = "<group>"; };
 		1FE6C33914F2604B007F7B84 /* DisplayLayout_dev.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = DisplayLayout_dev.xml; path = bin/data/DisplayLayout_dev.xml; sourceTree = "<group>"; };
 		1FE6C33A14F27E38007F7B84 /* TweetProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetProvider.h; sourceTree = "<group>"; };
@@ -1198,6 +1201,8 @@
 			children = (
 				A683B90E14D5A9A800C3B6F7 /* ofxWWRenderer.h */,
 				A683B90F14D5A9A800C3B6F7 /* ofxWWRenderer.cpp */,
+				1F58DC4214F40DEB00767916 /* Colours.cpp */,
+				1F58DC4414F40DF500767916 /* Colours.h */,
 			);
 			name = Renderer;
 			sourceTree = "<group>";
@@ -2143,6 +2148,7 @@
 				1F082DF214F2D6D2005008A4 /* ofxWWSearchTermManager.cpp in Sources */,
 				4848E59014F2FDF000AA5553 /* TwitterMentionsThread.cpp in Sources */,
 				5DB011B814F40718008325B5 /* ofxSimpleGuiHexColorPicker.cpp in Sources */,
+				1F58DC4314F40DEB00767916 /* Colours.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

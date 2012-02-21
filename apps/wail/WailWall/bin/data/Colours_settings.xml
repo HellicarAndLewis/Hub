@@ -1,0 +1,14 @@
+<controls>
+    <HexColorPicker_Surface_Background>
+        <name>Surface Background</name>
+        <values_0>251.000000</values_0>
+        <values_1>38.000000</values_1>
+        <values_2>244.000000</values_2>
+    </HexColorPicker_Surface_Background>
+    <HexColorPicker_Bottom_Background>
+        <name>Bottom Background</name>
+        <values_0>12.000000</values_0>
+        <values_1>19.000000</values_1>
+        <values_2>87.000000</values_2>
+    </HexColorPicker_Bottom_Background>
+</controls>

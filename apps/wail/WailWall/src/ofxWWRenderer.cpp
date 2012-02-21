@@ -435,7 +435,7 @@ void ofxWWRenderer::renderGradientOverlay(){
 	gradientOverlay.begin();
 	ofClear(0);
 	ofEnableAlphaBlending();
-	
+	/*
 	if(useBackgroundSetA){
 		layerTwoBackgroundA.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
 		ofSetColor(255, 255, 255, layer1Opacity*255);		
@@ -449,8 +449,19 @@ void ofxWWRenderer::renderGradientOverlay(){
 		layerOneBackgroundB.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
 	}
 	
-	gradientOverlay.end();
+	
+	*/
+	ofColor surface = ofColor::fromHex(surfaceColourHex);
+    ofColor bottom = ofColor::fromHex(bottomColourHex);
+    
+    surface.lerp(bottom, layer1Opacity);
+    
+    ofSetColor(surface);
+    
+    ofRect(0, 0, background.getWidth(), background.getHeight());
 	ofPopStyle();
+	
+	gradientOverlay.end();
 }
 
 void ofxWWRenderer::renderBackground(){
