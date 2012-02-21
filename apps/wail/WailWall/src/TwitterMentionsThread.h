@@ -6,7 +6,11 @@
 #include "Twitter.h"
 #include "ofMain.h"
 #include <string>
+#include <Poco/String.h>
+#include <Poco/StringTokenizer.h>
 
+using Poco::trim;
+using Poco::StringTokenizer;
 using std::string;
 namespace rt = roxlu::twitter;
 
@@ -21,6 +25,7 @@ struct TwitterMentionSorter {
 struct TwitterMentionSearchTerm {
 	rtt::Tweet tweet;
 	string search_term;
+	bool is_old;
 };
 
 class TwitterMentionsThread : public ofThread {

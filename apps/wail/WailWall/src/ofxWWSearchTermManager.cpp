@@ -1,16 +1,13 @@
-//
-//  ofxWWSearchTermManager.cpp
-//  WailWall
-//
-//  Created by Joel Lewis on 20/02/2012.
-//  Copyright (c) 2012 Hellicar & Lewis. All rights reserved.
-//
-
 #include "ofxWWSearchTermManager.h"
 #include "ofxWWTweetParticleManager.h"
 
-ofxWWSearchTermManager::ofxWWSearchTermManager() {
-	selectedSearchTermIndex = -1;
+ofxWWSearchTermManager::ofxWWSearchTermManager()
+	:screenshot_userdata(NULL)
+	,should_take_picture_on(FLT_MAX)
+	,selectedSearchTermIndex(-1)
+	,twitter(NULL)
+{
+
 	
 }
 
@@ -18,16 +15,6 @@ ofxWWSearchTermManager::ofxWWSearchTermManager() {
 void ofxWWSearchTermManager::setup(TwitterApp *twitter, ofxWWTweetParticleManager *parent) {
 	this->parent = parent;
 	this->twitter = twitter;
-	// Get previously received search terms.
-	// -------------------------------------
-	vector<TwitterSearchTerm*> stored_search_terms;
-	if(twitter->getUnusedSearchTerms(stored_search_terms)) {
-		vector<TwitterSearchTerm*>::iterator it = stored_search_terms.begin();
-		while(it != stored_search_terms.end()) {
-			addSearchTerm((*it)->user, (*it)->search_term);
-			++it;
-		}
-	}
 }
 void ofxWWSearchTermManager::update() {
 	
@@ -43,6 +30,19 @@ void ofxWWSearchTermManager::update() {
 	
 	
 	doTouchInteraction();
+	
+	if(ofGetElapsedTimef() > should_take_picture_on) {
+		screenshot_callback(screenshot_searchterm.user, screenshot_userdata);
+		should_take_picture_on = FLT_MAX;
+		
+		// do not store this item in the queue.
+		if(twitter != NULL) {
+			twitter->setSearchTermAsUsed(
+						 screenshot_searchterm.user
+						,screenshot_searchterm.term
+			);
+		}
+	}
 }
 
 void ofxWWSearchTermManager::doTouchInteraction() {
@@ -117,15 +117,25 @@ void ofxWWSearchTermManager::render() {
 		searchTerms[i].draw();
 	}
 }
-void ofxWWSearchTermManager::addSearchTerm(const string& user, const string& term) {
-	ofxWWSearchTerm searchTerm;
-	searchTerm.pos = ofVec2f(ofRandom(parent->wallRepulsionDistance, parent->simulationWidth-parent->wallRepulsionDistance), 
+void ofxWWSearchTermManager::addSearchTerm(const string& user, const string& term, bool isUsed) {
+	ofxWWSearchTerm search_term;
+	search_term.pos = ofVec2f(ofRandom(parent->wallRepulsionDistance, parent->simulationWidth-parent->wallRepulsionDistance), 
 							 ofRandom(parent->wallRepulsionDistance, parent->simulationHeight-parent->wallRepulsionDistance));
-	searchTerm.manager = this;
-	searchTerm.term = term;
-	searchTerm.user = user;
-	printf(">>>>>>>>>>>>>>>>>>>>>>>> %s <<<<<<<<<<<<<<<<<<<<<<<<<<\n", searchTerm.term.c_str());
-	incomingSearchTerms.push(searchTerm);
+	search_term.manager = this;
+	search_term.term = term;
+	search_term.user = user;
+	
+	if(!isUsed) {
+		printf(">>>>>>>>>>>>>>>>>>>>>>>> %s <<<<<<<<<<<<<<<<<<<<<<<<<<\n", search_term.term.c_str());
+		incomingSearchTerms.push(search_term);
+	}
+	else {
+		// When the search term is already used we directly add it to the queue.
+		// This part is only executed when when we start the applications and 
+		// retrieve the mentions from twitter.
+		searchTerms.push_back(search_term);
+	}
+
 }
 
 
@@ -134,7 +144,7 @@ void ofxWWSearchTermManager::doSearchTermSelectionTest() {
 	
 	// Check if there is a hand in the plinth.
 	if(parent->blobsRef->empty()) {
-		printf("(1)\n");
+		//printf("(1)\n");
 		for(int i = 0; i < len; ++i) {
 		
 			// TODO add check on timer to keep the current selected term selected.
@@ -148,7 +158,7 @@ void ofxWWSearchTermManager::doSearchTermSelectionTest() {
 	float smallest_dist_sq = FLT_MAX;
 	float in_range_dist = 0.1 * parent->simulationWidth;
 	in_range_dist *= in_range_dist;
-	printf(">> %f\n", in_range_dist);
+	//printf(">> %f\n", in_range_dist);
 	
 	for(int i = 0; i < len; ++i) {
 		ofxWWSearchTerm& search_term = searchTerms.at(i);
@@ -170,10 +180,10 @@ void ofxWWSearchTermManager::doSearchTermSelectionTest() {
 	}
 	
 	
-	printf("Smallest dist: %f - tweetLayerOpacity: %f\n", smallest_dist_sq, parent->tweetLayerOpacity);
+	//printf("Smallest dist: %f - tweetLayerOpacity: %f\n", smallest_dist_sq, parent->tweetLayerOpacity);
 	
 	if(parent->tweetLayerOpacity >= 0.5) {
-		printf("(2,2,2,2,2,2,2,2,2,2,2	)\n");
+		//printf("(2,2,2,2,2,2,2,2,2,2,2	)\n");
 		return;
 	}
 	else {
@@ -212,7 +222,7 @@ void ofxWWSearchTermManager::doSearchTermSelectionTest() {
 			
 		}
 	}
-	printf("Found search term index: %d\n", closest_search_term_index);
+	//printf("Found search term index: %d\n", closest_search_term_index);
 }
 
 
@@ -237,7 +247,7 @@ void ofxWWSearchTermManager::handleTouchSearch() {
 		if(searchTerms[i].selected){
 			
 			selectedSearchTermIndex = i;
-			parent->shouldTriggerScreenshot = false;
+			//parent->shouldTriggerScreenshot = false;
 			break;
 		}
 	}
@@ -267,9 +277,15 @@ void ofxWWSearchTermManager::handleTweetSearch(){
 		ofxWWSearchTerm term = incomingSearchTerms.front();
 		incomingSearchTerms.pop();
 		
-		parent->shouldTriggerScreenshot = true;
+		//parent->shouldTriggerScreenshot = true;
 		//selectedSearchTermIndex = searchTerms.size();
 		searchTerms.push_back(term);
+		
+		// as soon as the term gets popped from the queue and added to the array 
+		// which gets rendered we tell the system to make a screenshot after
+		// X-seconds
+		should_take_picture_on = ofGetElapsedTimef()+1.5;
+		screenshot_searchterm = term; 
 		
 		if(searchTerms.size() > maxSearchTerms){
 			searchTerms[0].dead = true;
@@ -277,4 +293,9 @@ void ofxWWSearchTermManager::handleTweetSearch(){
 		}
 	}
 	
+}
+
+void ofxWWSearchTermManager::setScreenshotCallback(takeScreenshotCallback func, void* userdata) {
+	screenshot_callback = func;
+	screenshot_userdata = userdata;
 }

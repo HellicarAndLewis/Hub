@@ -5,6 +5,7 @@
 #include "TwitterApp.h"
 #include "ofMain.h"
 
+
 class TweetProviderDB : public TweetProvider {
 public:
 	TweetProviderDB(TwitterApp& app);

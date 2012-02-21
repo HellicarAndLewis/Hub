@@ -40,6 +40,7 @@ class ofxWWRenderer: public KinectTouchListener {
 	float fakeZLevel;
 	
 	ofxWWTweetParticleManager& getTweetManager(); // roxlu 02/07
+	ofxWWSearchTermManager& getSearchTermManager();
 	
 	void stopFluidThread();
 	

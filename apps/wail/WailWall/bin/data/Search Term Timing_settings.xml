@@ -19,14 +19,6 @@
         <name>Touch Min Hold</name>
         <value>2.437500</value>
     </SliderFloat_Touch_Min_Hold>
-    <SliderFloat_Search_Duration>
-        <name>Search Duration</name>
-        <value>9.930000</value>
-    </SliderFloat_Search_Duration>
-    <SliderFloat_Search_Time_Between>
-        <name>Search Time Between</name>
-        <value>15.060000</value>
-    </SliderFloat_Search_Time_Between>
     <SliderFloat_Call_to_action_time>
         <name>Call to action time</name>
         <value>5.000000</value>

@@ -35,6 +35,7 @@ void TweetProviderStream::onStatusUpdate(const rtt::Tweet& tweet) {
 		,::tolower
 	);
 	
+	
 	pcrecpp::RE re("^@dewarshub (.*)$");
 	re.FullMatch(tweet_text_lower, &search_query);
 	if(search_query.length()) {

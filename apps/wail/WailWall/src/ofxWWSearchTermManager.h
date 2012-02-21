@@ -1,15 +1,10 @@
-//
-//  ofxWWSearchTermManager.h
-//  WailWall
-//
-//  Created by Joel Lewis on 20/02/2012.
-//  Copyright (c) 2012 Hellicar & Lewis. All rights reserved.
-//
-
 #pragma once
 
 #include "ofxWWSearchTerm.h"
 #include "TwitterApp.h"
+
+typedef void (*takeScreenshotCallback)(const string& username, void* userdata);
+
 class ofxWWTweetParticleManager;
 
 class ofxWWSearchTermManager {
@@ -21,9 +16,16 @@ public:
 	void update();
 	
 	void render();
-	void addSearchTerm(const string& user, const string& term);
+	void addSearchTerm(const string& user, const string& term, bool isUsed = false);
 	void deselectAllSearchTerms();
 	void doSearchTermSelectionTest();
+	
+	// screenshots
+	void setScreenshotCallback(takeScreenshotCallback func, void* user);
+	takeScreenshotCallback  screenshot_callback;
+	void* screenshot_userdata;
+	float should_take_picture_on;
+	ofxWWSearchTerm screenshot_searchterm;
 	
 	queue<ofxWWSearchTerm> incomingSearchTerms;
 	vector<ofxWWSearchTerm> searchTerms;

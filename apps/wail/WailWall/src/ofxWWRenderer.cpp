@@ -469,6 +469,11 @@ ofxWWTweetParticleManager& ofxWWRenderer::getTweetManager() {
 	return tweets;
 }
 
+ofxWWSearchTermManager& ofxWWRenderer::getSearchTermManager() {
+	return tweets.getSearchTermManager();
+}
+
+
 void ofxWWRenderer::stopFluidThread(){
 	fluid.stopThread(true);
 }
