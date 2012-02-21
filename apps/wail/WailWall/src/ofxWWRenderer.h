@@ -135,9 +135,7 @@ class ofxWWRenderer: public KinectTouchListener {
 	// this takes care of call-to-action
 	// timing and drawing
 	CallToAction callToAction;
-    
-    int surfaceColourHex;
-    int bottomColourHex;
+
 };
 
 inline ofFbo& ofxWWRenderer::getScreenshotFbo() {

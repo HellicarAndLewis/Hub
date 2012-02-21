@@ -9,6 +9,7 @@
 
 #include "ofxWWRenderer.h"
 #include "ofxWebSimpleGuiToo.h"
+#include "Colours.h"
 
 void ofxWWRenderer::setup(int width, int height){
 	targetWidth = width;
@@ -32,8 +33,8 @@ void ofxWWRenderer::setup(int width, int height){
 	gradientOverlay.allocate(width/8, height/8, GL_RGB);
     background.allocate(width/8, height/8, GL_RGB); //going to be scaled anyway, and a single colour
     
-    surfaceColourHex = 0xffffff;
-    bottomColourHex = 0x000000;
+	Colours::set(SURFACE_BG, 0xffffff);
+	Colours::set(SEARCH_BG, 0x000000);
 	
 	layer1Target.allocate(width, height, GL_RGBA);
 	layer2Target.allocate(width, height, GL_RGBA);
@@ -164,8 +165,8 @@ void ofxWWRenderer::setupGui(){
 	webGui.addToggle("Just Draw Warp", justDrawWarpTexture);
     
     webGui.addPage("Colours");
-    webGui.addHexColor("Surface Background", surfaceColourHex);
-    webGui.addHexColor("Bottom Background", bottomColourHex);
+    webGui.addHexColor("Surface Background", Colours::get(SURFACE_BG));
+    webGui.addHexColor("Search Background", Colours::get(SEARCH_BG));
 
 	tweets.setupGui();
 }
@@ -271,9 +272,12 @@ void ofxWWRenderer::render(){
 	
 	accumulator[accumbuf].draw(0, 0);
 	accumbuf = (accumbuf+1)%2;
-
-	tweets.renderTweets();	
+	
+	
 	tweets.renderSearchTerms();
+	
+	tweets.renderTweets();	
+	
 	
 	callToAction.draw();
 	
@@ -451,10 +455,10 @@ void ofxWWRenderer::renderGradientOverlay(){
 	
 	
 	*/
-	ofColor surface = ofColor::fromHex(surfaceColourHex);
-    ofColor bottom = ofColor::fromHex(bottomColourHex);
+	ofColor surface = ofColor::fromHex(Colours::get(SURFACE_BG));
+    ofColor bottom = ofColor::fromHex(Colours::get(SEARCH_BG));
     
-    surface.lerp(bottom, layer1Opacity);
+    surface.lerp(bottom, 1-layer1Opacity);
     
     ofSetColor(surface);
     
@@ -470,10 +474,10 @@ void ofxWWRenderer::renderBackground(){
 	ofClear(0);
 	ofEnableAlphaBlending();
     
-    ofColor surface = ofColor::fromHex(surfaceColourHex);
-    ofColor bottom = ofColor::fromHex(bottomColourHex);
+    ofColor surface = ofColor::fromHex(Colours::get(SURFACE_BG));
+    ofColor bottom = ofColor::fromHex(Colours::get(SEARCH_BG));
     
-    surface.lerp(bottom, layer1Opacity);
+    surface.lerp(bottom, 1-layer1Opacity);
     
     ofSetColor(surface);
     
