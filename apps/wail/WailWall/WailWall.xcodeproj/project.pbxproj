@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1F082DE514F290E1005008A4 /* CallToAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F082DE314F290E1005008A4 /* CallToAction.cpp */; };
+		1F082DF214F2D6D2005008A4 /* ofxWWSearchTermManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F082DF114F2D6D1005008A4 /* ofxWWSearchTermManager.cpp */; };
 		4818285D14EEF48600BAA8B9 /* FTBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818280414EEF48600BAA8B9 /* FTBuffer.cpp */; };
 		4818285E14EEF48600BAA8B9 /* FTCharmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818280514EEF48600BAA8B9 /* FTCharmap.cpp */; };
 		4818285F14EEF48600BAA8B9 /* FTCleanup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818280814EEF48600BAA8B9 /* FTCleanup.cpp */; };
@@ -205,6 +206,8 @@
 /* Begin PBXFileReference section */
 		1F082DE314F290E1005008A4 /* CallToAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CallToAction.cpp; sourceTree = "<group>"; };
 		1F082DE414F290E1005008A4 /* CallToAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallToAction.h; sourceTree = "<group>"; };
+		1F082DF114F2D6D1005008A4 /* ofxWWSearchTermManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxWWSearchTermManager.cpp; sourceTree = "<group>"; };
+		1F082DF314F2D6FD005008A4 /* ofxWWSearchTermManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxWWSearchTermManager.h; sourceTree = "<group>"; };
 		1FE6C33914F2604B007F7B84 /* DisplayLayout_dev.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = DisplayLayout_dev.xml; path = bin/data/DisplayLayout_dev.xml; sourceTree = "<group>"; };
 		1FE6C33A14F27E38007F7B84 /* TweetProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetProvider.h; sourceTree = "<group>"; };
 		4818280314EEF48600BAA8B9 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
@@ -1225,6 +1228,8 @@
 				A621C65814D74D0F008AA7F0 /* ofxWWTweetParticle.cpp */,
 				A621C59714D74819008AA7F0 /* ofxWWTweetParticleManager.h */,
 				A621C59814D74819008AA7F0 /* ofxWWTweetParticleManager.cpp */,
+				1F082DF314F2D6FD005008A4 /* ofxWWSearchTermManager.h */,
+				1F082DF114F2D6D1005008A4 /* ofxWWSearchTermManager.cpp */,
 			);
 			name = Visuals;
 			sourceTree = "<group>";
@@ -2111,6 +2116,7 @@
 				48972C9114F2811200FD9099 /* TweetProviderDB.cpp in Sources */,
 				48972C9414F284F100FD9099 /* TweetProvider.cpp in Sources */,
 				1F082DE514F290E1005008A4 /* CallToAction.cpp in Sources */,
+				1F082DF214F2D6D2005008A4 /* ofxWWSearchTermManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
