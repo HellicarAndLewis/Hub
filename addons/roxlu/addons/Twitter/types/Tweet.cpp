@@ -35,4 +35,12 @@ void Tweet::addUserMention(const string& screenName) {
 	user_mentions.push_back(screenName);
 }
 
+void Tweet::setCreatedAt(const string& date) {
+	struct tm tm;
+	strptime(date.c_str(), "%a %b %d %H:%M:%S %z %Y", &tm);
+	created_at_timestamp = mktime(&tm);
+}
+
+
+
 }}} // roxlu::twitter::data

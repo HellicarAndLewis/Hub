@@ -28,6 +28,8 @@
 #include "TwitterThreadedImageWriter.h"
 #include "IEventListener.h"
 #include "IStreamEventListener.h"
+#include "TwitterMentionsThread.h"
+#include "TwitterMentionsListener.h"
 
 namespace rtt = roxlu::twitter::type;
 namespace rt = roxlu::twitter;
@@ -41,6 +43,7 @@ using std::vector;
  * found.
  *
  */
+/*
 class TwitterAppEvent { 
 public:
 	TwitterAppEvent(rtt::Tweet tweet,  string searchTerm)
@@ -54,8 +57,12 @@ public:
 };
 
 extern ofEvent<TwitterAppEvent> twitter_app_dispatcher;
+*/
 
-class TwitterApp : public TwitterOSCReceiverListener, public roxlu::twitter::IStreamEventListener {
+class TwitterApp : 
+			 public TwitterOSCReceiverListener
+			,public roxlu::twitter::IStreamEventListener 
+{
 
 public:
 
@@ -87,9 +94,11 @@ public:
 	bool getNextSendItemFromSendQueue(string& username, string& filename, int& id);
 
 	
-	void addDefaultListener();
+	void addDefaultListener(); // TODO use better names
 	void addCustomListener(rt::IEventListener& listener);
+	void addTwitterMentionListenerForSearchTerms(TwitterMentionsListener* l);
 	
+	/*
 	template <typename ArgumentsType, class ListenerClass>
 	static void addListener(
 			ListenerClass* listener
@@ -97,6 +106,7 @@ public:
 	{
 		ofAddListener(twitter_app_dispatcher, listener, listenerMethod);
 	}
+	*/
 	
 	// OSC events.
 	virtual void onUpdateBadWordList();
@@ -109,6 +119,7 @@ public:
 	TwitterThreadedImageWriter& getImageWriter();
 	virtual void onTwitterStreamDisconnected();
 	virtual void onTwitterStreamConnected();
+	
 	
 private:
 	bool initialized;
@@ -129,6 +140,7 @@ private:
 	TwitterSearchTermQueue 	search_queue;
 	TwitterMySQL 			mysql;
 	TwitterThreadedImageWriter image_writer;
+	TwitterMentionsThread	mentions;
 
 };
 //`
@@ -182,13 +194,17 @@ inline bool TwitterApp::setSearchTermAsUsed(const string& user, const string& te
 	return search_queue.setSearchTermAsUsed(user, term);
 }
 
-
 inline void TwitterApp::writeScreenshot(const string& filePath, const string& user, ofPixels pixels) {
 //	image_writer.addPixels(filePath, user, pixels);
 }
 
 inline TwitterThreadedImageWriter& TwitterApp::getImageWriter() {
 	return image_writer;
+}
+
+inline void TwitterApp::addTwitterMentionListenerForSearchTerms(TwitterMentionsListener* l) {
+	mentions.addListener(l);
+	printf("################# ADDED\n");
 }
 
 inline rt::Twitter& TwitterApp::getTwitter() {

@@ -1,6 +1,12 @@
 #ifndef ROXLU_TWITTER_SEARCH_TERM_QUEUEH
 #define ROXLU_TWITTER_SEARCH_TERM_QUEUEH
 
+// TODO after some long testing we realized the twitter stream wasn't 
+// fast enough with providing new search terms so we switched over to a 
+// system where we're polling the REST API of twitter so we don't really need
+// to store the previous searches anymore because we're using the mentions
+// to @dewarshub...  So we basically need to remove this from all of the code.
+
 #include "TwitterSearchTerm.h"
 #include <fstream>
 #include <string>

@@ -1,7 +1,7 @@
 #include "TwitterApp.h"
 #include "ofxXmlSettings.h"
 
-ofEvent<TwitterAppEvent> twitter_app_dispatcher;
+//ofEvent<TwitterAppEvent> twitter_app_dispatcher;
 
 // Init
 // -------------------------------------
@@ -51,6 +51,9 @@ void TwitterApp::initTwitter() {
 	// We listen to "connection" events of the stream.
 	stream.addEventListener(this);
 	
+	
+	mentions.setup(twitter.getConsumerKey(), twitter.getConsumerSecret(), token_file);
+	mentions.startThread(true,false);
 	//removeTweetsFromConnectedAccount();
 }
 
@@ -171,12 +174,19 @@ void TwitterApp::addCustomListener(rt::IEventListener& listener){
 }
 
 
+//void TwitterApp::onNewSearchTermFromPollingAPI(const rtt::Tweet& tweet, const string& term) {
+//}
+
+// TODO make sure new search terms are added to the search_queue....
+// but only if that's still necessary (?) we can use twitter as a store?
 void TwitterApp::onNewSearchTerm(rtt::Tweet tweet, const string& term) {
 	// When we added a new search term to the queue, pass it through!
+	/*
 	if(search_queue.addSearchTerm(tweet.getScreenName(), term)) {
 		TwitterAppEvent ev(tweet, term);
 		ofNotifyEvent(twitter_app_dispatcher, ev);
 	}
+	*/
 }
 
 void TwitterApp::update() {	

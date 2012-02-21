@@ -1,6 +1,7 @@
 #include "testApp.h"
 #include "ofxWebSimpleGuiToo.h"
 #include "Error.h"
+#include <time.h>
 
 //#include "pcrecpp.h"
 
@@ -21,7 +22,18 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
+	/*
+	string time_str = "Mon Feb 20 19:30:17 +0000 2012";
 
+	struct tm tm;
+	strptime(time_str.c_str(), "%a %b %d %H:%M:%S %z %Y", &tm);
+	
+	// Convert a tm struct into a tme string.
+	char buffer[80];
+	strftime(buffer, 80, "%a %b %d %H:%M:%S %z %Y", &tm);
+	printf("input: %s  output: %s\n", time_str.c_str(), buffer);
+	::exit(0);
+	*/
 	ofSetLogLevel(OF_LOG_ERROR); // roxlu 16/02 Getting: OF: OF_LOG_WARNING: ofMap: avoiding possible divide by zero, check inputMin and inputMax
  
 	ofSetFrameRate(30);

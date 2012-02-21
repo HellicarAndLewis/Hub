@@ -15,7 +15,9 @@ ofxWWSearchTerm::ofxWWSearchTerm(){
 	isHolding = false;
 	manager = NULL;
 	dead = false;
-	opacity  = .0;
+	opacity  = 0.5;
+	selected_counter = 0;
+	took_screenshot = false;
 }
 
 void ofxWWSearchTerm::update(){
@@ -23,10 +25,10 @@ void ofxWWSearchTerm::update(){
 	if(!touchPresent){
 		isHolding = false;
 	}
-	
+	/*
 	float targetOpacity;	
 	if(selected){
-		//targetOpacity = 1.0;
+		targetOpacity = 1.0;
 		opacity = 1.0;
 	}
 	else {
@@ -46,8 +48,16 @@ void ofxWWSearchTerm::update(){
 		} 		
 	}
 	
+<<<<<<< HEAD
 	opacity += (targetOpacity - opacity)*.1;
 	//printf("opacity: %f\n", opacity);
+=======
+	*/
+	
+	
+	
+	//opacity += (targetOpacity - opacity)*.1;
+//>>>>>>> origin/flowchange
 	//opacity = targetOpacity;
 	//death attenuation
 	if(dead){
@@ -58,6 +68,11 @@ void ofxWWSearchTerm::update(){
 	pos += force;
 	force = ofVec2f(0,0);
 }
+
+
+
+
+
 
 void ofxWWSearchTerm::draw(){
 	
@@ -70,12 +85,16 @@ void ofxWWSearchTerm::draw(){
 	ofColor baseColor = manager->layerTwoFontColor;
 	baseColor.a = selectedColor.a = opacity*255;
 	float holdLerp = 0.0;
-	if(selected){
+	opacity = 0.5;
+	//if(selected){
+		opacity = 1;
 		holdLerp = 1.0;
-	}
-	else if(isHolding){
+	//}
+	opacity = ofMap(selected_counter, 0, 60, 0.5, 1, true);
+	holdLerp = ofMap(selected_counter, 0, 60, 0, 1, true);
+	/*else if(isHolding){
 		holdLerp = ofMap(ofGetElapsedTimef(), holdStartTime, holdStartTime+manager->searchTermMinHoldTime, .0, 1.0, true);
-	}
+	}*/
 	
 	ofSetColor( baseColor.lerp(selectedColor, holdLerp) );
 			   

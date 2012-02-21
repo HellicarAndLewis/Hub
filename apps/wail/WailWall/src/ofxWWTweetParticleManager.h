@@ -22,22 +22,27 @@
 #include "TweetProviderStream.h"
 #include "TweetProviderDB.h"
 #include "TweetProviderListener.h"
+#include "TwitterMentionsListener.h"
 
 
 typedef void (*takeScreenshotCallback)(const string& username, void* userdata);
 
 class ofxWWRenderer;
 
-class ofxWWTweetParticleManager : public TweetProviderListener {
+class ofxWWTweetParticleManager : public TweetProviderListener, public TwitterMentionsListener {
 // : public roxlu::twitter::IEventListener {
   public:
+  
 	ofxWWTweetParticleManager();
+	
 	void setup(ofxWWRenderer* ren);
+	
 	void setupGui();
 	
 	void update();
 
 	void renderTweets();
+	
 	void renderSearchTerms();
 
 	void renderConnections();
@@ -48,7 +53,7 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	void onStatusDestroy(const rtt::StatusDestroy& destroy);
 	void onStreamEvent(const rtt::StreamEvent& event);
  */
-	void onNewSearchTerm(TwitterAppEvent& event);
+	//void onNewSearchTerm(TwitterAppEvent& event);
 	void setupColors();
 	
 	TwitterApp& getTwitterApp();
@@ -169,6 +174,8 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	takeScreenshotCallback  screenshot_callback;
 	void* screenshot_userdata;
 	
+	void touchUp();
+	
   protected:
 	TwitterApp twitter;
 	
@@ -204,7 +211,9 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	TweetProvider* current_provider;
 	TweetProviderStream* stream_provider;
 	TweetProviderDB* db_provider;
-	
+	virtual void onNewSearchTermFromPollingAPI(const rtt::Tweet& tweet, const string& term);
 	
 	float lastSearchTermTime;
+	float should_take_picture_on;
+	
 };

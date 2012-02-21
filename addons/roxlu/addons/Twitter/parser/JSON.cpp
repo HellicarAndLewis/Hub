@@ -60,7 +60,16 @@ bool JSON::parseStatus(json_t* root, rtt::Tweet& tweet) {
 		tweet.setTweetID(id);
 	}
 		
-
+	// created at:
+	node = json_object_get(root, "created_at");
+	if(node == NULL) {
+		RETURN_JSON("Error: cannot get created_at field from tweet.\n");
+	}
+	if(json_is_string(node)) {
+		string created_at = json_string_value(node);
+		tweet.setCreatedAt(created_at);
+	}
+	
 	// user - object
 	json_t* user = json_object_get(root, "user");
 	if(user == NULL || !json_is_object(user)) {
@@ -96,6 +105,7 @@ bool JSON::parseStatus(json_t* root, rtt::Tweet& tweet) {
 		string user_id = json_string_value(node);
 		tweet.setUserID(user_id);
 	}
+
 	
 	// entities
 	node = json_object_get(root, "entities");
@@ -369,7 +379,7 @@ void JSON::parse(const string& line) {
 	json_error_t error;
 //	printf("--\n");
 //	printf("%s\n\n---------------------------------------------------------\n", line.c_str());
-	
+
 	// load json into jansson
 	root = json_loads(line.c_str(), 0, &error);
 	if(!root) {
@@ -377,6 +387,8 @@ void JSON::parse(const string& line) {
 		json_decref(root);
 		return;
 	}
+	
+	
 	
 	// STATUS UPDATE
 	json_t* node = json_object_get(root, "text");
