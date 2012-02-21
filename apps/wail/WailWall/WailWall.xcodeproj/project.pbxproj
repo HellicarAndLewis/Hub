@@ -300,6 +300,7 @@
 		483AECDD14ED813200633DA3 /* TwitterThreadedImageWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterThreadedImageWriter.h; path = ../../SharedCode/Twitter/TwitterThreadedImageWriter.h; sourceTree = "<group>"; };
 		4848E58E14F2FD1D00AA5553 /* TwitterMentionsThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterMentionsThread.h; sourceTree = "<group>"; };
 		4848E58F14F2FDF000AA5553 /* TwitterMentionsThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TwitterMentionsThread.cpp; sourceTree = "<group>"; };
+		4848E59D14F3C71700AA5553 /* SearchLayerListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchLayerListener.h; sourceTree = "<group>"; };
 		4865DF8F14EDC7AA00512AF1 /* TwitterThreadedImageWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TwitterThreadedImageWriter.cpp; path = ../../SharedCode/Twitter/TwitterThreadedImageWriter.cpp; sourceTree = "<group>"; };
 		4895911314EEA5F10016CBD2 /* Error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Error.h; path = ../../../../addons/roxlu/Error.h; sourceTree = "<group>"; };
 		48972C8B14F27F7700FD9099 /* TweetProviderListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetProviderListener.h; sourceTree = "<group>"; };
@@ -1243,6 +1244,7 @@
 				A621C59814D74819008AA7F0 /* ofxWWTweetParticleManager.cpp */,
 				1F082DF314F2D6FD005008A4 /* ofxWWSearchTermManager.h */,
 				1F082DF114F2D6D1005008A4 /* ofxWWSearchTermManager.cpp */,
+				4848E59D14F3C71700AA5553 /* SearchLayerListener.h */,
 			);
 			name = Visuals;
 			sourceTree = "<group>";
