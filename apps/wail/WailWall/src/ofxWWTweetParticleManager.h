@@ -88,14 +88,6 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	float 	simulationHeight;
 	
 	
-	float tweetLayerOpacity;
-	float touchSizeScale;
-	float touchInfluenceFalloff;
-	
-	
-	
-	float simulationWidth;
-	float simulationHeight;
 	
 	
 	
@@ -127,7 +119,7 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	
 	
 	//tweet rendering
-<<<<<<< HEAD
+
 	int userFontSize;
 	int tweetFontSize;
 	

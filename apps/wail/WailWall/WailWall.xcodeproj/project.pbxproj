@@ -2131,7 +2131,6 @@
 				1F082DE514F290E1005008A4 /* CallToAction.cpp in Sources */,
 				1F082DF214F2D6D2005008A4 /* ofxWWSearchTermManager.cpp in Sources */,
 				4848E59014F2FDF000AA5553 /* TwitterMentionsThread.cpp in Sources */,
-
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

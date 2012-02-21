@@ -49,66 +49,7 @@ void ofxWWSearchTermManager::doTouchInteraction() {
 	
 	
 	
-	int closestSearchTerm = -1;
-	float closestDistanceSq = FLT_MAX;
-	
-	//find the closest touch
-	if(!parent->blobsRef->empty()){
-		for(int i = 0; i < searchTerms.size(); i++){
-			searchTerms[i].closestDistanceSquared = 9999999;
-			map<int,KinectTouch>::iterator it;
-			for(it = parent->blobsRef->begin(); it != parent->blobsRef->end(); it++){
-				ofVec2f point = ofVec2f(it->second.x*parent->simulationWidth, it->second.y*parent->simulationHeight);
-				float squareDistance = point.distanceSquared(searchTerms[i].pos);
-				if(squareDistance < searchTerms[i].closestDistanceSquared){
-					searchTerms[i].closestDistanceSquared = squareDistance;
-					searchTerms[i].closestPoint = point;
-					searchTerms[i].closestTouchID = it->first;
-				}
-				
-				
-				//printf("tweet %f\n", tweetLayerOpacity);
-				// we can choose a selectedSearchTermIndex here
-				if(parent->tweetLayerOpacity<=0.2) {
-					if(squareDistance < 800*800 && closestDistanceSq>squareDistance) {
-						//	printf("hand low enough\n");
-						closestSearchTerm = i;
-						closestDistanceSq = squareDistance;
-						//						searchTerms[i].selected = true;
-					}
-				}
-			}
-			
-			//attract to hand
-			ofVec2f directionToHand = searchTerms[i].closestPoint - searchTerms[i].pos;
-			float distanceToHand = directionToHand.length();
-			if(distanceToHand < searchTermMinDistance){
-				searchTerms[i].force += directionToHand * searchTermHandAttractionFactor;
-			}
-		}
-	}
-	if(parent->tweetLayerOpacity<=0.2) {
-		
-		for(int i = 0; i < searchTerms.size(); i++){
-			if(i==closestSearchTerm) { 
-				
-				++searchTerms[i].selected_counter;
-				if(searchTerms[i].selected_counter>60) {
-					searchTerms[i].selected = true;	
-					selectedSearchTermIndex = closestSearchTerm;
-					
-				}
-			} else {
-				searchTerms[i].selected = false;
-				searchTerms[i].selected_counter = 0;
-			}
-		}
-	} else {
-		if(selectedSearchTermIndex!=-1 && searchTerms.size()) {
-			searchTerms[selectedSearchTermIndex].selected = true;
-			searchTerms[selectedSearchTermIndex].selected_counter = 60;
-		}
-	}
+	doSearchTermSelectionTest();
 	
 	
 	for(int i = 0; i < searchTerms.size(); i++){
@@ -186,6 +127,88 @@ void ofxWWSearchTermManager::addSearchTerm(const string& user, const string& ter
 	printf(">>>>>>>>>>>>>>>>>>>>>>>> %s <<<<<<<<<<<<<<<<<<<<<<<<<<\n", searchTerm.term.c_str());
 	incomingSearchTerms.push(searchTerm);
 }
+
+
+void ofxWWSearchTermManager::doSearchTermSelectionTest() {
+	int len = searchTerms.size();
+	if(parent->blobsRef->empty()) {
+		printf("(1)\n");
+		for(int i = 0; i < len; ++i) {
+			searchTerms[i].fade();
+		}
+		return;
+	}
+	
+	
+	int closest_search_term_index = -1;
+	float smallest_dist_sq = FLT_MAX;
+	float in_range_dist = 0.1 * parent->simulationWidth;
+	in_range_dist *= in_range_dist;
+	printf(">> %f\n", in_range_dist);
+	
+	for(int i = 0; i < len; ++i) {
+		ofxWWSearchTerm& search_term = searchTerms.at(i);
+		
+		map<int, KinectTouch>::iterator kinect_iter = parent->blobsRef->begin();
+		while(kinect_iter != parent->blobsRef->end()) {
+			KinectTouch& touch = (kinect_iter->second);
+			ofVec2f kinect_pos(touch.x * parent->simulationWidth, touch.y * parent->simulationHeight);
+			
+			// check if current search term is closer then then once handled so far.
+			float dist_sq = kinect_pos.distanceSquared(search_term.pos);
+			if(dist_sq < smallest_dist_sq && dist_sq <= in_range_dist) {
+				smallest_dist_sq = dist_sq;
+				closest_search_term_index = i;	
+			}
+			
+			++kinect_iter;
+		}
+	}
+	
+	
+	printf("Smallest dist: %f - tweetLayerOpacity: %f\n", smallest_dist_sq, parent->tweetLayerOpacity);
+	
+	if(parent->tweetLayerOpacity >= 0.5) {
+		printf("(2,2,2,2,2,2,2,2,2,2,2	)\n");
+		return;
+	}
+	else {
+		
+		if(closest_search_term_index == -1) {
+			// not in range of a search term.
+			
+		}
+		else {
+			
+			// in range of a search term
+			ofxWWSearchTerm& selected_term = searchTerms[closest_search_term_index];
+			
+			// cleanup counters.
+			for(int i = 0; i < len; ++i) {
+				if(i == closest_search_term_index) {
+					continue;
+				}
+				searchTerms[i].fade();
+				searchTerms[i].selection_started_on = 0;
+			}
+			
+			// start counter for selected
+			if(selected_term.selection_started_on > 0)  {
+				float now = ofGetElapsedTimeMillis();
+				float selection_activate_on = selected_term.selection_started_on+1000;
+				if(now > selection_activate_on) {
+					selected_term.highlight();
+				}
+			}
+			else {
+				selected_term.selection_started_on = ofGetElapsedTimeMillis();
+			}
+			
+		}
+	}
+	printf("Found search term index: %d\n", closest_search_term_index);
+}
+
 
 
 

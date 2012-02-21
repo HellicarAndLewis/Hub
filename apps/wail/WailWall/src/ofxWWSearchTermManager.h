@@ -23,7 +23,7 @@ public:
 	void render();
 	void addSearchTerm(const string& user, const string& term);
 	void deselectAllSearchTerms();
-	
+	void doSearchTermSelectionTest();
 	
 	queue<ofxWWSearchTerm> incomingSearchTerms;
 	vector<ofxWWSearchTerm> searchTerms;
