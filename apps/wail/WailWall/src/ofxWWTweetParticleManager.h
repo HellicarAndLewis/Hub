@@ -22,7 +22,7 @@
 #include "TweetProviderStream.h"
 #include "TweetProviderDB.h"
 #include "TweetProviderListener.h"
-
+#include "ofxWWSearchTermManager.h"
 
 typedef void (*takeScreenshotCallback)(const string& username, void* userdata);
 
@@ -31,6 +31,8 @@ class ofxWWRenderer;
 class ofxWWTweetParticleManager : public TweetProviderListener {
 // : public roxlu::twitter::IEventListener {
   public:
+	
+	
 	ofxWWTweetParticleManager();
 	void setup(ofxWWRenderer* ren);
 	void setupGui();
@@ -43,23 +45,20 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	void renderConnections();
 	
 	void onNewTweet(const rtt::Tweet& tweet);
-	/*
-	void onStatusUpdate(const rtt::Tweet& tweet);
-	void onStatusDestroy(const rtt::StatusDestroy& destroy);
-	void onStreamEvent(const rtt::StreamEvent& event);
- */
+
+	
 	void onNewSearchTerm(TwitterAppEvent& event);
 	void setupColors();
 	
+	
 	TwitterApp& getTwitterApp();
 	
-	//ofxFTGLFont sharedFont;
 	ofxMPMFluid* fluidRef;
 	map<int,KinectTouch>* blobsRef;
 	
 
 
-	
+	ofxWWSearchTermManager searchTerms;
 	
 	
 	
@@ -86,18 +85,27 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	bool enableCaustics;
 	float causticFadeSpeed;
 	
-	bool canSelectSearchTerms;
+
+	
 	float tweetLayerOpacity;
 	float touchSizeScale;
 	float touchInfluenceFalloff;
 	
+	
+	
 	float simulationWidth;
 	float simulationHeight;
+	
+	
+	
 	
 	bool drawTweetDebug;
 	int maxTweets;
 	float startFadeTime;
 	float fadeDuration;
+	
+	
+	
 	
 	float wallRepulsionDistance;
 	float wallRepulsionAtten;
@@ -105,7 +113,8 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	float tweetRepulsionAtten;
 	float fluidForceScale;
 		
-	bool tweetsFlowLeftRight; //otherwise up/down
+	
+	
 	float tweetFlowSpeed;
 	float tweetFlowVariance;
 	float tweetRotateAmp;
@@ -114,10 +123,14 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	float tweetFlowDamp;
 	float tweetFlowAmp;
 	
+	
+	
+	
+	
 	//tweet rendering
 	int userFontSize;
 	int tweetFontSize;
-	int searchTermFontSize;
+	
 	float dotSize;
 	float dotShift;
 	float wordWrapLength;
@@ -127,21 +140,10 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	
 	bool clearTweets;
 	
-	int maxSearchTerms;
-	float searchTermMinDistance;
-	float searchTermMinHoldTime;
-	float searchMinOpacity;
-	float searchTermRepulsionDistance;
-	float searchTermRepulsionAttenuation;
-	float searchTermHandAttractionFactor;
-	float searchTermFadeOutTime;
 	
-	bool drawSearchDebug;
 	
-	float tweetSearchMinWaitTime;
-	float tweetSearchDuration;
+	
 
-	bool isDoingSearch;
 	bool shouldTriggerScreenshot;
 	
 	vector<ofxWWTweetParticle> tweets;
@@ -157,9 +159,9 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	ofColor layerTwoFontColor;
 	
 	// search state vars
-	int shouldChangeSearchTermOn;	// when do show the next search term.
-	int changeSearchTermDelay; 		// after how many seconds do go to the next search term in queue.
-	int currentSearchTermIndex;
+
+
+
 	
 	void keyPressed(ofKeyEventArgs& args); //JG just used for simulating searches
 
@@ -171,35 +173,6 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	
 	void touchUp();
 	
-  protected:
-	TwitterApp twitter;
-	
-	vector<string> fakeSearchTerms;	
-	queue<ofxWWSearchTerm> incomingSearchTerms;
-	vector<ofxWWSearchTerm> searchTerms;
-	
-//	bool searchTermSelected;
-	int selectedSearchTermIndex;
-	
-	void checkFonts();
-	
-	void handleSearch();
-	void handleTouchSearch();
-	void handleTweetSearch();	
-	void finishSearch();
-	
-	float weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet);
-	void updateTweets();
-	void updateSearchTerms();
-	
-	void attemptConnection(ofVec2f pos1, float weight1, ofVec2f pos2, float weight2, float layerOpacity);
-	void setRandomCausticColor(float layerOpacity);
-	
-	int numSearchTermTweets; //for debugging
-	void addSearchTerm(const string& user, const string& term);
-	ofxWWTweetParticle createParticleForTweet(const rtt::Tweet& tweet);
-	
-	ofxWWRenderer* renderer;
 	
 	// providers for tweets
 	void setCurrentProvider(TweetProvider* prov);
@@ -208,7 +181,37 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	TweetProviderDB* db_provider;
 	
 	
-	float lastSearchTermTime;
+	
+  protected:
+	TwitterApp twitter;
+	
+
+	
+
+	
+	
+	void checkFonts();
+	
+	
+	float weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet);
+	void updateTweets();
+	
+	
+	void attemptConnection(ofVec2f pos1, float weight1, ofVec2f pos2, float weight2, float layerOpacity);
+	void setRandomCausticColor(float layerOpacity);
+	
+	int numSearchTermTweets; //for debugging
+	
+	
+	
+	
+	ofxWWTweetParticle createParticleForTweet(const rtt::Tweet& tweet);
+	
+	ofxWWRenderer* renderer;
+	
+	
+	
+	
 	float should_take_picture_on;
 	
 };

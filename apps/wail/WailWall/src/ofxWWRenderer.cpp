@@ -190,17 +190,10 @@ void ofxWWRenderer::update(){
 		caustics.addDrop(dropPoint.x, dropPoint.y, dropScale, ofGetFrameNum() % 2 == 0 ? dropForce : -dropForce);
 		
 	}
-	float targetOpacity;
-	if(tweets.isDoingSearch){
-		targetOpacity = 0.;
-	}
-	else{
-		targetOpacity = ofMap(maxTouchZ, layerBarrierZ-layerBarrierWidth/2, layerBarrierZ+layerBarrierWidth/2, 1.0, 0.0, true);
-	}
+	float targetOpacity = ofMap(maxTouchZ, layerBarrierZ-layerBarrierWidth/2, layerBarrierZ+layerBarrierWidth/2, 1.0, 0.0, true);
+	
 	layer1Opacity += (targetOpacity - layer1Opacity) * .1; //dampen
 	tweets.tweetLayerOpacity = layer1Opacity;
-
-	tweets.canSelectSearchTerms = maxTouchZ > layerBarrierZ;
 		
 	tweets.update();
 }
