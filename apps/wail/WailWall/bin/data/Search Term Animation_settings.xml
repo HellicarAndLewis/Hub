@@ -19,4 +19,8 @@
         <name>Search Deselection Delay</name>
         <value>1.860000</value>
     </SliderFloat_Search_Deselection_Delay>
+    <SliderFloat_searchTermSelectionRadiusPercent>
+        <name>searchTermSelectionRadiusPercent</name>
+        <value>0.134150</value>
+    </SliderFloat_searchTermSelectionRadiusPercent>
 </controls>

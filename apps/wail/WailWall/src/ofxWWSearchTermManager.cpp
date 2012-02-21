@@ -10,6 +10,7 @@ ofxWWSearchTermManager::ofxWWSearchTermManager()
 	,fadeOutTime(1)
 	,twitter(NULL)
 	,deselectionDelay(2)
+	,searchTermSelectionRadiusPercent(0.1)
 {
 
 }
@@ -42,7 +43,7 @@ void ofxWWSearchTermManager::update() {
 		handRemovedTimer.reset();
 		// fade out the selected search term, (make sure you check it's in range)
 		if(selectedSearchTermIndex>=0 && selectedSearchTermIndex<searchTerms.size()) {
-			searchTerms[selectedSearchTermIndex].fade();
+			//searchTerms[selectedSearchTermIndex].fade();
 		}
 		
 		// send an event
@@ -56,7 +57,7 @@ void ofxWWSearchTermManager::update() {
 			}
 		}
 		selectedSearchTermIndex = -1;
-
+	}
 	if(ofGetElapsedTimef() > should_take_picture_on) {
 		screenshot_callback(screenshot_searchterm.user, screenshot_userdata);
 		should_take_picture_on = FLT_MAX;
@@ -225,7 +226,7 @@ void ofxWWSearchTermManager::doSearchTermSelectionTest() {
 			// don't necessarily fade out the actual touched one
 			// as the hand might be out temporarily.
 			if(i!=selectedSearchTermIndex) {
-				searchTerms[i].fade();
+//				searchTerms[i].fade();
 			}
 			
 		}
@@ -236,7 +237,7 @@ void ofxWWSearchTermManager::doSearchTermSelectionTest() {
 	
 	int closest_search_term_index = -1;
 	float smallest_dist_sq = FLT_MAX;
-	float in_range_dist = 0.1 * parent->simulationWidth;
+	float in_range_dist = searchTermSelectionRadiusPercent * parent->simulationWidth;
 	in_range_dist *= in_range_dist;
 	//printf(">> %f\n", in_range_dist);
 	
@@ -265,7 +266,7 @@ void ofxWWSearchTermManager::doSearchTermSelectionTest() {
 	if(parent->tweetLayerOpacity >= 0.5) {
 		//printf("(2,2,2,2,2,2,2,2,2,2,2	)\n");
 		if(selectedSearchTermIndex>=0 && selectedSearchTermIndex<searchTerms.size()) {
-			searchTerms[selectedSearchTermIndex].highlight();
+	//		searchTerms[selectedSearchTermIndex].highlight();
 		}
 
 		return;
@@ -276,19 +277,20 @@ void ofxWWSearchTermManager::doSearchTermSelectionTest() {
 			
 			// begin the timer for deselection if
 			// not in range of a search term.
-			handRemovedTimer.start(deselectionDelay);
+			if(!handRemovedTimer.running()) handRemovedTimer.start(deselectionDelay);
+			printf("Deselect\n");
 		}
 		else {
-			
+
 			// in range of a search term
 			ofxWWSearchTerm& selected_term = searchTerms[closest_search_term_index];
-			
+			printf("Ontopof %s\n", selected_term.term.c_str());			
 			// cleanup counters.
 			for(int i = 0; i < len; ++i) {
 				if(i == closest_search_term_index) {
 					continue;
 				}
-				searchTerms[i].fade();
+//				searchTerms[i].fade();
 				searchTerms[i].selection_started_on = 0;
 			}
 			
@@ -332,7 +334,7 @@ void ofxWWSearchTermManager::setSelectedSearchTerm(ofxWWSearchTerm &searchTerm) 
 			selectedSearchTermIndex = i;
 			
 			// make it highlighted
-			searchTerm.highlight();
+//			searchTerm.highlight();
 			
 			// send an event
 			if(lastSearchTermSelectionSentAsEvent!=searchTerm.term) {

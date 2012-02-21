@@ -11,8 +11,8 @@
     <setting id="Maximum Water Depth" value="0.972087383"></setting>
     <setting id="Minimum Blob Size" value="67.000000000"></setting>
     <setting id="Maximum Blob Size" value="623.000000000"></setting>
-    <setting id="Blob XY Smoothing" value="0.796116531"></setting>
-    <setting id="Blob Z Smoothing" value="0.354368925"></setting>
+    <setting id="Blob XY Smoothing" value="0.951456308"></setting>
+    <setting id="Blob Z Smoothing" value="0.859223306"></setting>
     <setting id="Blob x top frustrum factor" value="3.412621260"></setting>
     <setting id="Blob y top frustrum factor" value="3.208737850"></setting>
     <setting id="Blob x bottom frustrum factor" value="1.781553388"></setting>

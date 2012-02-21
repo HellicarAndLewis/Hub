@@ -65,6 +65,7 @@ public:
 	float tweetSearchMinWaitTime;
 	int searchTermFontSize;
 	
+	float searchTermSelectionRadiusPercent;
 	int maxSearchTerms;
 
 

@@ -124,7 +124,7 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Search Repulse Atten", searchTerms.repulsionAttenuation, 0, .2);
 	webGui.addSlider("Search Fadeout Time", searchTerms.fadeOutTime, 0, 2);
 	webGui.addSlider("Search Deselection Delay", searchTerms.deselectionDelay, 0, 4);
-
+	webGui.addSlider("searchTermSelectionRadiusPercent", searchTerms.searchTermSelectionRadiusPercent, 0.01, 0.14);
 	
 	//TODO set up in XML ONLY CAN HAVE 4 right now , least to most common
 	causticColors.push_back(ofColor::fromHex(0xf8edc0)); //LIGHT YELLOW

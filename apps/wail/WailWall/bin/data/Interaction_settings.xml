@@ -13,7 +13,7 @@
     </SliderFloat_Touch_Scale>
     <SliderFloat_Influence_Width>
         <name>Influence Width</name>
-        <value>531.200012</value>
+        <value>704.000000</value>
     </SliderFloat_Influence_Width>
     <Toggle_Draw_Touch_Debug>
         <name>Draw Touch Debug</name>

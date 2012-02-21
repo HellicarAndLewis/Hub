@@ -9,7 +9,7 @@
     </SliderFloat_tweet_Search_Min_Wait_time>
     <SliderInt_Search_Font_Size>
         <name>Search Font Size</name>
-        <value>133</value>
+        <value>134</value>
     </SliderInt_Search_Font_Size>
     <SliderFloat_Call_to_action_time>
         <name>Call to action time</name>

@@ -31,6 +31,10 @@ public:
 		isRunning = false;
 	}
 	
+	bool running() {
+		return isRunning;
+	}
+	
 private:
 	bool isRunning;
 	float startTime;
