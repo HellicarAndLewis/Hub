@@ -136,8 +136,12 @@ class ofxWWRenderer: public KinectTouchListener {
 	// timing and drawing
 	CallToAction callToAction;
 
-  
+    int haloSurfaceColourHex;
+    int haloBottomColourHex;
     
+    int surfaceColourHex;
+    int bottomColourHex;
+
     float smootherStep(float edge0, float edge1, float x); //from http://en.wikipedia.org/wiki/Smoothstep
 };
 

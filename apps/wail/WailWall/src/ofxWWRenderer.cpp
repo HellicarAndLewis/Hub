@@ -111,6 +111,9 @@ void ofxWWRenderer::setup(int width, int height){
     
     haloSurfaceColourHex = 0xffffff;
     haloBottomColourHex = 0x000000;
+    
+    surfaceColourHex = 0xffffff;
+    
 }
 
 void ofxWWRenderer::setupGui(){
@@ -177,7 +180,6 @@ void ofxWWRenderer::setupGui(){
 
     webGui.addHexColor("Halo Surface", Colours::get(HALO_SURFACE));
     webGui.addHexColor("Halo Bottom", Colours::get(HALO_SEARCH));    
->>>>>>> 69a1567efa15f166c7e7a4f71c225f293d7a0c4d
 
 	tweets.setupGui();
 }
@@ -327,8 +329,8 @@ void ofxWWRenderer::render(){
 	
 	ofPushStyle();
     
-    ofColor surfaceHalo = ofColor::fromHex(surfaceColourHex);
-    ofColor bottomHalo = ofColor::fromHex(bottomColourHex);
+    ofColor surfaceHalo = Colours::get(HALO_SURFACE);
+    ofColor bottomHalo = Colours::get(HALO_SEARCH);
     
     float tweenedSmootherStep = smootherStep(layer1Opacity, 0.f, 1.f);
     
