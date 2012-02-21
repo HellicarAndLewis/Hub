@@ -31,13 +31,13 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	// -------------------
 	twitter.init(4444);
 	twitter.addDefaultListener(); 
-	twitter.addTwitterMentionListenerForSearchTerms(this);
+	//twitter.addTwitterMentionListenerForSearchTerms(this);
 	
 	if(!twitter.connect()) {
 		printf("Error: cannot connect to twitter stream.\n");
 	}
 	// 
-	//twitter.addListener(this, &ofxWWTweetParticleManager::onNewSearchTerm);
+	twitter.addNewSearchTermListener(this, &ofxWWTweetParticleManager::onNewSearchTerm);
 
 	// Get previously received search terms.
 	// -------------------------------------
@@ -724,18 +724,20 @@ ofxWWTweetParticle ofxWWTweetParticleManager::createParticleForTweet(const rtt::
 	return tweetParticle;
 }
 
+/*
 void ofxWWTweetParticleManager::onNewSearchTermFromPollingAPI(const rtt::Tweet& tweet, const string& term) {
 	addSearchTerm(tweet.getScreenName(), term);
 }
+*/
 
 // This function is called indirectly from the streaming API, which are moving over
 // to polling the REST api, because some search terms weren't coming into the stream
 // somehow.					
-//void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {	
-//	printf("\n\n\nSearch term here!!!\n\n\n");
-//	addSearchTerm(event.tweet.getScreenName(), event.search_term);
-//	
-//}
+void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {	
+	printf("\n\n\nSearch term here!!!\n\n\n");
+	addSearchTerm(event.tweet.getScreenName(), event.search_term);
+	
+}
 
 
 void ofxWWTweetParticleManager::addSearchTerm(const string& user, const string& term) {

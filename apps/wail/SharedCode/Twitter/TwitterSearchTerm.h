@@ -1,7 +1,8 @@
 #ifndef ROXLU_TWITTER_SEARCH_TERMH
 #define ROXLU_TWITTER_SEARCH_TERMH
 
-#include <string>
+#include "Twitter.h"
+//#include <string>
 using std::string;
 
 // Search term

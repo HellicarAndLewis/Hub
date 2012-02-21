@@ -1,8 +1,8 @@
 #ifndef TWITTER_MENTIONS_THREADH
 #define TWITTER_MENTIONS_THREADH
 
-#include "TwitterMentionsListener.h"
-
+//#include "TwitterMentionsListener.h"
+//#include "TwitterSearchTerm.h"
 #include "Twitter.h"
 #include "ofMain.h"
 #include <string>
@@ -18,6 +18,11 @@ struct TwitterMentionSorter {
 	}
 };
 
+struct TwitterMentionSearchTerm {
+	rtt::Tweet tweet;
+	string search_term;
+};
+
 class TwitterMentionsThread : public ofThread {
 public:
 	
@@ -27,17 +32,20 @@ public:
 	
 	virtual void threadedFunction();
 	
-	void addListener(TwitterMentionsListener* l) {
-		lock();
-			mention_listeners.push_back(l);
-		unlock();
-	}
+	bool getSearchTerms(vector<TwitterMentionSearchTerm>& result);
+	
+//	void addListener(TwitterMentionsListener* l) {
+//		lock();
+//			mention_listeners.push_back(l);
+//		unlock();
+//	}
 	
 private:
 
 	rt::Twitter twitter;
 	rtt::Tweet last_mention;
-	vector<TwitterMentionsListener*> mention_listeners;
+	//vector<TwitterMentionsListener*> mention_listeners;
+	vector<TwitterMentionSearchTerm> search_terms;
 };
 
 #endif

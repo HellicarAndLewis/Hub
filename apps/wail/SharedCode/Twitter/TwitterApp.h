@@ -43,7 +43,7 @@ using std::vector;
  * found.
  *
  */
-/*
+
 class TwitterAppEvent { 
 public:
 	TwitterAppEvent(rtt::Tweet tweet,  string searchTerm)
@@ -57,7 +57,7 @@ public:
 };
 
 extern ofEvent<TwitterAppEvent> twitter_app_dispatcher;
-*/
+
 
 class TwitterApp : 
 			 public TwitterOSCReceiverListener
@@ -98,15 +98,15 @@ public:
 	void addCustomListener(rt::IEventListener& listener);
 	void addTwitterMentionListenerForSearchTerms(TwitterMentionsListener* l);
 	
-	/*
+	
 	template <typename ArgumentsType, class ListenerClass>
-	static void addListener(
+	static void addNewSearchTermListener(
 			ListenerClass* listener
 			,void (ListenerClass::*listenerMethod)(ArgumentsType&))
 	{
 		ofAddListener(twitter_app_dispatcher, listener, listenerMethod);
 	}
-	*/
+	
 	
 	// OSC events.
 	virtual void onUpdateBadWordList();
@@ -119,7 +119,6 @@ public:
 	TwitterThreadedImageWriter& getImageWriter();
 	virtual void onTwitterStreamDisconnected();
 	virtual void onTwitterStreamConnected();
-	
 	
 private:
 	bool initialized;
@@ -202,10 +201,14 @@ inline TwitterThreadedImageWriter& TwitterApp::getImageWriter() {
 	return image_writer;
 }
 
+/*
 inline void TwitterApp::addTwitterMentionListenerForSearchTerms(TwitterMentionsListener* l) {
 	mentions.addListener(l);
 	printf("################# ADDED\n");
 }
+*/
+
+
 
 inline rt::Twitter& TwitterApp::getTwitter() {
 	return twitter;

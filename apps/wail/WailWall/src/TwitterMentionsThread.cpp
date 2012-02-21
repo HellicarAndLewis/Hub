@@ -109,10 +109,9 @@ void TwitterMentionsThread::threadedFunction() {
 					pcrecpp::RE re("^@dewarshub (.*)$");
 					re.FullMatch(tweet_text_lower, &search_query);
 					if(search_query.length()) {
-						printf("[search]: '%s'\n", search_query.c_str());						
-						for(int j = 0; j < mention_listeners.size(); ++j) {
-							mention_listeners[j]->onNewSearchTermFromPollingAPI(tweet, search_query);
-						}
+						printf("[search]: '%s'\n", search_query.c_str());	
+						TwitterMentionSearchTerm twit_search_term = {tweet, search_query};
+						search_terms.push_back(twit_search_term);
 					}
 					++it;
 				}
@@ -129,4 +128,20 @@ void TwitterMentionsThread::threadedFunction() {
 		printf("mentions: reset: %d\n", rate_reset);
 		sleep(15);
 	}
+}
+
+
+bool TwitterMentionsThread::getSearchTerms(vector<TwitterMentionSearchTerm>& result) {
+	lock();
+	bool has = search_terms.size() > 0;
+	if(!has) {
+		unlock();
+		return false;
+	}
+	else {
+		result = search_terms;
+		search_terms.clear();
+		unlock();
+	}
+	return true;
 }
