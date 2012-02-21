@@ -30,6 +30,10 @@ void ofxWWRenderer::setup(int width, int height){
 	renderTarget.allocate(width, height, GL_RGB);
 	
 	gradientOverlay.allocate(width/8, height/8, GL_RGB);
+    background.allocate(width/8, height/8, GL_RGB); //going to be scaled anyway, and a single colour
+    
+    surfaceColourHex = 0xffffff;
+    bottomColourHex = 0x000000;
 	
 	layer1Target.allocate(width, height, GL_RGBA);
 	layer2Target.allocate(width, height, GL_RGBA);
@@ -96,7 +100,8 @@ void ofxWWRenderer::setup(int width, int height){
 	
 //	cout << "setting up tweets" << endl;
 	tweets.setup(this);
-	
+
+	callToAction.setup(&tweets);
 	// roxlu: test screenshots
 	ofAddListener(ofEvents.keyPressed, this, &ofxWWRenderer::keyPressed);
 	test_screenshot = false;
@@ -157,6 +162,10 @@ void ofxWWRenderer::setupGui(){
 	webGui.addSlider("Noise Wobble Amplitude X", noiseWobbleAmplitudeX, 0, 100);
 	webGui.addSlider("Noise Wobble Amplitude Y", noiseWobbleAmplitudeY, 0, 100);
 	webGui.addToggle("Just Draw Warp", justDrawWarpTexture);
+    
+    webGui.addPage("Colours");
+    webGui.addHexColor("Surface Background", surfaceColourHex);
+    webGui.addHexColor("Bottom Background", bottomColourHex);
 
 	tweets.setupGui();
 }
@@ -189,17 +198,10 @@ void ofxWWRenderer::update(){
 		caustics.addDrop(dropPoint.x, dropPoint.y, dropScale, ofGetFrameNum() % 2 == 0 ? dropForce : -dropForce);
 		
 	}
-	float targetOpacity;
-	if(tweets.isDoingSearch){
-		targetOpacity = 0.;
-	}
-	else{
-		targetOpacity = ofMap(maxTouchZ, layerBarrierZ-layerBarrierWidth/2, layerBarrierZ+layerBarrierWidth/2, 1.0, 0.0, true);
-	}
+	float targetOpacity = ofMap(maxTouchZ, layerBarrierZ-layerBarrierWidth/2, layerBarrierZ+layerBarrierWidth/2, 1.0, 0.0, true);
+	
 	layer1Opacity += (targetOpacity - layer1Opacity) * .1; //dampen
 	tweets.tweetLayerOpacity = layer1Opacity;
-
-	tweets.canSelectSearchTerms = maxTouchZ > layerBarrierZ;
 		
 	tweets.update();
 }
@@ -272,6 +274,8 @@ void ofxWWRenderer::render(){
 
 	tweets.renderTweets();	
 	tweets.renderSearchTerms();
+	
+	callToAction.draw();
 	
 	//DEBUG
 	if(justDrawWarpTexture){
@@ -431,7 +435,7 @@ void ofxWWRenderer::renderGradientOverlay(){
 	gradientOverlay.begin();
 	ofClear(0);
 	ofEnableAlphaBlending();
-	
+	/*
 	if(useBackgroundSetA){
 		layerTwoBackgroundA.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
 		ofSetColor(255, 255, 255, layer1Opacity*255);		
@@ -445,9 +449,38 @@ void ofxWWRenderer::renderGradientOverlay(){
 		layerOneBackgroundB.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
 	}
 	
-	gradientOverlay.end();
+	
+	*/
+	ofColor surface = ofColor::fromHex(surfaceColourHex);
+    ofColor bottom = ofColor::fromHex(bottomColourHex);
+    
+    surface.lerp(bottom, layer1Opacity);
+    
+    ofSetColor(surface);
+    
+    ofRect(0, 0, background.getWidth(), background.getHeight());
 	ofPopStyle();
 	
+	gradientOverlay.end();
+}
+
+void ofxWWRenderer::renderBackground(){
+	ofPushStyle();
+	background.begin();
+	ofClear(0);
+	ofEnableAlphaBlending();
+    
+    ofColor surface = ofColor::fromHex(surfaceColourHex);
+    ofColor bottom = ofColor::fromHex(bottomColourHex);
+    
+    surface.lerp(bottom, layer1Opacity);
+    
+    ofSetColor(surface);
+    
+    ofRect(0, 0, background.getWidth(), background.getHeight());
+	
+	background.end();
+	ofPopStyle();    
 }
 
 ofFbo& ofxWWRenderer::getFbo(){
@@ -455,20 +488,28 @@ ofFbo& ofxWWRenderer::getFbo(){
 }
 
 void ofxWWRenderer::touchDown(const KinectTouch &touch) {
-		
+	tweets.touchDown();
 }
 
 void ofxWWRenderer::touchMoved(const KinectTouch &touch) {
+
 	fluid.applyForce(ofVec2f(touch.x, touch.y), ofVec2f(touch.vel.x, touch.vel.y));
+	callToAction.justInteracted();
 }
 
 void ofxWWRenderer::touchUp(const KinectTouch &touch) {
 //	tweets.resetTouches();
+	tweets.touchUp();
 }
 
 ofxWWTweetParticleManager& ofxWWRenderer::getTweetManager() {
 	return tweets;
 }
+
+ofxWWSearchTermManager& ofxWWRenderer::getSearchTermManager() {
+	return tweets.getSearchTermManager();
+}
+
 
 void ofxWWRenderer::stopFluidThread(){
 	fluid.stopThread(true);

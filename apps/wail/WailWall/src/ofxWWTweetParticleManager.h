@@ -1,11 +1,9 @@
 /*
- *  ofxWWTweetManager.h
- *  WailWall
- *
- *  Created by James George on 1/30/12.
- *  Copyright 2012 __MyCompanyName__. All rights reserved.
- *
+ * @author James George
+ * @author Diederick Huijbers // roxlu <diederick@apollomedia.nl>
+ * @author Marek 
  */
+ 
 #pragma once
 #define USE_FTGL
 
@@ -18,39 +16,55 @@
 #include "ofxMPMFluid.h"
 #include "KinectTouchListener.h"
 
-typedef void (*takeScreenshotCallback)(const string& username, void* userdata);
+#include "TweetProvider.h"
+#include "TweetProviderStream.h"
+#include "TweetProviderDB.h"
+#include "TweetProviderListener.h"
+#include "ofxWWSearchTermManager.h"
+#include "SearchLayerListener.h"
+#include "Forces.h"
+
 
 class ofxWWRenderer;
 
-class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
+class ofxWWTweetParticleManager : public TweetProviderListener, public SearchLayerListener {
+
   public:
+
 	ofxWWTweetParticleManager();
+	
 	void setup(ofxWWRenderer* ren);
+	
 	void setupGui();
 	
 	void update();
 
 	void renderTweets();
+	
 	void renderSearchTerms();
 
 	void renderConnections();
 	
-	void onStatusUpdate(const rtt::Tweet& tweet);
-	void onStatusDestroy(const rtt::StatusDestroy& destroy);
-	void onStreamEvent(const rtt::StreamEvent& event);
-	void onNewSearchTerm(TwitterAppEvent& event);
+	void onNewTweet(const rtt::Tweet& tweet);
 
+	void onNewSearchTerm(TwitterAppEvent& event);
 	void setupColors();
+	
+	// implementing: SearchLayerListener
+	virtual void onSearchTermSelected(const SearchTermSelectionInfo& term);
+	virtual void onAllSearchTermsDeselected();
 	
 	TwitterApp& getTwitterApp();
 	
-	//ofxFTGLFont sharedFont;
+
 	ofxMPMFluid* fluidRef;
 	map<int,KinectTouch>* blobsRef;
 	
-	// ofXFTGFont
 
-
+	ofxWWSearchTermManager searchTermManager;
+	ofxWWSearchTermManager& getSearchTermManager();
+	
+	
 	#ifdef USE_FTGL
 		ofxFTGLFont sharedTweetFont;
 		ofxFTGLFont sharedUserFont;
@@ -62,16 +76,25 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	#endif
 	
 	
-	bool enableCaustics;
-	float causticFadeSpeed;
 	
-	bool canSelectSearchTerms;
-	float tweetLayerOpacity;
-	float touchSizeScale;
-	float touchInfluenceFalloff;
+	// this is how much inactive time triggers a call to action.
+	float 	callToActionTime;
 	
-	float simulationWidth;
-	float simulationHeight;
+	bool 	enableCaustics;
+	float 	causticFadeSpeed;
+	
+	bool 	canSelectSearchTerms;
+	float 	tweetLayerOpacity;
+	float 	touchSizeScale;
+	float 	touchInfluenceFalloff;
+	
+	float 	simulationWidth;
+	float 	simulationHeight;
+	
+	
+	
+	
+	
 	
 	bool drawTweetDebug;
 	int maxTweets;
@@ -84,7 +107,8 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	float tweetRepulsionAtten;
 	float fluidForceScale;
 		
-	bool tweetsFlowLeftRight; //otherwise up/down
+	
+	
 	float tweetFlowSpeed;
 	float tweetFlowVariance;
 	float tweetRotateAmp;
@@ -92,11 +116,17 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	float tweetChaosSpeed;
 	float tweetFlowDamp;
 	float tweetFlowAmp;
+
+	
+	
+	
+	
 	
 	//tweet rendering
+
 	int userFontSize;
 	int tweetFontSize;
-	int searchTermFontSize;
+	
 	float dotSize;
 	float dotShift;
 	float wordWrapLength;
@@ -106,23 +136,13 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	
 	bool clearTweets;
 	
-	int maxSearchTerms;
-	float searchTermMinDistance;
-	float searchTermMinHoldTime;
-	float searchMinOpacity;
-	float searchTermRepulsionDistance;
-	float searchTermRepulsionAttenuation;
-	float searchTermHandAttractionFactor;
-	float searchTermFadeOutTime;
 	
-	bool drawSearchDebug;
 	
-	float tweetSearchMinWaitTime;
-	float tweetSearchDuration;
-	float tweetSearchStartTime;
-	float tweetSearchEndedTime;
-	bool isDoingSearch;
-	bool shouldTriggerScreenshot;
+	
+
+	//bool shouldTriggerScreenshot;
+
+	
 	
 	vector<ofxWWTweetParticle> tweets;
 	vector<ofColor> causticColors;
@@ -137,48 +157,70 @@ class ofxWWTweetParticleManager : public roxlu::twitter::IEventListener {
 	ofColor layerTwoFontColor;
 	
 	// search state vars
-	int shouldChangeSearchTermOn;	// when do show the next search term.
-	int changeSearchTermDelay; 		// after how many seconds do go to the next search term in queue.
-	int currentSearchTermIndex;
+
+
+
 	
 	void keyPressed(ofKeyEventArgs& args); //JG just used for simulating searches
 
 	// Screenshot
-	void addCurrentRenderToScreenshotQueue();
-	void setScreenshotCallback(takeScreenshotCallback func, void* user);
-	takeScreenshotCallback  screenshot_callback;
-	void* screenshot_userdata;
+	//void addCurrentRenderToScreenshotQueue();
 	
-  protected:
+	void touchUp();
+	void touchDown();
+	void doSearchTermSelectionTest();
+	
+	
+	// providers for tweets
+	void setCurrentProvider(TweetProvider* prov);
+	TweetProvider* current_provider;
+	TweetProviderStream* stream_provider;
+	TweetProviderDB* db_provider;
+	
+	
+
+  
+protected:
+
 	TwitterApp twitter;
 	
-	vector<string> fakeSearchTerms;	
-	queue<ofxWWSearchTerm> incomingSearchTerms;
-	vector<ofxWWSearchTerm> searchTerms;
+
 	
-//	bool searchTermSelected;
-	int selectedSearchTermIndex;
+
+	
 	
 	void checkFonts();
 	
-	void handleSearch();
-	void handleTouchSearch();
-	void handleTweetSearch();	
-	void searchForTerm(ofxWWSearchTerm& term);	
-	void finishSearch();
 	
 	float weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet);
 	void updateTweets();
-	void updateSearchTerms();
+	
 	
 	void attemptConnection(ofVec2f pos1, float weight1, ofVec2f pos2, float weight2, float layerOpacity);
 	void setRandomCausticColor(float layerOpacity);
 	
 	int numSearchTermTweets; //for debugging
-	void addSearchTerm(const string& user, const string& term);
+	
+	
+	
+	
 	ofxWWTweetParticle createParticleForTweet(const rtt::Tweet& tweet);
 	
 	ofxWWRenderer* renderer;
+
+	Force* current_force;
+	DefaultForce* default_force;
 	
+
+	float lastSearchTermTime;
+	
+	
+	// debug // test search term
+	//string previous_selected_search_term;
+
 	
 };
+
+inline ofxWWSearchTermManager& ofxWWTweetParticleManager::getSearchTermManager() {
+	return searchTermManager;
+}

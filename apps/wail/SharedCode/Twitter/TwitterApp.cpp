@@ -5,10 +5,8 @@ ofEvent<TwitterAppEvent> twitter_app_dispatcher;
 
 // Init
 // -------------------------------------
-
 TwitterApp::TwitterApp()
 	:stream(twitter)
-	,twitter_listener(*this)
 	,uploader(*this)
 	,image_writer(*this)
 	,initialized(false)	
@@ -48,7 +46,12 @@ void TwitterApp::initTwitter() {
         twitter.saveTokens(token_file);
 	}
 	
+	// We listen to "connection" events of the stream.
 	stream.addEventListener(this);
+	
+	
+	mentions.setup(twitter.getConsumerKey(), twitter.getConsumerSecret(), token_file);
+	mentions.startThread(true,false);
 	//removeTweetsFromConnectedAccount();
 }
 
@@ -71,7 +74,9 @@ void TwitterApp::initOSC(int port) {
 
 void TwitterApp::initDB() {
 	//grant all on dewarscube_admin.* to dewarscube_admin@"%" identified by "dewarscube_admin"
-	if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin")) {
+
+	if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin", "/tmp/mysql.sock")) {
+	//if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin")) {
 	//if(!mysql.connect("dewarshub.demo.apollomedia.nl" , "dewarscube_admin", "dewarscube_admin", "dewarscube_admin")) {
 	//if(!mysql.connect("dewarshub.demo.apollomedia.nl" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin")) {
 		exit(0);
@@ -86,7 +91,6 @@ void TwitterApp::initDB() {
 // load search terms which are saved on disk.
 void TwitterApp::initStoredSearchTerms() {
 	search_queue.setup(ofToDataPath("twitter_search_terms.bin",true));
-	search_queue.load();
 }
 
 // OSC
@@ -113,7 +117,10 @@ void TwitterApp::simulateSearch(const string& term) {
 	rtt::Tweet tweet;
 	tweet.setScreenName("roxlu");
 	tweet.setText("@dewarshub " +term);
-	twitter_listener.onStatusUpdate(tweet);
+	vector<roxlu::twitter::IEventListener*>& listeners = twitter.getEventListeners();
+	for(int i = 0; i < listeners.size(); ++i) {
+		listeners[i]->onStatusUpdate(tweet);
+	}
 }	
 				 			 
 // Bad words & hash tags				 
@@ -155,20 +162,8 @@ bool TwitterApp::connect(){
 	return true;
 }
 
-void TwitterApp::addDefaultListener(){
-	addCustomListener(twitter_listener);
-}
-
-void TwitterApp::addCustomListener(rt::IEventListener& listener){
+void TwitterApp::addCustomStreamListener(rt::IEventListener& listener){
 	twitter.addEventListener(listener);
-}
-
-void TwitterApp::onNewSearchTerm(rtt::Tweet tweet, const string& term) {
-	// When we added a new search term to the queue, pass it through!
-	if(search_queue.addSearchTerm(tweet.getScreenName(), term)) {
-		TwitterAppEvent ev(tweet, term);
-		ofNotifyEvent(twitter_app_dispatcher, ev);
-	}
 }
 
 void TwitterApp::update() {	
@@ -176,11 +171,54 @@ void TwitterApp::update() {
 		printf("TwitterApp: make sure to call init() first!\n");
 		exit(0);
 	}
+	
 	if(stream.isConnected()) {
 		stream.update();
 	}
+	
 	osc_receiver.update();
+	
+	// Check for new search terms from the thread which poll mentions
+	vector<TwitterMentionSearchTerm> new_search_terms;
+	if(mentions.getSearchTerms(new_search_terms)) {
+		vector<TwitterMentionSearchTerm>::iterator it = new_search_terms.begin();
+		while(it != new_search_terms.end()) {	
+			TwitterMentionSearchTerm& st = *it;
+			
+			// check if the search term or username contains a bad word.
+			string found_badword;
+			if(containsBadWord(st.search_term, found_badword)) {
+				printf("[search with bad word] %s %s\n", st.search_term.c_str(), found_badword.c_str());
+				++it;
+				continue;
+			}
+			
+			found_badword.clear();
+			if(containsBadWord(st.tweet.getScreenName(), found_badword)) {
+				printf("[search user with bad word] %s %s\n", st.tweet.getScreenName().c_str(), found_badword.c_str());
+				++it;
+				continue;
+			}
+			
+			onNewSearchTerm(st.tweet, st.search_term, st.is_old);
+			
+			++it;
+		}
+	}
 }
+
+void TwitterApp::onNewSearchTerm(rtt::Tweet tweet, const string& term, bool isUsed) {
+	
+	// When we added a new search term to the queue, pass it through!	
+	if(search_queue.addSearchTerm(tweet.getScreenName(), term)) {
+		if(isUsed) {
+			setSearchTermAsUsed(tweet.getScreenName(), term);
+		}
+		TwitterAppEvent ev(tweet, term, isUsed);
+		ofNotifyEvent(twitter_app_dispatcher, ev);
+	}
+}
+
 
 // TODO: remove this; not used in Wailwall
 // get the list of people to follow, separated by comma

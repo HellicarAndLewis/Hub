@@ -177,6 +177,8 @@ public:
 	
 	void setConsumerKey(const string& consumerKey);
 	void setConsumerSecret(const string& consumerSecret);
+	string getConsumerKey();
+	string getConsumerSecret();
 	
 	bool saveTokens(const string& filePath);
 	bool loadTokens(const string& filePath);
@@ -279,6 +281,7 @@ public:
 	// Event system.
 	void addEventListener(IEventListener& listener);
 	void addEventListener(IEventListener* listener);
+	vector<IEventListener*>& getEventListeners();
 	void onStatusUpdate(const rtt::Tweet& tweet);
 	void onStatusDestroy(const rtt::StatusDestroy& destroy);
 	void onStreamEvent(const rtt::StreamEvent& event);
@@ -405,6 +408,18 @@ inline string Twitter::getHTTPResponseMessage() {
 
 inline bool Twitter::getResponseHeader(const string& name, string& result) {
 	return twitcurl.getResponseHeader(name, result);
+}
+
+inline vector<IEventListener*>& Twitter::getEventListeners() {
+	return listeners;
+}
+
+inline string Twitter::getConsumerKey() {
+	return oauth.getConsumerKey();
+}
+	
+inline string Twitter::getConsumerSecret() {
+	return oauth.getConsumerSecret();
 }
 	
 }} // roxlu::twitter

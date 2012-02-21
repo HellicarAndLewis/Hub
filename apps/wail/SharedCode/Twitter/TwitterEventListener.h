@@ -14,8 +14,10 @@ public:
 	virtual void onStatusDestroy(const rtt::StatusDestroy& destroy);
 	virtual void onStreamEvent(const rtt::StreamEvent& event);
 
+	
 private:
 	TwitterApp& twitter_app;
+	
 };	
 
 

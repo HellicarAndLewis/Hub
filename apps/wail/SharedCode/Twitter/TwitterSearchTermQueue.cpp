@@ -61,6 +61,8 @@ bool TwitterSearchTermQueue::save() {
 	return true;
 }
 
+// Because we use the twitter mentions rest API, this is not necessary 
+// anymore. I leave it here for reference.
 bool TwitterSearchTermQueue::load() {
 	std::ifstream ifs(filepath.c_str(), std::ios::binary);
 	if(!ifs.is_open()) {

@@ -323,8 +323,8 @@ bool TwitterDB::getTweetsWithSearchTerm(const string& q, int youngerThan, int ho
 	// join on FTS table
 	QueryResult qr(db);
 	int start = ofGetElapsedTimeMillis();
-	bool r = db.select("t_text")
-		.from("tweet_texts, t_screen_name")
+	bool r = db.select("t_text,t_screen_name")
+		.from("tweet_texts")
 		.where(where.str())
 		.join("tweets on t_id = id")
 		.limit(howMany)
@@ -338,7 +338,7 @@ bool TwitterDB::getTweetsWithSearchTerm(const string& q, int youngerThan, int ho
 	while(qr.next()) {
 		rtt::Tweet tweet;
 		tweet.setText(qr.getString(0));
-		tweet.setScreenName(qr.getString(0));
+		tweet.setScreenName(qr.getString(1));
 		result.push_back(tweet);
 	}
 	int end = ofGetElapsedTimeMillis();	

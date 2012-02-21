@@ -99,25 +99,21 @@ void ofxWWTweetParticle::update(){
 	opacity = ofMap(ofGetElapsedTimef(), createdTime, createdTime+.5, .0, 1.0, true);
 
 	//interaction tweet layer attenuation
-	if(isSearchTweet){
-		opacity *= (1-manager->tweetLayerOpacity);
-		if(!manager->isDoingSearch){
-			isSearchTweet = false; 
-		}
-	}
-	else {
-		pos += ofVec2f(ofSignedNoise(pos.y/manager->tweetFlowDamp, ofGetElapsedTimef()/manager->tweetChaosSpeed) * (.9-clampedSelectionWeight)*manager->tweetFlowAmp, 
-					   ofSignedNoise(pos.x/manager->tweetFlowDamp, ofGetElapsedTimef()/manager->tweetChaosSpeed) * (.9-clampedSelectionWeight)*manager->tweetFlowAmp);
-		//death attenuation
-		deathAttenuation = ofMap(ofGetElapsedTimef(), createdTime+manager->startFadeTime, createdTime+manager->startFadeTime+manager->fadeDuration, 1.0, 0.0, true);
-		opacity *= manager->tweetLayerOpacity;
-		if(deathAttenuation == 0) {
-			dead = true;
-		}
 		
-		//distance attenuation
-		opacity *= ofMap(clampedSelectionWeight, .2, 1.0, 0, 1.0, true); 
+
+	
+	pos += ofVec2f(ofSignedNoise(pos.y/manager->tweetFlowDamp, ofGetElapsedTimef()/manager->tweetChaosSpeed) * (.9-clampedSelectionWeight)*manager->tweetFlowAmp, 
+				   ofSignedNoise(pos.x/manager->tweetFlowDamp, ofGetElapsedTimef()/manager->tweetChaosSpeed) * (.9-clampedSelectionWeight)*manager->tweetFlowAmp);
+	//death attenuation
+	deathAttenuation = ofMap(ofGetElapsedTimef(), createdTime+manager->startFadeTime, createdTime+manager->startFadeTime+manager->fadeDuration, 1.0, 0.0, true);
+
+	if(deathAttenuation == 0) {
+		dead = true;
 	}
+	
+	//distance attenuation
+	opacity *= ofMap(clampedSelectionWeight, .2, 1.0, 0, 1.0, true); 
+
 	
 	//eventually we can optimize with this:
 	if(selectionWeight > 0){
@@ -130,14 +126,9 @@ void ofxWWTweetParticle::drawDot(){
 
 	ofSetRectMode(OF_RECTMODE_CENTER);
 	float alpha;
-	if(isSearchTweet){
-		alpha = 1.0;
-	}
-	else {
-		//alpha = deathAttenuation * manager->tweetLayerOpacity;
-		alpha = manager->tweetLayerOpacity;
-		alpha *= ofMap(clampedSelectionWeight, 0, .5, 1.0, 0, true);
-	}
+	alpha = 1;
+	alpha *= ofMap(clampedSelectionWeight, 0, .5, 1.0, 0, true);
+
 	
 	float scale = useBurstOne ? 1.2 : 1.0;
 	if(isSearchTweet){

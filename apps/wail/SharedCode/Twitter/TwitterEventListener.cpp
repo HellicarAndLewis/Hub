@@ -6,6 +6,7 @@
 		
 TwitterEventListener::TwitterEventListener(TwitterApp& app)
 	:twitter_app(app)
+
 {
 
 }
@@ -34,7 +35,7 @@ TwitterEventListener::~TwitterEventListener() {
  *
  */
 void TwitterEventListener::onStatusUpdate(const rtt::Tweet& tweet) {
-	
+	/*
 	string bad_word;
 	bool to_dewarshub = false;
 	for(int i = 0; i < tweet.user_mentions.size(); ++i) {
@@ -50,13 +51,13 @@ void TwitterEventListener::onStatusUpdate(const rtt::Tweet& tweet) {
 		printf("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
 	}
 	if(twitter_app.containsBadWord(tweet.text, bad_word)) {
-		//printf("[censored][%s] %s\n",bad_word.c_str(), tweet.getText().c_str());
+		printf("[censored][%s] %s\n",bad_word.c_str(), tweet.getText().c_str());
 		//printf("# [ censored ] : %s\n", tweet.text.c_str());
-		printf("[censored]\n");
+		//printf("[censored]\n");
 		return;
 	}
 //	printf("[ok]\n");
-	//printf("[ok] %s \n", tweet.getText().c_str());
+	printf("[ok] %s \n", tweet.getText().c_str());
 
 	// Check for search term; we first lowercase the tweet.
 	string search_query;
@@ -79,7 +80,9 @@ void TwitterEventListener::onStatusUpdate(const rtt::Tweet& tweet) {
 		// store tweet in DB so the visual app can fetch it.
 		twitter_app.insertTweet(tweet);
 	}
+	*/
 }
+
 
 void TwitterEventListener::onStatusDestroy(const rtt::StatusDestroy& destroy) { }
 void TwitterEventListener::onStreamEvent(const rtt::StreamEvent& event) { }

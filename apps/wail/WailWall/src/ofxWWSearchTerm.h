@@ -11,8 +11,9 @@
 
 #include "ofMain.h"
 #include "ofxWWTweetParticle.h"
+#include "FuzzySelection.h"
 
-class ofxWWTweetParticleManager;
+class ofxWWSearchTermManager;
 class ofxWWSearchTerm {
   public:
 	ofxWWSearchTerm();
@@ -22,7 +23,7 @@ class ofxWWSearchTerm {
 	
 	void drawDebug();
 	
-	ofxWWTweetParticleManager* manager;
+	ofxWWSearchTermManager* manager;
 
 	ofVec2f closestPoint;
 	int closestTouchID;
@@ -41,6 +42,7 @@ class ofxWWSearchTerm {
 	
 	float scale;
 	float opacity;
+	int selected_counter;
 	
 	string user;
 	string term;
@@ -49,5 +51,22 @@ class ofxWWSearchTerm {
 	float searchTermWidth;
 	float killedTime;
 	bool dead;
-
+	bool took_screenshot; // tmp hacking around... (need to cleanup and remove) TODO clean up!
+	
+	// roxlu test
+	void highlight();
+	void fade();
+	
+	float selection_started_on;
+	bool is_fading;
+	bool is_highlighting;
+	float faded_on;
+	float highlighted_on;
+	float tween_duration;
+	
+	void warmUp();
+	void select();
+	void deselect();
+private:
+	FuzzySelection selection;
 };
