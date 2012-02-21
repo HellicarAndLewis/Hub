@@ -11,6 +11,7 @@
 
 #include "ofMain.h"
 #include "ofxWWTweetParticle.h"
+#include "FuzzySelection.h"
 
 class ofxWWSearchTermManager;
 class ofxWWSearchTerm {
@@ -62,4 +63,10 @@ class ofxWWSearchTerm {
 	float faded_on;
 	float highlighted_on;
 	float tween_duration;
+	
+	void warmUp();
+	void select();
+	void deselect();
+private:
+	FuzzySelection selection;
 };

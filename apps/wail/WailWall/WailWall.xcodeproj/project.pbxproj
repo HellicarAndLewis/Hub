@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1F082DE514F290E1005008A4 /* CallToAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F082DE314F290E1005008A4 /* CallToAction.cpp */; };
 		1F082DF214F2D6D2005008A4 /* ofxWWSearchTermManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F082DF114F2D6D1005008A4 /* ofxWWSearchTermManager.cpp */; };
+		1F58DC4314F40DEB00767916 /* Colours.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F58DC4214F40DEB00767916 /* Colours.cpp */; };
 		4818285D14EEF48600BAA8B9 /* FTBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818280414EEF48600BAA8B9 /* FTBuffer.cpp */; };
 		4818285E14EEF48600BAA8B9 /* FTCharmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818280514EEF48600BAA8B9 /* FTCharmap.cpp */; };
 		4818285F14EEF48600BAA8B9 /* FTCleanup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818280814EEF48600BAA8B9 /* FTCleanup.cpp */; };
@@ -41,8 +42,6 @@
 		4818287A14EEF48600BAA8B9 /* FTPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818285614EEF48600BAA8B9 /* FTPoint.cpp */; };
 		4818287B14EEF48600BAA8B9 /* FTSize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818285714EEF48600BAA8B9 /* FTSize.cpp */; };
 		4818287C14EEF48600BAA8B9 /* FTVectoriser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818285B14EEF48600BAA8B9 /* FTVectoriser.cpp */; };
-		483107AA14F40EEC00A2D73F /* Force.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 483107A914F40EEB00A2D73F /* Force.cpp */; };
-		483107AC14F40F4500A2D73F /* DefaultForce.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 483107AB14F40F4400A2D73F /* DefaultForce.cpp */; };
 		4848E59014F2FDF000AA5553 /* TwitterMentionsThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4848E58F14F2FDF000AA5553 /* TwitterMentionsThread.cpp */; };
 		4865DF9014EDC7AA00512AF1 /* TwitterThreadedImageWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4865DF8F14EDC7AA00512AF1 /* TwitterThreadedImageWriter.cpp */; };
 		48972C8E14F2803600FD9099 /* TweetProviderStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48972C8D14F2803600FD9099 /* TweetProviderStream.cpp */; };
@@ -73,6 +72,7 @@
 		54F29A7214EA945D003A8397 /* libmysqlclient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54F29A7114EA945D003A8397 /* libmysqlclient.a */; };
 		54F29A7514EA9507003A8397 /* TwitterMySQL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54F29A7314EA9507003A8397 /* TwitterMySQL.cpp */; };
 		54F29A7814EA950C003A8397 /* TwitterSearchTermQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54F29A7614EA950C003A8397 /* TwitterSearchTermQueue.cpp */; };
+		5DB011B814F40718008325B5 /* ofxSimpleGuiHexColorPicker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DB011B614F40718008325B5 /* ofxSimpleGuiHexColorPicker.cpp */; };
 		A602AAB914F057F000EAD6E3 /* alphafade.frag in Sources */ = {isa = PBXBuildFile; fileRef = A602AAB714F057F000EAD6E3 /* alphafade.frag */; };
 		A602AABA14F057F000EAD6E3 /* alphafade.vert in Sources */ = {isa = PBXBuildFile; fileRef = A602AAB814F057F000EAD6E3 /* alphafade.vert */; };
 		A621C4C914D73342008AA7F0 /* ofxMPMFluid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A621C4BF14D73342008AA7F0 /* ofxMPMFluid.cpp */; };
@@ -212,6 +212,9 @@
 		1F082DF114F2D6D1005008A4 /* ofxWWSearchTermManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxWWSearchTermManager.cpp; sourceTree = "<group>"; };
 		1F082DF314F2D6FD005008A4 /* ofxWWSearchTermManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxWWSearchTermManager.h; sourceTree = "<group>"; };
 		1F2E091514F3DA9D0035A851 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
+		1F58DC4214F40DEB00767916 /* Colours.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Colours.cpp; sourceTree = "<group>"; };
+		1F58DC4414F40DF500767916 /* Colours.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colours.h; sourceTree = "<group>"; };
+		1FC55C4514F400D000AC4E26 /* FuzzySelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FuzzySelection.h; sourceTree = "<group>"; };
 		1FE6C33914F2604B007F7B84 /* DisplayLayout_dev.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = DisplayLayout_dev.xml; path = bin/data/DisplayLayout_dev.xml; sourceTree = "<group>"; };
 		1FE6C33A14F27E38007F7B84 /* TweetProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetProvider.h; sourceTree = "<group>"; };
 		4818280314EEF48600BAA8B9 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
@@ -300,11 +303,6 @@
 		4818285A14EEF48600BAA8B9 /* FTVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTVector.h; sourceTree = "<group>"; };
 		4818285B14EEF48600BAA8B9 /* FTVectoriser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTVectoriser.cpp; sourceTree = "<group>"; };
 		4818285C14EEF48600BAA8B9 /* FTVectoriser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTVectoriser.h; sourceTree = "<group>"; };
-		483107A714F40E4000A2D73F /* Force.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Force.h; sourceTree = "<group>"; };
-		483107A814F40E7500A2D73F /* DefaultForce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultForce.h; sourceTree = "<group>"; };
-		483107A914F40EEB00A2D73F /* Force.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Force.cpp; sourceTree = "<group>"; };
-		483107AB14F40F4400A2D73F /* DefaultForce.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DefaultForce.cpp; sourceTree = "<group>"; };
-		483107AD14F40F8200A2D73F /* Forces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Forces.h; sourceTree = "<group>"; };
 		483AECDD14ED813200633DA3 /* TwitterThreadedImageWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterThreadedImageWriter.h; path = ../../SharedCode/Twitter/TwitterThreadedImageWriter.h; sourceTree = "<group>"; };
 		4848E58E14F2FD1D00AA5553 /* TwitterMentionsThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterMentionsThread.h; sourceTree = "<group>"; };
 		4848E58F14F2FDF000AA5553 /* TwitterMentionsThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TwitterMentionsThread.cpp; sourceTree = "<group>"; };
@@ -444,6 +442,8 @@
 		54F29A7614EA950C003A8397 /* TwitterSearchTermQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TwitterSearchTermQueue.cpp; path = ../../SharedCode/Twitter/TwitterSearchTermQueue.cpp; sourceTree = "<group>"; };
 		54F29A7714EA950C003A8397 /* TwitterSearchTermQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterSearchTermQueue.h; path = ../../SharedCode/Twitter/TwitterSearchTermQueue.h; sourceTree = "<group>"; };
 		54F29A7F14EACDC8003A8397 /* TwitterSearchTerm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterSearchTerm.h; path = ../../SharedCode/Twitter/TwitterSearchTerm.h; sourceTree = "<group>"; };
+		5DB011B614F40718008325B5 /* ofxSimpleGuiHexColorPicker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSimpleGuiHexColorPicker.cpp; sourceTree = "<group>"; };
+		5DB011B714F40718008325B5 /* ofxSimpleGuiHexColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSimpleGuiHexColorPicker.h; sourceTree = "<group>"; };
 		A602AAB714F057F000EAD6E3 /* alphafade.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = alphafade.frag; sourceTree = "<group>"; };
 		A602AAB814F057F000EAD6E3 /* alphafade.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = alphafade.vert; sourceTree = "<group>"; };
 		A621C4BF14D73342008AA7F0 /* ofxMPMFluid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxMPMFluid.cpp; sourceTree = "<group>"; };
@@ -891,18 +891,6 @@
 			path = FTLayout;
 			sourceTree = "<group>";
 		};
-		483107A614F40E1B00A2D73F /* Forces */ = {
-			isa = PBXGroup;
-			children = (
-				483107AD14F40F8200A2D73F /* Forces.h */,
-				483107A714F40E4000A2D73F /* Force.h */,
-				483107A914F40EEB00A2D73F /* Force.cpp */,
-				483107A814F40E7500A2D73F /* DefaultForce.h */,
-				483107AB14F40F4400A2D73F /* DefaultForce.cpp */,
-			);
-			name = Forces;
-			sourceTree = "<group>";
-		};
 		4848E59114F3127F00AA5553 /* mentions */ = {
 			isa = PBXGroup;
 			children = (
@@ -1213,6 +1201,8 @@
 			children = (
 				A683B90E14D5A9A800C3B6F7 /* ofxWWRenderer.h */,
 				A683B90F14D5A9A800C3B6F7 /* ofxWWRenderer.cpp */,
+				1F58DC4214F40DEB00767916 /* Colours.cpp */,
+				1F58DC4414F40DF500767916 /* Colours.h */,
 			);
 			name = Renderer;
 			sourceTree = "<group>";
@@ -1253,11 +1243,11 @@
 		A6AF015114DAF02B006816A8 /* Visuals */ = {
 			isa = PBXGroup;
 			children = (
-				483107A614F40E1B00A2D73F /* Forces */,
 				1F082DE314F290E1005008A4 /* CallToAction.cpp */,
 				1F082DE414F290E1005008A4 /* CallToAction.h */,
 				48972C9214F2813800FD9099 /* Providers */,
 				A621C65A14D74D1B008AA7F0 /* ofxWWSearchTerm.h */,
+				1FC55C4514F400D000AC4E26 /* FuzzySelection.h */,
 				A621C65B14D74D1B008AA7F0 /* ofxWWSearchTerm.cpp */,
 				A621C65714D74D0F008AA7F0 /* ofxWWTweetParticle.h */,
 				A621C65814D74D0F008AA7F0 /* ofxWWTweetParticle.cpp */,
@@ -1707,6 +1697,8 @@
 		EA8E878414C492ED00940115 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				5DB011B614F40718008325B5 /* ofxSimpleGuiHexColorPicker.cpp */,
+				5DB011B714F40718008325B5 /* ofxSimpleGuiHexColorPicker.h */,
 				EA8E878514C492ED00940115 /* ofxSimpleGuiButton.cpp */,
 				EA8E878614C492ED00940115 /* ofxSimpleGuiButton.h */,
 				EA8E878714C492ED00940115 /* ofxSimpleGuiColorPicker.cpp */,
@@ -2155,8 +2147,8 @@
 				1F082DE514F290E1005008A4 /* CallToAction.cpp in Sources */,
 				1F082DF214F2D6D2005008A4 /* ofxWWSearchTermManager.cpp in Sources */,
 				4848E59014F2FDF000AA5553 /* TwitterMentionsThread.cpp in Sources */,
-				483107AA14F40EEC00A2D73F /* Force.cpp in Sources */,
-				483107AC14F40F4500A2D73F /* DefaultForce.cpp in Sources */,
+				5DB011B814F40718008325B5 /* ofxSimpleGuiHexColorPicker.cpp in Sources */,
+				1F58DC4314F40DEB00767916 /* Colours.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

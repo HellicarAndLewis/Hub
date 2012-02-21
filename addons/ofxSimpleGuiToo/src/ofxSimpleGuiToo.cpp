@@ -295,10 +295,10 @@ ofxSimpleGuiButton &ofxSimpleGuiToo::addButton(string name, bool &value) {
 	return pages[currentPageIndex]->addButton(name, value);
 }
 
-//ofxSimpleGuiHexColorPicker &ofxSimpleGuiToo::addHexColor(string name, int &hexColor) {
-//	if(!config) setup();
-//	return pages[currentPageIndex]->addHexColor(name, hexColor);
-//}
+ofxSimpleGuiHexColorPicker &ofxSimpleGuiToo::addHexColor(string name, int &hexColor) {
+	if(!config) setup();
+	return pages[currentPageIndex]->addHexColor(name, hexColor);
+}
 
 ofxSimpleGuiContent &ofxSimpleGuiToo::addContent(string name, ofBaseDraws &content, float fixwidth) {
 	if(!config) setup();

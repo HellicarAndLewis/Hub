@@ -165,10 +165,21 @@ float lastTime = 0;
 void ofxWWSearchTermManager::onSearchTermSelected(const SearchTermSelectionInfo& term) {
 	lastSearchTerm = term.term;
 	lastTime = ofGetElapsedTimef();
+
+	for(int i = 0; i < searchTerms.size(); i++) {
+		if(i==selectedSearchTermIndex) {
+			searchTerms[selectedSearchTermIndex].select();
+		} else {
+			searchTerms[i].deselect();
+		}
+	}
 }
 void ofxWWSearchTermManager::onAllSearchTermsDeselected() {
 	lastSearchTerm = "";
 	lastTime = ofGetElapsedTimef();
+	for(int i = 0; i < searchTerms.size(); i++) {
+		searchTerms[i].deselect();
+	}
 }
 
 
@@ -177,7 +188,7 @@ void ofxWWSearchTermManager::render() {
 		searchTerms[i].draw();
 	}
 	
-	// debugging debounce
+	/*// debugging selection
 	float alpha = ofMap(ofGetElapsedTimef(), lastTime, lastTime + 2,  1.5, 0, true );
 	
 	if(alpha>0) {
@@ -190,7 +201,7 @@ void ofxWWSearchTermManager::render() {
 		glColor4f(1, 0, 0, alpha);
 		parent->sharedSearchFont.drawString(msg, 1000, 1000);
 		
-	}
+	}*/
 	
 }
 void ofxWWSearchTermManager::addSearchTerm(const string& user, const string& term, bool isUsed) {
@@ -278,13 +289,12 @@ void ofxWWSearchTermManager::doSearchTermSelectionTest() {
 			// begin the timer for deselection if
 			// not in range of a search term.
 			if(!handRemovedTimer.running()) handRemovedTimer.start(deselectionDelay);
-			printf("Deselect\n");
+
 		}
 		else {
 
 			// in range of a search term
-			ofxWWSearchTerm& selected_term = searchTerms[closest_search_term_index];
-			printf("Ontopof %s\n", selected_term.term.c_str());			
+			ofxWWSearchTerm& selected_term = searchTerms[closest_search_term_index];			
 			// cleanup counters.
 			for(int i = 0; i < len; ++i) {
 				if(i == closest_search_term_index) {
@@ -308,7 +318,7 @@ void ofxWWSearchTermManager::doSearchTermSelectionTest() {
 			}
 			else {
 				selected_term.selection_started_on = ofGetElapsedTimeMillis();
-				
+				selected_term.warmUp();
 			}
 			
 			
