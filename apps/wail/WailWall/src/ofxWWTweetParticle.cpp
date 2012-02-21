@@ -11,11 +11,18 @@
 #include "ofxWWTweetParticleManager.h"
 #include "Colours.h"
 
+ofImage *ofxWWTweetParticle::dotImage = NULL;
+
 ofxWWTweetParticle::ofxWWTweetParticle(){
 	manager = NULL;
 	isTwoLines = false;
 	isSearchTweet = false;
 	speedAdjust = 0;
+	if(dotImage==NULL) {
+		dotImage = new ofImage();
+		dotImage->loadImage("images/tweetDot.png");
+		//dotImage->setAnchorPercent(0.5, 0.5);
+	}
 }
 
 void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
@@ -139,14 +146,16 @@ void ofxWWTweetParticle::drawDot(){
 	
 	if(alpha > 0){
 		ofSetColor(255,255,255, alpha*255);
-		if(useBurstOne){
+//		if(useBurstOne){
 			//manager->burstOne.draw(pos.x+manager->dotShift, pos.y, manager->dotSize*1.2,manager->dotSize*1.2);
-			ofRect(pos.x+manager->dotShift, pos.y, manager->dotSize*1.2,manager->dotSize*1.2 );
-		}
-		else{
+	//		ofRect(pos.x+manager->dotShift, pos.y, manager->dotSize*1.2,manager->dotSize*1.2 );
+		dotImage->draw(pos.x+manager->dotShift, pos.y);//, manager->dotSize*1.2,manager->dotSize*1.2 );
+	//	ofRect(pos.x+manager->dotShift, pos.y, dotImage->getWidth(), dotImage->getHeight());
+//		}
+		/*else{
 			//manager->burstTwo.draw(pos.x+manager->dotShift, pos.y, manager->dotSize,manager->dotSize);
 			ofRect(pos.x+manager->dotShift, pos.y, manager->dotSize,manager->dotSize);
-		}
+		}*/
 	}
 	
 	ofPopStyle();

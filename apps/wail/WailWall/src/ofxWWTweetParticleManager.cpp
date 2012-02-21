@@ -314,6 +314,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 
 void ofxWWTweetParticleManager::renderTweets(){
 	
+	ofEnableBlendMode(OF_BLENDMODE_ADD);
 	for(int i = 0; i < tweets.size(); i++){
 		if(!tweets[i].isSearchTweet){
 			tweets[i].drawText();
@@ -323,6 +324,7 @@ void ofxWWTweetParticleManager::renderTweets(){
 			}
 		}
 	}
+	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	 
 }
 
