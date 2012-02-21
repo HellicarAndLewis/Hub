@@ -11,6 +11,14 @@
         <name>Search Font Size</name>
         <value>134</value>
     </SliderInt_Search_Font_Size>
+    <SliderFloat_Unselected_Term_Min_Alpha>
+        <name>Unselected Term Min Alpha</name>
+        <value>0.244000</value>
+    </SliderFloat_Unselected_Term_Min_Alpha>
+    <SliderFloat_Selected_Term_Min_Alpha>
+        <name>Selected Term Min Alpha</name>
+        <value>0.784000</value>
+    </SliderFloat_Selected_Term_Min_Alpha>
     <SliderFloat_Call_to_action_time>
         <name>Call to action time</name>
         <value>5.000000</value>

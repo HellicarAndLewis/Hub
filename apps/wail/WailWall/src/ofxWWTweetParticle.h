@@ -76,5 +76,6 @@ class ofxWWTweetParticle {
 	
 	float typePlacementTweenPos();
 	void recalculateBoundingRects();
+	static ofImage *dotImage;
 
 };

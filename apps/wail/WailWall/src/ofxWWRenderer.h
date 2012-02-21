@@ -135,9 +135,14 @@ class ofxWWRenderer: public KinectTouchListener {
 	// this takes care of call-to-action
 	// timing and drawing
 	CallToAction callToAction;
+
+    int haloSurfaceColourHex;
+    int haloBottomColourHex;
     
     int surfaceColourHex;
     int bottomColourHex;
+
+    float smootherStep(float edge0, float edge1, float x); //from http://en.wikipedia.org/wiki/Smoothstep
 };
 
 inline ofFbo& ofxWWRenderer::getScreenshotFbo() {

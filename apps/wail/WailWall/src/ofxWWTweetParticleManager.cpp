@@ -2,7 +2,7 @@
 #include "ofxWWTweetParticleManager.h"
 #include "ofxWebSimpleGuiToo.h"
 #include "Error.h"
-
+#include "Colours.h"
 
 ofxWWTweetParticleManager::ofxWWTweetParticleManager():
 	renderer(NULL)
@@ -15,6 +15,9 @@ ofxWWTweetParticleManager::ofxWWTweetParticleManager():
 {
 	maxTweets = 100;
 
+	Colours::set(AT_SIGN, 0xf6b626);
+	Colours::set(LAYER_1_FONT, 0xFFFFFF);
+	Colours::set(LAYER_2_FONT, 0xFFFFFF);
 	
 	callToActionTime = 5;
 	//should_take_picture_on = FLT_MAX;
@@ -114,15 +117,14 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Tweet Line Space", tweetLineSpace, 0, 40);
 	webGui.addSlider("Dot Size", dotSize, 5, 50);
 	webGui.addSlider("Dot Shift", dotShift, -50, 50);
-//	webGui.addHexColor("At Sign Color", atSignColor);
-//	webGui.addHexColor("Layer One Font Color", layerOneFontColor);
-//	webGui.addHexColor("Layer Two Font Color", layerTwoFontColor
+	
 					   
 	webGui.addPage("Search Term Timing");
 	webGui.addSlider("Max Search Terms", searchTermManager.maxSearchTerms, 5, 15);
 	webGui.addSlider("tweet Search Min Wait time", searchTermManager.tweetSearchMinWaitTime, 1, 20);
 	webGui.addSlider("Search Font Size", searchTermManager.searchTermFontSize, 100, 500);
-
+	webGui.addSlider("Unselected Term Min Alpha", searchTermManager.searchTermMinAlpha, 0.1, 0.9);
+	webGui.addSlider("Selected Term Min Alpha", searchTermManager.selectedTermMinAlpha, 0.1, 1);
 
 	
 	// do we need these anymore?
@@ -336,6 +338,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 
 void ofxWWTweetParticleManager::renderTweets(){
 	
+	ofEnableBlendMode(OF_BLENDMODE_ADD);
 	for(int i = 0; i < tweets.size(); i++){
 		if(!tweets[i].isSearchTweet){
 			tweets[i].drawText();
@@ -345,6 +348,7 @@ void ofxWWTweetParticleManager::renderTweets(){
 			}
 		}
 	}
+	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	 
 }
 
@@ -417,7 +421,7 @@ void ofxWWTweetParticleManager::setRandomCausticColor(float layerOpacity){
 }
 
 void ofxWWTweetParticleManager::setupColors(){
-	ofxXmlSettings colors;
+	/*ofxXmlSettings colors;
 	if(colors.loadFile(ofToDataPath("fonts/fontcolor.xml"))){
 		atSignColor = ofColor::fromHex( ofHexToInt( colors.getValue("colors:atsign", "0xFFFFFF")) );
 		layerOneFontColor = ofColor::fromHex( ofHexToInt( colors.getValue("colors:layerone", "0xFFFFFF")) );
@@ -425,7 +429,7 @@ void ofxWWTweetParticleManager::setupColors(){
 	}
 	else{
 		ofSystemAlertDialog("fonts/fontcolor.xml not found!");
-	}
+	}*/
 	
 }
 

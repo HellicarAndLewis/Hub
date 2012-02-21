@@ -9,6 +9,7 @@
 
 #include "ofxWWRenderer.h"
 #include "ofxWebSimpleGuiToo.h"
+#include "Colours.h"
 
 void ofxWWRenderer::setup(int width, int height){
 	targetWidth = width;
@@ -32,8 +33,10 @@ void ofxWWRenderer::setup(int width, int height){
 	gradientOverlay.allocate(width/8, height/8, GL_RGB);
     background.allocate(width/8, height/8, GL_RGB); //going to be scaled anyway, and a single colour
     
-    surfaceColourHex = 0xffffff;
-    bottomColourHex = 0x000000;
+	Colours::set(SURFACE_BG, 0xffffff);
+	Colours::set(SEARCH_BG, 0x000000);
+	Colours::set(HALO_SURFACE, 0xffffff);
+	Colours::set(HALO_SEARCH, 0xEEEEEE);
 	
 	layer1Target.allocate(width, height, GL_RGBA);
 	layer2Target.allocate(width, height, GL_RGBA);
@@ -164,9 +167,19 @@ void ofxWWRenderer::setupGui(){
 	webGui.addToggle("Just Draw Warp", justDrawWarpTexture);
     
     webGui.addPage("Colours");
-    webGui.addHexColor("Surface Background", surfaceColourHex);
-    webGui.addHexColor("Bottom Background", bottomColourHex);
 
+    webGui.addHexColor("Surface Background", Colours::get(SURFACE_BG));
+    webGui.addHexColor("Search Background", Colours::get(SEARCH_BG));
+
+
+    webGui.addHexColor("Halo Surface", Colours::get(HALO_SURFACE));
+    webGui.addHexColor("Halo Bottom", Colours::get(HALO_SEARCH));    
+
+	webGui.addHexColor("At Sign Color", Colours::get(AT_SIGN));
+	webGui.addHexColor("Layer One Font Color", Colours::get(LAYER_1_FONT));
+	webGui.addHexColor("Layer Two Font Color", Colours::get(LAYER_2_FONT));
+	
+	
 	tweets.setupGui();
 }
 
@@ -271,9 +284,12 @@ void ofxWWRenderer::render(){
 	
 	accumulator[accumbuf].draw(0, 0);
 	accumbuf = (accumbuf+1)%2;
-
-	tweets.renderTweets();	
+	
+	
 	tweets.renderSearchTerms();
+	
+	tweets.renderTweets();	
+	
 	
 	callToAction.draw();
 	
@@ -311,12 +327,22 @@ void ofxWWRenderer::render(){
 	}
 	
 	ofPushStyle();
-	ofSetColor(255, 255, 255, 40);
+    
+    ofColor surfaceHalo = ofColor::fromHex(Colours::get(HALO_SURFACE));
+    ofColor bottomHalo = ofColor::fromHex(Colours::get(HALO_SEARCH));
+    
+    float tweenedSmootherStep = smootherStep(layer1Opacity, 0.f, 1.f);
+    
+    surfaceHalo.lerp(bottomHalo, tweenedSmootherStep);
+    
+	//ofEnableBlendMode(OF_BLENDMODE_ADD);
+	ofSetColor(surfaceHalo.r, surfaceHalo.g, surfaceHalo.b, 100);
 	for(it = blobs->begin(); it != blobs->end(); it++){
 		ofVec2f touchCenter = ofVec2f( it->second.x*targetWidth, it->second.y*targetHeight );
 		float radius = it->second.size*maxTouchRadius;
 		halo.draw(ofRectangle(touchCenter.x-radius,touchCenter.y-radius, radius*2,radius*2));
 	}
+	//ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	ofPopStyle();
 	
 	renderTarget.end();	
@@ -451,10 +477,10 @@ void ofxWWRenderer::renderGradientOverlay(){
 	
 	
 	*/
-	ofColor surface = ofColor::fromHex(surfaceColourHex);
-    ofColor bottom = ofColor::fromHex(bottomColourHex);
+	ofColor surface = ofColor::fromHex(Colours::get(SURFACE_BG));
+    ofColor bottom = ofColor::fromHex(Colours::get(SEARCH_BG));
     
-    surface.lerp(bottom, layer1Opacity);
+    surface.lerp(bottom, 1-layer1Opacity);
     
     ofSetColor(surface);
     
@@ -470,10 +496,10 @@ void ofxWWRenderer::renderBackground(){
 	ofClear(0);
 	ofEnableAlphaBlending();
     
-    ofColor surface = ofColor::fromHex(surfaceColourHex);
-    ofColor bottom = ofColor::fromHex(bottomColourHex);
+    ofColor surface = ofColor::fromHex(Colours::get(SURFACE_BG));
+    ofColor bottom = ofColor::fromHex(Colours::get(SEARCH_BG));
     
-    surface.lerp(bottom, layer1Opacity);
+    surface.lerp(bottom, 1-layer1Opacity);
     
     ofSetColor(surface);
     
@@ -523,4 +549,12 @@ ofVec2f ofxWWRenderer::randomPointInCircle(ofVec2f position, float radius){
 	float y = randomRadius * sin(randomAngle);
 	
 	return position + ofVec2f(x,y);
+}
+
+float ofxWWRenderer::smootherStep(float edge0, float edge1, float x)
+{
+    // Scale, and clamp x to 0..1 range
+    x = ofClamp((x - edge0)/(edge1 - edge0), 0.f, 1.f);
+    // Evaluate polynomial
+    return x*x*x*(x*(x*6 - 15) + 10);
 }

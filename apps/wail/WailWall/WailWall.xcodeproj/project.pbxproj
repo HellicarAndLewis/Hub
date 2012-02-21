@@ -323,7 +323,7 @@
 		48972C8F14F280BF00FD9099 /* TweetProviderDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetProviderDB.h; sourceTree = "<group>"; };
 		48972C9014F2811200FD9099 /* TweetProviderDB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TweetProviderDB.cpp; sourceTree = "<group>"; };
 		48972C9314F284F100FD9099 /* TweetProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TweetProvider.cpp; sourceTree = "<group>"; };
-		4897883814F41AAA00A5CF6E /* SelectedForce.h */ = {isa = PBXFileReference; fileEncoding = 4; path = SelectedForce.h; sourceTree = "<group>"; };
+		4897883814F41AAA00A5CF6E /* SelectedForce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectedForce.h; sourceTree = "<group>"; };
 		4897883914F41B2F00A5CF6E /* SelectedForce.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SelectedForce.cpp; sourceTree = "<group>"; };
 		489B328D14EFD4000029AF26 /* TwitterDBThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterDBThread.h; sourceTree = "<group>"; };
 		489B328E14EFD4270029AF26 /* TwitterTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterTypes.h; sourceTree = "<group>"; };

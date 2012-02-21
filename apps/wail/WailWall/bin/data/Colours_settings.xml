@@ -1,14 +1,44 @@
 <controls>
     <HexColorPicker_Surface_Background>
         <name>Surface Background</name>
-        <values_0>251.000000</values_0>
-        <values_1>38.000000</values_1>
-        <values_2>244.000000</values_2>
+        <values_0>10.000000</values_0>
+        <values_1>40.000000</values_1>
+        <values_2>136.000000</values_2>
     </HexColorPicker_Surface_Background>
-    <HexColorPicker_Bottom_Background>
-        <name>Bottom Background</name>
-        <values_0>12.000000</values_0>
-        <values_1>19.000000</values_1>
-        <values_2>87.000000</values_2>
-    </HexColorPicker_Bottom_Background>
+    <HexColorPicker_Search_Background>
+        <name>Search Background</name>
+        <values_0>16.000000</values_0>
+        <values_1>42.000000</values_1>
+        <values_2>76.000000</values_2>
+    </HexColorPicker_Search_Background>
+    <HexColorPicker_Halo_Surface>
+        <name>Halo Surface</name>
+        <values_0>68.000000</values_0>
+        <values_1>233.000000</values_1>
+        <values_2>234.000000</values_2>
+    </HexColorPicker_Halo_Surface>
+    <HexColorPicker_Halo_Bottom>
+        <name>Halo Bottom</name>
+        <values_0>159.000000</values_0>
+        <values_1>237.000000</values_1>
+        <values_2>252.000000</values_2>
+    </HexColorPicker_Halo_Bottom>
+    <HexColorPicker_At_Sign_Color>
+        <name>At Sign Color</name>
+        <values_0>246.000000</values_0>
+        <values_1>182.000000</values_1>
+        <values_2>38.000000</values_2>
+    </HexColorPicker_At_Sign_Color>
+    <HexColorPicker_Layer_One_Font_Color>
+        <name>Layer One Font Color</name>
+        <values_0>252.000000</values_0>
+        <values_1>252.000000</values_1>
+        <values_2>253.000000</values_2>
+    </HexColorPicker_Layer_One_Font_Color>
+    <HexColorPicker_Layer_Two_Font_Color>
+        <name>Layer Two Font Color</name>
+        <values_0>253.000000</values_0>
+        <values_1>255.000000</values_1>
+        <values_2>253.000000</values_2>
+    </HexColorPicker_Layer_Two_Font_Color>
 </controls>
