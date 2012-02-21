@@ -16,6 +16,8 @@ enum ColourId {
 
 	SURFACE_BG,
 	SEARCH_BG,
+	HALO_SEARCH,
+	HALO_SURFACE,
 	NUM_COLORS
 };
 

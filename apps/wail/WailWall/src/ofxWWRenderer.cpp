@@ -35,6 +35,8 @@ void ofxWWRenderer::setup(int width, int height){
     
 	Colours::set(SURFACE_BG, 0xffffff);
 	Colours::set(SEARCH_BG, 0x000000);
+	Colours::set(HALO_SURFACE, 0xffffff);
+	Colours::set(HALO_SEARCH, 0xEEEEEE);
 	
 	layer1Target.allocate(width, height, GL_RGBA);
 	layer2Target.allocate(width, height, GL_RGBA);
@@ -106,6 +108,9 @@ void ofxWWRenderer::setup(int width, int height){
 	// roxlu: test screenshots
 	ofAddListener(ofEvents.keyPressed, this, &ofxWWRenderer::keyPressed);
 	test_screenshot = false;
+    
+    haloSurfaceColourHex = 0xffffff;
+    haloBottomColourHex = 0x000000;
 }
 
 void ofxWWRenderer::setupGui(){
@@ -165,8 +170,14 @@ void ofxWWRenderer::setupGui(){
 	webGui.addToggle("Just Draw Warp", justDrawWarpTexture);
     
     webGui.addPage("Colours");
+
     webGui.addHexColor("Surface Background", Colours::get(SURFACE_BG));
     webGui.addHexColor("Search Background", Colours::get(SEARCH_BG));
+
+
+    webGui.addHexColor("Halo Surface", Colours::get(HALO_SURFACE));
+    webGui.addHexColor("Halo Bottom", Colours::get(HALO_SEARCH));    
+>>>>>>> 69a1567efa15f166c7e7a4f71c225f293d7a0c4d
 
 	tweets.setupGui();
 }
@@ -315,7 +326,15 @@ void ofxWWRenderer::render(){
 	}
 	
 	ofPushStyle();
-	ofSetColor(255, 255, 255, 40);
+    
+    ofColor surfaceHalo = ofColor::fromHex(surfaceColourHex);
+    ofColor bottomHalo = ofColor::fromHex(bottomColourHex);
+    
+    float tweenedSmootherStep = smootherStep(layer1Opacity, 0.f, 1.f);
+    
+    surfaceHalo.lerp(bottomHalo, tweenedSmootherStep);
+    
+	ofSetColor(surfaceHalo.r, surfaceHalo.g, surfaceHalo.b, 40);
 	for(it = blobs->begin(); it != blobs->end(); it++){
 		ofVec2f touchCenter = ofVec2f( it->second.x*targetWidth, it->second.y*targetHeight );
 		float radius = it->second.size*maxTouchRadius;
@@ -527,4 +546,12 @@ ofVec2f ofxWWRenderer::randomPointInCircle(ofVec2f position, float radius){
 	float y = randomRadius * sin(randomAngle);
 	
 	return position + ofVec2f(x,y);
+}
+
+float ofxWWRenderer::smootherStep(float edge0, float edge1, float x)
+{
+    // Scale, and clamp x to 0..1 range
+    x = ofClamp((x - edge0)/(edge1 - edge0), 0.f, 1.f);
+    // Evaluate polynomial
+    return x*x*x*(x*(x*6 - 15) + 10);
 }
