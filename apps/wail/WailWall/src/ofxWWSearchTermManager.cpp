@@ -11,7 +11,8 @@
 
 ofxWWSearchTermManager::ofxWWSearchTermManager() {
 	selectedSearchTermIndex = -1;
-	
+	tweetSearchMinWaitTime = 1;
+	fadeOutTime = 1;
 }
 
 
@@ -77,7 +78,7 @@ void ofxWWSearchTermManager::doTouchInteraction() {
 	}
 	
 	//now calculate repulsion forces
-	float squaredMinDistance = searchTermRepulsionDistance*searchTermRepulsionDistance;
+	float squaredMinDistance = repulsionDistance*repulsionDistance;
 	for(int i = 0; i < searchTerms.size(); i++){
 		if(searchTerms[i].wallForceApplied){
 			//			continue;
@@ -91,14 +92,14 @@ void ofxWWSearchTermManager::doTouchInteraction() {
 				
 				float distance = sqrtf(distanceSquared);
 				ofVec2f awayFromOther = (searchTerms[i].pos - searchTerms[j].pos)/distance;
-				ofVec2f force = (awayFromOther * ((searchTermRepulsionDistance - distance) * searchTermRepulsionAttenuation));
+				ofVec2f force = (awayFromOther * ((repulsionDistance - distance) * repulsionAttenuation));
 				searchTerms[i].force += force;			
 			}
 		}
 	}
 	
 	for(int i = searchTerms.size()-1; i >= 0; i--){
-		if(searchTerms[i].dead && ofGetElapsedTimef() - searchTerms[i].killedTime > searchTermFadeOutTime){
+		if(searchTerms[i].dead && ofGetElapsedTimef() - searchTerms[i].killedTime > fadeOutTime){
 			searchTerms.erase(searchTerms.begin()+i);
 		}
 	}

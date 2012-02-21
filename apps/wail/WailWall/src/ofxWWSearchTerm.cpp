@@ -29,43 +29,10 @@ void ofxWWSearchTerm::update(){
 	if(!touchPresent){
 		isHolding = false;
 	}
-	/*
-	float targetOpacity;	
-	if(selected){
-		targetOpacity = 1.0;
-		opacity = 1.0;
-	}
-	else {
-		targetOpacity = (1 - manager->tweetLayerOpacity)+manager->searchMinOpacity;
-		float distance = closestPoint.distance(pos);
-		
-		if(!isHolding && distance < manager->searchTermMinDistance){
-			isHolding = true;
-			holdStartTime = ofGetElapsedTimef();
-		}
-		else if(isHolding && distance > manager->searchTermMinDistance){
-			isHolding = false;
-		}
-		
-		if(isHolding && (ofGetElapsedTimef() - holdStartTime) > manager->searchTermMinHoldTime){
-			selected = true;
-		} 		
-	}
-	
-<<<<<<< HEAD
-	opacity += (targetOpacity - opacity)*.1;
-	//printf("opacity: %f\n", opacity);
-=======
-	*/
-	
-	
-	
-	//opacity += (targetOpacity - opacity)*.1;
-//>>>>>>> origin/flowchange
-	//opacity = targetOpacity;
+
 	//death attenuation
 	if(dead){
-		opacity *= ofMap(ofGetElapsedTimef(), killedTime, killedTime+manager->searchTermFadeOutTime, 1.0, 0, true);
+		opacity *= ofMap(ofGetElapsedTimef(), killedTime, killedTime+manager->fadeOutTime, 1.0, 0, true);
 	}
 	
 	searchTermWidth = manager->parent->sharedSearchFont.getStringBoundingBox(term, 0, 0).width;
@@ -88,17 +55,8 @@ void ofxWWSearchTerm::draw(){
 	ofColor selectedColor = manager->parent->atSignColor;
 	ofColor baseColor = manager->parent->layerTwoFontColor;
 	baseColor.a = selectedColor.a = opacity*255;
-	float holdLerp = 0.0;
-	// opacity = 0.5;
-	//if(selected){
-	//	opacity = 1;
-		holdLerp = 1.0;
-	//}
-	//opacity = ofMap(selected_counter, 0, 60, 0.5, 1, true);
-	//holdLerp = ofMap(selected_counter, 0, 60, 0, 1, true);
-	/*else if(isHolding){
-		holdLerp = ofMap(ofGetElapsedTimef(), holdStartTime, holdStartTime+manager->searchTermMinHoldTime, .0, 1.0, true);
-	}*/
+	float holdLerp = 1.0;
+
 	
 	float p = 0.0; 
 	if(is_highlighting) {
@@ -125,11 +83,9 @@ void ofxWWSearchTerm::drawDebug(){
 	ofPushStyle();
 	ofNoFill();
 	
-	ofSetColor(255, 255, 0);
-	ofCircle(pos, manager->searchTermMinDistance);
 	
 	ofSetColor(255, 0, 0);
-	ofCircle(pos, manager->searchTermRepulsionDistance);
+	ofCircle(pos, manager->repulsionDistance);
 
 	ofSetLineWidth(4);
 	ofRect(manager->parent->sharedSearchFont.getStringBoundingBox(term, pos.x-searchTermWidth/2, pos.y) );
