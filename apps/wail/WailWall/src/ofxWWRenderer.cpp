@@ -105,6 +105,9 @@ void ofxWWRenderer::setup(int width, int height){
 	// roxlu: test screenshots
 	ofAddListener(ofEvents.keyPressed, this, &ofxWWRenderer::keyPressed);
 	test_screenshot = false;
+    
+    haloSurfaceColourHex = 0xffffff;
+    haloBottomColourHex = 0x000000;
 }
 
 void ofxWWRenderer::setupGui(){
@@ -166,6 +169,8 @@ void ofxWWRenderer::setupGui(){
     webGui.addPage("Colours");
     webGui.addHexColor("Surface Background", surfaceColourHex);
     webGui.addHexColor("Bottom Background", bottomColourHex);
+    webGui.addHexColor("Halo Surface", haloSurfaceColourHex);
+    webGui.addHexColor("Halo Bottom", haloBottomColourHex);    
 
 	tweets.setupGui();
 }
@@ -311,7 +316,15 @@ void ofxWWRenderer::render(){
 	}
 	
 	ofPushStyle();
-	ofSetColor(255, 255, 255, 40);
+    
+    ofColor surfaceHalo = ofColor::fromHex(surfaceColourHex);
+    ofColor bottomHalo = ofColor::fromHex(bottomColourHex);
+    
+    float tweenedSmootherStep = smootherStep(layer1Opacity, 0.f, 1.f);
+    
+    surfaceHalo.lerp(bottomHalo, tweenedSmootherStep);
+    
+	ofSetColor(surfaceHalo.r, surfaceHalo.g, surfaceHalo.b, 40);
 	for(it = blobs->begin(); it != blobs->end(); it++){
 		ofVec2f touchCenter = ofVec2f( it->second.x*targetWidth, it->second.y*targetHeight );
 		float radius = it->second.size*maxTouchRadius;
@@ -523,4 +536,12 @@ ofVec2f ofxWWRenderer::randomPointInCircle(ofVec2f position, float radius){
 	float y = randomRadius * sin(randomAngle);
 	
 	return position + ofVec2f(x,y);
+}
+
+float ofxWWRenderer::smootherStep(float edge0, float edge1, float x)
+{
+    // Scale, and clamp x to 0..1 range
+    x = ofClamp((x - edge0)/(edge1 - edge0), 0.f, 1.f);
+    // Evaluate polynomial
+    return x*x*x*(x*(x*6 - 15) + 10);
 }

@@ -138,6 +138,11 @@ class ofxWWRenderer: public KinectTouchListener {
     
     int surfaceColourHex;
     int bottomColourHex;
+    
+    int haloSurfaceColourHex;
+    int haloBottomColourHex;
+    
+    float smootherStep(float edge0, float edge1, float x); //from http://en.wikipedia.org/wiki/Smoothstep
 };
 
 inline ofFbo& ofxWWRenderer::getScreenshotFbo() {
