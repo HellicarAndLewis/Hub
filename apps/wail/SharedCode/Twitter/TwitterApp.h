@@ -153,7 +153,7 @@ inline bool TwitterApp::getTweetsNewerThan(int age, int howMany, vector<rtt::Twe
 }
 
 inline bool TwitterApp::getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany, vector<rtt::Tweet>& result) {
-	return db_thread.getTweetsWithSearchTerm(q, howMany, youngerThan, result);
+	return db_thread.getTweetsWithSearchTerm(q, youngerThan, howMany, result);
 }
 
 inline bool TwitterApp::insertSendQueueItem(const string& username, const string& filename, int& newID) {

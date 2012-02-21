@@ -5,11 +5,11 @@
     </SliderInt_Tweet_Font_Size>
     <SliderInt_User_Font_Size>
         <name>User Font Size</name>
-        <value>63</value>
+        <value>62</value>
     </SliderInt_User_Font_Size>
     <SliderFloat_Word_Wrap_Length>
         <name>Word Wrap Length</name>
-        <value>300.000000</value>
+        <value>213.000000</value>
     </SliderFloat_Word_Wrap_Length>
     <SliderFloat_User_Y_Shift>
         <name>User Y Shift</name>

@@ -50,24 +50,8 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	burstTwo.loadImage("images/burst2.png");
 	
 	canSelectSearchTerms = false;
-	//enableCaustics = false;
 	
 	ofAddListener(ofEvents.keyPressed, this, &ofxWWTweetParticleManager::keyPressed);
-	//fakin' it
-
-	fakeSearchTerms.push_back("POLITICS");
-	fakeSearchTerms.push_back("ECONOMY");
-	fakeSearchTerms.push_back("BIOLOGY");
-	fakeSearchTerms.push_back("TED");
-	fakeSearchTerms.push_back("DEWARDS");
-	fakeSearchTerms.push_back("TECHNOLOGY");
-	fakeSearchTerms.push_back("LOVE");
-	fakeSearchTerms.push_back("CULTURE");
-
-	for(int i = 0; i < fakeSearchTerms.size(); i++){
-		twitter.simulateSearch(fakeSearchTerms[i]);
-	}
-
 	setupColors();
 }
 
@@ -121,7 +105,11 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Tweet Line Space", tweetLineSpace, 0, 40);
 	webGui.addSlider("Dot Size", dotSize, 5, 50);
 	webGui.addSlider("Dot Shift", dotShift, -50, 50);
-	
+//	webGui.addHexColor("At Sign Color", atSignColor);
+//	webGui.addHexColor("Layer One Font Color", layerOneFontColor);
+//	webGui.addHexColor("Layer Two Font Color", layerTwoFontColor
+					   
+					   
 	webGui.addPage("Search Term Timing");
 	webGui.addSlider("Max Search Terms", maxSearchTerms, 5, 15);
 	webGui.addSlider("Search Font Size", searchTermFontSize, 100, 500);
@@ -825,6 +813,7 @@ void ofxWWTweetParticleManager::addSearchTerm(const string& user, const string& 
 	searchTerm.manager = this;
 	searchTerm.term = term;
 	searchTerm.user = user;
+	printf(">>>>>>>>>>>>>>>>>>>>>>>> %s <<<<<<<<<<<<<<<<<<<<<<<<<<\n", searchTerm.term.c_str());
 	incomingSearchTerms.push(searchTerm);	
 }
 

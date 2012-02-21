@@ -9,7 +9,7 @@
     <setting id="Draw Blobs" value="true"></setting>
     <setting id="Water Surface Level" value="0.867475748"></setting>
     <setting id="Maximum Water Depth" value="0.972087383"></setting>
-    <setting id="Minimum Blob Size" value="27.000000000"></setting>
+    <setting id="Minimum Blob Size" value="67.000000000"></setting>
     <setting id="Maximum Blob Size" value="623.000000000"></setting>
     <setting id="Blob XY Smoothing" value="0.796116531"></setting>
     <setting id="Blob Z Smoothing" value="0.354368925"></setting>
