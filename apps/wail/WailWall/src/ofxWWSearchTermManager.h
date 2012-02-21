@@ -10,16 +10,28 @@ class ofxWWTweetParticleManager;
 class ofxWWSearchTermManager {
 public:
 	
+	ofxWWTweetParticleManager *parent;
 	
+	// initialization
 	ofxWWSearchTermManager();
 	void setup(TwitterApp *twitter, ofxWWTweetParticleManager *parent);
+	
+	
+	// update data and touches
 	void update();
+
+	// render to FBO
+	void render(); 
+		  
 	
-	void render();
-	void addSearchTerm(const string& user, const string& term, bool isUsed = false);
+	// call this to add a search term
+	void addSearchTerm(const string& user, const string& term, bool isUsed);
+	
+	// call this to deslect everything
+
 	void deselectAllSearchTerms();
-	void doSearchTermSelectionTest();
 	
+
 	// screenshots
 	void setScreenshotCallback(takeScreenshotCallback func, void* user);
 	takeScreenshotCallback  screenshot_callback;
@@ -27,7 +39,7 @@ public:
 	float should_take_picture_on;
 	ofxWWSearchTerm screenshot_searchterm;
 	
-	queue<ofxWWSearchTerm> incomingSearchTerms;
+
 	vector<ofxWWSearchTerm> searchTerms;
 	
 	int selectedSearchTermIndex;
@@ -35,26 +47,26 @@ public:
 	float tweetSearchMinWaitTime;
 	int searchTermFontSize;
 	
-	
-	
 	int maxSearchTerms;
-	float searchTermMinDistance;
-	float searchTermMinHoldTime;
-	float searchMinOpacity;
-	float searchTermRepulsionDistance;
-	float searchTermRepulsionAttenuation;
-	float searchTermHandAttractionFactor;
-	float searchTermFadeOutTime;
+
+
+
+	float repulsionDistance;
+	float repulsionAttenuation;
+	float fadeOutTime;
 	
 	bool drawSearchDebug;
 	
 	
-	ofxWWTweetParticleManager *parent;
 	
+private:
 	void handleTouchSearch();
 	void handleTweetSearch();
 	void doTouchInteraction();
-private:
+	void doSearchTermSelectionTest();
+	
+
 	TwitterApp *twitter;
+	queue<ofxWWSearchTerm> incomingSearchTerms;
 };
 

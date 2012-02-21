@@ -104,10 +104,10 @@ void ofxWWTweetParticleManager::setupGui(){
 					   
 	webGui.addPage("Search Term Timing");
 	webGui.addSlider("Max Search Terms", searchTerms.maxSearchTerms, 5, 15);
+	webGui.addSlider("tweet Search Min Wait time", searchTerms.tweetSearchMinWaitTime, 1, 20);
 	webGui.addSlider("Search Font Size", searchTerms.searchTermFontSize, 100, 500);
-	webGui.addSlider("Search Min Opacity", searchTerms.searchMinOpacity, 0, .4);
-	webGui.addSlider("Touch Min Dist", searchTerms.searchTermMinDistance, 50, 1000);
-	webGui.addSlider("Touch Min Hold", searchTerms.searchTermMinHoldTime, .5, 3.0);
+
+
 	
 	// do we need these anymore?
 	
@@ -120,9 +120,10 @@ void ofxWWTweetParticleManager::setupGui(){
 	
 	webGui.addPage("Search Term Animation");
 	webGui.addSlider("Wall Repulsion Dist", wallRepulsionDistance, 0, 900);
-	webGui.addSlider("Search Repulse Dist", searchTerms.searchTermRepulsionDistance, 500, 2000);
-	webGui.addSlider("Search Repulse Atten", searchTerms.searchTermRepulsionAttenuation, 0, .2);
-	webGui.addSlider("Search Hand Attract", searchTerms.searchTermHandAttractionFactor, 0, .1);
+	webGui.addSlider("Search Repulse Dist", searchTerms.repulsionDistance, 500, 2000);
+	webGui.addSlider("Search Repulse Atten", searchTerms.repulsionAttenuation, 0, .2);
+	webGui.addSlider("Search Fadeout Time", searchTerms.fadeOutTime, 0, 2);
+
 	
 	//TODO set up in XML ONLY CAN HAVE 4 right now , least to most common
 	causticColors.push_back(ofColor::fromHex(0xf8edc0)); //LIGHT YELLOW
