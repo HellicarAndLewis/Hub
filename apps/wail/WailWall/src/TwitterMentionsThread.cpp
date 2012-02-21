@@ -23,7 +23,8 @@ void TwitterMentionsThread::threadedFunction() {
 	params["count"] = 10;
 	vector<rtt::Tweet> queried_mentions;
 	vector<rtt::Tweet> newer_mentions;
-
+	bool is_first_request = true;
+	
 	while(true) {
 	
 		// GET MENTIONS
@@ -32,7 +33,8 @@ void TwitterMentionsThread::threadedFunction() {
 		long resp_code = twitter.getHTTPResponseCode();
 		
 		// TODO handle out of rate states.
-		if(resp_code != 200) {		
+		if(resp_code != 200) {
+			printf("mentions: wrong response code: %lu\n", resp_code);		
 			sleep(15);
 			continue;
 		}
@@ -84,7 +86,8 @@ void TwitterMentionsThread::threadedFunction() {
 		
 		// ADD MENTIONS AS SEARCH TERMS
 		// ----------------------------
-		if(newer_mentions.size() > 0) {				
+		if(newer_mentions.size() > 0) {			
+	
 			last_mention = newer_mentions.at(0);			
 			params["since_id"] = last_mention.getTweetID();
 			
@@ -104,18 +107,27 @@ void TwitterMentionsThread::threadedFunction() {
 						,::tolower
 					);
 					
-						
+					tweet_text_lower = trim(tweet_text_lower);
+
 					// Check if it's a correct search term:
 					pcrecpp::RE re("^@dewarshub (.*)$");
 					re.FullMatch(tweet_text_lower, &search_query);
 					if(search_query.length()) {
-						printf("[search]: '%s'\n", search_query.c_str());	
-						TwitterMentionSearchTerm twit_search_term = {tweet, search_query};
-						search_terms.push_back(twit_search_term);
+						StringTokenizer tokens(search_query, " ",Poco::StringTokenizer::TOK_IGNORE_EMPTY);
+						if(tokens.count() > 0 && tokens[0].length() <= 20) {
+							search_query = tokens[0];
+							printf("[search from mentions]: '%s'\n", search_query.c_str());	
+							TwitterMentionSearchTerm twit_search_term = {tweet, search_query, is_first_request};
+							search_terms.push_back(twit_search_term);
+						}
+						else {
+							printf("[search term invalid] %s\n", search_query.c_str());
+						}
 					}
 					++it;
 				}
 			unlock();
+			is_first_request = false;
 		}
 		
 		printf("mentions: STR >>>>>>>>>>>>>>>>>> %s\n", last_mention.getText().c_str());

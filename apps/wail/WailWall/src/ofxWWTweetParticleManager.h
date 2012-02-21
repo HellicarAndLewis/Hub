@@ -22,7 +22,7 @@
 #include "TweetProviderListener.h"
 #include "ofxWWSearchTermManager.h"
 
-typedef void (*takeScreenshotCallback)(const string& username, void* userdata);
+
 
 class ofxWWRenderer;
 
@@ -57,8 +57,8 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	map<int,KinectTouch>* blobsRef;
 	
 
-
 	ofxWWSearchTermManager searchTerms;
+	ofxWWSearchTermManager& getSearchTermManager();
 	
 	
 	#ifdef USE_FTGL
@@ -136,7 +136,7 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	
 	
 
-	bool shouldTriggerScreenshot;
+	//bool shouldTriggerScreenshot;
 
 	
 	
@@ -160,10 +160,7 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	void keyPressed(ofKeyEventArgs& args); //JG just used for simulating searches
 
 	// Screenshot
-	void addCurrentRenderToScreenshotQueue();
-	void setScreenshotCallback(takeScreenshotCallback func, void* user);
-	takeScreenshotCallback  screenshot_callback;
-	void* screenshot_userdata;
+	//void addCurrentRenderToScreenshotQueue();
 	
 	void touchUp();
 	void touchDown();
@@ -209,10 +206,14 @@ protected:
 	
 
 	float lastSearchTermTime;
-	float should_take_picture_on; // roxlu debug
+	
 	
 	// debug // test search term
 	//string previous_selected_search_term;
 
 	
 };
+
+inline ofxWWSearchTermManager& ofxWWTweetParticleManager::getSearchTermManager() {
+	return searchTerms;
+}

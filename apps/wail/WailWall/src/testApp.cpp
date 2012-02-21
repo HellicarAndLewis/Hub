@@ -90,7 +90,7 @@ void testApp::setup(){
 	glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo); eglGetError();
 	glBufferData(GL_PIXEL_PACK_BUFFER, size, NULL, GL_STATIC_READ); eglGetError();
 	
-	renderer.getTweetManager().setScreenshotCallback(&testApp::theScreenshotCallback, this);
+	renderer.getSearchTermManager().setScreenshotCallback(&testApp::theScreenshotCallback, this);
 	
 }
 
@@ -159,7 +159,6 @@ void testApp::draw(){
 		filepath.append("/");
 		filepath.append(filename);
 		
-		// pretty sure we can do this better
 		glGetError();
 		glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo); eglGetError();
 		renderer.getScreenshotFbo().getTextureReference().bind(); eglGetError();
@@ -172,6 +171,8 @@ void testApp::draw(){
 					.getTwitterApp()
 					.getImageWriter()
 					.addPixels(filepath, screenshotUsername, ptr, screen_w, screen_h);
+			
+					
 		}
 		
 		glUnmapBuffer(GL_PIXEL_PACK_BUFFER);

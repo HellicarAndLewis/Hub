@@ -1,17 +1,13 @@
-//
-//  ofxWWSearchTermManager.h
-//  WailWall
-//
-//  Created by Joel Lewis on 20/02/2012.
-//  Copyright (c) 2012 Hellicar & Lewis. All rights reserved.
-//
-
 #pragma once
 
 #include "ofxWWSearchTerm.h"
 #include "TwitterApp.h"
 #include "SearchLayerListener.h"
 #include "Timer.h"
+
+
+typedef void (*takeScreenshotCallback)(const string& username, void* userdata);
+
 
 class ofxWWTweetParticleManager;
 
@@ -27,14 +23,15 @@ public:
 	
 	// update data and touches
 	void update();
-	
+
 	// render to FBO
 	void render(); 
 		  
 	
 	// call this to add a search term
-	void addSearchTerm(const string& user, const string& term);
+	void addSearchTerm(const string& user, const string& term, bool isUsed);
 	
+
 	// this sets the selected search term and fires events.
 	void setSelectedSearchTerm(ofxWWSearchTerm &searchTerm);
 
@@ -49,7 +46,18 @@ public:
 	
 	void addListener(SearchLayerListener *listener);
 	vector<SearchLayerListener*> listeners;
+
 	
+
+	// screenshots
+	void setScreenshotCallback(takeScreenshotCallback func, void* user);
+	takeScreenshotCallback  screenshot_callback;
+	void* screenshot_userdata;
+	float should_take_picture_on;
+	ofxWWSearchTerm screenshot_searchterm;
+
+	
+
 	vector<ofxWWSearchTerm> searchTerms;
 	
 	int selectedSearchTermIndex;

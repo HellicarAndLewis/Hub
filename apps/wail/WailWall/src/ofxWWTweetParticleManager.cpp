@@ -4,10 +4,7 @@
 #include "Error.h"
 
 ofxWWTweetParticleManager::ofxWWTweetParticleManager():
-
-	
 	renderer(NULL)
-	,screenshot_userdata(NULL)
 	,current_provider(NULL)
 	,stream_provider(NULL)
 	,db_provider(NULL)
@@ -16,7 +13,7 @@ ofxWWTweetParticleManager::ofxWWTweetParticleManager():
 
 	
 	callToActionTime = 5;
-	should_take_picture_on = FLT_MAX;
+	//should_take_picture_on = FLT_MAX;
 }
 
 void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
@@ -29,7 +26,7 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	if(!twitter.connect()) {
 		printf("Error: cannot connect to twitter stream.\n");
 	}
-	// 
+	
 	twitter.addNewSearchTermListener(this, &ofxWWTweetParticleManager::onNewSearchTerm);
 
 	searchTerms.setup(&twitter, this);
@@ -51,10 +48,7 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	ofAddListener(ofEvents.keyPressed, this, &ofxWWTweetParticleManager::keyPressed);
 }
 
-void ofxWWTweetParticleManager::setScreenshotCallback(takeScreenshotCallback func, void* userdata) {
-	screenshot_callback = func;
-	screenshot_userdata = userdata;
-}
+
 
 void ofxWWTweetParticleManager::keyPressed(ofKeyEventArgs& args) {
 	/*if(args.key == '!'){
@@ -150,10 +144,7 @@ void ofxWWTweetParticleManager::update(){
 	
 	updateTweets();
 		
-	if(ofGetElapsedTimef() > should_take_picture_on) {
-		screenshot_callback("joelgethinlewis", screenshot_userdata);
-		should_take_picture_on = FLT_MAX;
-	}
+	
 }
 
 void ofxWWTweetParticleManager::checkFonts(){
@@ -202,7 +193,7 @@ void ofxWWTweetParticleManager::checkFonts(){
 
 
 
-
+/*
 void ofxWWTweetParticleManager::addCurrentRenderToScreenshotQueue() {
 	if(screenshot_userdata == NULL) {
 		return;
@@ -210,6 +201,7 @@ void ofxWWTweetParticleManager::addCurrentRenderToScreenshotQueue() {
 	// TODO: add correct username
 	//screenshot_callback("joelgethinlewis", screenshot_userdata);
 }
+*/
 
 float ofxWWTweetParticleManager::weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet){
 	float touchMid = normalizedSize*simulationHeight*touchSizeScale;
@@ -452,10 +444,7 @@ ofxWWTweetParticle ofxWWTweetParticleManager::createParticleForTweet(const rtt::
 					
 void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
 	// send search term to its manager
-	searchTerms.addSearchTerm(event.tweet.getScreenName(), event.search_term);
-	
-	// prepare to take a screenshot
-	should_take_picture_on = ofGetElapsedTimef()+1.5;
+	searchTerms.addSearchTerm(event.tweet.getScreenName(), event.search_term, event.is_used);
 	
 	// notify provider
 	db_provider->setSearchInfoForNewParticles(event.tweet.getScreenName(), event.search_term);

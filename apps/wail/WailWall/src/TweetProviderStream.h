@@ -6,8 +6,11 @@
 #include "TwitterApp.h"
 #include "IEventListener.h"
 
+
 class TweetProviderStream : public TweetProvider, public roxlu::twitter::IEventListener {
+
 public:
+
 	TweetProviderStream(TwitterApp& app);
 	virtual void update();
 	virtual void activate();

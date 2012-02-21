@@ -91,7 +91,6 @@ void TwitterApp::initDB() {
 // load search terms which are saved on disk.
 void TwitterApp::initStoredSearchTerms() {
 	search_queue.setup(ofToDataPath("twitter_search_terms.bin",true));
-	search_queue.load();
 }
 
 // OSC
@@ -201,18 +200,21 @@ void TwitterApp::update() {
 				continue;
 			}
 			
-			onNewSearchTerm(st.tweet, st.search_term);
+			onNewSearchTerm(st.tweet, st.search_term, st.is_old);
+			
 			++it;
 		}
 	}
 }
 
-// TODO make sure new search terms are added to the search_queue....
-// but only if that's still necessary (?) we can use twitter as a store?
-void TwitterApp::onNewSearchTerm(rtt::Tweet tweet, const string& term) {
+void TwitterApp::onNewSearchTerm(rtt::Tweet tweet, const string& term, bool isUsed) {
+	
 	// When we added a new search term to the queue, pass it through!	
 	if(search_queue.addSearchTerm(tweet.getScreenName(), term)) {
-		TwitterAppEvent ev(tweet, term);
+		if(isUsed) {
+			setSearchTermAsUsed(tweet.getScreenName(), term);
+		}
+		TwitterAppEvent ev(tweet, term, isUsed);
 		ofNotifyEvent(twitter_app_dispatcher, ev);
 	}
 }

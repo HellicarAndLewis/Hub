@@ -44,14 +44,16 @@ using std::vector;
 
 class TwitterAppEvent { 
 public:
-	TwitterAppEvent(rtt::Tweet tweet,  string searchTerm)
+	TwitterAppEvent(rtt::Tweet tweet,  string searchTerm, bool isUsed)
 		:tweet(tweet)
 		,search_term(searchTerm)
+		,is_used(isUsed)
 	{
 	}
 	
 	rtt::Tweet tweet;
 	string search_term;
+	bool is_used;
 };
 
 extern ofEvent<TwitterAppEvent> twitter_app_dispatcher;
@@ -82,7 +84,7 @@ public:
 	bool getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result);
 	bool getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result);
 	bool getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany, vector<rtt::Tweet>& result);
-	void onNewSearchTerm(rtt::Tweet tweet, const string& term);
+	void onNewSearchTerm(rtt::Tweet tweet, const string& term, bool isUsed = false);
 	void uploadScreenshot(const string& filePath, const string& username, const string& message);
 	void writeScreenshot(const string& filePath, const string& username, ofPixels pixels);
 	
@@ -94,8 +96,6 @@ public:
 
 	
 	void addCustomStreamListener(rt::IEventListener& listener);
-
-	
 	
 	template <typename ArgumentsType, class ListenerClass>
 	static void addNewSearchTermListener(
