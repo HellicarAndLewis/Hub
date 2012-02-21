@@ -166,6 +166,7 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	void* screenshot_userdata;
 	
 	void touchUp();
+	void touchDown();
 	void doSearchTermSelectionTest();
 	
 	

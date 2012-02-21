@@ -451,7 +451,7 @@ ofFbo& ofxWWRenderer::getFbo(){
 }
 
 void ofxWWRenderer::touchDown(const KinectTouch &touch) {
-		
+	tweets.touchDown();
 }
 
 void ofxWWRenderer::touchMoved(const KinectTouch &touch) {

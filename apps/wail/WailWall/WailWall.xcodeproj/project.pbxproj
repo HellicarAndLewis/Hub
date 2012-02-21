@@ -209,6 +209,7 @@
 		1F082DE414F290E1005008A4 /* CallToAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallToAction.h; sourceTree = "<group>"; };
 		1F082DF114F2D6D1005008A4 /* ofxWWSearchTermManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxWWSearchTermManager.cpp; sourceTree = "<group>"; };
 		1F082DF314F2D6FD005008A4 /* ofxWWSearchTermManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxWWSearchTermManager.h; sourceTree = "<group>"; };
+		1F2E091514F3DA9D0035A851 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		1FE6C33914F2604B007F7B84 /* DisplayLayout_dev.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = DisplayLayout_dev.xml; path = bin/data/DisplayLayout_dev.xml; sourceTree = "<group>"; };
 		1FE6C33A14F27E38007F7B84 /* TweetProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetProvider.h; sourceTree = "<group>"; };
 		4818280314EEF48600BAA8B9 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
@@ -1244,6 +1245,7 @@
 				A621C59814D74819008AA7F0 /* ofxWWTweetParticleManager.cpp */,
 				1F082DF314F2D6FD005008A4 /* ofxWWSearchTermManager.h */,
 				1F082DF114F2D6D1005008A4 /* ofxWWSearchTermManager.cpp */,
+				1F2E091514F3DA9D0035A851 /* Timer.h */,
 				4848E59D14F3C71700AA5553 /* SearchLayerListener.h */,
 			);
 			name = Visuals;

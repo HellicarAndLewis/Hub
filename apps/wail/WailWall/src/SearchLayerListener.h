@@ -12,9 +12,9 @@ class SearchLayerListener {
 
 public:
 
-	void onSearchTermSelected(const SearchTermSelectionInfo& term) = 0;
+	virtual void onSearchTermSelected(const SearchTermSelectionInfo& term) = 0;
 	
-	void onAllSearchTermsDeselected() = 0;
+	virtual void onAllSearchTermsDeselected() = 0;
 };
 
 #endif

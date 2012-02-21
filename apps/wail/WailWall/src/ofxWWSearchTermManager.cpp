@@ -13,10 +13,14 @@ ofxWWSearchTermManager::ofxWWSearchTermManager() {
 	selectedSearchTermIndex = -1;
 	tweetSearchMinWaitTime = 1;
 	fadeOutTime = 1;
+	deselectionDelay = 2;
 }
 
 
 void ofxWWSearchTermManager::setup(TwitterApp *twitter, ofxWWTweetParticleManager *parent) {
+	// for testing
+	addListener(this);
+	
 	this->parent = parent;
 	this->twitter = twitter;
 	// Get previously received search terms.
@@ -30,6 +34,7 @@ void ofxWWSearchTermManager::setup(TwitterApp *twitter, ofxWWTweetParticleManage
 		}
 	}
 }
+
 void ofxWWSearchTermManager::update() {
 	
 	if(parent->blobsRef->size() > 0){
@@ -44,6 +49,26 @@ void ofxWWSearchTermManager::update() {
 	
 	
 	doTouchInteraction();
+	
+	if(handRemovedTimer.done()) {
+		handRemovedTimer.reset();
+		// fade out the selected search term, (make sure you check it's in range)
+		if(selectedSearchTermIndex>=0 && selectedSearchTermIndex<searchTerms.size()) {
+			searchTerms[selectedSearchTermIndex].fade();
+		}
+		
+		// send an event
+		// don't send twice!
+		if(lastSearchTermSelectionSentAsEvent!="") {
+			lastSearchTermSelectionSentAsEvent = "";
+			
+			// and fire events
+			for(int j = 0; j < listeners.size(); j++) {
+				listeners[j]->onAllSearchTermsDeselected();
+			}
+		}
+		selectedSearchTermIndex = -1;
+	}
 }
 
 void ofxWWSearchTermManager::doTouchInteraction() {
@@ -98,9 +123,29 @@ void ofxWWSearchTermManager::doTouchInteraction() {
 		}
 	}
 	
-	for(int i = searchTerms.size()-1; i >= 0; i--){
+	for(int i = 0; i < searchTerms.size(); i++){
 		if(searchTerms[i].dead && ofGetElapsedTimef() - searchTerms[i].killedTime > fadeOutTime){
+			
+			// if the selectedSearchTermIndex is later in the list than i, decrement it as we're shuffling along one
+			if(i<selectedSearchTermIndex) selectedSearchTermIndex--;
+			// otherwise, if we're (god forbid) deleting the selected search term, do an unselect.
+			else if(i==selectedSearchTermIndex) {
+				selectedSearchTermIndex = -1;
+				
+				// don't send twice!
+				if(lastSearchTermSelectionSentAsEvent!="") {
+					lastSearchTermSelectionSentAsEvent = "";
+				
+					// and fire events
+					for(int j = 0; j < listeners.size(); j++) {
+						listeners[j]->onAllSearchTermsDeselected();
+					}
+				}
+			}
+			
 			searchTerms.erase(searchTerms.begin()+i);
+			i--;
+			
 		}
 	}
 	
@@ -113,10 +158,39 @@ void ofxWWSearchTermManager::doTouchInteraction() {
 	}
 }
 
+
+string lastSearchTerm;
+float lastTime = 0;
+void ofxWWSearchTermManager::onSearchTermSelected(const SearchTermSelectionInfo& term) {
+	lastSearchTerm = term.term;
+	lastTime = ofGetElapsedTimef();
+}
+void ofxWWSearchTermManager::onAllSearchTermsDeselected() {
+	lastSearchTerm = "";
+	lastTime = ofGetElapsedTimef();
+}
+
+
 void ofxWWSearchTermManager::render() {
 	for(int i = 0; i < searchTerms.size(); i++){
 		searchTerms[i].draw();
 	}
+	
+	// debugging debounce
+	float alpha = ofMap(ofGetElapsedTimef(), lastTime, lastTime + 2,  1.5, 0, true );
+	
+	if(alpha>0) {
+		string msg = "";
+		if(lastSearchTerm=="") {
+			msg = "Deselected";
+		} else {
+			msg = "Selected " + lastSearchTerm;
+		}
+		glColor4f(1, 0, 0, alpha);
+		parent->sharedSearchFont.drawString(msg, 1000, 1000);
+		
+	}
+	
 }
 void ofxWWSearchTermManager::addSearchTerm(const string& user, const string& term) {
 	ofxWWSearchTerm searchTerm;
@@ -135,12 +209,17 @@ void ofxWWSearchTermManager::doSearchTermSelectionTest() {
 	
 	// Check if there is a hand in the plinth.
 	if(parent->blobsRef->empty()) {
-		printf("(1)\n");
+		//printf("(1)\n");
 		for(int i = 0; i < len; ++i) {
-		
-			// TODO add check on timer to keep the current selected term selected.
-			searchTerms[i].fade();
+			
+			// don't necessarily fade out the actual touched one
+			// as the hand might be out temporarily.
+			if(i!=selectedSearchTermIndex) {
+				searchTerms[i].fade();
+			}
+			
 		}
+		
 		return;
 	}
 	
@@ -175,13 +254,18 @@ void ofxWWSearchTermManager::doSearchTermSelectionTest() {
 	
 	if(parent->tweetLayerOpacity >= 0.5) {
 		printf("(2,2,2,2,2,2,2,2,2,2,2	)\n");
+		if(selectedSearchTermIndex>=0 && selectedSearchTermIndex<searchTerms.size()) {
+			searchTerms[selectedSearchTermIndex].highlight();
+		}
 		return;
 	}
 	else {
 		
 		if(closest_search_term_index == -1) {
-			// not in range of a search term.
 			
+			// begin the timer for deselection if
+			// not in range of a search term.
+			handRemovedTimer.start(deselectionDelay);
 		}
 		else {
 			
@@ -197,19 +281,27 @@ void ofxWWSearchTermManager::doSearchTermSelectionTest() {
 				searchTerms[i].selection_started_on = 0;
 			}
 			
+			
+			
+			
 			// start counter for selected
 			if(selected_term.selection_started_on > 0)  {
 				float now = ofGetElapsedTimeMillis();
 				float selection_activate_on = selected_term.selection_started_on+1000;
 				if(now > selection_activate_on) {
 					// TODO add listener/event here
-					selected_term.highlight();
+					setSelectedSearchTerm(selected_term);
 				}
 			}
 			else {
 				selected_term.selection_started_on = ofGetElapsedTimeMillis();
 				
 			}
+			
+			
+			
+			
+			
 			
 		}
 	}
@@ -218,10 +310,46 @@ void ofxWWSearchTermManager::doSearchTermSelectionTest() {
 
 
 
+void ofxWWSearchTermManager::setSelectedSearchTerm(ofxWWSearchTerm &searchTerm) {
+	
+	
+	// first of all, check the searchterm exists in our array.
+	for(int i = 0; i < searchTerms.size(); i++) {
+		if(searchTerms[i].term==searchTerm.term && searchTerms[i].user == searchTerm.user) {
+			
+			// set the selected search term
+			selectedSearchTermIndex = i;
+			
+			// make it highlighted
+			searchTerm.highlight();
+			
+			// send an event
+			if(lastSearchTermSelectionSentAsEvent!=searchTerm.term) {
+				
+				lastSearchTermSelectionSentAsEvent = searchTerm.term;
+				SearchTermSelectionInfo info;
+				info.term = searchTerm.term;
+				info.position = searchTerm.pos;
+				
+				for(int j = 0; j < listeners.size(); j++) {
+					listeners[j]->onSearchTermSelected(info);
+				}
+			}
+			return;
+		}
+	}
+	printf("Error! Can't find the search term '%s' in the list!\n", searchTerm.term.c_str());
+	
+}
 
 
-void ofxWWSearchTermManager::deselectAllSearchTerms() {
-	selectedSearchTermIndex = -1;
+void ofxWWSearchTermManager::touchUp() {
+//	selectedSearchTermIndex = -1;
+	handRemovedTimer.start(deselectionDelay);
+}
+
+void ofxWWSearchTermManager::touchDown() {
+	handRemovedTimer.reset();
 }
 
 void ofxWWSearchTermManager::handleTouchSearch() {
@@ -278,4 +406,9 @@ void ofxWWSearchTermManager::handleTweetSearch(){
 		}
 	}
 	
+}
+
+
+void ofxWWSearchTermManager::addListener(SearchLayerListener *listener) {
+	listeners.push_back(listener);
 }

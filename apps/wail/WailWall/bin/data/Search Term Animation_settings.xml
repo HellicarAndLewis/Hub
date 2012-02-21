@@ -11,8 +11,12 @@
         <name>Search Repulse Atten</name>
         <value>0.123000</value>
     </SliderFloat_Search_Repulse_Atten>
-    <SliderFloat_Search_Hand_Attract>
-        <name>Search Hand Attract</name>
-        <value>0.028500</value>
-    </SliderFloat_Search_Hand_Attract>
+    <SliderFloat_Search_Fadeout_Time>
+        <name>Search Fadeout Time</name>
+        <value>0.710000</value>
+    </SliderFloat_Search_Fadeout_Time>
+    <SliderFloat_Search_Deselection_Delay>
+        <name>Search Deselection Delay</name>
+        <value>1.860000</value>
+    </SliderFloat_Search_Deselection_Delay>
 </controls>

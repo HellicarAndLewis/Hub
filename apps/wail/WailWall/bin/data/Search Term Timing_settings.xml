@@ -3,30 +3,14 @@
         <name>Max Search Terms</name>
         <value>10</value>
     </SliderInt_Max_Search_Terms>
+    <SliderFloat_tweet_Search_Min_Wait_time>
+        <name>tweet Search Min Wait time</name>
+        <value>1.000000</value>
+    </SliderFloat_tweet_Search_Min_Wait_time>
     <SliderInt_Search_Font_Size>
         <name>Search Font Size</name>
         <value>133</value>
     </SliderInt_Search_Font_Size>
-    <SliderFloat_Search_Min_Opacity>
-        <name>Search Min Opacity</name>
-        <value>0.384000</value>
-    </SliderFloat_Search_Min_Opacity>
-    <SliderFloat_Touch_Min_Dist>
-        <name>Touch Min Dist</name>
-        <value>145.000000</value>
-    </SliderFloat_Touch_Min_Dist>
-    <SliderFloat_Touch_Min_Hold>
-        <name>Touch Min Hold</name>
-        <value>2.437500</value>
-    </SliderFloat_Touch_Min_Hold>
-    <SliderFloat_Search_Duration>
-        <name>Search Duration</name>
-        <value>9.930000</value>
-    </SliderFloat_Search_Duration>
-    <SliderFloat_Search_Time_Between>
-        <name>Search Time Between</name>
-        <value>15.060000</value>
-    </SliderFloat_Search_Time_Between>
     <SliderFloat_Call_to_action_time>
         <name>Call to action time</name>
         <value>5.000000</value>

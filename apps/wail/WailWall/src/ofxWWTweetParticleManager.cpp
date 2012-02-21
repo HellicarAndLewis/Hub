@@ -129,6 +129,7 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Search Repulse Dist", searchTerms.repulsionDistance, 500, 2000);
 	webGui.addSlider("Search Repulse Atten", searchTerms.repulsionAttenuation, 0, .2);
 	webGui.addSlider("Search Fadeout Time", searchTerms.fadeOutTime, 0, 2);
+	webGui.addSlider("Search Deselection Delay", searchTerms.deselectionDelay, 0, 4);
 
 	
 	//TODO set up in XML ONLY CAN HAVE 4 right now , least to most common
@@ -477,6 +478,10 @@ TwitterApp& ofxWWTweetParticleManager::getTwitterApp() {
 
 
 void ofxWWTweetParticleManager::touchUp() {
-	searchTerms.deselectAllSearchTerms();
+	searchTerms.touchUp();
+}
+
+void ofxWWTweetParticleManager::touchDown() {
+	searchTerms.touchDown();
 }
 
