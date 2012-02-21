@@ -11,6 +11,8 @@ ofxWWSearchTermManager::ofxWWSearchTermManager()
 	,twitter(NULL)
 	,deselectionDelay(2)
 	,searchTermSelectionRadiusPercent(0.1)
+	,searchTermMinAlpha(0.35)
+,selectedTermMinAlpha(0.7)
 {
 
 }

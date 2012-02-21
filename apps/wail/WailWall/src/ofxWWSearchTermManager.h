@@ -57,6 +57,11 @@ public:
 	ofxWWSearchTerm screenshot_searchterm;
 
 	
+	// the brightness of search terms when not on the bottom layer.
+	float searchTermMinAlpha;
+	
+	// the min brightness of an actual selected search term.
+	float selectedTermMinAlpha;
 
 	vector<ofxWWSearchTerm> searchTerms;
 	

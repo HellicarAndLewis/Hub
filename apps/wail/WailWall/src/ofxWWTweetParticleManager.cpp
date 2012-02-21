@@ -113,7 +113,8 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Max Search Terms", searchTermManager.maxSearchTerms, 5, 15);
 	webGui.addSlider("tweet Search Min Wait time", searchTermManager.tweetSearchMinWaitTime, 1, 20);
 	webGui.addSlider("Search Font Size", searchTermManager.searchTermFontSize, 100, 500);
-
+	webGui.addSlider("Unselected Term Min Alpha", searchTermManager.searchTermMinAlpha, 0.1, 0.9);
+	webGui.addSlider("Selected Term Min Alpha", searchTermManager.selectedTermMinAlpha, 0.1, 1);
 
 	
 	// do we need these anymore?

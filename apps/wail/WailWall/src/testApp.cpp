@@ -36,7 +36,7 @@ void testApp::setup(){
 	*/
 	ofSetLogLevel(OF_LOG_ERROR); // roxlu 16/02 Getting: OF: OF_LOG_WARNING: ofMap: avoiding possible divide by zero, check inputMin and inputMax
  
-	ofSetFrameRate(30);
+	ofSetFrameRate(60);
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
 	

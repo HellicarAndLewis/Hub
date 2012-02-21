@@ -109,8 +109,6 @@ void ofxWWRenderer::setup(int width, int height){
 	ofAddListener(ofEvents.keyPressed, this, &ofxWWRenderer::keyPressed);
 	test_screenshot = false;
     
-    haloSurfaceColourHex = 0xffffff;
-    haloBottomColourHex = 0x000000;
 }
 
 void ofxWWRenderer::setupGui(){
@@ -177,7 +175,6 @@ void ofxWWRenderer::setupGui(){
 
     webGui.addHexColor("Halo Surface", Colours::get(HALO_SURFACE));
     webGui.addHexColor("Halo Bottom", Colours::get(HALO_SEARCH));    
->>>>>>> 69a1567efa15f166c7e7a4f71c225f293d7a0c4d
 
 	tweets.setupGui();
 }
@@ -327,19 +324,21 @@ void ofxWWRenderer::render(){
 	
 	ofPushStyle();
     
-    ofColor surfaceHalo = ofColor::fromHex(surfaceColourHex);
-    ofColor bottomHalo = ofColor::fromHex(bottomColourHex);
+    ofColor surfaceHalo = ofColor::fromHex(Colours::get(HALO_SURFACE));
+    ofColor bottomHalo = ofColor::fromHex(Colours::get(HALO_SEARCH));
     
     float tweenedSmootherStep = smootherStep(layer1Opacity, 0.f, 1.f);
     
     surfaceHalo.lerp(bottomHalo, tweenedSmootherStep);
     
-	ofSetColor(surfaceHalo.r, surfaceHalo.g, surfaceHalo.b, 40);
+	//ofEnableBlendMode(OF_BLENDMODE_ADD);
+	ofSetColor(surfaceHalo.r, surfaceHalo.g, surfaceHalo.b, 100);
 	for(it = blobs->begin(); it != blobs->end(); it++){
 		ofVec2f touchCenter = ofVec2f( it->second.x*targetWidth, it->second.y*targetHeight );
 		float radius = it->second.size*maxTouchRadius;
 		halo.draw(ofRectangle(touchCenter.x-radius,touchCenter.y-radius, radius*2,radius*2));
 	}
+	//ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	ofPopStyle();
 	
 	renderTarget.end();	

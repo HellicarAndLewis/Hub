@@ -30,7 +30,9 @@ void ofxWWSearchTerm::update(){
 	if(!touchPresent){
 		isHolding = false;
 	}
-	opacity = ofMap(manager->parent->tweetLayerOpacity, 1, 0, 0.5, 1);
+	float minAlpha = ofMap(selection.getValue(), 0, 1, manager->searchTermMinAlpha, manager->selectedTermMinAlpha);
+	opacity = ofMap(manager->parent->tweetLayerOpacity, 1, 0, minAlpha, 1);
+	
 	//death attenuation
 	if(dead){
 		opacity *= ofMap(ofGetElapsedTimef(), killedTime, killedTime+manager->fadeOutTime, 1.0, 0, true);
