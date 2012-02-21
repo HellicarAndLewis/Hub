@@ -9,7 +9,7 @@
     </SliderInt_Search_Font_Size>
     <SliderFloat_Search_Min_Opacity>
         <name>Search Min Opacity</name>
-        <value>0.400000</value>
+        <value>0.384000</value>
     </SliderFloat_Search_Min_Opacity>
     <SliderFloat_Touch_Min_Dist>
         <name>Touch Min Dist</name>
@@ -25,7 +25,7 @@
     </SliderFloat_Search_Duration>
     <SliderFloat_Search_Time_Between>
         <name>Search Time Between</name>
-        <value>1.000000</value>
+        <value>15.060000</value>
     </SliderFloat_Search_Time_Between>
     <SliderFloat_Call_to_action_time>
         <name>Call to action time</name>

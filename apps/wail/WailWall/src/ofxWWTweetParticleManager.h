@@ -156,6 +156,7 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	void* screenshot_userdata;
 	
 	void touchUp();
+	void doSearchTermSelectionTest();
 	
   
 protected:
@@ -195,6 +196,9 @@ protected:
 	TweetProviderDB* db_provider;
 	
 	float lastSearchTermTime;
-	float should_take_picture_on;
+	float should_take_picture_on; // roxlu debug
+	
+	// debug // test search term
+	//string previous_selected_search_term;
 	
 };

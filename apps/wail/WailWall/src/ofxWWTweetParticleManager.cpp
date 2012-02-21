@@ -445,6 +445,86 @@ void ofxWWTweetParticleManager::updateTweets(){
 	
 }
 
+void ofxWWTweetParticleManager::doSearchTermSelectionTest() {
+	int len = searchTerms.size();
+	if(blobsRef->empty()) {
+		printf("(1)\n");
+		for(int i = 0; i < len; ++i) {
+			searchTerms[i].fade();
+		}
+		return;
+	}
+	
+	
+	int closest_search_term_index = -1;
+	float smallest_dist_sq = FLT_MAX;
+	float in_range_dist = 0.1 * simulationWidth;
+	in_range_dist *= in_range_dist;
+	printf(">> %f\n", in_range_dist);
+	
+	for(int i = 0; i < len; ++i) {
+		ofxWWSearchTerm& search_term = searchTerms.at(i);
+		
+		map<int, KinectTouch>::iterator kinect_iter = blobsRef->begin();
+		while(kinect_iter != blobsRef->end()) {
+			KinectTouch& touch = (kinect_iter->second);
+			ofVec2f kinect_pos(touch.x * simulationWidth, touch.y * simulationHeight);
+			
+			// check if current search term is closer then then once handled so far.
+			float dist_sq = kinect_pos.distanceSquared(search_term.pos);
+			if(dist_sq < smallest_dist_sq && dist_sq <= in_range_dist) {
+				smallest_dist_sq = dist_sq;
+				closest_search_term_index = i;	
+			}
+			
+			++kinect_iter;
+		}
+	}
+	
+	
+	printf("Smallest dist: %f - tweetLayerOpacity: %f\n", smallest_dist_sq, tweetLayerOpacity);
+	
+	if(tweetLayerOpacity >= 0.5) {
+		printf("(2,2,2,2,2,2,2,2,2,2,2	)\n");
+		return;
+	}
+	else {
+		
+		if(closest_search_term_index == -1) {
+			// not in range of a search term.
+			
+		}
+		else {
+		
+			// in range of a search term
+			ofxWWSearchTerm& selected_term = searchTerms[closest_search_term_index];
+			
+			// cleanup counters.
+			for(int i = 0; i < len; ++i) {
+				if(i == closest_search_term_index) {
+					continue;
+				}
+				searchTerms[i].fade();
+				searchTerms[i].selection_started_on = 0;
+			}
+			
+			// start counter for selected
+			if(selected_term.selection_started_on > 0)  {
+				float now = ofGetElapsedTimeMillis();
+				float selection_activate_on = selected_term.selection_started_on+1000;
+				if(now > selection_activate_on) {
+					selected_term.highlight();
+				}
+			}
+			else {
+				selected_term.selection_started_on = ofGetElapsedTimeMillis();
+			}
+			
+		}
+	}
+	printf("Found search term index: %d\n", closest_search_term_index);
+}
+
 void ofxWWTweetParticleManager::updateSearchTerms(){
 		
 	if(clearTweets){
@@ -456,7 +536,10 @@ void ofxWWTweetParticleManager::updateSearchTerms(){
 	int closestSearchTerm = -1;
 	float closestDistanceSq = FLT_MAX;
 	
+	doSearchTermSelectionTest();
+	
 	//find the closest touch
+/*
 	if(!blobsRef->empty() && canSelectSearchTerms){
 		for(int i = 0; i < searchTerms.size(); i++){
 			searchTerms[i].closestDistanceSquared = 9999999;
@@ -513,7 +596,7 @@ void ofxWWTweetParticleManager::updateSearchTerms(){
 			searchTerms[selectedSearchTermIndex].selected_counter = 60;
 		}
 	}
-	
+*/	
 	
 	for(int i = 0; i < searchTerms.size(); i++){
 		searchTerms[i].wallForceApplied = false;
@@ -673,7 +756,7 @@ void ofxWWTweetParticleManager::setupColors(){
 }
 
 void ofxWWTweetParticleManager::onNewTweet(const rtt::Tweet& tweet) {
-	printf(">> [ok] : %s\n", tweet.getText().c_str());	
+	//printf(">> [ok] : %s\n", tweet.getText().c_str());	
 	ofxWWTweetParticle particle = createParticleForTweet(tweet);
 	tweets.push_back(particle);
 }
