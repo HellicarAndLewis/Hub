@@ -68,7 +68,7 @@ void ofxWWSearchTerm::update(){
 		opacity *= ofMap(ofGetElapsedTimef(), killedTime, killedTime+manager->searchTermFadeOutTime, 1.0, 0, true);
 	}
 	
-	searchTermWidth = manager->sharedSearchFont.getStringBoundingBox(term, 0, 0).width;
+	searchTermWidth = manager->parent->sharedSearchFont.getStringBoundingBox(term, 0, 0).width;
 	pos += force;
 	force = ofVec2f(0,0);
 }
@@ -85,8 +85,8 @@ void ofxWWSearchTerm::draw(){
 	ofEnableAlphaBlending();
 	
 	//TEMP USE THIS FOR SEARCH
-	ofColor selectedColor = manager->atSignColor;
-	ofColor baseColor = manager->layerTwoFontColor;
+	ofColor selectedColor = manager->parent->atSignColor;
+	ofColor baseColor = manager->parent->layerTwoFontColor;
 	baseColor.a = selectedColor.a = opacity*255;
 	float holdLerp = 0.0;
 	// opacity = 0.5;
@@ -116,7 +116,7 @@ void ofxWWSearchTerm::draw(){
 	ofSetColor( baseColor.lerp(selectedColor, p) );
 			   
 	//TODO center this
-	manager->sharedSearchFont.drawString(term, pos.x-searchTermWidth/2, pos.y);
+	manager->parent->sharedSearchFont.drawString(term, pos.x-searchTermWidth/2, pos.y);
 	
 	ofPopStyle();
 }
@@ -132,7 +132,7 @@ void ofxWWSearchTerm::drawDebug(){
 	ofCircle(pos, manager->searchTermRepulsionDistance);
 
 	ofSetLineWidth(4);
-	ofRect(manager->sharedSearchFont.getStringBoundingBox(term, pos.x-searchTermWidth/2, pos.y) );
+	ofRect(manager->parent->sharedSearchFont.getStringBoundingBox(term, pos.x-searchTermWidth/2, pos.y) );
 
 	ofFill();
 	ofCircle(pos, 10);

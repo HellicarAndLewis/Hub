@@ -12,7 +12,7 @@
 #include "ofMain.h"
 #include "ofxWWTweetParticle.h"
 
-class ofxWWTweetParticleManager;
+class ofxWWSearchTermManager;
 class ofxWWSearchTerm {
   public:
 	ofxWWSearchTerm();
@@ -22,7 +22,7 @@ class ofxWWSearchTerm {
 	
 	void drawDebug();
 	
-	ofxWWTweetParticleManager* manager;
+	ofxWWSearchTermManager* manager;
 
 	ofVec2f closestPoint;
 	int closestTouchID;
