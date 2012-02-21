@@ -11,14 +11,14 @@ TwitterMySQL::TwitterMySQL()
 TwitterMySQL::~TwitterMySQL() {
 }
 
-bool TwitterMySQL::connect(const string& server, const string& db, const string& user, const string& pass) {
+bool TwitterMySQL::connect(const string& server, const string& db, const string& user, const string& pass, const string& unixSocket) {
 	mysql_init(&conn);
 	if(&conn == NULL) {
 		printf("Error mysql: cannot create mysql object.\n");
 		return false;
 	}
 	
-	if(!mysql_real_connect(&conn, server.c_str(), user.c_str(), pass.c_str(), db.c_str(), 0, NULL, 0)) {
+	if(!mysql_real_connect(&conn, server.c_str(), user.c_str(), pass.c_str(), db.c_str(), 0, unixSocket.c_str(), 0)) {
 		printf("Error mysql:  %s\n", mysql_error(&conn));
 		return false;
 	}
