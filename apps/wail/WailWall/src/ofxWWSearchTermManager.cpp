@@ -131,9 +131,13 @@ void ofxWWSearchTermManager::addSearchTerm(const string& user, const string& ter
 
 void ofxWWSearchTermManager::doSearchTermSelectionTest() {
 	int len = searchTerms.size();
+	
+	// Check if there is a hand in the plinth.
 	if(parent->blobsRef->empty()) {
 		printf("(1)\n");
 		for(int i = 0; i < len; ++i) {
+		
+			// TODO add check on timer to keep the current selected term selected.
 			searchTerms[i].fade();
 		}
 		return;
@@ -197,11 +201,13 @@ void ofxWWSearchTermManager::doSearchTermSelectionTest() {
 				float now = ofGetElapsedTimeMillis();
 				float selection_activate_on = selected_term.selection_started_on+1000;
 				if(now > selection_activate_on) {
+					// TODO add listener/event here
 					selected_term.highlight();
 				}
 			}
 			else {
 				selected_term.selection_started_on = ofGetElapsedTimeMillis();
+				
 			}
 			
 		}
