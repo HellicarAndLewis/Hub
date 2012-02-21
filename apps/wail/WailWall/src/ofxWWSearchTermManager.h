@@ -44,7 +44,7 @@ public:
 	
 
 	
-	void addListener(SearchLayerListener *listener);
+	void addSearchLayerListener(SearchLayerListener *listener);
 	vector<SearchLayerListener*> listeners;
 
 	

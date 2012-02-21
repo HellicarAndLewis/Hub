@@ -18,7 +18,7 @@ ofxWWSearchTermManager::ofxWWSearchTermManager()
 
 void ofxWWSearchTermManager::setup(TwitterApp *twitter, ofxWWTweetParticleManager *parent) {
 	// for testing
-	addListener(this);
+	addSearchLayerListener(this);
 	
 	this->parent = parent;
 	this->twitter = twitter;
@@ -408,9 +408,6 @@ void ofxWWSearchTermManager::handleTweetSearch(){
 	if(!incomingSearchTerms.empty()){
 		ofxWWSearchTerm term = incomingSearchTerms.front();
 		incomingSearchTerms.pop();
-		
-		//parent->shouldTriggerScreenshot = true;
-		//selectedSearchTermIndex = searchTerms.size();
 		searchTerms.push_back(term);
 		
 		// as soon as the term gets popped from the queue and added to the array 
@@ -428,7 +425,7 @@ void ofxWWSearchTermManager::handleTweetSearch(){
 }
 
 
-void ofxWWSearchTermManager::addListener(SearchLayerListener *listener) {
+void ofxWWSearchTermManager::addSearchLayerListener(SearchLayerListener *listener) {
 	listeners.push_back(listener);
 }
 

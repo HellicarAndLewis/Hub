@@ -17,26 +17,27 @@ public:
 	virtual void deactivate() = 0;
 	
 	void addListener(TweetProviderListener* l);
-	
 	void onNewTweet(const rtt::Tweet& tweet);
-	
-	void enable() {
-		is_enabled = true;
-		activate();
-	}
-	
-	void disable() {
-		is_enabled = false;
-		deactivate();
-	}
-	
-	bool isEnabled() {
-		return is_enabled;
-	}
-	
+	void enable();
+	void disable();
+	bool isEnabled();	
 	
 	bool is_enabled;
 	vector<TweetProviderListener*> listeners;
 };
+
+inline void TweetProvider::enable() {
+	is_enabled = true;
+	activate();
+}
+
+inline void TweetProvider::disable() {
+	is_enabled = false;
+	deactivate();
+}
+
+inline bool TweetProvider::isEnabled() {
+	return is_enabled;
+}
 
 #endif

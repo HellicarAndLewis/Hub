@@ -8,6 +8,8 @@ ofxWWTweetParticleManager::ofxWWTweetParticleManager():
 	,current_provider(NULL)
 	,stream_provider(NULL)
 	,db_provider(NULL)
+	,current_force(NULL)
+	,default_force(NULL)
 {
 	maxTweets = 100;
 
@@ -29,7 +31,8 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	
 	twitter.addNewSearchTermListener(this, &ofxWWTweetParticleManager::onNewSearchTerm);
 
-	searchTerms.setup(&twitter, this);
+	searchTermManager.setup(&twitter, this);
+	searchTermManager.addSearchLayerListener(this);
 	
 	burstOne.loadImage("images/burst1.png");
 	burstTwo.loadImage("images/burst2.png");
@@ -46,6 +49,10 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	twitter.addCustomStreamListener(*stream_provider); // stream provider wants to listen to incoming tweets.
 	
 	ofAddListener(ofEvents.keyPressed, this, &ofxWWTweetParticleManager::keyPressed);
+	
+	// Forces
+	default_force = new DefaultForce(*this);
+	current_force = default_force;
 }
 
 
@@ -103,9 +110,9 @@ void ofxWWTweetParticleManager::setupGui(){
 //	webGui.addHexColor("Layer Two Font Color", layerTwoFontColor
 					   
 	webGui.addPage("Search Term Timing");
-	webGui.addSlider("Max Search Terms", searchTerms.maxSearchTerms, 5, 15);
-	webGui.addSlider("tweet Search Min Wait time", searchTerms.tweetSearchMinWaitTime, 1, 20);
-	webGui.addSlider("Search Font Size", searchTerms.searchTermFontSize, 100, 500);
+	webGui.addSlider("Max Search Terms", searchTermManager.maxSearchTerms, 5, 15);
+	webGui.addSlider("tweet Search Min Wait time", searchTermManager.tweetSearchMinWaitTime, 1, 20);
+	webGui.addSlider("Search Font Size", searchTermManager.searchTermFontSize, 100, 500);
 
 
 	
@@ -116,15 +123,15 @@ void ofxWWTweetParticleManager::setupGui(){
 	
 	
 	
-	webGui.addToggle("Search Debug", searchTerms.drawSearchDebug);
+	webGui.addToggle("Search Debug", searchTermManager.drawSearchDebug);
 	
 	webGui.addPage("Search Term Animation");
 	webGui.addSlider("Wall Repulsion Dist", wallRepulsionDistance, 0, 900);
-	webGui.addSlider("Search Repulse Dist", searchTerms.repulsionDistance, 500, 2000);
-	webGui.addSlider("Search Repulse Atten", searchTerms.repulsionAttenuation, 0, .2);
-	webGui.addSlider("Search Fadeout Time", searchTerms.fadeOutTime, 0, 2);
-	webGui.addSlider("Search Deselection Delay", searchTerms.deselectionDelay, 0, 4);
-	webGui.addSlider("searchTermSelectionRadiusPercent", searchTerms.searchTermSelectionRadiusPercent, 0.01, 0.14);
+	webGui.addSlider("Search Repulse Dist", searchTermManager.repulsionDistance, 500, 2000);
+	webGui.addSlider("Search Repulse Atten", searchTermManager.repulsionAttenuation, 0, .2);
+	webGui.addSlider("Search Fadeout Time", searchTermManager.fadeOutTime, 0, 2);
+	webGui.addSlider("Search Deselection Delay", searchTermManager.deselectionDelay, 0, 4);
+	webGui.addSlider("searchTermSelectionRadiusPercent", searchTermManager.searchTermSelectionRadiusPercent, 0.01, 0.14);
 	
 	//TODO set up in XML ONLY CAN HAVE 4 right now , least to most common
 	causticColors.push_back(ofColor::fromHex(0xf8edc0)); //LIGHT YELLOW
@@ -140,7 +147,7 @@ void ofxWWTweetParticleManager::update(){
 	
 	
 	checkFonts();
-	searchTerms.update();
+	searchTermManager.update();
 	
 	updateTweets();
 		
@@ -157,11 +164,11 @@ void ofxWWTweetParticleManager::checkFonts(){
 			cout << "tweet font allocating! " << tweetFontSize << " " << sharedTweetFont.getSize() << endl;
 		}
 		
-		if(!sharedSearchFont.isLoaded() || searchTerms.searchTermFontSize != sharedSearchFont.getSize()){
-			if(!sharedSearchFont.loadFont("fonts/montreal-ttf/Montreal-BoldIta.ttf", searchTerms.searchTermFontSize, true, true, false)){
+		if(!sharedSearchFont.isLoaded() || searchTermManager.searchTermFontSize != sharedSearchFont.getSize()){
+			if(!sharedSearchFont.loadFont("fonts/montreal-ttf/Montreal-BoldIta.ttf", searchTermManager.searchTermFontSize, true, true, false)){
 				ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load search  font!");
 			}	
-			cout << "search font allocating! " << searchTerms.searchTermFontSize << " " << sharedSearchFont.getSize() << endl;
+			cout << "search font allocating! " << searchTermManager.searchTermFontSize << " " << sharedSearchFont.getSize() << endl;
 		}
 		
 		if(!sharedUserFont.isLoaded() || userFontSize != sharedUserFont.getSize()){
@@ -191,18 +198,6 @@ void ofxWWTweetParticleManager::checkFonts(){
 }
 
 
-
-
-/*
-void ofxWWTweetParticleManager::addCurrentRenderToScreenshotQueue() {
-	if(screenshot_userdata == NULL) {
-		return;
-	}
-	// TODO: add correct username
-	//screenshot_callback("joelgethinlewis", screenshot_userdata);
-}
-*/
-
 float ofxWWTweetParticleManager::weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet){
 	float touchMid = normalizedSize*simulationHeight*touchSizeScale;
 	return MAX( ofMap(touch.distance(tweet), touchMid-touchInfluenceFalloff/2., touchMid+touchInfluenceFalloff/2., 1.0, 0.0, false), 0.0);
@@ -210,7 +205,7 @@ float ofxWWTweetParticleManager::weightBetweenPoints(ofVec2f touch, float normal
 
 void ofxWWTweetParticleManager::updateTweets(){
 	
-	for(int i = tweets.size()-1; i >= 0; i--){
+	for(int i = tweets.size()-1; i >= 0; i--) {
 
 		
 		if((tweetFlowSpeed <= 0 && tweets[i].pos.y < -wallRepulsionDistance) || 
@@ -223,7 +218,6 @@ void ofxWWTweetParticleManager::updateTweets(){
 				//wrap around
 				//tweets[i].pos.y = tweetFlowSpeed > 0 ? -wallRepulsionDistance : simulationHeight + wallRepulsionDistance;
 			}
-
 		}
 		
 	}
@@ -236,7 +230,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 		tweets[i].selectionWeight = 0;
 		
 		
-		for(it = blobsRef->begin(); it != blobsRef->end(); it++){
+		for(it = blobsRef->begin(); it != blobsRef->end(); it++) {
 			float maxRadiusSquared = powf(it->second.z * simulationHeight*touchSizeScale+touchInfluenceFalloff/2, 2.0f);
 			ofVec2f touchpoint = ofVec2f(it->second.x*simulationWidth, it->second.y*simulationHeight);
 			if(touchpoint.distanceSquared(tweets[i].pos) < maxRadiusSquared){			
@@ -331,7 +325,7 @@ void ofxWWTweetParticleManager::renderTweets(){
 }
 
 void ofxWWTweetParticleManager::renderSearchTerms(){	
-	searchTerms.render();
+	searchTermManager.render();
 }
 
 void ofxWWTweetParticleManager::renderConnections(){
@@ -444,7 +438,7 @@ ofxWWTweetParticle ofxWWTweetParticleManager::createParticleForTweet(const rtt::
 					
 void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
 	// send search term to its manager
-	searchTerms.addSearchTerm(event.tweet.getScreenName(), event.search_term, event.is_used);
+	searchTermManager.addSearchTerm(event.tweet.getScreenName(), event.search_term, event.is_used);
 	
 	// notify provider
 	db_provider->setSearchInfoForNewParticles(event.tweet.getScreenName(), event.search_term);
@@ -467,10 +461,20 @@ TwitterApp& ofxWWTweetParticleManager::getTwitterApp() {
 
 
 void ofxWWTweetParticleManager::touchUp() {
-	searchTerms.touchUp();
+	searchTermManager.touchUp();
 }
 
 void ofxWWTweetParticleManager::touchDown() {
-	searchTerms.touchDown();
+	searchTermManager.touchDown();
 }
 
+
+void ofxWWTweetParticleManager::onSearchTermSelected(const SearchTermSelectionInfo& term) {
+	printf("::::::::::::::::::::::::::::::::::::: %s\n", term.term.c_str());
+	db_provider->fillWithTweetsWhichContainTerm(term.term);
+	setCurrentProvider(db_provider);
+}
+
+void ofxWWTweetParticleManager::onAllSearchTermsDeselected() {
+	setCurrentProvider(stream_provider);
+}

@@ -41,6 +41,8 @@
 		4818287A14EEF48600BAA8B9 /* FTPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818285614EEF48600BAA8B9 /* FTPoint.cpp */; };
 		4818287B14EEF48600BAA8B9 /* FTSize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818285714EEF48600BAA8B9 /* FTSize.cpp */; };
 		4818287C14EEF48600BAA8B9 /* FTVectoriser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818285B14EEF48600BAA8B9 /* FTVectoriser.cpp */; };
+		483107AA14F40EEC00A2D73F /* Force.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 483107A914F40EEB00A2D73F /* Force.cpp */; };
+		483107AC14F40F4500A2D73F /* DefaultForce.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 483107AB14F40F4400A2D73F /* DefaultForce.cpp */; };
 		4848E59014F2FDF000AA5553 /* TwitterMentionsThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4848E58F14F2FDF000AA5553 /* TwitterMentionsThread.cpp */; };
 		4865DF9014EDC7AA00512AF1 /* TwitterThreadedImageWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4865DF8F14EDC7AA00512AF1 /* TwitterThreadedImageWriter.cpp */; };
 		48972C8E14F2803600FD9099 /* TweetProviderStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48972C8D14F2803600FD9099 /* TweetProviderStream.cpp */; };
@@ -298,6 +300,11 @@
 		4818285A14EEF48600BAA8B9 /* FTVector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTVector.h; sourceTree = "<group>"; };
 		4818285B14EEF48600BAA8B9 /* FTVectoriser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FTVectoriser.cpp; sourceTree = "<group>"; };
 		4818285C14EEF48600BAA8B9 /* FTVectoriser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FTVectoriser.h; sourceTree = "<group>"; };
+		483107A714F40E4000A2D73F /* Force.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Force.h; sourceTree = "<group>"; };
+		483107A814F40E7500A2D73F /* DefaultForce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultForce.h; sourceTree = "<group>"; };
+		483107A914F40EEB00A2D73F /* Force.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Force.cpp; sourceTree = "<group>"; };
+		483107AB14F40F4400A2D73F /* DefaultForce.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DefaultForce.cpp; sourceTree = "<group>"; };
+		483107AD14F40F8200A2D73F /* Forces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Forces.h; sourceTree = "<group>"; };
 		483AECDD14ED813200633DA3 /* TwitterThreadedImageWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterThreadedImageWriter.h; path = ../../SharedCode/Twitter/TwitterThreadedImageWriter.h; sourceTree = "<group>"; };
 		4848E58E14F2FD1D00AA5553 /* TwitterMentionsThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterMentionsThread.h; sourceTree = "<group>"; };
 		4848E58F14F2FDF000AA5553 /* TwitterMentionsThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TwitterMentionsThread.cpp; sourceTree = "<group>"; };
@@ -884,6 +891,18 @@
 			path = FTLayout;
 			sourceTree = "<group>";
 		};
+		483107A614F40E1B00A2D73F /* Forces */ = {
+			isa = PBXGroup;
+			children = (
+				483107AD14F40F8200A2D73F /* Forces.h */,
+				483107A714F40E4000A2D73F /* Force.h */,
+				483107A914F40EEB00A2D73F /* Force.cpp */,
+				483107A814F40E7500A2D73F /* DefaultForce.h */,
+				483107AB14F40F4400A2D73F /* DefaultForce.cpp */,
+			);
+			name = Forces;
+			sourceTree = "<group>";
+		};
 		4848E59114F3127F00AA5553 /* mentions */ = {
 			isa = PBXGroup;
 			children = (
@@ -1234,6 +1253,7 @@
 		A6AF015114DAF02B006816A8 /* Visuals */ = {
 			isa = PBXGroup;
 			children = (
+				483107A614F40E1B00A2D73F /* Forces */,
 				1F082DE314F290E1005008A4 /* CallToAction.cpp */,
 				1F082DE414F290E1005008A4 /* CallToAction.h */,
 				48972C9214F2813800FD9099 /* Providers */,
@@ -2135,6 +2155,8 @@
 				1F082DE514F290E1005008A4 /* CallToAction.cpp in Sources */,
 				1F082DF214F2D6D2005008A4 /* ofxWWSearchTermManager.cpp in Sources */,
 				4848E59014F2FDF000AA5553 /* TwitterMentionsThread.cpp in Sources */,
+				483107AA14F40EEC00A2D73F /* Force.cpp in Sources */,
+				483107AC14F40F4500A2D73F /* DefaultForce.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

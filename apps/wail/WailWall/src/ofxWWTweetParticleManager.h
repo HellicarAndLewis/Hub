@@ -21,12 +21,13 @@
 #include "TweetProviderDB.h"
 #include "TweetProviderListener.h"
 #include "ofxWWSearchTermManager.h"
-
+#include "SearchLayerListener.h"
+#include "Forces.h"
 
 
 class ofxWWRenderer;
 
-class ofxWWTweetParticleManager : public TweetProviderListener {
+class ofxWWTweetParticleManager : public TweetProviderListener, public SearchLayerListener {
 
   public:
 
@@ -49,6 +50,9 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	void onNewSearchTerm(TwitterAppEvent& event);
 	void setupColors();
 	
+	// implementing: SearchLayerListener
+	virtual void onSearchTermSelected(const SearchTermSelectionInfo& term);
+	virtual void onAllSearchTermsDeselected();
 	
 	TwitterApp& getTwitterApp();
 	
@@ -57,7 +61,7 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	map<int,KinectTouch>* blobsRef;
 	
 
-	ofxWWSearchTermManager searchTerms;
+	ofxWWSearchTermManager searchTermManager;
 	ofxWWSearchTermManager& getSearchTermManager();
 	
 	
@@ -203,6 +207,9 @@ protected:
 	ofxWWTweetParticle createParticleForTweet(const rtt::Tweet& tweet);
 	
 	ofxWWRenderer* renderer;
+
+	Force* current_force;
+	DefaultForce* default_force;
 	
 
 	float lastSearchTermTime;
@@ -215,5 +222,5 @@ protected:
 };
 
 inline ofxWWSearchTermManager& ofxWWTweetParticleManager::getSearchTermManager() {
-	return searchTerms;
+	return searchTermManager;
 }
