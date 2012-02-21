@@ -62,7 +62,7 @@ public:
 	ofxSimpleGuiTitle			&addTitle(string name="", float height = 0);
 	ofxSimpleGuiToggle			&addToggle(string name, bool &value);
 	ofxSimpleGuiColorPicker		&addColorPicker(string name, float *values);
-	ofxSimpleGuiHexColorPicker	&addHexColor(string name, int &hexColor);
+	//ofxSimpleGuiHexColorPicker	&addHexColor(string name, int &hexColor);
 	ofxSimpleGuiComboBox		&addComboBox(string name, int &choice_out, int numChoices, string* choiceTitles=NULL);
 	
 	void SetEventStealingControl(ofxSimpleGuiControl &control);

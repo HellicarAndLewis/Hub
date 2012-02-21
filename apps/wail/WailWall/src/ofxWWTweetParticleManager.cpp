@@ -675,7 +675,7 @@ void ofxWWTweetParticleManager::setupColors(){
 }
 
 void ofxWWTweetParticleManager::onNewTweet(const rtt::Tweet& tweet) {
-	//printf(">> [ok] : %s\n", tweet.getText().c_str());	
+	printf(">> [ok] : %s\n", tweet.getText().c_str());	
 	ofxWWTweetParticle particle = createParticleForTweet(tweet);
 	tweets.push_back(particle);
 }
@@ -745,6 +745,16 @@ void ofxWWTweetParticleManager::addSearchTerm(const string& user, const string& 
 	searchTerm.manager = this;
 	searchTerm.term = term;
 	searchTerm.user = user;
+	
+	printf(">>>>>>>>>>>>>>>>>>>>>>>> %s <<<<<<<<<<<<<<<<<<<<<<<<<<\n", searchTerm.term.c_str());
+	printf(">>>>>>>>>>>>>>>>>>>>>>>> %s <<<<<<<<<<<<<<<<<<<<<<<<<<\n", searchTerm.term.c_str());
+	printf(">>>>>>>>>>>>>>>>>>>>>>>> %s <<<<<<<<<<<<<<<<<<<<<<<<<<\n", searchTerm.term.c_str());
+	printf(">>>>>>>>>>>>>>>>>>>>>>>> %s <<<<<<<<<<<<<<<<<<<<<<<<<<\n", searchTerm.term.c_str());
+	printf(">>>>>>>>>>>>>>>>>>>>>>>> %s <<<<<<<<<<<<<<<<<<<<<<<<<<\n", searchTerm.term.c_str());
+	printf(">>>>>>>>>>>>>>>>>>>>>>>> %s <<<<<<<<<<<<<<<<<<<<<<<<<<\n", searchTerm.term.c_str());
+	printf(">>>>>>>>>>>>>>>>>>>>>>>> %s <<<<<<<<<<<<<<<<<<<<<<<<<<\n", searchTerm.term.c_str());
+	printf(">>>>>>>>>>>>>>>>>>>>>>>> %s <<<<<<<<<<<<<<<<<<<<<<<<<<\n", searchTerm.term.c_str());
+	printf(">>>>>>>>>>>>>>>>>>>>>>>> %s <<<<<<<<<<<<<<<<<<<<<<<<<<\n", searchTerm.term.c_str());
 	printf(">>>>>>>>>>>>>>>>>>>>>>>> %s <<<<<<<<<<<<<<<<<<<<<<<<<<\n", searchTerm.term.c_str());
 
 	incomingSearchTerms.push(searchTerm);	

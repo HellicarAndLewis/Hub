@@ -213,9 +213,9 @@ ofxSimpleGuiToggle &ofxSimpleGuiPage::addToggle(string name, bool &value) {
 ofxSimpleGuiColorPicker &ofxSimpleGuiPage::addColorPicker(string name, float *values) {
 	return (ofxSimpleGuiColorPicker &)addControl(* new ofxSimpleGuiColorPicker(name, values));
 }
-ofxSimpleGuiHexColorPicker	&ofxSimpleGuiPage::addHexColor(string name, int &hexColor) {
-	return (ofxSimpleGuiHexColorPicker &)addControl(*new ofxSimpleGuiHexColorPicker(name, hexColor));
-}
+//ofxSimpleGuiHexColorPicker	&ofxSimpleGuiPage::addHexColor(string name, int &hexColor) {
+//	return (ofxSimpleGuiHexColorPicker &)addControl(*new ofxSimpleGuiHexColorPicker(name, hexColor));
+//}
 
 
 ofxSimpleGuiComboBox &ofxSimpleGuiPage::addComboBox(string name, int &choice_out, int numChoices, string* choiceTitles) {
