@@ -12,7 +12,11 @@ void TweetProviderStream::onStatusUpdate(const rtt::Tweet& tweet) {
 	// Check for back words
 	string bad_word;
 	if(app.containsBadWord(tweet.text, bad_word)) {
-		//printf("[censored][%s] %s\n",bad_word.c_str(), tweet.getText().c_str());
+		printf("[censored][%s] %s\n",bad_word.c_str(), tweet.getText().c_str());
+		return;
+	}
+	if(app.containsBadWord(tweet.getScreenName(), bad_word)) {
+		printf("[censored name][%s] %s\n", bad_word.c_str(), tweet.getScreenName().c_str());
 		return;
 	}
 	

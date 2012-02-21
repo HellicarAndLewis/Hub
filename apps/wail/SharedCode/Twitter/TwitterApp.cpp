@@ -5,10 +5,8 @@ ofEvent<TwitterAppEvent> twitter_app_dispatcher;
 
 // Init
 // -------------------------------------
-
 TwitterApp::TwitterApp()
 	:stream(twitter)
-//	,twitter_listener(*this)
 	,uploader(*this)
 	,image_writer(*this)
 	,initialized(false)	
@@ -122,7 +120,6 @@ void TwitterApp::simulateSearch(const string& term) {
 	for(int i = 0; i < listeners.size(); ++i) {
 		listeners[i]->onStatusUpdate(tweet);
 	}
-	//twitter_listener.onStatusUpdate(tweet);
 }	
 				 			 
 // Bad words & hash tags				 
@@ -164,27 +161,8 @@ bool TwitterApp::connect(){
 	return true;
 }
 
-void TwitterApp::addDefaultListener(){
-	//addCustomListener(twitter_listener);
-	//twitter.addEventListener(twitter_listener);
-}
-
-void TwitterApp::addCustomListener(rt::IEventListener& listener){
+void TwitterApp::addCustomStreamListener(rt::IEventListener& listener){
 	twitter.addEventListener(listener);
-}
-
-
-//void TwitterApp::onNewSearchTermFromPollingAPI(const rtt::Tweet& tweet, const string& term) {
-//}
-
-// TODO make sure new search terms are added to the search_queue....
-// but only if that's still necessary (?) we can use twitter as a store?
-void TwitterApp::onNewSearchTerm(rtt::Tweet tweet, const string& term) {
-	// When we added a new search term to the queue, pass it through!	
-	if(search_queue.addSearchTerm(tweet.getScreenName(), term)) {
-		TwitterAppEvent ev(tweet, term);
-		ofNotifyEvent(twitter_app_dispatcher, ev);
-	}
 }
 
 void TwitterApp::update() {	
@@ -199,17 +177,44 @@ void TwitterApp::update() {
 	
 	osc_receiver.update();
 	
+	// Check for new search terms from the thread which poll mentions
 	vector<TwitterMentionSearchTerm> new_search_terms;
 	if(mentions.getSearchTerms(new_search_terms)) {
-		printf("UUUUUUUUUUUUUUUUUUUUUUUUUUU new search terms.\n");
 		vector<TwitterMentionSearchTerm>::iterator it = new_search_terms.begin();
 		while(it != new_search_terms.end()) {	
 			TwitterMentionSearchTerm& st = *it;
+			
+			// check if the search term or username contains a bad word.
+			string found_badword;
+			if(containsBadWord(st.search_term, found_badword)) {
+				printf("[search with bad word] %s %s\n", st.search_term.c_str(), found_badword.c_str());
+				++it;
+				continue;
+			}
+			
+			found_badword.clear();
+			if(containsBadWord(st.tweet.getScreenName(), found_badword)) {
+				printf("[search user with bad word] %s %s\n", st.tweet.getScreenName().c_str(), found_badword.c_str());
+				++it;
+				continue;
+			}
+			
 			onNewSearchTerm(st.tweet, st.search_term);
 			++it;
 		}
 	}
 }
+
+// TODO make sure new search terms are added to the search_queue....
+// but only if that's still necessary (?) we can use twitter as a store?
+void TwitterApp::onNewSearchTerm(rtt::Tweet tweet, const string& term) {
+	// When we added a new search term to the queue, pass it through!	
+	if(search_queue.addSearchTerm(tweet.getScreenName(), term)) {
+		TwitterAppEvent ev(tweet, term);
+		ofNotifyEvent(twitter_app_dispatcher, ev);
+	}
+}
+
 
 // TODO: remove this; not used in Wailwall
 // get the list of people to follow, separated by comma

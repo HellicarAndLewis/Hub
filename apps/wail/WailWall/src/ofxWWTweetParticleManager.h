@@ -1,11 +1,9 @@
 /*
- *  ofxWWTweetManager.h
- *  WailWall
- *
- *  Created by James George on 1/30/12.
- *  Copyright 2012 __MyCompanyName__. All rights reserved.
- *
+ * @author James George
+ * @author Diederick Huijbers // roxlu <diederick@apollomedia.nl>
+ * @author Marek 
  */
+ 
 #pragma once
 #define USE_FTGL
 
@@ -22,7 +20,6 @@
 #include "TweetProviderStream.h"
 #include "TweetProviderDB.h"
 #include "TweetProviderListener.h"
-//#include "TwitterMentionsListener.h"
 
 
 typedef void (*takeScreenshotCallback)(const string& username, void* userdata);
@@ -30,7 +27,7 @@ typedef void (*takeScreenshotCallback)(const string& username, void* userdata);
 class ofxWWRenderer;
 
 class ofxWWTweetParticleManager : public TweetProviderListener {
-// : public roxlu::twitter::IEventListener {
+
   public:
   
 	ofxWWTweetParticleManager();
@@ -48,27 +45,14 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	void renderConnections();
 	
 	void onNewTweet(const rtt::Tweet& tweet);
-	/*
-	void onStatusUpdate(const rtt::Tweet& tweet);
-	void onStatusDestroy(const rtt::StatusDestroy& destroy);
-	void onStreamEvent(const rtt::StreamEvent& event);
- */
 	void onNewSearchTerm(TwitterAppEvent& event);
 	void setupColors();
 	
 	TwitterApp& getTwitterApp();
 	
-	//ofxFTGLFont sharedFont;
+
 	ofxMPMFluid* fluidRef;
 	map<int,KinectTouch>* blobsRef;
-	
-
-
-	
-	
-	
-	
-	// ofXFTGFont
 	
 	#ifdef USE_FTGL
 		ofxFTGLFont sharedTweetFont;
@@ -82,72 +66,69 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	
 	
 	
-	// this is how much inactive time triggers
-	// a call to action.
-	float callToActionTime;
+	// this is how much inactive time triggers a call to action.
+	float 	callToActionTime;
 	
+	bool 	enableCaustics;
+	float 	causticFadeSpeed;
 	
+	bool 	canSelectSearchTerms;
+	float 	tweetLayerOpacity;
+	float 	touchSizeScale;
+	float 	touchInfluenceFalloff;
 	
-	bool enableCaustics;
-	float causticFadeSpeed;
+	float 	simulationWidth;
+	float 	simulationHeight;
 	
-	bool canSelectSearchTerms;
-	float tweetLayerOpacity;
-	float touchSizeScale;
-	float touchInfluenceFalloff;
+	bool 	drawTweetDebug;
+	int 	maxTweets;
+	float 	startFadeTime;
+	float 	fadeDuration;
 	
-	float simulationWidth;
-	float simulationHeight;
-	
-	bool drawTweetDebug;
-	int maxTweets;
-	float startFadeTime;
-	float fadeDuration;
-	
-	float wallRepulsionDistance;
-	float wallRepulsionAtten;
-	float tweetRepulsionDistance;
-	float tweetRepulsionAtten;
-	float fluidForceScale;
+	float 	wallRepulsionDistance;
+	float 	wallRepulsionAtten;
+	float 	tweetRepulsionDistance;
+	float 	tweetRepulsionAtten;
+	float 	fluidForceScale;
 		
-	bool tweetsFlowLeftRight; //otherwise up/down
-	float tweetFlowSpeed;
-	float tweetFlowVariance;
-	float tweetRotateAmp;
-	float tweetRotateDamp;
-	float tweetChaosSpeed;
-	float tweetFlowDamp;
-	float tweetFlowAmp;
+	bool 	tweetsFlowLeftRight; //otherwise up/down
+	float	tweetFlowSpeed;
+	float 	tweetFlowVariance;
+	float 	tweetRotateAmp;
+	float 	tweetRotateDamp;
+	float 	tweetChaosSpeed;
+	float 	tweetFlowDamp;
+	float 	tweetFlowAmp;
 	
 	//tweet rendering
-	int userFontSize;
-	int tweetFontSize;
-	int searchTermFontSize;
-	float dotSize;
-	float dotShift;
-	float wordWrapLength;
-	float userNameYOffset;
-	float tweetYOffset;
-	float tweetLineSpace;
+	int 	userFontSize;
+	int 	tweetFontSize;
+	int 	searchTermFontSize;
+	float 	dotSize;
+	float 	dotShift;
+	float 	wordWrapLength;
+	float 	userNameYOffset;
+	float 	tweetYOffset;
+	float 	tweetLineSpace;
 	
-	bool clearTweets;
+	bool 	clearTweets;
 	
-	int maxSearchTerms;
-	float searchTermMinDistance;
-	float searchTermMinHoldTime;
-	float searchMinOpacity;
-	float searchTermRepulsionDistance;
-	float searchTermRepulsionAttenuation;
-	float searchTermHandAttractionFactor;
-	float searchTermFadeOutTime;
+	int 	maxSearchTerms;
+	float 	searchTermMinDistance;
+	float 	searchTermMinHoldTime;
+	float 	searchMinOpacity;
+	float 	searchTermRepulsionDistance;
+	float 	searchTermRepulsionAttenuation;
+	float 	searchTermHandAttractionFactor;
+	float 	searchTermFadeOutTime;
 	
-	bool drawSearchDebug;
+	bool 	drawSearchDebug;
 	
-	float tweetSearchMinWaitTime;
-	float tweetSearchDuration;
+	float 	tweetSearchMinWaitTime;
+	float 	tweetSearchDuration;
 
-	bool isDoingSearch;
-	bool shouldTriggerScreenshot;
+	bool 	isDoingSearch;
+	bool 	shouldTriggerScreenshot;
 	
 	vector<ofxWWTweetParticle> tweets;
 	vector<ofColor> causticColors;
@@ -176,7 +157,8 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	
 	void touchUp();
 	
-  protected:
+  
+protected:
 	TwitterApp twitter;
 	
 	vector<string> fakeSearchTerms;	
@@ -211,7 +193,6 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	TweetProvider* current_provider;
 	TweetProviderStream* stream_provider;
 	TweetProviderDB* db_provider;
-	//virtual void onNewSearchTermFromPollingAPI(const rtt::Tweet& tweet, const string& term);
 	
 	float lastSearchTermTime;
 	float should_take_picture_on;

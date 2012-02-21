@@ -30,8 +30,6 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	// Initialize twitter.	
 	// -------------------
 	twitter.init(4444);
-	twitter.addDefaultListener(); 
-	//twitter.addTwitterMentionListenerForSearchTerms(this);
 	
 	if(!twitter.connect()) {
 		printf("Error: cannot connect to twitter stream.\n");
@@ -63,7 +61,7 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	stream_provider->addListener(this);
 	db_provider->addListener(this);
 	setCurrentProvider(stream_provider);
-	twitter.addCustomListener(*stream_provider); // stream provider wants to listen to incoming tweets.
+	twitter.addCustomStreamListener(*stream_provider); // stream provider wants to listen to incoming tweets.
 	
 	ofAddListener(ofEvents.keyPressed, this, &ofxWWTweetParticleManager::keyPressed);
 }
@@ -305,7 +303,7 @@ void ofxWWTweetParticleManager::addCurrentRenderToScreenshotQueue() {
 		return;
 	}
 	// TODO: add correct username
-	screenshot_callback("joelgethinlewis", screenshot_userdata);
+	//screenshot_callback("joelgethinlewis", screenshot_userdata);
 }
 
 float ofxWWTweetParticleManager::weightBetweenPoints(ofVec2f touch, float normalizedSize, ofVec2f tweet){
