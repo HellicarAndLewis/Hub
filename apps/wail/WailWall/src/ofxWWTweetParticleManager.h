@@ -1,11 +1,9 @@
 /*
- *  ofxWWTweetManager.h
- *  WailWall
- *
- *  Created by James George on 1/30/12.
- *  Copyright 2012 __MyCompanyName__. All rights reserved.
- *
+ * @author James George
+ * @author Diederick Huijbers // roxlu <diederick@apollomedia.nl>
+ * @author Marek 
  */
+ 
 #pragma once
 #define USE_FTGL
 
@@ -29,30 +27,32 @@ typedef void (*takeScreenshotCallback)(const string& username, void* userdata);
 class ofxWWRenderer;
 
 class ofxWWTweetParticleManager : public TweetProviderListener {
-// : public roxlu::twitter::IEventListener {
+
   public:
-	
-	
+
 	ofxWWTweetParticleManager();
+	
 	void setup(ofxWWRenderer* ren);
+	
 	void setupGui();
 	
 	void update();
 
 	void renderTweets();
+	
 	void renderSearchTerms();
 
 	void renderConnections();
 	
 	void onNewTweet(const rtt::Tweet& tweet);
 
-	
 	void onNewSearchTerm(TwitterAppEvent& event);
 	void setupColors();
 	
 	
 	TwitterApp& getTwitterApp();
 	
+
 	ofxMPMFluid* fluidRef;
 	map<int,KinectTouch>* blobsRef;
 	
@@ -60,9 +60,6 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 
 	ofxWWSearchTermManager searchTerms;
 	
-	
-	
-	// ofXFTGFont
 	
 	#ifdef USE_FTGL
 		ofxFTGLFont sharedTweetFont;
@@ -76,16 +73,20 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	
 	
 	
-	// this is how much inactive time triggers
-	// a call to action.
-	float callToActionTime;
+	// this is how much inactive time triggers a call to action.
+	float 	callToActionTime;
 	
+	bool 	enableCaustics;
+	float 	causticFadeSpeed;
 	
+	bool 	canSelectSearchTerms;
+	float 	tweetLayerOpacity;
+	float 	touchSizeScale;
+	float 	touchInfluenceFalloff;
 	
-	bool enableCaustics;
-	float causticFadeSpeed;
+	float 	simulationWidth;
+	float 	simulationHeight;
 	
-
 	
 	float tweetLayerOpacity;
 	float touchSizeScale;
@@ -104,9 +105,6 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	float startFadeTime;
 	float fadeDuration;
 	
-	
-	
-	
 	float wallRepulsionDistance;
 	float wallRepulsionAtten;
 	float tweetRepulsionDistance;
@@ -122,12 +120,14 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	float tweetChaosSpeed;
 	float tweetFlowDamp;
 	float tweetFlowAmp;
+
 	
 	
 	
 	
 	
 	//tweet rendering
+<<<<<<< HEAD
 	int userFontSize;
 	int tweetFontSize;
 	
@@ -145,6 +145,8 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	
 
 	bool shouldTriggerScreenshot;
+
+	
 	
 	vector<ofxWWTweetParticle> tweets;
 	vector<ofColor> causticColors;
@@ -172,6 +174,7 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	void* screenshot_userdata;
 	
 	void touchUp();
+	void doSearchTermSelectionTest();
 	
 	
 	// providers for tweets
@@ -181,8 +184,10 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	TweetProviderDB* db_provider;
 	
 	
-	
-  protected:
+
+  
+protected:
+
 	TwitterApp twitter;
 	
 
@@ -209,9 +214,12 @@ class ofxWWTweetParticleManager : public TweetProviderListener {
 	
 	ofxWWRenderer* renderer;
 	
+
+	float lastSearchTermTime;
+	float should_take_picture_on; // roxlu debug
 	
-	
-	
-	float should_take_picture_on;
+	// debug // test search term
+	//string previous_selected_search_term;
+
 	
 };

@@ -36,7 +36,7 @@ void TweetProviderDB::fillWithTweetsWhichContainTerm(const string& term) {
 	found_tweets.clear();
 	app.getTweetsWithSearchTerm(term, 100000, 20, found_tweets);
 	for(int i = 0; i < found_tweets.size(); ++i) {
-		printf("[found] %s\n", found_tweets[i].getText().c_str());
+		printf("[found] (%s) %s\n", found_tweets[i].getScreenName().c_str(), found_tweets[i].getText().c_str());
 	}
 	printf("+++++++++++++++++++++++++++++ %zu ++++++++++++++++++++++++++++\n", found_tweets.size());
 	

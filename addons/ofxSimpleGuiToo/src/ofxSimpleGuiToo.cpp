@@ -149,6 +149,7 @@ void ofxSimpleGuiToo::loadFromXML() {
 
 
 void ofxSimpleGuiToo::saveToXML() {
+	printf("Save to xml\n");
 	doSave = false;
 
 	for(int i=1; i < pages.size(); i++) {
@@ -258,6 +259,7 @@ vector <ofxSimpleGuiPage*>&	ofxSimpleGuiToo::getPages() {
 
 
 
+
 ofxSimpleGuiPage &ofxSimpleGuiToo::addPage(string name) {
 	if(!config) setup();
 
@@ -292,6 +294,11 @@ ofxSimpleGuiButton &ofxSimpleGuiToo::addButton(string name, bool &value) {
 	if(!config) setup();
 	return pages[currentPageIndex]->addButton(name, value);
 }
+
+//ofxSimpleGuiHexColorPicker &ofxSimpleGuiToo::addHexColor(string name, int &hexColor) {
+//	if(!config) setup();
+//	return pages[currentPageIndex]->addHexColor(name, hexColor);
+//}
 
 ofxSimpleGuiContent &ofxSimpleGuiToo::addContent(string name, ofBaseDraws &content, float fixwidth) {
 	if(!config) setup();

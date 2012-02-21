@@ -18,6 +18,10 @@ ofxWWSearchTerm::ofxWWSearchTerm(){
 	opacity  = 0.5;
 	selected_counter = 0;
 	took_screenshot = false;
+	
+	is_fading = false;
+	is_highlighting = false;
+	tween_duration = 500;
 }
 
 void ofxWWSearchTerm::update(){
@@ -48,11 +52,16 @@ void ofxWWSearchTerm::update(){
 		} 		
 	}
 	
+<<<<<<< HEAD
+	opacity += (targetOpacity - opacity)*.1;
+	//printf("opacity: %f\n", opacity);
+=======
 	*/
 	
 	
 	
 	//opacity += (targetOpacity - opacity)*.1;
+//>>>>>>> origin/flowchange
 	//opacity = targetOpacity;
 	//death attenuation
 	if(dead){
@@ -80,18 +89,31 @@ void ofxWWSearchTerm::draw(){
 	ofColor baseColor = manager->parent->layerTwoFontColor;
 	baseColor.a = selectedColor.a = opacity*255;
 	float holdLerp = 0.0;
-	opacity = 0.5;
+	// opacity = 0.5;
 	//if(selected){
-		opacity = 1;
+	//	opacity = 1;
 		holdLerp = 1.0;
 	//}
-	opacity = ofMap(selected_counter, 0, 60, 0.5, 1, true);
-	holdLerp = ofMap(selected_counter, 0, 60, 0, 1, true);
+	//opacity = ofMap(selected_counter, 0, 60, 0.5, 1, true);
+	//holdLerp = ofMap(selected_counter, 0, 60, 0, 1, true);
 	/*else if(isHolding){
 		holdLerp = ofMap(ofGetElapsedTimef(), holdStartTime, holdStartTime+manager->searchTermMinHoldTime, .0, 1.0, true);
 	}*/
 	
-	ofSetColor( baseColor.lerp(selectedColor, holdLerp) );
+	float p = 0.0; 
+	if(is_highlighting) {
+		
+		float now = ofGetElapsedTimeMillis();
+		float diff =  tween_duration-(highlighted_on - now);
+		p = MIN(1,diff / tween_duration);
+	}
+	else if(is_fading) {
+		float now = ofGetElapsedTimeMillis();
+		float diff =  tween_duration-(faded_on - now);
+		p = 1.0 - MIN(1,diff / tween_duration);
+	}
+	
+	ofSetColor( baseColor.lerp(selectedColor, p) );
 			   
 	//TODO center this
 	manager->parent->sharedSearchFont.drawString(term, pos.x-searchTermWidth/2, pos.y);
@@ -116,4 +138,24 @@ void ofxWWSearchTerm::drawDebug(){
 	ofCircle(pos, 10);
 	
 	ofPopStyle();	
+}
+
+
+
+void ofxWWSearchTerm::fade() {
+	highlighted_on = 0;
+	is_highlighting = false;
+	if(!is_fading) {
+		faded_on = ofGetElapsedTimeMillis() + tween_duration;
+		is_fading = true;
+	}
+}
+
+void ofxWWSearchTerm::highlight() {	
+	faded_on = 0;
+	is_fading = false;
+	if(!is_highlighting) {
+		highlighted_on = ofGetElapsedTimeMillis() + tween_duration;
+		is_highlighting = true;
+	}
 }

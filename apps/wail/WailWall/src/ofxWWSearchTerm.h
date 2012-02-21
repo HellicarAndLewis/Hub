@@ -50,5 +50,16 @@ class ofxWWSearchTerm {
 	float searchTermWidth;
 	float killedTime;
 	bool dead;
-	bool took_screenshot;
+	bool took_screenshot; // tmp hacking around... (need to cleanup and remove) TODO clean up!
+	
+	// roxlu test
+	void highlight();
+	void fade();
+	
+	float selection_started_on;
+	bool is_fading;
+	bool is_highlighting;
+	float faded_on;
+	float highlighted_on;
+	float tween_duration;
 };

@@ -17,8 +17,6 @@
 #include "ofMain.h"
 #include "Twitter.h"
 #include "TwitterDBThread.h"
-
-//#include "TwitterDB.h"
 #include "TwitterPhotoUploader.h"
 #include "TwitterBadWords.h"
 #include "TwitterEventListener.h"
@@ -28,6 +26,8 @@
 #include "TwitterThreadedImageWriter.h"
 #include "IEventListener.h"
 #include "IStreamEventListener.h"
+#include "TwitterMentionsThread.h"
+
 
 namespace rtt = roxlu::twitter::type;
 namespace rt = roxlu::twitter;
@@ -41,6 +41,7 @@ using std::vector;
  * found.
  *
  */
+
 class TwitterAppEvent { 
 public:
 	TwitterAppEvent(rtt::Tweet tweet,  string searchTerm)
@@ -55,7 +56,12 @@ public:
 
 extern ofEvent<TwitterAppEvent> twitter_app_dispatcher;
 
-class TwitterApp : public TwitterOSCReceiverListener, public roxlu::twitter::IStreamEventListener {
+
+
+class TwitterApp : 
+			 public TwitterOSCReceiverListener
+			,public roxlu::twitter::IStreamEventListener 
+{
 
 public:
 
@@ -87,16 +93,18 @@ public:
 	bool getNextSendItemFromSendQueue(string& username, string& filename, int& id);
 
 	
-	void addDefaultListener();
-	void addCustomListener(rt::IEventListener& listener);
+	void addCustomStreamListener(rt::IEventListener& listener);
+
+	
 	
 	template <typename ArgumentsType, class ListenerClass>
-	static void addListener(
+	static void addNewSearchTermListener(
 			ListenerClass* listener
 			,void (ListenerClass::*listenerMethod)(ArgumentsType&))
 	{
 		ofAddListener(twitter_app_dispatcher, listener, listenerMethod);
 	}
+	
 	
 	// OSC events.
 	virtual void onUpdateBadWordList();
@@ -118,29 +126,23 @@ private:
 	void initStoredSearchTerms();
 	void executeSearchTest();
 	
-	rt::Twitter 			twitter;
-	rt::Stream				stream;
-//	TwitterDB 				db;
-	TwitterDBThread			db_thread;
-	TwitterPhotoUploader 	uploader;
-//	TwitterEventListener 	twitter_listener;
-	TwitterBadWords 		bad_words;
-	TwitterOSCReceiver 		osc_receiver;
-	TwitterSearchTermQueue 	search_queue;
-	TwitterMySQL 			mysql;
-	TwitterThreadedImageWriter image_writer;
+	rt::Twitter 				twitter;
+	rt::Stream					stream;
+	TwitterDBThread				db_thread;
+	TwitterPhotoUploader 		uploader;
+	TwitterBadWords 			bad_words;
+	TwitterOSCReceiver 			osc_receiver;
+	TwitterSearchTermQueue 		search_queue;
+	TwitterMySQL 				mysql;
+	TwitterThreadedImageWriter 	image_writer;
+	TwitterMentionsThread		mentions;
 
 };
-//`
-//inline TwitterDB& TwitterApp::getDB() {
-//	return db;
-//}
 
 
 // DATABASE
 // -------------------------------
 inline bool TwitterApp::insertTweet(const rtt::Tweet& tweet) {
-	//mysql.insertTweet(tweet);
 	return db_thread.insertTweet(tweet);
 }
 
@@ -169,11 +171,6 @@ inline bool TwitterApp::getNextSendItemFromSendQueue(string& username, string& f
 	return db_thread.getNextSendItemFromSendQueue(username, filename, id);
 }
 
-
-//inline void TwitterApp::uploadScreenshot(const string& filePath, const string& username, const string& message) {
-//	uploader.addFile(filePath, username, message);
-//}
-
 inline bool TwitterApp::getUnusedSearchTerms(vector<TwitterSearchTerm*>& result) {
 	return search_queue.getUnusedSearchTerms(result);
 }
@@ -183,13 +180,11 @@ inline bool TwitterApp::setSearchTermAsUsed(const string& user, const string& te
 }
 
 
-inline void TwitterApp::writeScreenshot(const string& filePath, const string& user, ofPixels pixels) {
-//	image_writer.addPixels(filePath, user, pixels);
-}
-
 inline TwitterThreadedImageWriter& TwitterApp::getImageWriter() {
 	return image_writer;
 }
+
+
 
 inline rt::Twitter& TwitterApp::getTwitter() {
 	return twitter;

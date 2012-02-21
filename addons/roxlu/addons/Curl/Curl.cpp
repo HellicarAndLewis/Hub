@@ -255,7 +255,6 @@ size_t Curl::headerCallback(char* ptr, size_t size, size_t nmemb, Curl* c) {
 	size_t bytes_to_write = size * nmemb;
 	string header_line(ptr, nmemb);
 	size_t pos = header_line.find_first_of(":");
-
 	if(pos != string::npos) {
 		string header_name = header_line.substr(0,pos);
 		string header_value = header_line.substr(pos+2, (header_line.length()-(pos+4)));
@@ -264,7 +263,7 @@ size_t Curl::headerCallback(char* ptr, size_t size, size_t nmemb, Curl* c) {
 	}
 	else {
 		// parse the HTTP result.
-		pos = header_line.find("HTTP/");
+		pos = header_line.find("HTTP/");		
 		if(pos != std::string::npos) {
 			std::istringstream oss(header_line);
 			long code;
