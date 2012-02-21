@@ -151,10 +151,6 @@ class ofxWWTweetParticleManager : public TweetProviderListener, public SearchLay
 	ofImage burstOne;
 	ofImage burstTwo;
 
-	//particle colors
-	ofColor atSignColor;
-	ofColor layerOneFontColor;
-	ofColor layerTwoFontColor;
 	
 	// search state vars
 

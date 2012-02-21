@@ -176,6 +176,11 @@ void ofxWWRenderer::setupGui(){
     webGui.addHexColor("Halo Surface", Colours::get(HALO_SURFACE));
     webGui.addHexColor("Halo Bottom", Colours::get(HALO_SEARCH));    
 
+	webGui.addHexColor("At Sign Color", Colours::get(AT_SIGN));
+	webGui.addHexColor("Layer One Font Color", Colours::get(LAYER_1_FONT));
+	webGui.addHexColor("Layer Two Font Color", Colours::get(LAYER_2_FONT));
+	
+	
 	tweets.setupGui();
 }
 

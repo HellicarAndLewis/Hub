@@ -18,6 +18,12 @@ enum ColourId {
 	SEARCH_BG,
 	HALO_SEARCH,
 	HALO_SURFACE,
+	
+	AT_SIGN,
+	LAYER_1_FONT, 
+	LAYER_2_FONT,
+	
+
 	NUM_COLORS
 };
 

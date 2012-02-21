@@ -9,6 +9,7 @@
 
 #include "ofxWWSearchTerm.h"
 #include "ofxWWTweetParticleManager.h"
+#include "Colours.h"
 
 ofxWWSearchTerm::ofxWWSearchTerm(){
 	selected = false;
@@ -55,8 +56,9 @@ void ofxWWSearchTerm::draw(){
 	ofEnableAlphaBlending();
 	
 	//TEMP USE THIS FOR SEARCH
-	ofColor selectedColor = manager->parent->atSignColor;
-	ofColor baseColor = manager->parent->layerTwoFontColor;
+	ofColor selectedColor = ofColor::fromHex(Colours::get(AT_SIGN));
+	ofColor baseColor = ofColor::fromHex(Colours::get(LAYER_2_FONT));
+	
 	baseColor.a = selectedColor.a = opacity*255;
 	float holdLerp = 1.0;
 

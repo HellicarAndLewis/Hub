@@ -9,6 +9,8 @@
 
 #include "ofxWWTweetParticle.h"
 #include "ofxWWTweetParticleManager.h"
+#include "Colours.h"
+
 ofxWWTweetParticle::ofxWWTweetParticle(){
 	manager = NULL;
 	isTwoLines = false;
@@ -155,14 +157,14 @@ void ofxWWTweetParticle::drawText(){
 	ofPushStyle();
 	ofEnableAlphaBlending();
 
-	ofColor atcolor = manager->atSignColor;
+	ofColor atcolor = ofColor::fromHex(Colours::get(AT_SIGN));
 	atcolor.a = opacity*255;
 	ofSetColor(atcolor);
 	//DRAW @ 
 	ofVec2f atPos = getAtDrawPos();
 	manager->sharedUserFont.drawString("@",atPos.x,atPos.y);
 
-	ofColor fontcolor = manager->layerOneFontColor;
+	ofColor fontcolor = ofColor::fromHex(Colours::get(LAYER_1_FONT));
 	fontcolor.a = opacity*255;
 	ofSetColor(fontcolor);
 	

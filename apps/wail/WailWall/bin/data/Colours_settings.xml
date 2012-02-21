@@ -23,4 +23,22 @@
         <values_1>237.000000</values_1>
         <values_2>252.000000</values_2>
     </HexColorPicker_Halo_Bottom>
+    <HexColorPicker_At_Sign_Color>
+        <name>At Sign Color</name>
+        <values_0>246.000000</values_0>
+        <values_1>182.000000</values_1>
+        <values_2>38.000000</values_2>
+    </HexColorPicker_At_Sign_Color>
+    <HexColorPicker_Layer_One_Font_Color>
+        <name>Layer One Font Color</name>
+        <values_0>252.000000</values_0>
+        <values_1>252.000000</values_1>
+        <values_2>253.000000</values_2>
+    </HexColorPicker_Layer_One_Font_Color>
+    <HexColorPicker_Layer_Two_Font_Color>
+        <name>Layer Two Font Color</name>
+        <values_0>253.000000</values_0>
+        <values_1>255.000000</values_1>
+        <values_2>253.000000</values_2>
+    </HexColorPicker_Layer_Two_Font_Color>
 </controls>
