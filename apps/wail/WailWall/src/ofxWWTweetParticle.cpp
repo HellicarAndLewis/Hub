@@ -129,7 +129,8 @@ void ofxWWTweetParticle::drawDot(){
 	ofPushStyle();
 		glColor4f(1,1,1,dot_opacity);
 		ofSetRectMode(OF_RECTMODE_CENTER);
-		ofRect(pos.x+manager->dotShift, pos.y, manager->dotSize,manager->dotSize);
+	//	ofRect(pos.x+manager->dotShift, pos.y, manager->dotSize,manager->dotSize);
+		dotImage->draw(pos.x + manager->dotShift, pos.y);//, manager->dotSize*1.2,manager->dotSize*1.2 );
 	ofPopStyle();
 	
 	/*
@@ -155,11 +156,11 @@ void ofxWWTweetParticle::drawDot(){
 		dotImage->draw(pos.x+manager->dotShift, pos.y);//, manager->dotSize*1.2,manager->dotSize*1.2 );
 	//	ofRect(pos.x+manager->dotShift, pos.y, dotImage->getWidth(), dotImage->getHeight());
 //		}
-		/*else{
-			//manager->burstTwo.draw(pos.x+manager->dotShift, pos.y, manager->dotSize,manager->dotSize);
-			ofRect(pos.x+manager->dotShift, pos.y, manager->dotSize,manager->dotSize);
-		}*/
-		/*
+//		else{
+//			//manager->burstTwo.draw(pos.x+manager->dotShift, pos.y, manager->dotSize,manager->dotSize);
+//			ofRect(pos.x+manager->dotShift, pos.y, manager->dotSize,manager->dotSize);
+//		}
+		
 	}
 	ofPopStyle();
 	*/
