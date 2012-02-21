@@ -3,5 +3,6 @@
 
 #include "Force.h"
 #include "DefaultForce.h"
+#include "SelectedForce.h"
 
 #endif

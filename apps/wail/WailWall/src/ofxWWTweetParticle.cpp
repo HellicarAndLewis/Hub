@@ -14,6 +14,7 @@ ofxWWTweetParticle::ofxWWTweetParticle(){
 	isTwoLines = false;
 	isSearchTweet = false;
 	speedAdjust = 0;
+	dot_opacity = 1.0;
 }
 
 void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
@@ -123,8 +124,16 @@ void ofxWWTweetParticle::update(){
 
 void ofxWWTweetParticle::drawDot(){
 	ofPushStyle();
+		glColor4f(1,1,1,dot_opacity);
+		ofSetRectMode(OF_RECTMODE_CENTER);
+		ofRect(pos.x+manager->dotShift, pos.y, manager->dotSize,manager->dotSize);
+	ofPopStyle();
+	
+	/*
+	ofPushStyle();
 
-	ofSetRectMode(OF_RECTMODE_CENTER);
+		ofSetRectMode(OF_RECTMODE_CENTER);
+	
 	float alpha;
 	alpha = 1;
 	alpha *= ofMap(clampedSelectionWeight, 0, .5, 1.0, 0, true);
@@ -146,8 +155,9 @@ void ofxWWTweetParticle::drawDot(){
 			ofRect(pos.x+manager->dotShift, pos.y, manager->dotSize,manager->dotSize);
 		}
 	}
-	
 	ofPopStyle();
+	*/
+
 }
 
 void ofxWWTweetParticle::drawText(){

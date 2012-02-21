@@ -92,10 +92,6 @@ class ofxWWTweetParticleManager : public TweetProviderListener, public SearchLay
 	float 	simulationHeight;
 	
 	
-	
-	
-	
-	
 	bool drawTweetDebug;
 	int maxTweets;
 	float startFadeTime;
@@ -177,6 +173,13 @@ class ofxWWTweetParticleManager : public TweetProviderListener, public SearchLay
 	TweetProviderStream* stream_provider;
 	TweetProviderDB* db_provider;
 	
+	// forces 
+	void setCurrentForce(Force* force);
+	Force* current_force;
+	Force* new_force;
+	DefaultForce* default_force;
+	SelectedForce* selected_force;
+
 	
 
   
@@ -208,8 +211,6 @@ protected:
 	
 	ofxWWRenderer* renderer;
 
-	Force* current_force;
-	DefaultForce* default_force;
 	
 
 	float lastSearchTermTime;

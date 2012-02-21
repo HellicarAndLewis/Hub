@@ -3,6 +3,7 @@
 #include "ofxWebSimpleGuiToo.h"
 #include "Error.h"
 
+
 ofxWWTweetParticleManager::ofxWWTweetParticleManager():
 	renderer(NULL)
 	,current_provider(NULL)
@@ -10,6 +11,7 @@ ofxWWTweetParticleManager::ofxWWTweetParticleManager():
 	,db_provider(NULL)
 	,current_force(NULL)
 	,default_force(NULL)
+	,selected_force(NULL)
 {
 	maxTweets = 100;
 
@@ -52,7 +54,8 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	
 	// Forces
 	default_force = new DefaultForce(*this);
-	current_force = default_force;
+	selected_force = new SelectedForce(*this);
+	setCurrentForce(default_force);
 }
 
 
@@ -73,6 +76,12 @@ void ofxWWTweetParticleManager::keyPressed(ofKeyEventArgs& args) {
 		printf("Going to DB provider (and passing the new search term)\n");
 		db_provider->fillWithTweetsWhichContainTerm("love");
 		setCurrentProvider(db_provider);
+	}
+	else if(args.key == '5') {
+		setCurrentForce(default_force);
+	}
+	else if(args.key == '6') {
+		setCurrentForce(selected_force);
 	}
 }
 
@@ -256,6 +265,20 @@ void ofxWWTweetParticleManager::updateTweets(){
 	}
 		
 	//apply flow
+	if(current_force->isHiding()) {
+		current_force->hide();
+		if(current_force->isReadyWithHiding()){
+			//new_force->activate();
+			printf("------------ YES READY =-----------------\n");
+			current_force = new_force;
+		}
+		
+	}
+	else {
+		current_force->show();
+	}
+	
+	/* 
 	for(int i = 0; i < tweets.size(); i++){
 		if(tweets[i].isSearchTweet){
 			continue;
@@ -264,6 +287,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 		forceVector.y += (tweetFlowSpeed + tweets[i].speedAdjust) * (1-tweets[i].clampedSelectionWeight);
 		tweets[i].force += forceVector;
 	}
+	*/
 	
 	//apply legibility fixes for visible tweets
 	for(int i = 0; i < tweets.size(); i++){
@@ -408,6 +432,14 @@ void ofxWWTweetParticleManager::setupColors(){
 void ofxWWTweetParticleManager::onNewTweet(const rtt::Tweet& tweet) {
 	//printf(">> [ok] : %s\n", tweet.getText().c_str());	
 	ofxWWTweetParticle particle = createParticleForTweet(tweet);
+	
+	if(current_force->isHiding()) {
+		current_force->deactivateParticle(particle);
+	}
+	else {
+		current_force->activateParticle(particle);
+	}
+	
 	tweets.push_back(particle);
 }
 
@@ -417,8 +449,6 @@ ofxWWTweetParticle ofxWWTweetParticleManager::createParticleForTweet(const rtt::
 	ofxWWTweetParticle tweetParticle;
 	tweetParticle.manager = this;
 	if(tweetFlowSpeed != 0){
-	
-	
 		//TOP
 		if(tweetFlowSpeed > 0){
 			tweetParticle.pos = ofVec2f(ofRandom(-20, simulationWidth+20), ofRandom(-10, -100));
@@ -453,6 +483,29 @@ void ofxWWTweetParticleManager::setCurrentProvider(TweetProvider* prov) {
 	}
 	current_provider = prov;
 	current_provider->enable();
+}
+
+// toggle forces
+void ofxWWTweetParticleManager::setCurrentForce(Force* force) {
+	printf("change forces ______________________\n");
+	new_force = force;
+	if(current_force != NULL) {
+		current_force->deactivate();
+		current_force->setShouldHide(true);
+		new_force->activate();
+
+	}
+	else {
+		current_force = force;
+	}
+	/*
+	if(current_force != NULL) {
+		current_force->deactivate();
+	}
+	current_force = force;
+	current_force->activate();
+	*/
+	
 }
 
 TwitterApp& ofxWWTweetParticleManager::getTwitterApp() {

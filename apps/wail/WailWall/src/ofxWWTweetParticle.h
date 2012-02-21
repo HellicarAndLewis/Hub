@@ -66,7 +66,8 @@ class ofxWWTweetParticle {
 	float atSignHeight;
 	
 	ofVec2f getBoundingCorner(int cornerIndex); //0-4 top left, top right, bot left, bottom right
-
+	float dot_opacity; // TODO trying to get the new animation into place
+	ofVec2f static_force; // TODO used in the forces class
   protected:
 	ofVec2f getUserDrawPos();
 	ofVec2f getTweetLineOneDrawPos();

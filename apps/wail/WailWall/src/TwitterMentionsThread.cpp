@@ -115,7 +115,7 @@ void TwitterMentionsThread::threadedFunction() {
 					if(search_query.length()) {
 						StringTokenizer tokens(search_query, " ",Poco::StringTokenizer::TOK_IGNORE_EMPTY);
 						if(tokens.count() > 0 && tokens[0].length() <= 20) {
-							search_query = tokens[0];
+							search_query = "#" +tokens[0];
 							printf("[search from mentions]: '%s'\n", search_query.c_str());	
 							TwitterMentionSearchTerm twit_search_term = {tweet, search_query, is_first_request};
 							search_terms.push_back(twit_search_term);
