@@ -3,21 +3,28 @@
 #include "Colours.h"
 
 ofImage *ofxWWTweetParticle::dotImage = NULL;
+ofImage* ofxWWTweetParticle::highlightImage = NULL;
 
 ofxWWTweetParticle::ofxWWTweetParticle(){
 	manager = NULL;
 	isTwoLines = false;
 	isSearchTweet = false;
 	speedAdjust = 0;
-
+	state = STATE_DEFAULT;
 	dot_opacity = 1.0;
-
-	if(dotImage==NULL) {
+	highlight_duration = 300;
+	
+	if(dotImage == NULL) {
 		dotImage = new ofImage();
 		dotImage->loadImage("images/tweetDot.png");
 		//dotImage->setAnchorPercent(0.5, 0.5);
 	}
-
+	
+	if(highlightImage == NULL) {
+		highlightImage = new ofImage();
+		highlightImage->loadImage("images/highlight.png");
+		//highlightImage->setAnchorPercent(0.5, 0.5);
+	}
 }
 
 void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
@@ -92,6 +99,7 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 }
 
 void ofxWWTweetParticle::update(){
+
 	
 	lastPos = pos;
 	force.rotate(ofSignedNoise(pos.x/manager->tweetRotateDamp,pos.y/manager->tweetRotateDamp,ofGetElapsedTimef()/manager->tweetChaosSpeed)*manager->tweetRotateAmp );
@@ -125,13 +133,31 @@ void ofxWWTweetParticle::update(){
 	}
 }
 
+// TODO we can change the anchor percentage right? instead of calling each ofSetRectMode()
 void ofxWWTweetParticle::drawDot(){
-	ofPushStyle();
-		glColor4f(1,1,1,dot_opacity);
-		ofSetRectMode(OF_RECTMODE_CENTER);
-	//	ofRect(pos.x+manager->dotShift, pos.y, manager->dotSize,manager->dotSize);
-		dotImage->draw(pos.x + manager->dotShift, pos.y);//, manager->dotSize*1.2,manager->dotSize*1.2 );
-	ofPopStyle();
+	if(state == STATE_DEFAULT) {
+		ofPushStyle();
+			glColor4f(1,1,1,dot_opacity);
+			ofSetRectMode(OF_RECTMODE_CENTER);
+			dotImage->draw(pos.x + manager->dotShift, pos.y);
+		ofPopStyle();
+	}
+	else if(state == STATE_HIGHLIGHT) {
+		float now = ofGetElapsedTimeMillis();
+		float diff = highlight_duration - (lifetime - now);		
+		float p = MIN(1.0f, diff/highlight_duration);
+		p = sin(p * PI);
+	
+		ofPushStyle();
+			glColor4f(1,1,1,1);
+			ofSetRectMode(OF_RECTMODE_CENTER);
+			dotImage->draw(pos.x + manager->dotShift, pos.y);
+			
+			glColor4f(1,1,1,p);
+			highlightImage->draw(pos.x + manager->dotShift, pos.y);
+		ofPopStyle();
+		
+	}
 	
 	/*
 	ofPushStyle();

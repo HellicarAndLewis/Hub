@@ -1,7 +1,7 @@
 <controls>
     <SliderFloat_Flow_Speed>
         <name>Flow Speed</name>
-        <value>26.099998</value>
+        <value>-17.400002</value>
     </SliderFloat_Flow_Speed>
     <SliderFloat_Flow_Variance>
         <name>Flow Variance</name>

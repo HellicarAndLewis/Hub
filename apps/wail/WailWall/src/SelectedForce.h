@@ -21,13 +21,6 @@ public:
 	virtual void deactivate();
 	
 	virtual void show();
-	
-	/*
-	float force;
-	float hide_duration_millis;
-	float should_hide_on;
-	ofVec2f center;
-	*/
 };
 
 #endif

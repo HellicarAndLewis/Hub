@@ -84,7 +84,9 @@ void ofxWWTweetParticleManager::keyPressed(ofKeyEventArgs& args) {
 		setCurrentForce(default_force);
 	}
 	else if(args.key == '6') {
+		db_provider->fillWithTweetsWhichContainTerm("love");
 		setCurrentForce(selected_force);
+		setCurrentProvider(db_provider);
 	}
 }
 
@@ -271,8 +273,11 @@ void ofxWWTweetParticleManager::updateTweets(){
 		current_force->hide();
 		if(current_force->isReadyWithHiding()){
 			//new_force->activate();
+			current_force->setShouldHide(false);
+			
 			printf("------------ YES READY =-----------------\n");
 			current_force = new_force;
+
 		}
 		
 	}
