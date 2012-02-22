@@ -13,6 +13,7 @@
 #include "mathutils.h"
 
 ofxWWSearchTerm::ofxWWSearchTerm(){
+	selectedTime = -1000;
 	selected = false;
 	isHolding = false;
 	manager = NULL;
@@ -101,6 +102,13 @@ void ofxWWSearchTerm::draw(){
 	
 	// make the colour brighter if the scale is bigger
 	c.a *= ofMap(scaleFactor, 0.9, 1.2, 0.6, 1);
+	/*float pulseDuration = 1;
+	if(ofGetElapsedTimef()-selectedTime<pulseDuration) {
+		
+		float x = ofMap(ofGetElapsedTimef()-selectedTime, 0, pulseDuration, 0, 1, true);
+		float pulseScale = (1-cos(x*2*PI))/2;
+		scaleFactor += pulseScale * 0.6;
+	}*/
 	ofSetColor( c );
 	glPushMatrix();
 	{
@@ -156,6 +164,7 @@ void ofxWWSearchTerm::warmUp() {
 }
 void ofxWWSearchTerm::select() {
 	selection.setTarget(1);
+	selectedTime = ofGetElapsedTimef();
 }
 void ofxWWSearchTerm::deselect() {
 	selection.setTarget(0);
