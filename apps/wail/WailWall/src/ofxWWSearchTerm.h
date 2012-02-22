@@ -69,6 +69,7 @@ class ofxWWSearchTerm {
 	void deselect();
 	float timeOffset;
 	float timeSpeedVariation;
+	float selectedTime;
 private:
 	FuzzySelection selection;
 };

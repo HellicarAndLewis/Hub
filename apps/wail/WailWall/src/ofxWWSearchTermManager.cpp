@@ -181,8 +181,14 @@ void ofxWWSearchTermManager::doTouchInteraction() {
 		// we've found a closest blob to the search term, so attract it!!
 		if(blobId!=-1) {
 			// attract to the blob
-//			ofVec2f dist = blobCoord 
-			searchTerms[selectedSearchTermIndex].pos = termCoord*(1.f-attractionSpeed) + blobCoord*(attractionSpeed);
+			ofVec2f dist = blobCoord - termCoord;
+			float len = dist.length();
+			if(len<200) {
+				searchTerms[selectedSearchTermIndex].pos = termCoord*(1.f-attractionSpeed) + blobCoord*(attractionSpeed);
+			} else {// falloff
+				attractionSpeed = ofMap(len, 200, 300, attractionSpeed, 0, true);
+				searchTerms[selectedSearchTermIndex].pos = termCoord*(1.f-attractionSpeed) + blobCoord*(attractionSpeed);
+			}
 		}
 	}
 	//apply a float and a wobble
