@@ -1,7 +1,7 @@
 <controls>
     <Toggle_Enable_Caustics>
         <name>Enable Caustics</name>
-        <value>0</value>
+        <value>1</value>
     </Toggle_Enable_Caustics>
     <SliderFloat_Delta>
         <name>Delta</name>
@@ -9,31 +9,31 @@
     </SliderFloat_Delta>
     <SliderFloat_Drag>
         <name>Drag</name>
-        <value>0.932335</value>
+        <value>0.843780</value>
     </SliderFloat_Drag>
     <SliderFloat_Light_X>
         <name>Light X</name>
-        <value>-0.010000</value>
+        <value>-0.020000</value>
     </SliderFloat_Light_X>
     <SliderFloat_Light_Y>
         <name>Light Y</name>
-        <value>-0.290000</value>
+        <value>0.410000</value>
     </SliderFloat_Light_Y>
     <SliderFloat_Light_Z>
         <name>Light Z</name>
-        <value>0.040000</value>
+        <value>-0.110000</value>
     </SliderFloat_Light_Z>
     <SliderFloat_Glow_Amount>
         <name>Glow Amount</name>
-        <value>0.600000</value>
+        <value>0.100000</value>
     </SliderFloat_Glow_Amount>
     <SliderFloat_Drop_Scale>
         <name>Drop Scale</name>
-        <value>22.150002</value>
+        <value>15.850000</value>
     </SliderFloat_Drop_Scale>
     <SliderFloat_Drop_Force>
         <name>Drop Force</name>
-        <value>0.140860</value>
+        <value>0.010990</value>
     </SliderFloat_Drop_Force>
     <Toggle_Draw_Debug_Texture>
         <name>Draw Debug Texture</name>

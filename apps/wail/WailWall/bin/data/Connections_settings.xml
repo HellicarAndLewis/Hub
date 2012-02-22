@@ -5,6 +5,6 @@
     </Toggle_Draw_Connections>
     <SliderFloat_Fade_Decay>
         <name>Fade Decay</name>
-        <value>0.010000</value>
+        <value>0.003160</value>
     </SliderFloat_Fade_Decay>
 </controls>

@@ -1,7 +1,7 @@
 <controls>
     <Toggle_Use_Background_A>
         <name>Use Background A</name>
-        <value>1</value>
+        <value>0</value>
     </Toggle_Use_Background_A>
     <SliderFloat_Blur_Diffuse>
         <name>Blur Diffuse</name>
