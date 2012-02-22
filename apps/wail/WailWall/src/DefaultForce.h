@@ -23,6 +23,7 @@ public:
 	float should_hide_on;
 	float hide_duration_millis;
 	ofVec2f center;
+	float lastTimeActivated;
 };
 
 #endif

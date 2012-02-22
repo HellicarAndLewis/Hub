@@ -181,6 +181,7 @@ void ofxWWSearchTermManager::doTouchInteraction() {
 		// we've found a closest blob to the search term, so attract it!!
 		if(blobId!=-1) {
 			// attract to the blob
+//			ofVec2f dist = blobCoord 
 			searchTerms[selectedSearchTermIndex].pos = termCoord*(1.f-attractionSpeed) + blobCoord*(attractionSpeed);
 		}
 	}
