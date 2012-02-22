@@ -32,9 +32,8 @@ void TwitterDBThread::threadedFunction() {
 					
 					bool r = db.getTweetsWithSearchTerm(
 										 task.search_term
-										,task.search_younger_than
+										,task.search_older_than
 										,task.search_howmany
-										,search_for_older_then
 										,search_results
 									);
 					
@@ -77,23 +76,23 @@ bool TwitterDBThread::insertTweet(const rtt::Tweet& tweet) {
 	return result;
 }
 
-bool TwitterDBThread::getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result) {
-	lock();
-		bool r = db.getTweetsWithTag(tag, howMany, result);
-	unlock();
-	return r;
-}
-
-bool TwitterDBThread::getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result) {
-	lock();	
-		bool r = db.getTweetsNewerThan(age, howMany, result);
-	unlock();
-	return r;
-}
+//bool TwitterDBThread::getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result) {
+//	lock();
+//		bool r = db.getTweetsWithTag(tag, howMany, result);
+//	unlock();
+//	return r;
+//}
+//
+//bool TwitterDBThread::getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result) {
+//	lock();	
+//		bool r = db.getTweetsNewerThan(age, howMany, result);
+//	unlock();
+//	return r;
+//}
 
 void TwitterDBThread::getMoreTweetsMatchingCurrentSearchTerm() {
 	TwitterDBThreadTask task(TwitterDBThreadTask::TASK_SEARCH);
-	task.setSearchYoungerThan(100);
+	task.setSearchOlderThan(search_for_older_then);
 	task.setSearchHowMany(search_howmany);
 	task.setSearchTerm(search_term);
 	addTask(task);
@@ -101,7 +100,8 @@ void TwitterDBThread::getMoreTweetsMatchingCurrentSearchTerm() {
 
 // TODO remote howmany
 // TODO remove the vector<rtt::Tweet> params!
-bool TwitterDBThread::getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany, vector<rtt::Tweet>& result) {
+
+bool TwitterDBThread::getTweetsWithSearchTerm(const string& q, int howMany) {
 //	TwitterDBThreadTask task(TwitterDBThreadTask::TASK_SEARCH);
 //	task.setSearchYoungerThan(youngerThan);
 //	task.setSearchHowMany(howMany);

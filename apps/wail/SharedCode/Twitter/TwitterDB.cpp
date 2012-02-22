@@ -305,37 +305,29 @@ bool TwitterDB::getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& res
  * 
  * @param	const string&				The search query
  *
- * @param	int							Only return tweets which are younger 
- *										then this number of seconds. 
- *										
- * @param	int							How many tweets do you want?
- *
  * @param	time_t						When you pass a value for youngerThan
  *										you cannot use this; and should use
  *										an value for olderThan == 0
  *										When olderThan isnt 0, you'll get only
  *										tweets which are younger then the 
  *										given timestamp.
+ * 										
+ * @param	int							How many tweets do you want?
+ *
  *
  * @param	vector<rtt::Tweet>& [out]	Is filled with tweets
  */
-bool TwitterDB::getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany,time_t olderThan, vector<rtt::Tweet>& result) {
+bool TwitterDB::getTweetsWithSearchTerm(const string& q, time_t olderThan, int howMany,vector<rtt::Tweet>& result) {
+//bool TwitterDB::getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany,time_t olderThan, vector<rtt::Tweet>& result) {
 	// create where.
 	stringstream where;
 	where << "tweet_texts MATCH '";
 	where << q;
 	where << "' AND ";
+	where << "t_timestamp < " << olderThan;
 	
-	if(olderThan == 0) {
-		where << "t_timestamp > ((strftime('%s', 'now')) - ";
-		where << youngerThan; 
-		where << ")";
-	}
-	else {
-		where << "t_timestamp < " << olderThan;
-	//	where << " and t_timestamp > " << (olderThan-100);
-	}
 	printf("Search: %s\n", where.str().c_str());	
+	
 	// join on FTS table
 	QueryResult qr(db);
 	int start = ofGetElapsedTimeMillis();
@@ -361,7 +353,7 @@ bool TwitterDB::getTweetsWithSearchTerm(const string& q, int youngerThan, int ho
 	}
 	int end = ofGetElapsedTimeMillis();	
 	int diff = end - start;
-	printf("Searched for %s and found %zu rows in %d ms. Using younger than: %d and max %d many rows.\n", q.c_str(), result.size(), diff, youngerThan, howMany);
+	printf("Searched for %s and found %zu rows in %d ms. Using older than: %d and max %d many rows.\n", q.c_str(), result.size(), diff, olderThan, howMany);
 	return true;
 }
 

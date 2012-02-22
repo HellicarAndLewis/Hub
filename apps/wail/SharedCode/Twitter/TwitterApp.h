@@ -81,9 +81,9 @@ public:
 	bool getUnusedSearchTerms(vector<TwitterSearchTerm*>& result);
 	bool setSearchTermAsUsed(const string& user, const string& term);
 	bool getFollowers(vector<string>& result);
-	bool getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result);
-	bool getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result);
-	bool getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany, vector<rtt::Tweet>& result);
+//	bool getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result);
+//	bool getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result);
+	bool getTweetsWithSearchTerm(const string& q, int howMany);
 	void onNewSearchTerm(rtt::Tweet tweet, const string& term, bool isUsed = false);
 	void uploadScreenshot(const string& filePath, const string& username, const string& message);
 	void writeScreenshot(const string& filePath, const string& username, ofPixels pixels);
@@ -147,16 +147,16 @@ inline bool TwitterApp::insertTweet(const rtt::Tweet& tweet) {
 	return db_thread.insertTweet(tweet);
 }
 
-inline bool TwitterApp::getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result) {
-	return db_thread.getTweetsWithTag(tag, howMany, result);
-}
+//inline bool TwitterApp::getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result) {
+//	return db_thread.getTweetsWithTag(tag, howMany, result);
+//}
+//
+//inline bool TwitterApp::getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result) {
+//	return db_thread.getTweetsNewerThan(age, howMany, result);
+//}
 
-inline bool TwitterApp::getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result) {
-	return db_thread.getTweetsNewerThan(age, howMany, result);
-}
-
-inline bool TwitterApp::getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany, vector<rtt::Tweet>& result) {
-	return db_thread.getTweetsWithSearchTerm(q, youngerThan, howMany, result);
+inline bool TwitterApp::getTweetsWithSearchTerm(const string& q, int howMany) {
+	return db_thread.getTweetsWithSearchTerm(q, howMany);
 }
 
 inline bool TwitterApp::insertSendQueueItem(const string& username, const string& filename, int& newID) {

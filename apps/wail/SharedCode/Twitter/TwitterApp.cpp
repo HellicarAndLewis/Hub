@@ -236,12 +236,6 @@ void TwitterApp::onTwitterStreamConnected() {
 	mysql.setSetting("twitter_connected", "y");
 }
 
-// Just for testing.
 void TwitterApp::executeSearchTest() {
-	int start = ofGetElapsedTimeMillis();
-	vector<rtt::Tweet> found;
-	db_thread.getTweetsWithSearchTerm("love", 99999, 100, found);
-	int end = ofGetElapsedTimeMillis();
-	int diff = end - start;
-	printf("Testing search, found %zu item in %d millis\n", found.size(), diff );
+	db_thread.getTweetsWithSearchTerm("love", 100);
 }
