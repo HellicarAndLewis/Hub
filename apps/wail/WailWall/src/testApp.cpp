@@ -114,6 +114,12 @@ void testApp::update(){
 	
 	renderer.update();
 	renderer.render();
+	bool appIsInFullScreen = false;
+	if(gui.isOn() || !appIsInFullScreen) {
+		ofShowCursor();
+	} else {
+		ofHideCursor();
+	}
 }
 
 //--------------------------------------------------------------
