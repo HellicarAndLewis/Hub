@@ -65,8 +65,10 @@ class ofxWWTweetParticle {
 	float atSignHeight;
 	
 	ofVec2f getBoundingCorner(int cornerIndex); //0-4 top left, top right, bot left, bottom right
+
 	float dot_opacity; // TODO trying to get the new animation into place
 	ofVec2f static_force; // TODO used in the forces class
+
 	
   protected:
 	ofVec2f getUserDrawPos();
@@ -76,7 +78,14 @@ class ofxWWTweetParticle {
 	
 	float typePlacementTweenPos();
 	void recalculateBoundingRects();
-	static ofImage *dotImage;
+
+	void drawStarImage(float alpha);
+	
+	float whichImage;
+	static const int NUM_DOT_IMAGES = 5;
+	static ofImage *dotImages[NUM_DOT_IMAGES];
+	float imageScale;
+
 	static ofImage *highlightImage;
 
 	int state;
@@ -91,6 +100,7 @@ inline void ofxWWTweetParticle::setState(int newState) {
 		lifetime = ofGetElapsedTimeMillis() + highlight_duration;
 	}
 }
+
 
 inline bool ofxWWTweetParticle::isDrawingText() {
 	return opacity > 0;
