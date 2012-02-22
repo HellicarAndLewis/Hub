@@ -103,11 +103,12 @@ void DefaultForce::hide() {
 			dir = (b.pos-a.pos);
 			dist_sq = dir.lengthSquared();
 			f = 1.0/dist_sq;
-			
-			dir *= f * (60 * duration_influance);  // TODO add to settings
-			a.force += dir;
-			b.force -= dir;
-			++other_it;
+			if(f > 0.04) {
+				dir *= f * (60 * duration_influance);  // TODO add to settings
+				a.force += dir;
+				b.force -= dir;
+			}
+				++other_it;
 			
 		}
 		++it;
