@@ -2,40 +2,34 @@
 #include "ofxWWTweetParticleManager.h"
 #include "Colours.h"
 
-<<<<<<< HEAD
+
 ofImage *ofxWWTweetParticle::dotImages[NUM_DOT_IMAGES] = {NULL, NULL, NULL, NULL, NULL};
 
-=======
-ofImage *ofxWWTweetParticle::dotImage = NULL;
+
+
 ofImage* ofxWWTweetParticle::highlightImage = NULL;
->>>>>>> origin/master
+
 
 ofxWWTweetParticle::ofxWWTweetParticle(){
 	
 	whichImage = ofRandom(0, 1);
 	if(whichImage<0.5) whichImage = 0;
 	else whichImage = ofMap(whichImage, 0.5, 1, 0, 1);
-	imageScale = ofRandom(0.5, 3);
+	imageScale = ofRandom(0.5, 2.3);
 	manager = NULL;
 	isTwoLines = false;
 	isSearchTweet = false;
 	speedAdjust = 0;
-<<<<<<< HEAD
+
+	state = STATE_DEFAULT;
+	dot_opacity = 1.0;
+	highlight_duration = 300;
+	
 	if(dotImages[0]==NULL) {
 		for(int i = 0; i < NUM_DOT_IMAGES; i++) {
 			dotImages[i] = new ofImage();
 			dotImages[i]->loadImage("images/td"+ofToString(i)+".png");
 		}
-=======
-	state = STATE_DEFAULT;
-	dot_opacity = 1.0;
-	highlight_duration = 300;
-	
-	if(dotImage == NULL) {
-		dotImage = new ofImage();
-		dotImage->loadImage("images/tweetDot.png");
->>>>>>> origin/master
-		//dotImage->setAnchorPercent(0.5, 0.5);
 	}
 	
 	if(highlightImage == NULL) {
@@ -152,13 +146,33 @@ void ofxWWTweetParticle::update(){
 	}
 }
 
+
+void ofxWWTweetParticle::drawStarImage(float alpha) {
+	int firstImage = floor(whichImage);
+	int secondImage = ceil(whichImage);
+	float amt = whichImage - firstImage;
+	glColor4f(1, 1, 1, (1.f - amt)*alpha);
+	dotImages[firstImage]->draw(pos.x+manager->dotShift, pos.y, dotImages[firstImage]->getWidth()*imageScale, dotImages[firstImage]->getHeight()*imageScale);
+	
+	glColor4f(1, 1, 1, amt*alpha);
+	dotImages[secondImage]->draw(pos.x+manager->dotShift, pos.y, dotImages[secondImage]->getWidth()*imageScale, dotImages[secondImage]->getHeight()*imageScale);
+	
+
+}
 // TODO we can change the anchor percentage right? instead of calling each ofSetRectMode()
 void ofxWWTweetParticle::drawDot(){
 	if(state == STATE_DEFAULT) {
+		
+		
+		
+		float alpha = 1;
+	alpha *= ofMap(clampedSelectionWeight, 0, .5, 1.0, 0, true);
+		
 		ofPushStyle();
-			glColor4f(1,1,1,dot_opacity);
+			//glColor4f(1,1,1,dot_opacity);
 			ofSetRectMode(OF_RECTMODE_CENTER);
-			dotImage->draw(pos.x + manager->dotShift, pos.y);
+		alpha *= ofMap(whichImage, 0, 1, .6, 1);//, <#float outputMax#>)
+			drawStarImage(alpha);
 		ofPopStyle();
 	}
 	else if(state == STATE_HIGHLIGHT) {
@@ -168,12 +182,14 @@ void ofxWWTweetParticle::drawDot(){
 		p = sin(p * PI);
 	
 		ofPushStyle();
-			glColor4f(1,1,1,1);
+		{
 			ofSetRectMode(OF_RECTMODE_CENTER);
-			dotImage->draw(pos.x + manager->dotShift, pos.y);
+			
+			drawStarImage(1);
 			
 			glColor4f(1,1,1,p);
 			highlightImage->draw(pos.x + manager->dotShift, pos.y);
+		}
 		ofPopStyle();
 		
 	}
@@ -183,9 +199,7 @@ void ofxWWTweetParticle::drawDot(){
 
 		ofSetRectMode(OF_RECTMODE_CENTER);
 	
-	float alpha;
-	alpha = 1;
-	alpha *= ofMap(clampedSelectionWeight, 0, .5, 1.0, 0, true);
+	
 
 	
 	float scale = useBurstOne ? 1.2 : 1.0;
@@ -225,14 +239,11 @@ void ofxWWTweetParticle::drawDot(){
 }
 
 void ofxWWTweetParticle::drawText(){
-<<<<<<< HEAD
-	
-	if(opacity<=0) return;
-=======
+
 	if(!isDrawingText()) {
 		return;
 	}
->>>>>>> origin/master
+
 	ofPushStyle();
 	ofEnableAlphaBlending();
 

@@ -79,7 +79,7 @@ class ofxWWTweetParticle {
 	float typePlacementTweenPos();
 	void recalculateBoundingRects();
 
-	
+	void drawStarImage(float alpha);
 	
 	float whichImage;
 	static const int NUM_DOT_IMAGES = 5;

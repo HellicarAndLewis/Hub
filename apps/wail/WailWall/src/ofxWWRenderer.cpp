@@ -215,7 +215,7 @@ void ofxWWRenderer::update(){
 	
 	layer1Opacity += (targetOpacity - layer1Opacity) * .1; //dampen
 	tweets.tweetLayerOpacity = layer1Opacity;
-		
+	
 	tweets.update();
 }
 
@@ -378,17 +378,17 @@ void ofxWWRenderer::renderDynamics(){
 	alphaFade.setUniform1f("fadeSpeed", fadeSpeed);
 	accumulator[(accumbuf+1)%2].draw(0,0); //this x offset causes the blur to cascade away
 	alphaFade.end();
-	
-//	blurShader.begin();
-//	blurShader.setUniform2f("sampleOffset", 0, blurAmount);
-//	accumulator[(accumbuf+1)%2].draw(7,0); //this x offset causes the blur to cascade away
-//	blurShader.end();
-//
-//	blurShader.begin();
-//	blurShader.setUniform2f("sampleOffset", blurAmount, 0);
-//	accumulator[(accumbuf+1)%2].draw(3,0); //this x offset causes the blur to cascade away
-//	blurShader.end();
+	/*
+	blurShader.begin();
+	blurShader.setUniform2f("sampleOffset", 0, blurAmount);
+	accumulator[(accumbuf+1)%2].draw(7,0); //this x offset causes the blur to cascade away
+	blurShader.end();
 
+	blurShader.begin();
+	blurShader.setUniform2f("sampleOffset", blurAmount, 0);
+	accumulator[(accumbuf+1)%2].draw(3,0); //this x offset causes the blur to cascade away
+	blurShader.end();
+*/
 	if(enableFluid){
 		fluid.draw(0,0,targetWidth,targetHeight);
 	}

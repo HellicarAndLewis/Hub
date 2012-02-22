@@ -261,6 +261,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 					tweets.erase(it);
 					break;
 				}
+				it++;
 			}
 		}
 	}
