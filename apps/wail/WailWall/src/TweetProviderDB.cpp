@@ -2,6 +2,7 @@
 TweetProviderDB::TweetProviderDB(TwitterApp& app)
 	:app(app)
 	,should_create_new_tweet_on(0)
+	,spawn_delay(50)
 {
 }
 
@@ -9,17 +10,26 @@ void TweetProviderDB::update() {
 	if(!is_enabled) {
 		return;
 	}	
+	
+	if(app.retrieveSearchResultsFromThread(found_tweets)) {
+//		for(int i = 0; i < found_tweets.size(); ++i) {
+//			printf(">found< [%zu] %s\n", found_tweets[i].created_at_timestamp, found_tweets[i].text.c_str());
+//		}
+
+
+	}
+	
 	int now = ofGetElapsedTimeMillis();
 	if(now > should_create_new_tweet_on) {
-		should_create_new_tweet_on = now + 10;
+		should_create_new_tweet_on = now + spawn_delay;
 		if(found_tweets.size() > 0) {
 			tweet_index = ++tweet_index % found_tweets.size();
 			onNewTweet(found_tweets[tweet_index]);
 		}
 		else {
-			printf("+++++++++++++++++++++++++++++++++++++++++++++\n");
-			printf("          we did not found                   \n");
-			printf("+++++++++++++++++++++++++++++++++++++++++++++\n");
+//			printf("+++++++++++++++++++++++++++++++++++++++++++++\n");
+//			printf("          we did not found                   \n");
+//			printf("+++++++++++++++++++++++++++++++++++++++++++++\n");
 		}
 	}
 	
@@ -35,22 +45,15 @@ void TweetProviderDB::setSearchInfoForNewParticles(
 	current_username = username;
 }
 
+// TODO the found_tweets aren't necessary anymore becuase during development the actual search is done in it's own thread
+// TODO add number of new spawned particles/tweets to setting
 void TweetProviderDB::fillWithTweetsWhichContainTerm(const string& term) {
-	printf("============================ search terms ============================\n");
 	found_tweets.clear();
-	app.getTweetsWithSearchTerm(term, 100000, 20, found_tweets);
-	for(int i = 0; i < found_tweets.size(); ++i) {
-		printf("[found] (%s) %s\n"
-				,found_tweets[i].getScreenName().c_str()
-				,found_tweets[i].getText().c_str()
-		);
-	}
-	printf("+++++++++++++++++++++++++++++ %zu ++++++++++++++++++++++++++++\n", found_tweets.size());
-	
+	app.getTweetsWithSearchTerm(term, 100000, 50, found_tweets);
 }
 
 void TweetProviderDB::activate() {
-	should_create_new_tweet_on = ofGetElapsedTimeMillis() + 10;
+	should_create_new_tweet_on = ofGetElapsedTimeMillis() + spawn_delay;
 }
 
 void TweetProviderDB::deactivate() {

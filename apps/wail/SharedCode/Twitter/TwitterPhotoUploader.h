@@ -13,8 +13,9 @@ namespace rc = roxlu::curl;
 namespace rcp = roxlu::curl::parameter;
 using std::string;
 
-const string URL_TWITTER_UPLOADER = "http://dewarshub.demo.apollomedia.nl/";
+//const string URL_TWITTER_UPLOADER = "http://dewarshub.demo.apollomedia.nl/";
 //const string URL_TWITTER_UPLOADER = "http://dewarshub.localhost/";
+const string URL_TWITTER_UPLOADER = "http://image.dewarshub.com/";
 
 class TwitterApp;
 

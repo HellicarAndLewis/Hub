@@ -41,6 +41,10 @@ void Tweet::setCreatedAt(const string& date) {
 	created_at_timestamp = mktime(&tm);
 }
 
+void Tweet::setCreatedAt(const time_t& timestamp) {
+	created_at_timestamp = timestamp;
+}
+
 
 
 }}} // roxlu::twitter::data

@@ -1,20 +1,17 @@
-/*
- *  ofxWWTweet.h
- *  WailWall
- *
- *  Created by James George on 1/30/12.
- *  Copyright 2012 __MyCompanyName__. All rights reserved.
- *
- */
 #pragma once
 
 #include "ofMain.h"
 #include "TwitterApp.h"
 
 
+
 class ofxWWTweetParticleManager;
 class ofxWWTweetParticle {
   public:
+  	enum ofxWWTweetParticleState {
+		 STATE_DEFAULT
+		,STATE_HIGHLIGHT
+	};
 	ofxWWTweetParticle();
 
 	ofxWWTweetParticleManager* manager;
@@ -24,7 +21,9 @@ class ofxWWTweetParticle {
 	void update();
 	void drawDot();
 	void drawText();
+	bool isDrawingText();
 	void drawDebug();
+	void setState(int state);
 	
 	//controlled through update
 	ofVec2f pos;
@@ -66,8 +65,10 @@ class ofxWWTweetParticle {
 	float atSignHeight;
 	
 	ofVec2f getBoundingCorner(int cornerIndex); //0-4 top left, top right, bot left, bottom right
-	
-	
+
+	float dot_opacity; // TODO trying to get the new animation into place
+	ofVec2f static_force; // TODO used in the forces class
+
 	
   protected:
 	ofVec2f getUserDrawPos();
@@ -77,6 +78,7 @@ class ofxWWTweetParticle {
 	
 	float typePlacementTweenPos();
 	void recalculateBoundingRects();
+
 	
 	
 	float whichImage;
@@ -84,4 +86,22 @@ class ofxWWTweetParticle {
 	static ofImage *dotImages[NUM_DOT_IMAGES];
 	float imageScale;
 
+	static ofImage *highlightImage;
+
+	int state;
+	float lifetime;
+	float highlight_duration; // general timer...
+
 };
+
+inline void ofxWWTweetParticle::setState(int newState) {
+	state = newState;
+	if(state == STATE_HIGHLIGHT) {	
+		lifetime = ofGetElapsedTimeMillis() + highlight_duration;
+	}
+}
+
+
+inline bool ofxWWTweetParticle::isDrawingText() {
+	return opacity > 0;
+}

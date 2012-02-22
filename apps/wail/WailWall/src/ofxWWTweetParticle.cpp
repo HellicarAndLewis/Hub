@@ -1,18 +1,14 @@
-/*
- *  ofxWWTweet.cpp
- *  WailWall
- *
- *  Created by James George on 1/30/12.
- *  Copyright 2012 __MyCompanyName__. All rights reserved.
- *
- */
-
 #include "ofxWWTweetParticle.h"
 #include "ofxWWTweetParticleManager.h"
 #include "Colours.h"
 
+<<<<<<< HEAD
 ofImage *ofxWWTweetParticle::dotImages[NUM_DOT_IMAGES] = {NULL, NULL, NULL, NULL, NULL};
 
+=======
+ofImage *ofxWWTweetParticle::dotImage = NULL;
+ofImage* ofxWWTweetParticle::highlightImage = NULL;
+>>>>>>> origin/master
 
 ofxWWTweetParticle::ofxWWTweetParticle(){
 	
@@ -24,12 +20,28 @@ ofxWWTweetParticle::ofxWWTweetParticle(){
 	isTwoLines = false;
 	isSearchTweet = false;
 	speedAdjust = 0;
+<<<<<<< HEAD
 	if(dotImages[0]==NULL) {
 		for(int i = 0; i < NUM_DOT_IMAGES; i++) {
 			dotImages[i] = new ofImage();
 			dotImages[i]->loadImage("images/td"+ofToString(i)+".png");
 		}
+=======
+	state = STATE_DEFAULT;
+	dot_opacity = 1.0;
+	highlight_duration = 300;
+	
+	if(dotImage == NULL) {
+		dotImage = new ofImage();
+		dotImage->loadImage("images/tweetDot.png");
+>>>>>>> origin/master
 		//dotImage->setAnchorPercent(0.5, 0.5);
+	}
+	
+	if(highlightImage == NULL) {
+		highlightImage = new ofImage();
+		highlightImage->loadImage("images/highlight.png");
+		//highlightImage->setAnchorPercent(0.5, 0.5);
 	}
 }
 
@@ -105,6 +117,7 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 }
 
 void ofxWWTweetParticle::update(){
+
 	
 	lastPos = pos;
 	force.rotate(ofSignedNoise(pos.x/manager->tweetRotateDamp,pos.y/manager->tweetRotateDamp,ofGetElapsedTimef()/manager->tweetChaosSpeed)*manager->tweetRotateAmp );
@@ -139,10 +152,37 @@ void ofxWWTweetParticle::update(){
 	}
 }
 
+// TODO we can change the anchor percentage right? instead of calling each ofSetRectMode()
 void ofxWWTweetParticle::drawDot(){
+	if(state == STATE_DEFAULT) {
+		ofPushStyle();
+			glColor4f(1,1,1,dot_opacity);
+			ofSetRectMode(OF_RECTMODE_CENTER);
+			dotImage->draw(pos.x + manager->dotShift, pos.y);
+		ofPopStyle();
+	}
+	else if(state == STATE_HIGHLIGHT) {
+		float now = ofGetElapsedTimeMillis();
+		float diff = highlight_duration - (lifetime - now);		
+		float p = MIN(1.0f, diff/highlight_duration);
+		p = sin(p * PI);
+	
+		ofPushStyle();
+			glColor4f(1,1,1,1);
+			ofSetRectMode(OF_RECTMODE_CENTER);
+			dotImage->draw(pos.x + manager->dotShift, pos.y);
+			
+			glColor4f(1,1,1,p);
+			highlightImage->draw(pos.x + manager->dotShift, pos.y);
+		ofPopStyle();
+		
+	}
+	
+	/*
 	ofPushStyle();
 
-	ofSetRectMode(OF_RECTMODE_CENTER);
+		ofSetRectMode(OF_RECTMODE_CENTER);
+	
 	float alpha;
 	alpha = 1;
 	alpha *= ofMap(clampedSelectionWeight, 0, .5, 1.0, 0, true);
@@ -154,6 +194,7 @@ void ofxWWTweetParticle::drawDot(){
 	}
 	
 	if(alpha > 0){
+<<<<<<< HEAD
 //		ofSetColor(255,255,255, alpha*255);
 		int firstImage = floor(whichImage);
 		int secondImage = ceil(whichImage);
@@ -163,15 +204,35 @@ void ofxWWTweetParticle::drawDot(){
 		
 		glColor4f(1, 1, 1, amt*alpha);
 		dotImages[secondImage]->draw(pos.x+manager->dotShift, pos.y, dotImages[secondImage]->getWidth()*imageScale, dotImages[secondImage]->getHeight()*imageScale);
+=======
+		ofSetColor(255,255,255, alpha*255);
+//		if(useBurstOne){
+			//manager->burstOne.draw(pos.x+manager->dotShift, pos.y, manager->dotSize*1.2,manager->dotSize*1.2);
+	//		ofRect(pos.x+manager->dotShift, pos.y, manager->dotSize*1.2,manager->dotSize*1.2 );
+		dotImage->draw(pos.x+manager->dotShift, pos.y);//, manager->dotSize*1.2,manager->dotSize*1.2 );
+	//	ofRect(pos.x+manager->dotShift, pos.y, dotImage->getWidth(), dotImage->getHeight());
+//		}
+//		else{
+//			//manager->burstTwo.draw(pos.x+manager->dotShift, pos.y, manager->dotSize,manager->dotSize);
+//			ofRect(pos.x+manager->dotShift, pos.y, manager->dotSize,manager->dotSize);
+//		}
+>>>>>>> origin/master
 		
 	}
-	
 	ofPopStyle();
+	*/
+
 }
 
 void ofxWWTweetParticle::drawText(){
+<<<<<<< HEAD
 	
 	if(opacity<=0) return;
+=======
+	if(!isDrawingText()) {
+		return;
+	}
+>>>>>>> origin/master
 	ofPushStyle();
 	ofEnableAlphaBlending();
 

@@ -29,7 +29,7 @@ void CallToAction::justInteracted() {
 // call this every draw. The method
 // will decide for itself when to draw.
 void CallToAction::draw() {
-	
+
 
 	float fadeInTime = 3;
 	// this is the time since the last interaction

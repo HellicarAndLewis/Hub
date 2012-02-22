@@ -285,7 +285,7 @@ void ofxWWRenderer::render(){
 	accumulator[accumbuf].draw(0, 0);
 	accumbuf = (accumbuf+1)%2;
 	
-	
+
 	tweets.renderSearchTerms();
 	
 	tweets.renderTweets();	
@@ -352,6 +352,7 @@ void ofxWWRenderer::render(){
 //		//tweets.addCurrentRenderToScreenshotQueue();
 //		test_screenshot = false;
 //	}
+
 }
 
 //roxlu: testing screenshots

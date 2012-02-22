@@ -9,7 +9,7 @@
     </SliderFloat_Delta>
     <SliderFloat_Drag>
         <name>Drag</name>
-        <value>0.932335</value>
+        <value>0.817910</value>
     </SliderFloat_Drag>
     <SliderFloat_Light_X>
         <name>Light X</name>
@@ -25,15 +25,15 @@
     </SliderFloat_Light_Z>
     <SliderFloat_Glow_Amount>
         <name>Glow Amount</name>
-        <value>0.600000</value>
+        <value>0.250000</value>
     </SliderFloat_Glow_Amount>
     <SliderFloat_Drop_Scale>
         <name>Drop Scale</name>
-        <value>22.150002</value>
+        <value>10.900000</value>
     </SliderFloat_Drop_Scale>
     <SliderFloat_Drop_Force>
         <name>Drop Force</name>
-        <value>0.140860</value>
+        <value>0.015985</value>
     </SliderFloat_Drop_Force>
     <Toggle_Draw_Debug_Texture>
         <name>Draw Debug Texture</name>

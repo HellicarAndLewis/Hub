@@ -93,7 +93,7 @@ public:
 	bool insertSendQueueItem(const string& username, const string& filename, int& newID);
 	bool setSendQueueItemAsSend(int queueID);
 	bool getNextSendItemFromSendQueue(string& username, string& filename, int& id);
-
+	bool retrieveSearchResultsFromThread(vector<rtt::Tweet>& result);
 	
 	void addCustomStreamListener(rt::IEventListener& listener);
 	
@@ -162,6 +162,9 @@ inline bool TwitterApp::insertSendQueueItem(const string& username, const string
 	return db_thread.insertSendQueueItem(username, filename, newID);
 }
 
+inline bool TwitterApp::retrieveSearchResultsFromThread(vector<rtt::Tweet>& result) {
+	return db_thread.retrieveSearchResultsFromThread(result);
+}
 
 inline bool TwitterApp::setSendQueueItemAsSend(int queueID) {
 	return db_thread.setSendQueueItemAsSend(queueID);
