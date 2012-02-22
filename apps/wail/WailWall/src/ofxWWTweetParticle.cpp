@@ -116,7 +116,7 @@ void ofxWWTweetParticle::update(){
 	lastPos = pos;
 	force.rotate(ofSignedNoise(pos.x/manager->tweetRotateDamp,pos.y/manager->tweetRotateDamp,ofGetElapsedTimef()/manager->tweetChaosSpeed)*manager->tweetRotateAmp );
 	pos += force*ofMap(whichImage, 0, 2, 0.6, 1.4);
-	force = ofVec2f(0,0);
+	force.set(0,0);
 	
 	
 	//birth attenuation just to stop snapping on
