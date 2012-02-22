@@ -90,6 +90,7 @@ void DefaultForce::hide() {
 		dir = (center - tweet.pos);
 		dist = dir.length();
 		f =  (dist-rest) * (0.03 * duration_influance); // TODO add to settings
+		
 		dir.normalize();
 		dir *= f;
 		tweet.force += dir;
@@ -105,13 +106,13 @@ void DefaultForce::hide() {
 		ofxWWTweetParticle& a = *it;
 		while(other_it != tweets.end()) {
 			ofxWWTweetParticle& b = *other_it;
-			dir = (b.pos-a.pos);
+			dir = (b.pos - a.pos);
 			dist_sq = dir.lengthSquared();
 			f = 1.0/dist_sq;
-			if(f > 0.04) {
-				dir *= f * (60 * duration_influance);  // TODO add to settings
-				a.force += dir;
-				b.force -= dir;
+			if(f > 0.0001) {
+				dir *= f * 60;  // TODO add to settings
+				a.force -= dir;
+				b.force += dir;
 			}
 			++other_it;
 		}
