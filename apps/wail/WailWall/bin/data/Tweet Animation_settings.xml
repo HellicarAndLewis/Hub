@@ -1,7 +1,7 @@
 <controls>
     <SliderFloat_Flow_Speed>
         <name>Flow Speed</name>
-        <value>-17.400002</value>
+        <value>-7.500000</value>
     </SliderFloat_Flow_Speed>
     <SliderFloat_Flow_Variance>
         <name>Flow Variance</name>
@@ -33,10 +33,10 @@
     </SliderFloat_Wall_Repulsion_Atten>
     <SliderFloat_Tweet_Repulsion_Dist>
         <name>Tweet Repulsion Dist</name>
-        <value>499.500000</value>
+        <value>76.500000</value>
     </SliderFloat_Tweet_Repulsion_Dist>
     <SliderFloat_Tweet_Repulsion_Atten>
         <name>Tweet Repulsion Atten</name>
-        <value>0.200000</value>
+        <value>0.012000</value>
     </SliderFloat_Tweet_Repulsion_Atten>
 </controls>

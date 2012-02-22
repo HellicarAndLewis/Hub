@@ -1,23 +1,27 @@
 <controls>
     <SliderFloat_Wall_Repulsion_Dist>
         <name>Wall Repulsion Dist</name>
-        <value>234.000000</value>
+        <value>526.500000</value>
     </SliderFloat_Wall_Repulsion_Dist>
     <SliderFloat_Search_Repulse_Dist>
         <name>Search Repulse Dist</name>
-        <value>1040.000000</value>
+        <value>1452.500000</value>
     </SliderFloat_Search_Repulse_Dist>
     <SliderFloat_Search_Repulse_Atten>
         <name>Search Repulse Atten</name>
-        <value>0.123000</value>
+        <value>0.008000</value>
     </SliderFloat_Search_Repulse_Atten>
+    <SliderFloat_Search_Term_Movement>
+        <name>Search Term Movement</name>
+        <value>3.000000</value>
+    </SliderFloat_Search_Term_Movement>
     <SliderFloat_Search_Fadeout_Time>
         <name>Search Fadeout Time</name>
         <value>0.710000</value>
     </SliderFloat_Search_Fadeout_Time>
     <SliderFloat_Search_Deselection_Delay>
         <name>Search Deselection Delay</name>
-        <value>1.860000</value>
+        <value>1.480000</value>
     </SliderFloat_Search_Deselection_Delay>
     <SliderFloat_searchTermSelectionRadiusPercent>
         <name>searchTermSelectionRadiusPercent</name>

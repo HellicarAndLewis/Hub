@@ -52,5 +52,13 @@ public:
 	bool shouldTakeScreenshot;
 	string screenshotUsername;
 	static void theScreenshotCallback(const string& username, void* user);
-
+	void scaleTouchSize(KinectTouch &touch);
+	
+	float inMinTouchSize;
+	float inMaxTouchSize;
+	float outMinTouchSize;
+	float outMaxTouchSize;
+	
+	bool isFullscreen;
+	void setFullscreen(bool isFullscreen);
 };

@@ -22,6 +22,10 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
+	inMinTouchSize = 0;
+	inMaxTouchSize = 1;
+	outMinTouchSize = 0;
+	outMaxTouchSize = 1;
 	/*
 	string time_str = "Mon Feb 20 19:30:17 +0000 2012";
 
@@ -34,6 +38,9 @@ void testApp::setup(){
 	printf("input: %s  output: %s\n", time_str.c_str(), buffer);
 	::exit(0);
 	*/
+	
+
+	setFullscreen(false);
 	ofSetLogLevel(OF_LOG_ERROR); // roxlu 16/02 Getting: OF: OF_LOG_WARNING: ofMap: avoiding possible divide by zero, check inputMin and inputMax
  
 	ofSetFrameRate(60);
@@ -67,6 +74,11 @@ void testApp::setup(){
 	renderer.setup(screenManager.sourceRect.width, screenManager.sourceRect.height);	
 	renderer.setupGui();
 
+	//webGui.addPage("Touch size scaling");
+	//webGui.addSlider("In Min Touch Size", inMinTouchSize, 0, 1);
+	//webGui.addSlider("In Max Touch Size", inMaxTouchSize, 0, 1);
+	//webGui.addSlider("Out Min Touch Size", outMinTouchSize, 0, 1);
+	//webGui.addSlider("Out Max Touch Size", outMaxTouchSize, 0, 1);
 	// disable for now
 	//webGui.startServer();
 	webGui.loadFromXML();
@@ -105,6 +117,11 @@ void testApp::update(){
 	
 	renderer.update();
 	renderer.render();
+	if(gui.isOn() || !isFullscreen) {
+		ofShowCursor();
+	} else {
+		ofHideCursor();
+	}
 }
 
 //--------------------------------------------------------------
@@ -198,7 +215,8 @@ void testApp::keyPressed(int key){
 		}
 			 
 		case 'f': {
-			ofToggleFullscreen();
+			setFullscreen(!isFullscreen);
+
 			break;
 		}
 			
@@ -297,19 +315,38 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 
 }
 
+void testApp::scaleTouchSize(KinectTouch &touch) {
+	touch.size = ofMap(touch.size, inMinTouchSize, inMaxTouchSize, outMinTouchSize, outMaxTouchSize, true);
+}
+
 void testApp::touchDown(const KinectTouch &touch) {
-	renderer.touchDown(touch);
-	blobs[touch.id] = touch;
+	KinectTouch t = touch;
+	
+	scaleTouchSize(t);
+	
+	renderer.touchDown(t);
+	blobs[touch.id] = t;
 }
 
 void testApp::touchMoved(const KinectTouch &touch) {
-	renderer.touchMoved(touch);
-	blobs[touch.id] = touch;
+	KinectTouch t = touch;
+	
+	scaleTouchSize(t);
+	renderer.touchMoved(t);
+	blobs[touch.id] = t;
 }
 
 void testApp::touchUp(const KinectTouch &touch) {
-	renderer.touchUp(touch);
-	if(blobs.find(touch.id)!=blobs.end()) {
-		blobs.erase(touch.id);
+	KinectTouch t = touch;
+	
+	scaleTouchSize(t);
+	renderer.touchUp(t);
+	if(blobs.find(t.id)!=blobs.end()) {
+		blobs.erase(t.id);
 	}
+}
+
+void testApp::setFullscreen(bool isFullscreen) {
+	this->isFullscreen = isFullscreen;
+	ofSetFullscreen(isFullscreen);
 }

@@ -136,9 +136,13 @@ void ofxWWTweetParticle::update(){
 		dead = true;
 	}
 	
+	// smoothe the clampedSelectionWeight
+	smoothedSelectionWeight.setTarget(clampedSelectionWeight);
+	smoothedSelectionWeight.update();
+	
 	//distance attenuation
-	opacity *= ofMap(clampedSelectionWeight, .2, 1.0, 0, 1.0, true); 
-
+	opacity *= ofMap(smoothedSelectionWeight.getValue(), .2, 1.0, 0, 1.0, true); 
+	//opacity = 1;
 	
 	//eventually we can optimize with this:
 	if(selectionWeight > 0){
@@ -162,6 +166,7 @@ void ofxWWTweetParticle::drawStarImage(float alpha) {
 // TODO we can change the anchor percentage right? instead of calling each ofSetRectMode()
 void ofxWWTweetParticle::drawDot(){
 	if(state == STATE_DEFAULT) {
+
 		float alpha = 1;
 		alpha *= ofMap(clampedSelectionWeight, 0, .5, 1.0, 0, true);
 		
@@ -180,6 +185,7 @@ void ofxWWTweetParticle::drawDot(){
 		
 	}
 	else if(state == STATE_HIGHLIGHT) {
+		
 		float now = ofGetElapsedTimeMillis();
 		float diff = highlight_duration - (lifetime - now);		
 		float p = MIN(1.0f, diff/highlight_duration);
@@ -187,59 +193,18 @@ void ofxWWTweetParticle::drawDot(){
 	
 		ofPushStyle();
 		{
-			ofSetRectMode(OF_RECTMODE_CENTER);
-			
-			drawStarImage(1);
-			
-			glColor4f(1,1,1,p);
-			highlightImage->draw(pos.x + manager->dotShift, pos.y);
+			// MB: don't know if this is right - I might have broken this!!
+			if(!isDrawingText()) {
+				ofSetRectMode(OF_RECTMODE_CENTER);
+				
+				drawStarImage(1);
+				
+				glColor4f(1,1,1,p);
+				highlightImage->draw(pos.x + manager->dotShift, pos.y);
+			}
 		}
 		ofPopStyle();
-		
 	}
-	
-	/*
-	ofPushStyle();
-
-		ofSetRectMode(OF_RECTMODE_CENTER);
-	
-	
-
-	
-	float scale = useBurstOne ? 1.2 : 1.0;
-	if(isSearchTweet){
-		scale *= 1.5;
-	}
-	
-	if(alpha > 0){
-<<<<<<< HEAD
-//		ofSetColor(255,255,255, alpha*255);
-		int firstImage = floor(whichImage);
-		int secondImage = ceil(whichImage);
-		float amt = whichImage - firstImage;
-		glColor4f(1, 1, 1, (1.f - amt)*alpha);
-		dotImages[firstImage]->draw(pos.x+manager->dotShift, pos.y, dotImages[firstImage]->getWidth()*imageScale, dotImages[firstImage]->getHeight()*imageScale);
-		
-		glColor4f(1, 1, 1, amt*alpha);
-		dotImages[secondImage]->draw(pos.x+manager->dotShift, pos.y, dotImages[secondImage]->getWidth()*imageScale, dotImages[secondImage]->getHeight()*imageScale);
-=======
-		ofSetColor(255,255,255, alpha*255);
-//		if(useBurstOne){
-			//manager->burstOne.draw(pos.x+manager->dotShift, pos.y, manager->dotSize*1.2,manager->dotSize*1.2);
-	//		ofRect(pos.x+manager->dotShift, pos.y, manager->dotSize*1.2,manager->dotSize*1.2 );
-		dotImage->draw(pos.x+manager->dotShift, pos.y);//, manager->dotSize*1.2,manager->dotSize*1.2 );
-	//	ofRect(pos.x+manager->dotShift, pos.y, dotImage->getWidth(), dotImage->getHeight());
-//		}
-//		else{
-//			//manager->burstTwo.draw(pos.x+manager->dotShift, pos.y, manager->dotSize,manager->dotSize);
-//			ofRect(pos.x+manager->dotShift, pos.y, manager->dotSize,manager->dotSize);
-//		}
->>>>>>> origin/master
-		
-	}
-	ofPopStyle();
-	*/
-
 }
 
 void ofxWWTweetParticle::drawText(){
@@ -248,16 +213,18 @@ void ofxWWTweetParticle::drawText(){
 		return;
 	}
 
-	ofPushStyle();
-	ofEnableAlphaBlending();
+	
 
 	ofColor atcolor = ofColor::fromHex(Colours::get(AT_SIGN));
 	atcolor.a = opacity*255;
 	ofSetColor(atcolor);
 	//DRAW @ 
 	ofVec2f atPos = getAtDrawPos();
+	
+	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	manager->sharedUserFont.drawString("@",atPos.x,atPos.y);
-
+	ofEnableBlendMode(OF_BLENDMODE_ADD);
+	
 	ofColor fontcolor = ofColor::fromHex(Colours::get(LAYER_1_FONT));
 	fontcolor.a = opacity*255;
 	ofSetColor(fontcolor);
@@ -274,7 +241,6 @@ void ofxWWTweetParticle::drawText(){
 		manager->sharedTweetFont.drawString(lineTwo,tweetDrawPos.x,tweetDrawPos.y);		
 	}
 	
-	ofPopStyle();
 }
 
 void ofxWWTweetParticle::recalculateBoundingRects(){
@@ -354,6 +320,6 @@ ofVec2f ofxWWTweetParticle::getAtDrawPos(){
 }
 
 float ofxWWTweetParticle::typePlacementTweenPos(){
-	return isSearchTweet ? 1.0 : ofMap(clampedSelectionWeight,0,.3,0,1.0,true);
+	return isSearchTweet ? 1.0 : ofMap(smoothedSelectionWeight.getValue(),0,.3,0,1.0,true);
 }
 

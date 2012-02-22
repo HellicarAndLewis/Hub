@@ -10,6 +10,8 @@
 #include "ofxWWRenderer.h"
 #include "ofxWebSimpleGuiToo.h"
 #include "Colours.h"
+#include "mathutils.h"
+
 
 void ofxWWRenderer::setup(int width, int height){
 	targetWidth = width;
@@ -115,7 +117,7 @@ void ofxWWRenderer::setupGui(){
 	webGui.addPage("Interaction");
 	webGui.addSlider("Layer Barrier Z", layerBarrierZ, .25, .75);
 	webGui.addSlider("Layer Barrier Width", layerBarrierWidth, 0.05, .25);
-	webGui.addSlider("Touch Scale", tweets.touchSizeScale, .5, 2.0);
+	webGui.addSlider("Touch Scale", tweets.touchSizeScale, .25, 1.5);
 	webGui.addSlider("Influence Width", tweets.touchInfluenceFalloff, 200, 5000);
 	webGui.addToggle("Draw Touch Debug", drawTouchDebug);
 	
@@ -552,10 +554,3 @@ ofVec2f ofxWWRenderer::randomPointInCircle(ofVec2f position, float radius){
 	return position + ofVec2f(x,y);
 }
 
-float ofxWWRenderer::smootherStep(float edge0, float edge1, float x)
-{
-    // Scale, and clamp x to 0..1 range
-    x = ofClamp((x - edge0)/(edge1 - edge0), 0.f, 1.f);
-    // Evaluate polynomial
-    return x*x*x*(x*(x*6 - 15) + 10);
-}

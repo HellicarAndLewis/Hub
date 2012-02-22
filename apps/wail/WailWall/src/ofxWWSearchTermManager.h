@@ -84,10 +84,14 @@ public:
 	
 	float deselectionDelay;
 	
-	// for testing
+
 	void onSearchTermSelected(const SearchTermSelectionInfo& term);
 	void onAllSearchTermsDeselected();
 	
+	
+	
+	// how much the search terms move
+	float movement;
 	
 	
 private:

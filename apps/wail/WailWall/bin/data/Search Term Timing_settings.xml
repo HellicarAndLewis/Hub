@@ -13,15 +13,15 @@
     </SliderInt_Search_Font_Size>
     <SliderFloat_Unselected_Term_Min_Alpha>
         <name>Unselected Term Min Alpha</name>
-        <value>0.244000</value>
+        <value>0.400000</value>
     </SliderFloat_Unselected_Term_Min_Alpha>
     <SliderFloat_Selected_Term_Min_Alpha>
         <name>Selected Term Min Alpha</name>
-        <value>0.784000</value>
+        <value>0.883000</value>
     </SliderFloat_Selected_Term_Min_Alpha>
     <SliderFloat_Call_to_action_time>
         <name>Call to action time</name>
-        <value>5.000000</value>
+        <value>9.730000</value>
     </SliderFloat_Call_to_action_time>
     <Toggle_Search_Debug>
         <name>Search Debug</name>
