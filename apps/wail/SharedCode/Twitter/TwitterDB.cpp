@@ -146,6 +146,7 @@ bool TwitterDB::insertTweet(const rtt::Tweet& tweet) {
 	}
 	
 	// insert tweet-tag relations.
+	/*
 	roxlu::QueryResult tag_result(db);
 	result = db.select("tag_id").from("tags").where("tag_name in (%s) ",tweet.tags).execute(tag_result);
 	if(!result) {
@@ -168,6 +169,7 @@ bool TwitterDB::insertTweet(const rtt::Tweet& tweet) {
 		}
 		++tag_it;
 	}
+	*/
 	
 	db.endTransaction();
 	
@@ -320,7 +322,7 @@ bool TwitterDB::getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& res
 bool TwitterDB::getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany,time_t olderThan, vector<rtt::Tweet>& result) {
 	// create where.
 	stringstream where;
-	where << "text MATCH '";
+	where << "tweet_texts MATCH '";
 	where << q;
 	where << "' AND ";
 	
@@ -331,10 +333,9 @@ bool TwitterDB::getTweetsWithSearchTerm(const string& q, int youngerThan, int ho
 	}
 	else {
 		where << "t_timestamp < " << olderThan;
+	//	where << " and t_timestamp > " << (olderThan-100);
 	}
-
-	printf("WHERE: %s\n", where.str().c_str());
-	
+	printf("Search: %s\n", where.str().c_str());	
 	// join on FTS table
 	QueryResult qr(db);
 	int start = ofGetElapsedTimeMillis();
@@ -342,6 +343,7 @@ bool TwitterDB::getTweetsWithSearchTerm(const string& q, int youngerThan, int ho
 		.from("tweet_texts")
 		.where(where.str())
 		.join("tweets on t_id = id")
+	//	.order("t_timestamp desc")
 		.limit(howMany)
 		.execute(qr);
 	
