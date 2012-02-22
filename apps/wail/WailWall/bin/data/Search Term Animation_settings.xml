@@ -17,11 +17,11 @@
     </SliderFloat_Search_Term_Movement>
     <SliderFloat_Search_Fadeout_Time>
         <name>Search Fadeout Time</name>
-        <value>0.710000</value>
+        <value>1.150000</value>
     </SliderFloat_Search_Fadeout_Time>
     <SliderFloat_Search_Deselection_Delay>
         <name>Search Deselection Delay</name>
-        <value>1.480000</value>
+        <value>0.480000</value>
     </SliderFloat_Search_Deselection_Delay>
     <SliderFloat_searchTermSelectionRadiusPercent>
         <name>searchTermSelectionRadiusPercent</name>
