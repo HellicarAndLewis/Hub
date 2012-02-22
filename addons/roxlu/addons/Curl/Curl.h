@@ -54,6 +54,7 @@ public:
 	
 private:
 	void reset(); // clears buffer; sets callback, sets userspass
+	void setDefaultOptions();
 	void setCallback();
 	void setUserPass();
 	void setHeaders(struct curl_slist** slist);

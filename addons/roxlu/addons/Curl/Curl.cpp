@@ -190,7 +190,7 @@ bool Curl::doPost(const string& url, const rcp::Collection& params, bool multiPa
 	}
 	
 	curl_formfree(post_curr);
-	
+
 	// clear header.
 	curl_slist_free_all(curl_header);
 	headers.clear();
@@ -223,6 +223,11 @@ void Curl::reset() {
 	http_response_message.clear();
 	setCallback();
 	setUserPass();
+	setDefaultOptions();
+}
+
+void Curl::setDefaultOptions() {
+	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1); 
 }
 
 void Curl::setCallback() {
