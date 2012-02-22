@@ -399,6 +399,16 @@ void ofxWWSearchTermManager::setSelectedSearchTerm(ofxWWSearchTerm &searchTerm) 
 	
 }
 
+bool ofxWWSearchTermManager::getSelectedSearchTerm(ofxWWSearchTerm& result) {
+	if(selectedSearchTermIndex == -1) {
+		return false;
+	}
+	if(selectedSearchTermIndex >= searchTerms.size()) {
+		return false;
+	}	
+	result = searchTerms[selectedSearchTermIndex];
+	return true;
+}
 
 void ofxWWSearchTermManager::touchUp() {
 //	selectedSearchTermIndex = -1;
