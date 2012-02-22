@@ -23,7 +23,7 @@ public:
 	bool getTagID(const string& tag, int& result);
 	bool getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result);
 	bool getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result);
-	bool getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany, vector<rtt::Tweet>& result);
+	bool getTweetsWithSearchTerm(const string& q, time_t olderThan, int howMany,vector<rtt::Tweet>& result);
 	
 	// send queue
 	bool insertSendQueueItem(const string& username, const string& filename, int& newID);

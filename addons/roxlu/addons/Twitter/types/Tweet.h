@@ -28,6 +28,7 @@ public:
 	void setAvatar(string a) 		{ avatar = a; 			}
 	void setUserID(string uid)		{ user_id = uid; 		}
 	void setCreatedAt(const string& date);
+	void setCreatedAt(const time_t& timestamp);
 	void setTweetID(string tid) 	{ 
 		tweet_id = tid; 		
 		
@@ -59,6 +60,7 @@ public:
 	vector<string> tags; 
 	vector<string> user_mentions;
 	time_t created_at_timestamp;
+	string created_at_string;
 };
 
 }}} // roxlu::twitter::type

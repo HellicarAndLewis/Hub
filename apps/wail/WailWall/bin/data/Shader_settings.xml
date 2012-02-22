@@ -29,7 +29,7 @@
     </SliderFloat_Noise_Flow>
     <SliderFloat_Wobble_Speed_X>
         <name>Wobble Speed X</name>
-        <value>0.016000</value>
+        <value>0.043000</value>
     </SliderFloat_Wobble_Speed_X>
     <SliderFloat_Noise_Wobble_Speed_Y>
         <name>Noise Wobble Speed Y</name>

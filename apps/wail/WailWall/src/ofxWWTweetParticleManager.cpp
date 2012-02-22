@@ -3,6 +3,7 @@
 #include "ofxWebSimpleGuiToo.h"
 #include "Error.h"
 #include "Colours.h"
+
 ofxWWTweetParticleManager::ofxWWTweetParticleManager():
 	renderer(NULL)
 	,current_provider(NULL)
@@ -10,6 +11,7 @@ ofxWWTweetParticleManager::ofxWWTweetParticleManager():
 	,db_provider(NULL)
 	,current_force(NULL)
 	,default_force(NULL)
+	,selected_force(NULL)
 {
 	maxTweets = 100;
 
@@ -55,7 +57,8 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	
 	// Forces
 	default_force = new DefaultForce(*this);
-	current_force = default_force;
+	selected_force = new SelectedForce(*this);
+	setCurrentForce(default_force);
 }
 
 
@@ -75,6 +78,15 @@ void ofxWWTweetParticleManager::keyPressed(ofKeyEventArgs& args) {
 	else if(args.key == '4') {
 		printf("Going to DB provider (and passing the new search term)\n");
 		db_provider->fillWithTweetsWhichContainTerm("love");
+		setCurrentProvider(db_provider);
+	}
+	else if(args.key == '5') {
+		setCurrentForce(default_force);
+		setCurrentProvider(stream_provider);
+	}
+	else if(args.key == '6') {
+		db_provider->fillWithTweetsWhichContainTerm("love");
+		setCurrentForce(selected_force);
 		setCurrentProvider(db_provider);
 	}
 }
@@ -206,42 +218,118 @@ float ofxWWTweetParticleManager::weightBetweenPoints(ofVec2f touch, float normal
 }
 
 void ofxWWTweetParticleManager::updateTweets(){
+	size_t num_tweets = tweets.size();
 	
-	for(int i = tweets.size()-1; i >= 0; i--) {
-
-		
-		if((tweetFlowSpeed <= 0 && tweets[i].pos.y < -wallRepulsionDistance) || 
-		   (tweetFlowSpeed >= 0 && tweets[i].pos.y > simulationHeight+wallRepulsionDistance) )
-		{
-			if(tweets.size() > maxTweets){
-				tweets.erase(tweets.begin()+i);
+//	printf("Tweets.siz: %zu, flowspeed: %f, wallRepulsionDistance: %f\n"
+//			,tweets.size()
+//			,tweetFlowSpeed
+//			,wallRepulsionDistance
+//	);
+	
+	// remove particles (splitting up for performance).
+	if(tweetFlowSpeed <= 0) {
+		// tweets going up; 
+		vector<ofxWWTweetParticle>::iterator it = tweets.begin();
+		while(it != tweets.end()) {
+			ofxWWTweetParticle& tweet = *it;
+			if(tweet.pos.y < -wallRepulsionDistance) {
+				it = tweets.erase(it);
+				continue;
 			}
-			else{
-				//wrap around
-				//tweets[i].pos.y = tweetFlowSpeed > 0 ? -wallRepulsionDistance : simulationHeight + wallRepulsionDistance;
-			}
+			++it;
 		}
-		
+	}
+	else if(tweetFlowSpeed >= 0) {
+		// tweets going down;
+		vector<ofxWWTweetParticle>::iterator it = tweets.begin();
+		float remove_pos = simulationHeight + wallRepulsionDistance;
+		while(it != tweets.end()){
+			ofxWWTweetParticle& tweet = *it;
+			if(tweet.pos.y > remove_pos) {				
+				it = tweets.erase(it);
+				continue;
+			}
+			++it;
+		} 
 	}
 	
+	// just remove tweets when there are too many 
+	{
+		if(num_tweets > maxTweets) {
+			vector<ofxWWTweetParticle>::iterator it = tweets.begin();
+			while(it != tweets.end()) {
+				if(!(*it).isDrawingText()) {
+					tweets.erase(it);
+					break;
+				}
+				it++;
+			}
+		}
+	}
 	
-	map<int,KinectTouch>::iterator it;
+//	for(int i = tweets.size()-1; i >= 0; i--) {
+//	
+//		
+//		if((tweetFlowSpeed <= 0 && tweets[i].pos.y < -wallRepulsionDistance) || 
+//		   (tweetFlowSpeed >= 0 && tweets[i].pos.y > simulationHeight+wallRepulsionDistance) )
+//		{
+//			if(tweets.size() > maxTweets){
+//				tweets.erase(tweets.begin()+i);
+//			}
+//			else{
+//
+//				//wrap around
+//				//tweets[i].pos.y = tweetFlowSpeed > 0 ? -wallRepulsionDistance : simulationHeight + wallRepulsionDistance;
+//			}
+//		}
+//		
+//	}
+//	
+	
+	
+	{
+		float scale = simulationHeight*touchSizeScale+touchInfluenceFalloff;
+		ofVec2f touchpoint(0,0);
+		map<int,KinectTouch>::iterator kinect_it;
+		vector<ofxWWTweetParticle>::iterator tweet_it = tweets.begin();
+		
+		while(tweet_it != tweets.end()) {
+			ofxWWTweetParticle& tweet = *tweet_it;
+			tweet.selectionWeight = 0;
+			kinect_it = blobsRef->begin();
+			
+			while(kinect_it != blobsRef->end()) {
+				KinectTouch& touch = kinect_it->second;
+				float maxRadiusSquared = powf(touch.z * scale * 0.5, 2.0f);	
+				touchpoint.set(touch.x*simulationWidth, touch.y*simulationHeight);
+				if(touchpoint.distanceSquared(tweet.pos) < maxRadiusSquared) {
+					float weightBetween = weightBetweenPoints(touchpoint, touch.size, tweet.pos);
+					tweet.selectionWeight += weightBetween;
+				}			
+				++kinect_it;
+			}
+			
+			(*tweet_it).clampedSelectionWeight = MIN(tweet.selectionWeight, 1.0);
+			++tweet_it;
+		}
+	}
 	
 	//hand reveal top level tweets
-	for(int i = 0; i < tweets.size(); i++){
-		tweets[i].selectionWeight = 0;
-		
-		
-		for(it = blobsRef->begin(); it != blobsRef->end(); it++) {
-			float maxRadiusSquared = powf(it->second.z * simulationHeight*touchSizeScale+touchInfluenceFalloff/2, 2.0f);
-			ofVec2f touchpoint = ofVec2f(it->second.x*simulationWidth, it->second.y*simulationHeight);
-			if(touchpoint.distanceSquared(tweets[i].pos) < maxRadiusSquared){			
-				float weightBetween = weightBetweenPoints(touchpoint, it->second.size, tweets[i].pos);
-				tweets[i].selectionWeight += weightBetween;
-			}
-		}
-		tweets[i].clampedSelectionWeight = MIN(tweets[i].selectionWeight, 1.0);
-	}
+//	map<int,KinectTouch>::iterator it;
+//	for(int i = 0; i < tweets.size(); i++){
+//		tweets[i].selectionWeight = 0;
+//		
+//		
+//		for(it = blobsRef->begin(); it != blobsRef->end(); it++) {
+//			float maxRadiusSquared = powf(it->second.z * simulationHeight*touchSizeScale+touchInfluenceFalloff/2, 2.0f);
+//			ofVec2f touchpoint = ofVec2f(it->second.x*simulationWidth, it->second.y*simulationHeight);
+//			if(touchpoint.distanceSquared(tweets[i].pos) < maxRadiusSquared){			
+//				float weightBetween = weightBetweenPoints(touchpoint, it->second.size, tweets[i].pos);
+//				tweets[i].selectionWeight += weightBetween;
+//			}
+//		}
+//		tweets[i].clampedSelectionWeight = MIN(tweets[i].selectionWeight, 1.0);
+//	}
 	
 	///ANIMATE tweet
 	//apply wall forces
@@ -258,6 +346,19 @@ void ofxWWTweetParticleManager::updateTweets(){
 	}
 		
 	//apply flow
+	if(current_force->isHiding()) {
+		current_force->hide();
+		if(current_force->isReadyWithHiding()){	
+			current_force->setShouldHide(false);
+			current_force = new_force;
+			printf("CHANGED FORCE\n");
+		}		
+	}
+	else {
+		current_force->show();
+	}
+	
+	/* 
 	for(int i = 0; i < tweets.size(); i++){
 		if(tweets[i].isSearchTweet){
 			continue;
@@ -266,6 +367,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 		forceVector.y += (tweetFlowSpeed + tweets[i].speedAdjust) * (1-tweets[i].clampedSelectionWeight);
 		tweets[i].force += forceVector;
 	}
+	*/
 	
 	//apply legibility fixes for visible tweets
 	for(int i = 0; i < tweets.size(); i++){
@@ -314,6 +416,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 
 void ofxWWTweetParticleManager::renderTweets(){
 	
+	ofEnableBlendMode(OF_BLENDMODE_ADD);
 	for(int i = 0; i < tweets.size(); i++){
 		if(!tweets[i].isSearchTweet){
 			tweets[i].drawText();
@@ -323,6 +426,7 @@ void ofxWWTweetParticleManager::renderTweets(){
 			}
 		}
 	}
+	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	 
 }
 
@@ -410,6 +514,14 @@ void ofxWWTweetParticleManager::setupColors(){
 void ofxWWTweetParticleManager::onNewTweet(const rtt::Tweet& tweet) {
 	//printf(">> [ok] : %s\n", tweet.getText().c_str());	
 	ofxWWTweetParticle particle = createParticleForTweet(tweet);
+	
+	if(current_force->isHiding()) {
+		current_force->deactivateParticle(particle);
+	}
+	else {
+		current_force->activateParticle(particle);
+	}
+	
 	tweets.push_back(particle);
 }
 
@@ -419,8 +531,6 @@ ofxWWTweetParticle ofxWWTweetParticleManager::createParticleForTweet(const rtt::
 	ofxWWTweetParticle tweetParticle;
 	tweetParticle.manager = this;
 	if(tweetFlowSpeed != 0){
-	
-	
 		//TOP
 		if(tweetFlowSpeed > 0){
 			tweetParticle.pos = ofVec2f(ofRandom(-20, simulationWidth+20), ofRandom(-10, -100));
@@ -455,6 +565,29 @@ void ofxWWTweetParticleManager::setCurrentProvider(TweetProvider* prov) {
 	}
 	current_provider = prov;
 	current_provider->enable();
+}
+
+// toggle forces
+void ofxWWTweetParticleManager::setCurrentForce(Force* force) {
+	printf("change forces ______________________\n");
+	new_force = force;
+	if(current_force != NULL) {
+		current_force->deactivate();
+		current_force->setShouldHide(true);
+		new_force->activate();
+
+	}
+	else {
+		current_force = force;
+	}
+	/*
+	if(current_force != NULL) {
+		current_force->deactivate();
+	}
+	current_force = force;
+	current_force->activate();
+	*/
+	
 }
 
 TwitterApp& ofxWWTweetParticleManager::getTwitterApp() {

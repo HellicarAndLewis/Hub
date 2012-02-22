@@ -45,12 +45,8 @@ void ofxWWSearchTerm::update(){
 }
 
 
-
-
-
-
 void ofxWWSearchTerm::draw(){
-	
+
 	ofPushStyle();
 	ofSetLineWidth(4);
 	ofEnableAlphaBlending();
@@ -78,7 +74,7 @@ void ofxWWSearchTerm::draw(){
 	
 	p = selection.getValue();
 	ofSetColor( baseColor.lerp(selectedColor, p) );
-			   
+	
 	//TODO center this
 	manager->parent->sharedSearchFont.drawString(term, pos.x-searchTermWidth/2, pos.y);
 	

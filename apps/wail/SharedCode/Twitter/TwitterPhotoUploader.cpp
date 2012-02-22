@@ -19,6 +19,14 @@ void TwitterPhotoUploader::addFile(
 	unlock();
 }
 
+void TwitterPhotoUploader::setup(const string& twitterKey, const string& twitterSecret, const string& tokensFile) {
+	twitter.setConsumerKey(twitterKey);
+	twitter.setConsumerSecret(twitterSecret);
+	if(!twitter.loadTokens(tokensFile)) {
+		printf("Warning: cannot load tokens file for twitter photo uploader thread.\n");
+	}
+}
+
 
 void TwitterPhotoUploader::threadedFunction() {
 	
@@ -30,7 +38,7 @@ void TwitterPhotoUploader::threadedFunction() {
 		// get next item from send queue; when it's empty wait for a while
 		bool result = app.getNextSendItemFromSendQueue(username, filepath, queue_id);
 		if(!result) {
-			printf("Info: there are now items in the send queue.\n");
+			printf("Info: there are no items in the send queue. Waiting for a couple of seconds\n");
 			sleep(2);
 			continue;
 		}
@@ -111,7 +119,11 @@ void TwitterPhotoUploader::threadedFunction() {
 		string file_hash = json_string_value(node);
 		string photo_url = URL_TWITTER_UPLOADER +"uploads/"  +created_file;					
 		string message = "@" +username +" check your search result here " +photo_url;
-		app.getTwitter().statusesUpdate(message);
+		printf(">>>>>>> %s\n", message.c_str());
+	
+		twitter.statusesUpdate(message);
+
+		printf("status update response: %s\n", twitter.getResponse().c_str());
 
 		// handle the result of the status update.
 		bool success = true;				

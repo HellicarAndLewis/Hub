@@ -7,7 +7,6 @@ ofxFTGLFont::ofxFTGLFont()
 }
 
 bool ofxFTGLFont::loadFont(string filename, float fontsize, bool _bAntiAliased, bool _bFullCharacterSet, bool makeContours){
-  	printf("Load font....\n");
 	font = new FTTextureFont(ofToDataPath(filename).c_str());
     font->Outset(0.0f, fontsize);
     
