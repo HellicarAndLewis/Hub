@@ -39,11 +39,6 @@ public:
 	
 	bool getSearchTerms(vector<TwitterMentionSearchTerm>& result);
 	
-//	void addListener(TwitterMentionsListener* l) {
-//		lock();
-//			mention_listeners.push_back(l);
-//		unlock();
-//	}
 	
 private:
 

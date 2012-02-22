@@ -26,7 +26,8 @@ void TwitterMentionsThread::threadedFunction() {
 	bool is_first_request = true;
 	
 	while(true) {
-	
+		
+		
 		// GET MENTIONS
 		// ------------------------------
 		twitter.statusesMentions(&params);
