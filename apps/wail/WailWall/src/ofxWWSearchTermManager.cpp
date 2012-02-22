@@ -8,6 +8,7 @@ ofxWWSearchTermManager::ofxWWSearchTermManager()
 	,selectedSearchTermIndex(-1)
 	,tweetSearchMinWaitTime(1)
 	,fadeOutTime(1)
+	,movement(1)
 	,twitter(NULL)
 	,deselectionDelay(2)
 	,searchTermSelectionRadiusPercent(0.1)
@@ -152,6 +153,37 @@ void ofxWWSearchTermManager::doTouchInteraction() {
 		}
 	}
 	
+	// if there's a selected search term and we're on layer 2, 
+	// attract the search term to the nearest touch
+	if(selectedSearchTermIndex>-1 && parent->tweetLayerOpacity < 0.5) {
+		float minDistSqr = FLT_MAX;
+		int blobId = -1;
+		ofVec2f blobCoord;
+		
+		ofVec2f termCoord = searchTerms[selectedSearchTermIndex].pos;
+		
+		map<int, KinectTouch>::iterator it = parent->blobsRef->begin();
+		
+		while(it != parent->blobsRef->end()) {
+			blobCoord = ofVec2f((*it).second.x*parent->simulationWidth, (*it).second.y*parent->simulationHeight);
+			
+			float distSqr = blobCoord.distanceSquared(termCoord);
+			if(distSqr<minDistSqr) {
+				minDistSqr = distSqr;
+				blobId = (*it).first;
+				
+			}
+			++it;
+		}
+		
+		
+		float attractionSpeed = 0.05;
+		// we've found a closest blob to the search term, so attract it!!
+		if(blobId!=-1) {
+			// attract to the blob
+			searchTerms[selectedSearchTermIndex].pos = termCoord*(1.f-attractionSpeed) + blobCoord*(attractionSpeed);
+		}
+	}
 	//apply a float and a wobble
 	
 	for(int i = 0; i < searchTerms.size(); i++){

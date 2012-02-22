@@ -38,6 +38,9 @@ void testApp::setup(){
 	printf("input: %s  output: %s\n", time_str.c_str(), buffer);
 	::exit(0);
 	*/
+	
+
+	setFullscreen(false);
 	ofSetLogLevel(OF_LOG_ERROR); // roxlu 16/02 Getting: OF: OF_LOG_WARNING: ofMap: avoiding possible divide by zero, check inputMin and inputMax
  
 	ofSetFrameRate(60);
@@ -114,8 +117,7 @@ void testApp::update(){
 	
 	renderer.update();
 	renderer.render();
-	bool appIsInFullScreen = false;
-	if(gui.isOn() || !appIsInFullScreen) {
+	if(gui.isOn() || !isFullscreen) {
 		ofShowCursor();
 	} else {
 		ofHideCursor();
@@ -213,7 +215,8 @@ void testApp::keyPressed(int key){
 		}
 			 
 		case 'f': {
-			ofToggleFullscreen();
+			setFullscreen(!isFullscreen);
+
 			break;
 		}
 			
@@ -341,4 +344,9 @@ void testApp::touchUp(const KinectTouch &touch) {
 	if(blobs.find(t.id)!=blobs.end()) {
 		blobs.erase(t.id);
 	}
+}
+
+void testApp::setFullscreen(bool isFullscreen) {
+	this->isFullscreen = isFullscreen;
+	ofSetFullscreen(isFullscreen);
 }

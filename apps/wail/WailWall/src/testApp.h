@@ -58,4 +58,7 @@ public:
 	float inMaxTouchSize;
 	float outMinTouchSize;
 	float outMaxTouchSize;
+	
+	bool isFullscreen;
+	void setFullscreen(bool isFullscreen);
 };

@@ -44,6 +44,16 @@ void ofxWWSearchTerm::update(){
 	
 	searchTermWidth = manager->parent->sharedSearchFont.getStringBoundingBox(term, 0, 0).width;
 	pos += force;
+	
+	
+	// this does the floaty
+	float t = timeSpeedVariation * ofGetElapsedTimef()+timeOffset;
+	float dy = sin(t/6.f) * manager->movement;
+	float dx = sin(t/7.f) * manager->movement;
+
+	// add the floaty in only if we're not selected.
+	pos.x += dx*(1-selection.getValue());
+	pos.y += dy*(1-selection.getValue());
 	force = ofVec2f(0,0);
 }
 
@@ -84,8 +94,7 @@ void ofxWWSearchTerm::draw(){
 	
 	// give the search term a floaty movement
 	float scaleFactor = ofMap(sin(t/4.f), -1, 1, 0.9, 1.1);
-	float dy = sin(t/6.f) * 50;
-	float dx = sin(t/7.f) * 50;
+	
 	
 
 	ofColor c = baseColor.lerp(selectedColor, p);
@@ -95,7 +104,7 @@ void ofxWWSearchTerm::draw(){
 	ofSetColor( c );
 	glPushMatrix();
 	{
-		glTranslatef(pos.x-searchTermWidth/2+dx, pos.y+dy, 0);
+		glTranslatef(pos.x-searchTermWidth/2, pos.y, 0);
 		glScalef(scaleFactor, scaleFactor, 1);
 		manager->parent->sharedSearchFont.drawString(term, 0, 0);
 	}

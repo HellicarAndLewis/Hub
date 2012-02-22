@@ -179,6 +179,7 @@ void ofxWWTweetParticle::drawDot(){
 		ofPopStyle();
 	}
 	else if(state == STATE_HIGHLIGHT) {
+		
 		float now = ofGetElapsedTimeMillis();
 		float diff = highlight_duration - (lifetime - now);		
 		float p = MIN(1.0f, diff/highlight_duration);
@@ -186,12 +187,15 @@ void ofxWWTweetParticle::drawDot(){
 	
 		ofPushStyle();
 		{
-			ofSetRectMode(OF_RECTMODE_CENTER);
-			
-			drawStarImage(1);
-			
-			glColor4f(1,1,1,p);
-			highlightImage->draw(pos.x + manager->dotShift, pos.y);
+			// MB: don't know if this is right - I might have broken this!!
+			if(!isDrawingText()) {
+				ofSetRectMode(OF_RECTMODE_CENTER);
+				
+				drawStarImage(1);
+				
+				glColor4f(1,1,1,p);
+				highlightImage->draw(pos.x + manager->dotShift, pos.y);
+			}
 		}
 		ofPopStyle();
 	}

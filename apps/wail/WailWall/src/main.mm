@@ -8,6 +8,15 @@ int main( ){
 
 	bool bUseCocoaWindow = false;
     
+	
+	//
+	//
+	//
+	// DO NOT CHANGE THE WINDOW DISPLAY MODE FROM OF_WINDOW!!!
+	//
+	//
+	//
+	
     if( bUseCocoaWindow )
     {
         ofxCocoaWindow cocoaWindow;
