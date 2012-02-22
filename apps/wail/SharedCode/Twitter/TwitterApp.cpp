@@ -85,13 +85,13 @@ void TwitterApp::initDB() {
 
 	//if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin", "/Applications/MAMP/tmp/mysql/mysql.sock")) {
 
-//	if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin", "/Applications/MAMP/tmp/mysql/mysql.sock")) {
+	if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin", "/Applications/MAMP/tmp/mysql/mysql.sock")) {
 
 	
 	//if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin")) {
 	//if(!mysql.connect("dewarshub.demo.apollomedia.nl" , "dewarscube_admin", "dewarscube_admin", "dewarscube_admin", "")) {
 	//if(!mysql.connect("dewarshub.demo.apollomedia.nl" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin", "")) {
-	if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin", "/tmp/mysql.sock")) {
+	//if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin", "/tmp/mysql.sock")) {
 		exit(0);
 	}
 	

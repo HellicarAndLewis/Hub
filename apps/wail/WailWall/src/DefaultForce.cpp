@@ -32,6 +32,7 @@ void DefaultForce::activate() {
 	vector<ofxWWTweetParticle>::iterator it = tweets.begin();
 	while(it != tweets.end()) {
 		ofxWWTweetParticle& p = (*it);
+		p.setState(ofxWWTweetParticle::STATE_DEFAULT);
 		//p.force.y += (manager.tweetFlowSpeed + p.speedAdjust) * (1-p.clampedSelectionWeight);
 		++it;
 	}
@@ -81,7 +82,7 @@ void DefaultForce::hide() {
 	float dist = 0;
 	float dist_sq = 0;
 	float f = 0;
-	float rest = 500 +sin(p*HALF_PI)*2000; // TODO add to settings.
+	float rest = 1000; // TODO add to settings.
 	float duration_influance = sin(p*HALF_PI);
 	float flow_force = manager.tweetFlowSpeed * 2;
 	while(it != tweets.end()) {
@@ -89,11 +90,14 @@ void DefaultForce::hide() {
 		tweet.dot_opacity = p;
 		dir = (center - tweet.pos);
 		dist = dir.length();
-		f =  (dist-rest) * (0.03 * duration_influance); // TODO add to settings
-		
-		dir.normalize();
-		dir *= f;
-		tweet.force += dir;
+		if(dist < rest) {
+			f =  (dist-rest) * (0.03 ); // TODO add to settings
+			
+			dir /= dist;
+			//dir.normalize();
+			dir *= f;
+			tweet.force += dir;
+		}
 		tweet.force.y += (flow_force + tweet.speedAdjust) * (1-tweet.clampedSelectionWeight);
 		++it;
 	}	
@@ -109,8 +113,8 @@ void DefaultForce::hide() {
 			dir = (b.pos - a.pos);
 			dist_sq = dir.lengthSquared();
 			f = 1.0/dist_sq;
-			if(f > 0.0001) {
-				dir *= f * 60;  // TODO add to settings
+			if(f > 0.0001 ) {
+				dir *= f * 260;  // TODO add to settings
 				a.force -= dir;
 				b.force += dir;
 			}
