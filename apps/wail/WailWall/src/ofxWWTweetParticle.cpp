@@ -11,16 +11,24 @@
 #include "ofxWWTweetParticleManager.h"
 #include "Colours.h"
 
-ofImage *ofxWWTweetParticle::dotImage = NULL;
+ofImage *ofxWWTweetParticle::dotImages[NUM_DOT_IMAGES] = {NULL, NULL, NULL, NULL, NULL};
+
 
 ofxWWTweetParticle::ofxWWTweetParticle(){
+	
+	whichImage = ofRandom(0, 1);
+	if(whichImage<0.5) whichImage = 0;
+	else whichImage = ofMap(whichImage, 0.5, 1, 0, 1);
+	imageScale = ofRandom(0.5, 3);
 	manager = NULL;
 	isTwoLines = false;
 	isSearchTweet = false;
 	speedAdjust = 0;
-	if(dotImage==NULL) {
-		dotImage = new ofImage();
-		dotImage->loadImage("images/tweetDot.png");
+	if(dotImages[0]==NULL) {
+		for(int i = 0; i < NUM_DOT_IMAGES; i++) {
+			dotImages[i] = new ofImage();
+			dotImages[i]->loadImage("images/td"+ofToString(i)+".png");
+		}
 		//dotImage->setAnchorPercent(0.5, 0.5);
 	}
 }
@@ -100,7 +108,7 @@ void ofxWWTweetParticle::update(){
 	
 	lastPos = pos;
 	force.rotate(ofSignedNoise(pos.x/manager->tweetRotateDamp,pos.y/manager->tweetRotateDamp,ofGetElapsedTimef()/manager->tweetChaosSpeed)*manager->tweetRotateAmp );
-	pos += force;
+	pos += force*ofMap(whichImage, 0, 2, 0.6, 1.4);
 	force = ofVec2f(0,0);
 	
 	
@@ -113,6 +121,7 @@ void ofxWWTweetParticle::update(){
 	
 	pos += ofVec2f(ofSignedNoise(pos.y/manager->tweetFlowDamp, ofGetElapsedTimef()/manager->tweetChaosSpeed) * (.9-clampedSelectionWeight)*manager->tweetFlowAmp, 
 				   ofSignedNoise(pos.x/manager->tweetFlowDamp, ofGetElapsedTimef()/manager->tweetChaosSpeed) * (.9-clampedSelectionWeight)*manager->tweetFlowAmp);
+	 
 	//death attenuation
 	deathAttenuation = ofMap(ofGetElapsedTimef(), createdTime+manager->startFadeTime, createdTime+manager->startFadeTime+manager->fadeDuration, 1.0, 0.0, true);
 
@@ -145,17 +154,16 @@ void ofxWWTweetParticle::drawDot(){
 	}
 	
 	if(alpha > 0){
-		ofSetColor(255,255,255, alpha*255);
-//		if(useBurstOne){
-			//manager->burstOne.draw(pos.x+manager->dotShift, pos.y, manager->dotSize*1.2,manager->dotSize*1.2);
-	//		ofRect(pos.x+manager->dotShift, pos.y, manager->dotSize*1.2,manager->dotSize*1.2 );
-		dotImage->draw(pos.x+manager->dotShift, pos.y);//, manager->dotSize*1.2,manager->dotSize*1.2 );
-	//	ofRect(pos.x+manager->dotShift, pos.y, dotImage->getWidth(), dotImage->getHeight());
-//		}
-		/*else{
-			//manager->burstTwo.draw(pos.x+manager->dotShift, pos.y, manager->dotSize,manager->dotSize);
-			ofRect(pos.x+manager->dotShift, pos.y, manager->dotSize,manager->dotSize);
-		}*/
+//		ofSetColor(255,255,255, alpha*255);
+		int firstImage = floor(whichImage);
+		int secondImage = ceil(whichImage);
+		float amt = whichImage - firstImage;
+		glColor4f(1, 1, 1, (1.f - amt)*alpha);
+		dotImages[firstImage]->draw(pos.x+manager->dotShift, pos.y, dotImages[firstImage]->getWidth()*imageScale, dotImages[firstImage]->getHeight()*imageScale);
+		
+		glColor4f(1, 1, 1, amt*alpha);
+		dotImages[secondImage]->draw(pos.x+manager->dotShift, pos.y, dotImages[secondImage]->getWidth()*imageScale, dotImages[secondImage]->getHeight()*imageScale);
+		
 	}
 	
 	ofPopStyle();
@@ -163,6 +171,7 @@ void ofxWWTweetParticle::drawDot(){
 
 void ofxWWTweetParticle::drawText(){
 	
+	if(opacity<=0) return;
 	ofPushStyle();
 	ofEnableAlphaBlending();
 

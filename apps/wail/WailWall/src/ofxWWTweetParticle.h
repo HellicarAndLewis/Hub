@@ -66,7 +66,9 @@ class ofxWWTweetParticle {
 	float atSignHeight;
 	
 	ofVec2f getBoundingCorner(int cornerIndex); //0-4 top left, top right, bot left, bottom right
-
+	
+	
+	
   protected:
 	ofVec2f getUserDrawPos();
 	ofVec2f getTweetLineOneDrawPos();
@@ -75,6 +77,11 @@ class ofxWWTweetParticle {
 	
 	float typePlacementTweenPos();
 	void recalculateBoundingRects();
-	static ofImage *dotImage;
+	
+	
+	float whichImage;
+	static const int NUM_DOT_IMAGES = 5;
+	static ofImage *dotImages[NUM_DOT_IMAGES];
+	float imageScale;
 
 };
