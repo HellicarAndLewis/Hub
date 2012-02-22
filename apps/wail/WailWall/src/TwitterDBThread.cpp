@@ -75,11 +75,11 @@ void TwitterDBThread::threadedFunction() {
 
 				// SET SEND ITEM AS SEND
 				// ---------------------
-				else if(task->kind_of_task == TwitterDBThreadTask::TASK_SET_AS_SEND) {
-					printf("--------- TASK: SET AS SEND\n");
-					TwitterDBThreadTask_SetAsSend* send_task = static_cast<TwitterDBThreadTask_SetAsSend*>(task);
-					 db.setSendQueueItemAsSend(send_task->id);
-				}
+//				else if(task->kind_of_task == TwitterDBThreadTask::TASK_SET_AS_SEND) {
+//					printf("--------- TASK: SET AS SEND\n");
+//					TwitterDBThreadTask_SetAsSend* send_task = static_cast<TwitterDBThreadTask_SetAsSend*>(task);
+//					 db.setSendQueueItemAsSend(send_task->id);
+//				}
 				delete task;
 				it = tasks.erase(it);
 				
@@ -123,8 +123,8 @@ bool TwitterDBThread::retrieveSearchResultsFromThread(vector<rtt::Tweet>& result
 	if(search_results.size()) {
 		result = search_results; // copy
 		search_results.clear(); // and remove
-		unlock();
-		return true;
+		//unlock();
+		//return true;
 	}
 	unlock();
 	return false;
@@ -132,12 +132,12 @@ bool TwitterDBThread::retrieveSearchResultsFromThread(vector<rtt::Tweet>& result
 
 
 bool TwitterDBThread::setSendQueueItemAsSend(int queueID) {
-	//lock();
-	//	bool r = db.setSendQueueItemAsSend(queueID);
-	//unlock();
-	TwitterDBThreadTask_SetAsSend* task = new TwitterDBThreadTask_SetAsSend(queueID);
-	addTask(task);
-	return true;
+	lock();
+		bool r = db.setSendQueueItemAsSend(queueID);
+	unlock();
+	//TwitterDBThreadTask_SetAsSend* task = new TwitterDBThreadTask_SetAsSend(queueID);
+	//addTask(task);
+	return r;
 }
 
 	

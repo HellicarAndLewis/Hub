@@ -608,8 +608,10 @@ void ofxWWTweetParticleManager::onSearchTermSelected(const SearchTermSelectionIn
 	printf("::::::::::::::::::::::::::::::::::::: %s\n", term.term.c_str());
 	db_provider->fillWithTweetsWhichContainTerm(term.term);
 	setCurrentProvider(db_provider);
+	setCurrentForce(selected_force);
 }
 
 void ofxWWTweetParticleManager::onAllSearchTermsDeselected() {
 	setCurrentProvider(stream_provider);
+	setCurrentForce(default_force);
 }

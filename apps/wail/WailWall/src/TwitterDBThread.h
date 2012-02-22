@@ -53,14 +53,14 @@ struct TwitterDBThreadTask_InsertTweet : public TwitterDBThreadTask{
 	rtt::Tweet tweet;
 };
 
-struct TwitterDBThreadTask_SetAsSend : public TwitterDBThreadTask {
-	TwitterDBThreadTask_SetAsSend(int id)
-		:id(id)
-		,TwitterDBThreadTask(TASK_SET_AS_SEND)
-	{
-	}
-	int id;
-};
+//struct TwitterDBThreadTask_SetAsSend : public TwitterDBThreadTask {
+//	TwitterDBThreadTask_SetAsSend(int id)
+//		:id(id)
+//		,TwitterDBThreadTask(TASK_SET_AS_SEND)
+//	{
+//	}
+//	int id;
+//};
 
 /*
 struct TwitterDBThreadTask_SendItem {
