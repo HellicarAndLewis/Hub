@@ -89,6 +89,9 @@ bool Stream::connect(const string& streamURL) {
 		printf("Error: cannot create easy handle.\n");
 		return false;
 	}
+	
+	// no signals on i.e. resolv timouts
+	curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1); 
 
 	// set url
 	r = curl_easy_setopt(curl, CURLOPT_URL, use_url.c_str());
