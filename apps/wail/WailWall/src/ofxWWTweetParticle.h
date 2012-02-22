@@ -1,11 +1,3 @@
-/*
- *  ofxWWTweet.h
- *  WailWall
- *
- *  Created by James George on 1/30/12.
- *  Copyright 2012 __MyCompanyName__. All rights reserved.
- *
- */
 #pragma once
 
 #include "ofMain.h"
@@ -29,6 +21,7 @@ class ofxWWTweetParticle {
 	void update();
 	void drawDot();
 	void drawText();
+	bool isDrawingText();
 	void drawDebug();
 	void setState(int state);
 	
@@ -95,8 +88,10 @@ class ofxWWTweetParticle {
 inline void ofxWWTweetParticle::setState(int newState) {
 	state = newState;
 	if(state == STATE_HIGHLIGHT) {	
-
 		lifetime = ofGetElapsedTimeMillis() + highlight_duration;
-		printf("SET LIFETIME: %f\n", lifetime);
 	}
+}
+
+inline bool ofxWWTweetParticle::isDrawingText() {
+	return opacity > 0;
 }

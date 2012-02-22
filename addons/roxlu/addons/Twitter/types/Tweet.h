@@ -28,6 +28,7 @@ public:
 	void setAvatar(string a) 		{ avatar = a; 			}
 	void setUserID(string uid)		{ user_id = uid; 		}
 	void setCreatedAt(const string& date);
+	void setCreatedAt(const time_t& timestamp);
 	void setTweetID(string tid) 	{ 
 		tweet_id = tid; 		
 		

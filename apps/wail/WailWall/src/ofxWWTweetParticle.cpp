@@ -194,7 +194,9 @@ void ofxWWTweetParticle::drawDot(){
 }
 
 void ofxWWTweetParticle::drawText(){
-	
+	if(!isDrawingText()) {
+		return;
+	}
 	ofPushStyle();
 	ofEnableAlphaBlending();
 

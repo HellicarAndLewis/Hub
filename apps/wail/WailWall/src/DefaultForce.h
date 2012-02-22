@@ -19,7 +19,6 @@ public:
 	
 	virtual void show();
 	
-	//float deactivated_on;
 	float hide_force;
 	float should_hide_on;
 	float hide_duration_millis;

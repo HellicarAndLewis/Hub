@@ -304,26 +304,41 @@ bool TwitterDB::getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& res
  * @param	const string&				The search query
  *
  * @param	int							Only return tweets which are younger 
- *										then this number of seconds.
+ *										then this number of seconds. 
  *										
  * @param	int							How many tweets do you want?
  *
+ * @param	time_t						When you pass a value for youngerThan
+ *										you cannot use this; and should use
+ *										an value for olderThan == 0
+ *										When olderThan isnt 0, you'll get only
+ *										tweets which are younger then the 
+ *										given timestamp.
+ *
  * @param	vector<rtt::Tweet>& [out]	Is filled with tweets
  */
-bool TwitterDB::getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany, vector<rtt::Tweet>& result) {
+bool TwitterDB::getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany,time_t olderThan, vector<rtt::Tweet>& result) {
 	// create where.
 	stringstream where;
 	where << "text MATCH '";
 	where << q;
 	where << "' AND ";
-	where << "t_timestamp > ((strftime('%s', 'now')) - ";
-	where << youngerThan; 
-	where << ")";
+	
+	if(olderThan == 0) {
+		where << "t_timestamp > ((strftime('%s', 'now')) - ";
+		where << youngerThan; 
+		where << ")";
+	}
+	else {
+		where << "t_timestamp < " << olderThan;
+	}
 
+	printf("WHERE: %s\n", where.str().c_str());
+	
 	// join on FTS table
 	QueryResult qr(db);
 	int start = ofGetElapsedTimeMillis();
-	bool r = db.select("t_text,t_screen_name")
+	bool r = db.select("t_text,t_screen_name,t_timestamp")
 		.from("tweet_texts")
 		.where(where.str())
 		.join("tweets on t_id = id")
@@ -339,6 +354,7 @@ bool TwitterDB::getTweetsWithSearchTerm(const string& q, int youngerThan, int ho
 		rtt::Tweet tweet;
 		tweet.setText(qr.getString(0));
 		tweet.setScreenName(qr.getString(1));
+		tweet.setCreatedAt(qr.getInt(2));
 		result.push_back(tweet);
 	}
 	int end = ofGetElapsedTimeMillis();	

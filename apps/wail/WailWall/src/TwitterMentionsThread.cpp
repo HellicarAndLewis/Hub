@@ -108,7 +108,7 @@ void TwitterMentionsThread::threadedFunction() {
 					);
 					
 					tweet_text_lower = trim(tweet_text_lower);
-
+					
 					// Check if it's a correct search term:
 					pcrecpp::RE re("^@dewarshub (.*)$");
 					re.FullMatch(tweet_text_lower, &search_query);
@@ -129,15 +129,7 @@ void TwitterMentionsThread::threadedFunction() {
 			unlock();
 			is_first_request = false;
 		}
-		
-		printf("mentions: STR >>>>>>>>>>>>>>>>>> %s\n", last_mention.getText().c_str());
-		printf("mentions: ID  >>>>>>>>>>>>>>>>>> %s\n", last_mention.getTweetID().c_str());
-		printf("mentions: response code: %ll\n", resp_code);
-		printf("mentions: number of: %zu\n", queried_mentions.size());
-		printf("mentions: newer: %zu\n", newer_mentions.size());
-		printf("mentions: remaining: %d\n", rate_remaining);
-		printf("mentions: limit: %d\n",rate_limit);
-		printf("mentions: reset: %d\n", rate_reset);
+		// TODO put the mentions wait in a thread (between 10-20 seconds)
 		sleep(15);
 	}
 }

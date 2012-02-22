@@ -10,11 +10,6 @@ Force::Force(ofxWWTweetParticleManager& particleManager)
 
 }
 
-
-//void Force::hide() {
-//	is_hiding = true;
-//}	
-
 bool Force::isHiding() {
 	return is_hiding;
 }

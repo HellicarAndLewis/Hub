@@ -4,7 +4,6 @@
 
 DefaultForce::DefaultForce(ofxWWTweetParticleManager& manager)
 	:Force(manager)
-//	,deactivated_on(0)
 	,should_hide_on(0)
 	,hide_duration_millis(800)
 	,hide_force(58.0f)
