@@ -162,18 +162,22 @@ void ofxWWTweetParticle::drawStarImage(float alpha) {
 // TODO we can change the anchor percentage right? instead of calling each ofSetRectMode()
 void ofxWWTweetParticle::drawDot(){
 	if(state == STATE_DEFAULT) {
-		
-		
-		
 		float alpha = 1;
-	alpha *= ofMap(clampedSelectionWeight, 0, .5, 1.0, 0, true);
+		alpha *= ofMap(clampedSelectionWeight, 0, .5, 1.0, 0, true);
 		
 		ofPushStyle();
 			//glColor4f(1,1,1,dot_opacity);
 			ofSetRectMode(OF_RECTMODE_CENTER);
-		alpha *= ofMap(whichImage, 0, 1, .6, 1);//, <#float outputMax#>)
+			alpha *= ofMap(whichImage, 0, 1, .6, 1);
 			drawStarImage(alpha);
 		ofPopStyle();
+	}
+	else if(state == STATE_HIDING) {
+		ofPushStyle();
+			ofSetRectMode(OF_RECTMODE_CENTER);			
+			drawStarImage(dot_opacity);
+		ofPopStyle();
+		
 	}
 	else if(state == STATE_HIGHLIGHT) {
 		float now = ofGetElapsedTimeMillis();

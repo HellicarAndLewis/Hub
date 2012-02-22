@@ -11,6 +11,7 @@ class ofxWWTweetParticle {
   	enum ofxWWTweetParticleState {
 		 STATE_DEFAULT
 		,STATE_HIGHLIGHT
+		,STATE_HIDING
 	};
 	ofxWWTweetParticle();
 

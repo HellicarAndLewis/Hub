@@ -1272,7 +1272,6 @@
 				1F082DE414F290E1005008A4 /* CallToAction.h */,
 				48972C9214F2813800FD9099 /* Providers */,
 				A621C65A14D74D1B008AA7F0 /* ofxWWSearchTerm.h */,
-				1FC55C4514F400D000AC4E26 /* FuzzySelection.h */,
 				A621C65B14D74D1B008AA7F0 /* ofxWWSearchTerm.cpp */,
 				A621C65714D74D0F008AA7F0 /* ofxWWTweetParticle.h */,
 				A621C65814D74D0F008AA7F0 /* ofxWWTweetParticle.cpp */,
@@ -1282,6 +1281,7 @@
 				1F082DF114F2D6D1005008A4 /* ofxWWSearchTermManager.cpp */,
 				1F2E091514F3DA9D0035A851 /* Timer.h */,
 				4848E59D14F3C71700AA5553 /* SearchLayerListener.h */,
+				1FC55C4514F400D000AC4E26 /* FuzzySelection.h */,
 			);
 			name = Visuals;
 			sourceTree = "<group>";

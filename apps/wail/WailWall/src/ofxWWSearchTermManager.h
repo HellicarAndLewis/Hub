@@ -33,8 +33,8 @@ public:
 	
 
 	// this sets the selected search term and fires events.
-	void setSelectedSearchTerm(ofxWWSearchTerm &searchTerm);
-
+	void setSelectedSearchTerm(ofxWWSearchTerm& searchTerm);
+	bool getSelectedSearchTerm(ofxWWSearchTerm& result);
 		
 	// search term manager only needs
 	// to know when these events happen

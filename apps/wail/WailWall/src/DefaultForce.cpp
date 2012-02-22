@@ -5,8 +5,8 @@
 DefaultForce::DefaultForce(ofxWWTweetParticleManager& manager)
 	:Force(manager)
 	,should_hide_on(0)
-	,hide_duration_millis(800)
-	,hide_force(128.0f)
+	,hide_duration_millis(2800) // TODO add to settings
+	,hide_force(58.0f) // TODO add to settings
 {
 	center.set(manager.simulationWidth * 0.5,manager.simulationHeight * 0.5);
 }
@@ -20,10 +20,18 @@ void DefaultForce::activateParticle(ofxWWTweetParticle& p) {
 
 void DefaultForce::deactivateParticle(ofxWWTweetParticle& p) {
 	p.static_force = (p.pos - center).normalize() * hide_force;
+	p.setState(ofxWWTweetParticle::STATE_HIDING);
 }
 
+// called once when showing.
 void DefaultForce::activate() {
-
+	should_hide_on = ofGetElapsedTimeMillis() + hide_duration_millis; // TODO make setting
+	vector<ofxWWTweetParticle>::iterator it = tweets.begin();
+	while(it != tweets.end()) {
+		ofxWWTweetParticle& p = (*it);
+		p.force.y += (manager.tweetFlowSpeed + p.speedAdjust) * (1-p.clampedSelectionWeight);
+		++it;
+	}
 }
 
 // called once, when hiding.
@@ -33,6 +41,7 @@ void DefaultForce::deactivate() {
 	while(it != tweets.end()) {
 		ofxWWTweetParticle& p = (*it);
 		p.static_force = (p.pos - center).normalize() * hide_force;
+		p.setState(ofxWWTweetParticle::STATE_HIDING);
 		++it;
 	}
 }
@@ -51,18 +60,57 @@ void DefaultForce::show() {
 }
 
 void DefaultForce::hide() {
+	// repulse from selected search term.
+	ofxWWSearchTerm selected_term;
+	if(manager.getSearchTermManager().getSelectedSearchTerm(selected_term)) {
+		center = selected_term.pos;
+	}
+	
 	float now = ofGetElapsedTimeMillis();
 	float diff = should_hide_on - now;
-	float p = MAX(0, (diff / hide_duration_millis));
+	float p = MAX(0, (diff / hide_duration_millis)); // TODO add to settings
 
-	// TODO we can use one alpha for this.. instead of updating all particles
+	// repulse from 
 	vector<ofxWWTweetParticle>::iterator it = tweets.begin();
+	ofVec2f dir;
+	float dist = 0;
+	float dist_sq = 0;
+	float f = 0;
+	float rest = 2500; // TODO add to settings.
+	float duration_influance = sin(p*HALF_PI);
+	float flow_force = manager.tweetFlowSpeed * 2;
 	while(it != tweets.end()) {
 		ofxWWTweetParticle& tweet = (*it);
 		tweet.dot_opacity = p;
-		tweet.force += tweet.static_force;
-		tweet.force.y += (manager.tweetFlowSpeed + tweet.speedAdjust) * (1-tweet.clampedSelectionWeight);
+		dir = (center - tweet.pos);
+		dist = dir.length();
+		f =  (dist-rest) * (0.03 * duration_influance); // TODO add to settings
+		dir.normalize();
+		dir *= f;
+		tweet.force += dir;
+		tweet.force.y += (flow_force + tweet.speedAdjust) * (1-tweet.clampedSelectionWeight);
 		++it;
 	}	
+	
+	// repulse from eachother.
+	it = tweets.begin();
+	vector<ofxWWTweetParticle>::iterator other_it ;
+	while(it != tweets.end()) {
+		other_it = it+1;
+		ofxWWTweetParticle& a = *it;
+		while(other_it != tweets.end()) {
+			ofxWWTweetParticle& b = *other_it;
+			dir = (b.pos-a.pos);
+			dist_sq = dir.lengthSquared();
+			f = 1.0/dist_sq;
+			
+			dir *= f * (60 * duration_influance);  // TODO add to settings
+			a.force += dir;
+			b.force -= dir;
+			++other_it;
+			
+		}
+		++it;
+	}
 }
 
