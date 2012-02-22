@@ -11,8 +11,6 @@ DefaultForce::DefaultForce(ofxWWTweetParticleManager& manager)
 	center.set(manager.simulationWidth * 0.5,manager.simulationHeight * 0.5);
 }
 
-
-
 bool DefaultForce::isReadyWithHiding() {
 	return (ofGetElapsedTimeMillis() >= should_hide_on);
 }

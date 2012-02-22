@@ -12,11 +12,27 @@ struct TwitterDBThreadTask {
 	{
 	}
 	
+	~TwitterDBThreadTask() {
+		//printf("~TwitterDBThreadTask()\n");
+	}
+	
 	enum {
 		 TASK_NONE
 		,TASK_SEARCH
+		,TASK_INSERT_TWEET
+		,TASK_SEND_ITEM
+		,TASK_SET_AS_SEND
 	};
 	int kind_of_task;
+	
+	
+};
+
+struct TwitterDBThreadTask_Search : public TwitterDBThreadTask {
+	TwitterDBThreadTask_Search() 
+		:TwitterDBThreadTask(TASK_SEARCH)
+	{
+	}
 	
 	// values for search task
 	int search_older_than;
@@ -26,8 +42,37 @@ struct TwitterDBThreadTask {
 	void setSearchOlderThan(int d) { search_older_than = d; }
 	void setSearchHowMany(int d) { search_howmany = d;}
 	void setSearchTerm(const string& s) { search_term = s;}
-
 };
+
+struct TwitterDBThreadTask_InsertTweet : public TwitterDBThreadTask{
+	TwitterDBThreadTask_InsertTweet(rtt::Tweet t)
+		:tweet(t)
+		,TwitterDBThreadTask(TASK_INSERT_TWEET)
+	{
+	}	
+	rtt::Tweet tweet;
+};
+
+struct TwitterDBThreadTask_SetAsSend : public TwitterDBThreadTask {
+	TwitterDBThreadTask_SetAsSend(int id)
+		:id(id)
+		,TwitterDBThreadTask(TASK_SET_AS_SEND)
+	{
+	}
+	int id;
+};
+
+/*
+struct TwitterDBThreadTask_SendItem {
+	TwitterDBThreadTask_SendItem()	
+		:TwitterDBThreadtask(TASK_SEND_ITEM)
+	{
+	}
+	string username;
+	string filename;
+	int new_id;
+}
+*/
 
 struct TweetTimestampSorter {
 	bool operator()(const rtt::Tweet& a, const rtt::Tweet& b) {
@@ -38,9 +83,10 @@ struct TweetTimestampSorter {
 class TwitterDBThread : public ofThread {
 public:
 	TwitterDBThread();
+	~TwitterDBThread();
 	virtual void threadedFunction();
 	bool insertTweet(const rtt::Tweet& tweet);
-	void addTask(TwitterDBThreadTask task);
+	void addTask(TwitterDBThreadTask* task);
 	
 	// searching
 	//bool getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result);
@@ -60,7 +106,7 @@ private:
 	string search_term;
 	int search_howmany;
 	
-	std::deque<TwitterDBThreadTask> tasks;
+	std::deque<TwitterDBThreadTask*> tasks;
 	TwitterDB db;
 };
 

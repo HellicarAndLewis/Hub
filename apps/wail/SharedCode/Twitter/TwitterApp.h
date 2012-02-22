@@ -147,14 +147,6 @@ inline bool TwitterApp::insertTweet(const rtt::Tweet& tweet) {
 	return db_thread.insertTweet(tweet);
 }
 
-//inline bool TwitterApp::getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result) {
-//	return db_thread.getTweetsWithTag(tag, howMany, result);
-//}
-//
-//inline bool TwitterApp::getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result) {
-//	return db_thread.getTweetsNewerThan(age, howMany, result);
-//}
-
 inline bool TwitterApp::getTweetsWithSearchTerm(const string& q, int howMany) {
 	return db_thread.getTweetsWithSearchTerm(q, howMany);
 }

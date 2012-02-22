@@ -30,6 +30,7 @@ struct UploadFileInfo {
 class TwitterPhotoUploader : public ofThread {
 public:
 	TwitterPhotoUploader(TwitterApp& app);
+	void setup(const string& twitterKey, const string& twitterSecret, const string& tokensFile);
 	void addFile(const string& file, const string& username, const string& message);
 	void threadedFunction();
 		
@@ -38,6 +39,7 @@ private:
 	deque<UploadFileInfo> upload_queue;
 	rc::Curl uploader_curl;
 	TwitterApp& app;
+	rt::Twitter twitter;
 };
 
 } // roxlu

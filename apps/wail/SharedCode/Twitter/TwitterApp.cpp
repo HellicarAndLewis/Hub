@@ -23,7 +23,7 @@ void TwitterApp::init(int oscPort) {
 	initTwitter();
 	initOSC(oscPort);
 	initStoredSearchTerms();
-	uploader.startThread(true, false);
+	
 	image_writer.startThread(true, false);
 	
 	initialized = true;
@@ -52,6 +52,10 @@ void TwitterApp::initTwitter() {
 	
 	mentions.setup(twitter.getConsumerKey(), twitter.getConsumerSecret(), token_file);
 	mentions.startThread(true,false);
+	
+	uploader.setup(twitter.getConsumerKey(), twitter.getConsumerSecret(), token_file);
+	uploader.startThread(true, false);
+	
 	//removeTweetsFromConnectedAccount();
 }
 

@@ -18,7 +18,7 @@ void TweetProviderDB::update() {
 
 
 	}
-	
+	printf("[provider db]\n");
 	int now = ofGetElapsedTimeMillis();
 	if(now > should_create_new_tweet_on) {
 		should_create_new_tweet_on = now + spawn_delay;
