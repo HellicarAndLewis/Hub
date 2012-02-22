@@ -108,8 +108,7 @@ void DefaultForce::hide() {
 				a.force += dir;
 				b.force -= dir;
 			}
-				++other_it;
-			
+			++other_it;
 		}
 		++it;
 	}
