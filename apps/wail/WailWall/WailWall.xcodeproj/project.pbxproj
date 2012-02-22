@@ -10,6 +10,7 @@
 		1F082DE514F290E1005008A4 /* CallToAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F082DE314F290E1005008A4 /* CallToAction.cpp */; };
 		1F082DF214F2D6D2005008A4 /* ofxWWSearchTermManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F082DF114F2D6D1005008A4 /* ofxWWSearchTermManager.cpp */; };
 		1F58DC4314F40DEB00767916 /* Colours.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F58DC4214F40DEB00767916 /* Colours.cpp */; };
+		1FB8A9DF14F568B60097AF3F /* mathutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FB8A9DE14F568B60097AF3F /* mathutils.cpp */; };
 		4818285D14EEF48600BAA8B9 /* FTBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818280414EEF48600BAA8B9 /* FTBuffer.cpp */; };
 		4818285E14EEF48600BAA8B9 /* FTCharmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818280514EEF48600BAA8B9 /* FTCharmap.cpp */; };
 		4818285F14EEF48600BAA8B9 /* FTCleanup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818280814EEF48600BAA8B9 /* FTCleanup.cpp */; };
@@ -217,6 +218,8 @@
 		1F2E091514F3DA9D0035A851 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		1F58DC4214F40DEB00767916 /* Colours.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Colours.cpp; sourceTree = "<group>"; };
 		1F58DC4414F40DF500767916 /* Colours.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colours.h; sourceTree = "<group>"; };
+		1FB8A9DD14F568AB0097AF3F /* mathutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mathutils.h; path = src/mathutils.h; sourceTree = "<group>"; };
+		1FB8A9DE14F568B60097AF3F /* mathutils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mathutils.cpp; path = src/mathutils.cpp; sourceTree = "<group>"; };
 		1FC55C4514F400D000AC4E26 /* FuzzySelection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FuzzySelection.h; sourceTree = "<group>"; };
 		1FE6C33914F2604B007F7B84 /* DisplayLayout_dev.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = DisplayLayout_dev.xml; path = bin/data/DisplayLayout_dev.xml; sourceTree = "<group>"; };
 		1FE6C33A14F27E38007F7B84 /* TweetProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetProvider.h; sourceTree = "<group>"; };
@@ -1592,6 +1595,8 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				1FB8A9DD14F568AB0097AF3F /* mathutils.h */,
+				1FB8A9DE14F568B60097AF3F /* mathutils.cpp */,
 				1FE6C33914F2604B007F7B84 /* DisplayLayout_dev.xml */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				A6FDBDED14D9F46E0003EBE5 /* data */,
@@ -2177,6 +2182,7 @@
 				481F67CF14F411EA0024DFBF /* DefaultForce.cpp in Sources */,
 				481F67D014F411EA0024DFBF /* Force.cpp in Sources */,
 				4897883A14F41B2F00A5CF6E /* SelectedForce.cpp in Sources */,
+				1FB8A9DF14F568B60097AF3F /* mathutils.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
