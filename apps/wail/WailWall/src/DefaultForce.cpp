@@ -6,7 +6,7 @@ DefaultForce::DefaultForce(ofxWWTweetParticleManager& manager)
 	:Force(manager)
 	,should_hide_on(0)
 	,hide_duration_millis(800)
-	,hide_force(58.0f)
+	,hide_force(128.0f)
 {
 	center.set(manager.simulationWidth * 0.5,manager.simulationHeight * 0.5);
 }
