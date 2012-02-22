@@ -230,7 +230,7 @@ void ofxWWRenderer::render(){
 	//effects
 	renderGradientOverlay();
 	renderDynamics();
-//	renderWarpMap();
+	//renderWarpMap();
 	
 	//blit to main render target
 	renderTarget.begin();
