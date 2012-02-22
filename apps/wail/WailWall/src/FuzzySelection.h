@@ -31,12 +31,12 @@ public:
 		
 		if(target>value) {
 			value += increment;
-			// clamp
 			if(target<value) value = target;
 		} else {
 			value -= increment;
 			if(target>value) value = target;
 		}
+		// clamp
 		if(value>1) value = 1;
 		else if(value<0) value = 0;
 	}

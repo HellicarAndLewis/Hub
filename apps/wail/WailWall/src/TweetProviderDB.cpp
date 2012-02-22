@@ -25,6 +25,18 @@ void TweetProviderDB::update() {
 		if(found_tweets.size() > 0) {
 			tweet_index = ++tweet_index % found_tweets.size();
 			onNewTweet(found_tweets[tweet_index]);
+			/*
+			++tweet_index;
+			if(tweet_index == found_tweets.size() && index != 0) {
+				printf("CONTINUE RETRIEVE NEW TWEETS <===================================");
+				found_tweets.clear();
+				tweet_index = 0;
+				//app.getMoreTweetsMatchingCurrentSearchTerm();	
+			}
+			else {
+				onNewTweet(found_tweets[tweet_index]);
+			}
+			*/
 		}
 		else {
 //			printf("+++++++++++++++++++++++++++++++++++++++++++++\n");
@@ -45,11 +57,12 @@ void TweetProviderDB::setSearchInfoForNewParticles(
 	current_username = username;
 }
 
-// TODO the found_tweets aren't necessary anymore becuase during development the actual search is done in it's own thread
+
 // TODO add number of new spawned particles/tweets to setting
 void TweetProviderDB::fillWithTweetsWhichContainTerm(const string& term) {
 	found_tweets.clear();
-	app.getTweetsWithSearchTerm(term, 100000, 50, found_tweets);
+	tweet_index = 0;
+	app.getTweetsWithSearchTerm(term, 200);
 }
 
 void TweetProviderDB::activate() {

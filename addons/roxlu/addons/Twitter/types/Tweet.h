@@ -60,6 +60,7 @@ public:
 	vector<string> tags; 
 	vector<string> user_mentions;
 	time_t created_at_timestamp;
+	string created_at_string;
 };
 
 }}} // roxlu::twitter::type

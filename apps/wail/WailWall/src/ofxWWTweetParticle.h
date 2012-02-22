@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "TwitterApp.h"
+#include "FuzzySelection.h"
 
 
 
@@ -68,9 +69,12 @@ class ofxWWTweetParticle {
 
 	float dot_opacity; // TODO trying to get the new animation into place
 	ofVec2f static_force; // TODO used in the forces class
-
+	
 	
   protected:
+	
+	FuzzySelection smoothedSelectionWeight;
+	
 	ofVec2f getUserDrawPos();
 	ofVec2f getTweetLineOneDrawPos();
 	ofVec2f getTweetLineTwoDrawPos();

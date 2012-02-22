@@ -23,6 +23,7 @@ private:
 	int should_create_new_tweet_on;
 	int tweet_index;
 	float spawn_delay; // ms
+	
 };
 
 

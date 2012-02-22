@@ -51,7 +51,7 @@ void CallToAction::draw() {
 	if(t>0) {
 
 		float initialAlpha = ofMap(t, 0, fadeInTime, 0, 1, true);
-		float alpha = ofMap(sin(t/5.f), -1, 1, 0.2, 1);
+		float alpha = ofMap(sin(t/5.f), -1, 1, 0.6, 9);
 		
 		
 		

@@ -1,11 +1,11 @@
 <controls>
     <SliderFloat_Wall_Repulsion_Dist>
         <name>Wall Repulsion Dist</name>
-        <value>234.000000</value>
+        <value>639.000000</value>
     </SliderFloat_Wall_Repulsion_Dist>
     <SliderFloat_Search_Repulse_Dist>
         <name>Search Repulse Dist</name>
-        <value>1040.000000</value>
+        <value>860.000000</value>
     </SliderFloat_Search_Repulse_Dist>
     <SliderFloat_Search_Repulse_Atten>
         <name>Search Repulse Atten</name>

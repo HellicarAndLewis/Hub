@@ -82,6 +82,7 @@ void ofxWWTweetParticleManager::keyPressed(ofKeyEventArgs& args) {
 	}
 	else if(args.key == '5') {
 		setCurrentForce(default_force);
+		setCurrentProvider(stream_provider);
 	}
 	else if(args.key == '6') {
 		db_provider->fillWithTweetsWhichContainTerm("love");
@@ -350,6 +351,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 		if(current_force->isReadyWithHiding()){	
 			current_force->setShouldHide(false);
 			current_force = new_force;
+			printf("CHANGED FORCE\n");
 		}		
 	}
 	else {
@@ -414,6 +416,8 @@ void ofxWWTweetParticleManager::updateTweets(){
 
 void ofxWWTweetParticleManager::renderTweets(){
 	
+	ofPushStyle();
+	ofEnableAlphaBlending();
 	ofEnableBlendMode(OF_BLENDMODE_ADD);
 	for(int i = 0; i < tweets.size(); i++){
 		if(!tweets[i].isSearchTweet){
@@ -425,7 +429,7 @@ void ofxWWTweetParticleManager::renderTweets(){
 		}
 	}
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-	 
+	ofPopStyle();
 }
 
 void ofxWWTweetParticleManager::renderSearchTerms(){	

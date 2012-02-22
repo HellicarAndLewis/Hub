@@ -10,6 +10,7 @@
 #include "ofxWWSearchTerm.h"
 #include "ofxWWTweetParticleManager.h"
 #include "Colours.h"
+#include "mathutils.h"
 
 ofxWWSearchTerm::ofxWWSearchTerm(){
 	selected = false;
@@ -23,6 +24,8 @@ ofxWWSearchTerm::ofxWWSearchTerm(){
 	is_fading = false;
 	is_highlighting = false;
 	tween_duration = 500;
+	timeOffset = ofRandom(0, 500);
+	timeSpeedVariation = ofRandom(0.5, 1.5);
 }
 
 void ofxWWSearchTerm::update(){
@@ -73,10 +76,30 @@ void ofxWWSearchTerm::draw(){
 	}
 	
 	p = selection.getValue();
-	ofSetColor( baseColor.lerp(selectedColor, p) );
+	
+	
+	float t = timeSpeedVariation * ofGetElapsedTimef()+timeOffset;
 	
 	//TODO center this
-	manager->parent->sharedSearchFont.drawString(term, pos.x-searchTermWidth/2, pos.y);
+	
+	// give the search term a floaty movement
+	float scaleFactor = ofMap(sin(t/4.f), -1, 1, 0.9, 1.1);
+	float dy = sin(t/6.f) * 50;
+	float dx = sin(t/7.f) * 50;
+	
+
+	ofColor c = baseColor.lerp(selectedColor, p);
+	
+	// make the colour brighter if the scale is bigger
+	c.a *= ofMap(scaleFactor, 0.9, 1.2, 0.6, 1);
+	ofSetColor( c );
+	glPushMatrix();
+	{
+		glTranslatef(pos.x-searchTermWidth/2+dx, pos.y+dy, 0);
+		glScalef(scaleFactor, scaleFactor, 1);
+		manager->parent->sharedSearchFont.drawString(term, 0, 0);
+	}
+	glPopMatrix();
 	
 	ofPopStyle();
 }

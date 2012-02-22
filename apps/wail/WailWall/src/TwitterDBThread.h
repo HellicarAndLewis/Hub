@@ -19,11 +19,11 @@ struct TwitterDBThreadTask {
 	int kind_of_task;
 	
 	// values for search task
-	int search_younger_than;
+	int search_older_than;
 	int search_howmany;
 	string search_term;
 	
-	void setSearchYoungerThan(int d) { search_younger_than = d; }
+	void setSearchOlderThan(int d) { search_older_than = d; }
 	void setSearchHowMany(int d) { search_howmany = d;}
 	void setSearchTerm(const string& s) { search_term = s;}
 
@@ -43,9 +43,10 @@ public:
 	void addTask(TwitterDBThreadTask task);
 	
 	// searching
-	bool getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result);
-	bool getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result);
-	bool getTweetsWithSearchTerm(const string& q, int youngerThan, int howMany, vector<rtt::Tweet>& result);
+	//bool getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result);
+	//bool getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result);
+	bool getTweetsWithSearchTerm(const string& q, int howMany);
+	void getMoreTweetsMatchingCurrentSearchTerm();
 	bool retrieveSearchResultsFromThread(vector<rtt::Tweet>& result);
 
 	// queueing send messages
@@ -56,6 +57,9 @@ public:
 private:
 	vector<rtt::Tweet> search_results;
 	time_t search_for_older_then;
+	string search_term;
+	int search_howmany;
+	
 	std::deque<TwitterDBThreadTask> tasks;
 	TwitterDB db;
 };
