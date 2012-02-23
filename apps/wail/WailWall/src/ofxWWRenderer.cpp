@@ -292,6 +292,15 @@ void ofxWWRenderer::render(){
 	
 	tweets.renderTweets();	
 	
+	// JAMES, can you create a function which creates the caustics for the 
+	// tweets which are currently rendered. If it's just a function we need
+	// to call we can activate/deactivate it ourselves later. The "tweets.tweets"
+	// vector contains all the particles which are drawn;
+	// Example of effects:
+	// - http://www.flickr.com/photos/tantle/4836091801/
+	// - http://www.flickr.com/photos/pixelero/5656846478/in/photostream/
+	// - http://www.flickr.com/photos/peryburge/5687731318/
+	
 	
 	callToAction.draw();
 	

@@ -405,6 +405,7 @@ void ofxWWTweetParticleManager::renderTweets(){
 			}
 		}
 	}
+	// applyCaustict();
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	ofPopStyle();
 }
@@ -437,7 +438,7 @@ void ofxWWTweetParticleManager::renderConnections(){
 //	if(isDoingSearch){
 //		for(int i = 0; i < tweets.size(); i++){
 //			if(tweets[i].isSearchTweet){
-////				cout << "++++++ DRAWING CAUSTICS BETWEEN " << tweets[i].pos << " " << searchTerms[selectedSearchTerm].pos << endl;
+//				cout << "++++++ DRAWING CAUSTICS BETWEEN " << tweets[i].pos << " " << searchTerms[selectedSearchTerm].pos << endl;
 //				attemptConnection(tweets[i].pos, 1.0, searchTerms[selectedSearchTermIndex].pos, 1.0, 1-tweetLayerOpacity);
 //			}
 //		}
