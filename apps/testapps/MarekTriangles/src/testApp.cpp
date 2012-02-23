@@ -5,13 +5,14 @@
 class Particle: public ofVec2f {
 public:
 	ofVec2f vel;
-	
-	
+	int pointId;
+	static int pointIdCounter;
 	Particle() {
 		x = ofRandomWidth();
 		y = ofRandomHeight();
 		vel.set(ofRandom(0.3, 2), 0);
 		vel.rotate(ofRandom(0, 360));
+		pointId = pointIdCounter++;
 	}
 	
 	
@@ -52,6 +53,7 @@ public:
 
 };
 
+int Particle::pointIdCounter = 1;
 vector<Particle> particles;
 
 bool mouseIsDown = false;
@@ -81,7 +83,7 @@ void testApp::update(){
 	}
 	for(int i = 0; i < particles.size(); i++) {
 		particles[i].update();
-		caustics.addPoint(particles[i]);
+		caustics.addPoint(particles[i], particles[i].pointId);
 	}
 
 	caustics.update();
