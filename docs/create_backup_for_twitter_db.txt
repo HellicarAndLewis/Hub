@@ -1,0 +1,70 @@
+
+How to do an automated database backup to another server
+=========================================================
+
+
+1) Check if you have a diretory ".ssh" with id_rsa.pub
+-------------------------------------------------------
+
+cd ~
+ls -alh ./id_rsa.pub
+
+
+
+
+
+2) If you don't have a .ssh/id_rsa.pub file, create one
+----------------------------------------------------------------------
+
+When you enter the command below you'll be asked some info; do not enter
+a password, just press enter!
+
+$ ./ssh-keygen -t rsa
+
+
+
+
+
+3) Copy this file to the remove server
+----------------------------------------------------------------------
+
+$ cd ~
+$ scp ./ssh/id_rsa.pub remote_username@remote_server:~/
+
+
+
+
+
+4) Login onto the remove server (just the normal way with ssy)
+----------------------------------------------------------------------
+
+$ ssh remote_username@remote_server
+..[enter you password] .....
+
+Now add the key to your authorized key files
+$ cd ~
+$ cat id_rsa.pub >> ./ssh/authorized_keys
+
+
+Now you can login w/o a password!
+
+
+
+
+Copying the file to the remote server
+=========================================================
+
+
+5) Create a file with this script
+----------------------------------------------------------------------
+#!/bin/sh
+remote_host="nelson.datamaniacs.net"
+remote_user="diederick"
+remote_dir="~/backup/"
+dt=$(date +%Y-%m-%d-%H-%M-%S)
+file="${dt}_twitter_db_backup.db"
+if [ ! -f ${file} ] ; then
+        cp "twitter.db" ${file}
+        bzip2 ${file} 
+        scp ${file}.bz2 ${remote_user}@${remote_host}:${remote_dir}
+fi

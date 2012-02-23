@@ -20,6 +20,7 @@ public:
 	
 	// tweets
 	bool insertTweet(const rtt::Tweet& tweet);
+	bool deleteTweetByTweetID(const string& id);
 	bool getTagID(const string& tag, int& result);
 	bool getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result);
 	bool getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result);

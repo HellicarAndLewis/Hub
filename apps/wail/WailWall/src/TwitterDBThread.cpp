@@ -72,8 +72,12 @@ void TwitterDBThread::threadedFunction() {
 					TwitterDBThreadTask_InsertTweet* insert_task = static_cast<TwitterDBThreadTask_InsertTweet*>(task);
 					db.insertTweet(insert_task->tweet);
 				}
-
-	
+				// DELETE TWEET
+				// -------------
+				else if(task->kind_of_task == TwitterDBThreadTask::TASK_DELETE_TWEET) {
+					TwitterDBThreadTask_DeleteTweet* del_task = static_cast<TwitterDBThreadTask_DeleteTweet*>(task);
+					db.deleteTweetByTweetID(del_task->id);
+				}
 				delete task;
 				it = tasks.erase(it);
 				
@@ -91,6 +95,12 @@ void TwitterDBThread::addTask(TwitterDBThreadTask* task) {
 
 bool TwitterDBThread::insertTweet(const rtt::Tweet& tweet) {
 	TwitterDBThreadTask_InsertTweet* task = new TwitterDBThreadTask_InsertTweet(tweet);
+	addTask(task);
+	return true;
+}
+
+bool TwitterDBThread::deleteTweetByTweetID(const string& id) {
+	TwitterDBThreadTask_DeleteTweet* task = new TwitterDBThreadTask_DeleteTweet(id);
 	addTask(task);
 	return true;
 }

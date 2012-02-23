@@ -80,8 +80,8 @@ void TwitterApp::initOSC(int port) {
 
 void TwitterApp::initDB() {
 	//grant all on dewarscube_admin.* to dewarscube_admin@"%" identified by "dewarscube_admin"
-	if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin", "/Applications/MAMP/tmp/mysql/mysql.sock")) {
-	//if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin", "/tmp/mysql.sock")) {
+	//if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin", "/Applications/MAMP/tmp/mysql/mysql.sock")) {
+	if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin", "/tmp/mysql.sock")) {
 		exit(0);
 	}
 	
@@ -127,7 +127,10 @@ void TwitterApp::simulateSearch(const string& term) {
 }	
 
 void TwitterApp::removeTweet(uint32_t id) {
-	printf("REMOVE TWEET BY ID: %d\n", id);
+	ofxWWTweetParticle tweet;
+	if(manager.getTweetWithDeleteID(id, tweet)) {
+		db_thread.deleteTweetByTweetID(tweet.tweet.getTweetID());
+	}
 }
 				 			 
 // Bad words & hash tags				 

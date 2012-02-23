@@ -46,6 +46,7 @@ bool TwitterDB::createTables() {
 			",t_timestamp	TIMESTAMP"							\
 			",t_longitude	REAL"								\
 			",t_latitude	REAL"								\
+			",t_tweet_id	VARCHAR(50)"						\
 		");"
 	);
 
@@ -120,6 +121,7 @@ bool TwitterDB::insertTweet(const rtt::Tweet& tweet) {
 						.use("t_user_id", tweet.user_id)
 						.use("t_screen_name", tweet.screen_name)
 						.use("t_text", tweet.text)
+						.use("t_tweet_id", tweet.tweet_id)
 						.useTimestamp("t_timestamp")
 						.execute();
 	if(!result) {
@@ -173,6 +175,14 @@ bool TwitterDB::insertTweet(const rtt::Tweet& tweet) {
 	
 	db.endTransaction();
 	
+	return true;
+}
+
+bool TwitterDB::deleteTweetByTweetID(const string& id) {
+	string del = "delete from tweets where t_tweet_id =\"" +id +"\"";
+	if(!db.query(del)) {
+		return false;
+	}
 	return true;
 }
 

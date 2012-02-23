@@ -545,6 +545,7 @@ void ofxWWTweetParticleManager::onNewTweet(const rtt::Tweet& tweet) {
 	}
 	
 	tweets.push_back(particle);
+
 }
 
 
@@ -643,5 +644,13 @@ void ofxWWTweetParticleManager::onAllSearchTermsDeselected() {
 }
 
 bool ofxWWTweetParticleManager::getTweetWithDeleteID(uint32_t id, ofxWWTweetParticle& result) {
-	return true;
+	vector<ofxWWTweetParticle>::iterator it = tweets.begin();
+	while(it != tweets.end()) {
+		if((*it).delete_id == id) {
+			result = *it;
+			return true;
+		}
+		++it;
+	}
+	return false;
 }
