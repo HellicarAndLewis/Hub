@@ -87,7 +87,7 @@ void DefaultForce::hide() {
 	float flow_force = manager.tweetFlowSpeed * 2;
 	while(it != tweets.end()) {
 		ofxWWTweetParticle& tweet = (*it);
-		tweet.dot_opacity = p;
+		//tweet.dot_opacity = p;
 		dir = (center - tweet.pos);
 		dist = dir.length();
 		if(dist < rest) {

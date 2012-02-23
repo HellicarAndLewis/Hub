@@ -21,6 +21,16 @@ void SelectedForce::deactivateParticle(ofxWWTweetParticle& p) {
 }
 
 void SelectedForce::activate() {
+	printf("ACTIVATE SELECTED FORCE\n");
+	vector<ofxWWTweetParticle>::iterator it= manager.tweets.begin();
+	while(it!=manager.tweets.end()) {
+		if((*it).state!=ofxWWTweetParticle::STATE_HIGHLIGHT) {
+			printf("..\n");
+			it = manager.tweets.erase(it);
+		} else {
+			it++;
+		}
+	}
 }
 
 void SelectedForce::hide() {

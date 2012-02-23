@@ -37,7 +37,7 @@ class ofxWWSearchTerm {
 	bool isHolding;
 	float holdStartTime;
 	
-	bool selected;
+
 	bool populated;
 	
 	float scale;

@@ -14,7 +14,6 @@
 
 ofxWWSearchTerm::ofxWWSearchTerm(){
 	selectedTime = -1000;
-	selected = false;
 	isHolding = false;
 	manager = NULL;
 	dead = false;

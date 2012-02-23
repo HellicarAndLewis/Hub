@@ -29,9 +29,6 @@ void ofxWWSearchTermManager::setup(TwitterApp *twitter, ofxWWTweetParticleManage
 
 void ofxWWSearchTermManager::update() {
 	
-	if(parent->blobsRef->size() > 0){
-		handleTouchSearch();
-	}
 	
 	
 	
@@ -425,36 +422,7 @@ void ofxWWSearchTermManager::touchUp() {
 void ofxWWSearchTermManager::touchDown() {
 	handRemovedTimer.reset();
 }
-
-void ofxWWSearchTermManager::handleTouchSearch() {
-	
-	bool searchDebug = false;
-	if(searchDebug) cout << "++++++ SEARCH DEBUG QUERY " << endl;
-	
-	int oldSelectedSearchTermIndex = selectedSearchTermIndex;
-	selectedSearchTermIndex = -1;
-	
-	//look for a selected search term
-	for(int i = 0; i < searchTerms.size(); i++){
-		
-		if(searchTerms[i].selected){
-			
-			selectedSearchTermIndex = i;
-			//parent->shouldTriggerScreenshot = false;
-			break;
-		}
-	}
-	
-	if(oldSelectedSearchTermIndex!=selectedSearchTermIndex) {
-		if(selectedSearchTermIndex==-1) {
-			parent->setCurrentProvider(parent->stream_provider);
-		} else {
-			parent->db_provider->fillWithTweetsWhichContainTerm(searchTerms[selectedSearchTermIndex].term);
-			parent->setCurrentProvider(parent->db_provider);
-		}
-	}
-	
-}
+ 
 
 void ofxWWSearchTermManager::handleTweetSearch(){
 	

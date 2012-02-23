@@ -96,7 +96,6 @@ public:
 	
 private:
 	Timer handRemovedTimer;
-	void handleTouchSearch();
 	void handleTweetSearch();
 	void doTouchInteraction();
 	void doSearchTermSelectionTest();

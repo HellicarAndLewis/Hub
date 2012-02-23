@@ -20,7 +20,7 @@ void TweetProviderDB::update() {
 		should_create_new_tweet_on = now + spawn_delay;
 		if(found_tweets.size() > 0) {
 			tweet_index = ++tweet_index % found_tweets.size();
-			printf("> PASSING: %s\n", found_tweets[tweet_index].getText().c_str());
+			//printf("> PASSING: %s\n", found_tweets[tweet_index].getText().c_str());
 			onNewTweet(found_tweets[tweet_index]);
 		}
 	}
