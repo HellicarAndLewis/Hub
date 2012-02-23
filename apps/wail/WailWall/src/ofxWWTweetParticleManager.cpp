@@ -137,7 +137,7 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Call to action time", callToActionTime, 5, 60);
 	
 	
-	
+	webGui.addToggle("Tweet Debug", drawTweetDebug);
 	webGui.addToggle("Search Debug", searchTermManager.drawSearchDebug);
 	
 	webGui.addPage("Search Term Animation");
@@ -396,6 +396,34 @@ void ofxWWTweetParticleManager::renderTweets(){
 	ofPushStyle();
 	ofEnableAlphaBlending();
 	ofEnableBlendMode(OF_BLENDMODE_ADD);
+	
+	// Optimizing drawing...
+	vector<ofxWWTweetParticle>::iterator it = tweets.begin();
+	if(!drawTweetDebug) {
+		// draw normal mode
+		while(it != tweets.end()) {
+			ofxWWTweetParticle& particle = *it;
+			if(!particle.isSearchTweet) {
+				particle.drawDot();
+				particle.drawText();
+			}
+			++it;
+		}
+	}
+	else {
+		// draw debug.
+		while(it != tweets.end()) {
+			ofxWWTweetParticle& particle = *it;
+			if(!particle.isSearchTweet) {
+				particle.drawDot();
+				particle.drawText();
+				particle.drawDebug();
+			}
+			++it;
+		}
+	}
+	
+	/*
 	for(int i = 0; i < tweets.size(); i++){
 		if(!tweets[i].isSearchTweet){
 			tweets[i].drawDot();
@@ -405,6 +433,7 @@ void ofxWWTweetParticleManager::renderTweets(){
 			}
 		}
 	}
+	*/
 
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	ofPopStyle();
@@ -492,9 +521,15 @@ void ofxWWTweetParticleManager::setupColors(){
 }
 
 void ofxWWTweetParticleManager::onNewTweet(const rtt::Tweet& tweet) {
-	//printf(">> [ok] : %s\n", tweet.getText().c_str());	
 	ofxWWTweetParticle particle = createParticleForTweet(tweet);
 	
+	// give the new particle an arbitrary id so we can remove..
+	static int tweet_id_counter = 0;
+	tweet_id_counter = ++tweet_id_counter % maxTweets;
+	particle.delete_id = tweet_id_counter;	
+	printf(">> [RECEIVING] : %s\n", tweet.getText().c_str());	
+
+
 	if(current_force->isHiding()) {
 		current_force->deactivateParticle(particle);
 	}
@@ -542,6 +577,9 @@ void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
 void ofxWWTweetParticleManager::setCurrentProvider(TweetProvider* prov) {
 	if(current_provider != NULL) {
 		current_provider->disable();
+		if(current_provider->kind_of_provider == TweetProvider::PROVIDER_STREAM) {
+			printf("YES STRAEM PROVIDER ***************************************\n");
+		}
 	}
 	current_provider = prov;
 	current_provider->enable();
@@ -592,6 +630,7 @@ void ofxWWTweetParticleManager::onSearchTermSelected(const SearchTermSelectionIn
 }
 
 void ofxWWTweetParticleManager::onAllSearchTermsDeselected() {
+	printf("+++++++++++++ ALL SEARCH TERMS DESELECTED \n");
 	setCurrentProvider(stream_provider);
 	setCurrentForce(default_force);
 }

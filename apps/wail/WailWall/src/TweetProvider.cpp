@@ -1,5 +1,10 @@
 #include "TweetProvider.h"
 
+TweetProvider::TweetProvider(int providerKind) 
+	:kind_of_provider(providerKind)
+{
+}
+
 void TweetProvider::addListener(TweetProviderListener* l) {
 	listeners.push_back(l);
 }

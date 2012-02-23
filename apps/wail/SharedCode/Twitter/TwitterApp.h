@@ -81,8 +81,6 @@ public:
 	bool getUnusedSearchTerms(vector<TwitterSearchTerm*>& result);
 	bool setSearchTermAsUsed(const string& user, const string& term);
 	bool getFollowers(vector<string>& result);
-//	bool getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result);
-//	bool getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result);
 	bool getTweetsWithSearchTerm(const string& q, int howMany);
 	void onNewSearchTerm(rtt::Tweet tweet, const string& term, bool isUsed = false);
 	void uploadScreenshot(const string& filePath, const string& username, const string& message);
@@ -111,6 +109,7 @@ public:
 	virtual void onUpdateBadWordList();
 	virtual void onUpdateHashTags();
 	virtual void simulateSearch(const string& term);
+	virtual void removeTweet(uint32_t id) = 0;
 	
 	void removeTweetsFromConnectedAccount();
 	

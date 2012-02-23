@@ -68,6 +68,25 @@ class Dewars {
 				}
 				*/
 			}
+			
+			else if($req['act'] == 'read_image') {
+				$this->readImage($req['f']);
+				exit;
+			}
+			else if($req['act'] == 'image') {
+				
+				//Twitterbot/1.0
+				$agent = strtolower($_SERVER['HTTP_USER_AGENT']);
+				if(strstr($agent,'twitter')) {
+					$this->readImage($req['f']);
+					exit;
+				}
+				
+			}
+		}
+		else {
+			header('location:http://www.facebook.com/dewars');
+			exit;
 		}
 	}
 		
@@ -291,6 +310,20 @@ class Dewars {
 			return false;
 		}
 
+		
+		header('Content-type: image/png');
+		header('Content-transfer-encoding: binary');
+		header('Content-length: '.filesize($file));
+		header('Cache-control: public, max-age=30');
+		readfile($file);
+		exit;	
+	}
+	
+	public function readImage($path) {
+		$file = $this->config['upload_dir'] .'/' .$path;
+		if(!file_exists($file)) {
+			return false;
+		}
 		
 		header('Content-type: image/png');
 		header('Content-transfer-encoding: binary');

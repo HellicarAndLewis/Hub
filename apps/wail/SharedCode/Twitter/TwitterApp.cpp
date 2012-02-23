@@ -123,6 +123,10 @@ void TwitterApp::simulateSearch(const string& term) {
 		listeners[i]->onStatusUpdate(tweet);
 	}
 }	
+
+void TwitterApp::removeTweet(uint32_t id) {
+	printf("REMOVE TWEET BY ID: %d\n", id);
+}
 				 			 
 // Bad words & hash tags				 
 // -------------------------------------				 

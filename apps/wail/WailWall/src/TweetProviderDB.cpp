@@ -3,6 +3,7 @@ TweetProviderDB::TweetProviderDB(TwitterApp& app)
 	:app(app)
 	,should_create_new_tweet_on(0)
 	,spawn_delay(50)
+	,TweetProvider(TweetProvider::PROVIDER_DB)
 {
 }
 
@@ -12,36 +13,15 @@ void TweetProviderDB::update() {
 	}	
 	
 	if(app.retrieveSearchResultsFromThread(found_tweets)) {
-//		for(int i = 0; i < found_tweets.size(); ++i) {
-//			printf(">found< [%zu] %s\n", found_tweets[i].created_at_timestamp, found_tweets[i].text.c_str());
-//		}
-
-
 	}
-	printf("[provider db]\n");
+
 	int now = ofGetElapsedTimeMillis();
 	if(now > should_create_new_tweet_on) {
 		should_create_new_tweet_on = now + spawn_delay;
 		if(found_tweets.size() > 0) {
 			tweet_index = ++tweet_index % found_tweets.size();
+			printf("> PASSING: %s\n", found_tweets[tweet_index].getText().c_str());
 			onNewTweet(found_tweets[tweet_index]);
-			/*
-			++tweet_index;
-			if(tweet_index == found_tweets.size() && index != 0) {
-				printf("CONTINUE RETRIEVE NEW TWEETS <===================================");
-				found_tweets.clear();
-				tweet_index = 0;
-				//app.getMoreTweetsMatchingCurrentSearchTerm();	
-			}
-			else {
-				onNewTweet(found_tweets[tweet_index]);
-			}
-			*/
-		}
-		else {
-//			printf("+++++++++++++++++++++++++++++++++++++++++++++\n");
-//			printf("          we did not found                   \n");
-//			printf("+++++++++++++++++++++++++++++++++++++++++++++\n");
 		}
 	}
 	

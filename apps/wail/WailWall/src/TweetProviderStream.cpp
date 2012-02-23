@@ -1,6 +1,7 @@
 #include "TweetProviderStream.h"
 TweetProviderStream::TweetProviderStream(TwitterApp& app) 
 	:app(app)
+	,TweetProvider(TweetProvider::PROVIDER_STREAM)
 {
 }
 
@@ -35,7 +36,22 @@ void TweetProviderStream::onStatusUpdate(const rtt::Tweet& tweet) {
 		,::tolower
 	);
 	
-	
+
+	// Remove all non-ascii/latin characters
+	std::string ascii_string_clean;
+	UTF8Encoding utf8;
+	ASCIIEncoding ascii;
+	TextConverter converter(utf8, ascii,' ');
+	int i = converter.convert(tweet.getText(), ascii_string_clean);
+	if(ascii_string_clean != tweet.getText()) {	
+		pcrecpp::RE(" +").GlobalReplace(" ", &ascii_string_clean);
+		tweet_text_lower = ascii_string_clean;
+	}
+
+	// Check of search term.
+	rtt::Tweet tweet_copy = tweet;
+	tweet_copy.setText(ascii_string_clean);
+
 	pcrecpp::RE re("^@dewarshub (.*)$");
 	re.FullMatch(tweet_text_lower, &search_query);
 	if(search_query.length()) {
@@ -43,13 +59,14 @@ void TweetProviderStream::onStatusUpdate(const rtt::Tweet& tweet) {
 	}
 	else {
 		// store tweet in DB so the visual app can fetch it.
-		app.insertTweet(tweet);
+		app.insertTweet(tweet_copy);
 	}
 	
 	// Only when this data provider is enabled we make sure the event listeners
 	// get notified by this new tweet.
 	if(isEnabled()) {
-		onNewTweet(tweet);
+		printf("[STREAM] %s\n", tweet_copy.getText().c_str());
+		onNewTweet(tweet_copy);
 	}
 }
 
