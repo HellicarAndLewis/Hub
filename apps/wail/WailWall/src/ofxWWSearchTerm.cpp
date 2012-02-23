@@ -101,18 +101,27 @@ void ofxWWSearchTerm::draw(){
 	
 	// make the colour brighter if the scale is bigger
 	c.a *= ofMap(scaleFactor, 0.9, 1.2, 0.6, 1);
-	/*float pulseDuration = 1;
+	float pulseDuration = 1.5;
 	if(ofGetElapsedTimef()-selectedTime<pulseDuration) {
 		
-		float x = ofMap(ofGetElapsedTimef()-selectedTime, 0, pulseDuration, 0, 1, true);
+		float tt = ofGetElapsedTimef()-selectedTime;
+		float fastStart = 0.1;
+		if(tt<fastStart*pulseDuration) {
+			tt = ofMap(tt, 0, fastStart*pulseDuration, 0, 0.5*pulseDuration);
+		} else {
+			tt = ofMap(tt, fastStart*pulseDuration, pulseDuration, 0.5*pulseDuration, pulseDuration);
+		}
+		float x = ofMap(tt, 0, pulseDuration, 0, 1, true);
 		float pulseScale = (1-cos(x*2*PI))/2;
-		scaleFactor += pulseScale * 0.6;
-	}*/
+		scaleFactor += pulseScale * 0.5;
+	}
 	ofSetColor( c );
 	glPushMatrix();
 	{
-		glTranslatef(pos.x-searchTermWidth/2, pos.y, 0);
+		glTranslatef(pos.x, pos.y, 0);
 		glScalef(scaleFactor, scaleFactor, 1);
+		glTranslatef(-searchTermWidth/2, 0, 0);
+		
 		manager->parent->sharedSearchFont.drawString(term, 0, 0);
 	}
 	glPopMatrix();

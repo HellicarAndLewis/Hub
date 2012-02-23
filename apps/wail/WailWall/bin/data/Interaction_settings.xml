@@ -1,7 +1,7 @@
 <controls>
     <SliderFloat_Layer_Barrier_Z>
         <name>Layer Barrier Z</name>
-        <value>0.502500</value>
+        <value>0.505000</value>
     </SliderFloat_Layer_Barrier_Z>
     <SliderFloat_Layer_Barrier_Width>
         <name>Layer Barrier Width</name>

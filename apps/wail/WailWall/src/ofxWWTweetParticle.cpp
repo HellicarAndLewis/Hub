@@ -116,8 +116,8 @@ void ofxWWTweetParticle::update(){
 	lastPos = pos;
 	force.rotate(ofSignedNoise(pos.x/manager->tweetRotateDamp,pos.y/manager->tweetRotateDamp,ofGetElapsedTimef()/manager->tweetChaosSpeed)*manager->tweetRotateAmp );
 	pos += force*ofMap(whichImage, 0, 2, 0.6, 1.4);
-	force.set(0,0);
-	
+	//force.set(0,0);
+	force *= 0.0;
 	
 	//birth attenuation just to stop snapping on
 	opacity = ofMap(ofGetElapsedTimef(), createdTime, createdTime+.5, .0, 1.0, true);
@@ -168,7 +168,7 @@ void ofxWWTweetParticle::drawDot(){
 	if(state == STATE_DEFAULT) {
 
 		float alpha = 1;
-		alpha *= ofMap(clampedSelectionWeight, 0, .5, 1.0, 0, true);
+		alpha *= ofMap(smoothedSelectionWeight.getValue(), 0, .5, 1.0, 0, true);
 		
 		ofPushStyle();
 			//glColor4f(1,1,1,dot_opacity);
@@ -193,7 +193,6 @@ void ofxWWTweetParticle::drawDot(){
 	
 		ofPushStyle();
 		{
-			// MB: don't know if this is right - I might have broken this!!
 			if(!isDrawingText()) {
 				ofSetRectMode(OF_RECTMODE_CENTER);
 				
@@ -216,7 +215,9 @@ void ofxWWTweetParticle::drawText(){
 	
 
 	ofColor atcolor = ofColor::fromHex(Colours::get(AT_SIGN));
-	atcolor.a = opacity*255;
+	
+	// square root makes the alpha brighter at lower values (0-1)
+	atcolor.a = sqrt(opacity)*255;
 	ofSetColor(atcolor);
 	//DRAW @ 
 	ofVec2f atPos = getAtDrawPos();
@@ -226,7 +227,7 @@ void ofxWWTweetParticle::drawText(){
 	ofEnableBlendMode(OF_BLENDMODE_ADD);
 	
 	ofColor fontcolor = ofColor::fromHex(Colours::get(LAYER_1_FONT));
-	fontcolor.a = opacity*255;
+	fontcolor.a = atcolor.a;
 	ofSetColor(fontcolor);
 	
 	//USER -- use the same size as search ftm

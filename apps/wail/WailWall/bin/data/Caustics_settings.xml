@@ -1,42 +1,26 @@
 <controls>
-    <Toggle_Enable_Caustics>
-        <name>Enable Caustics</name>
+    <SliderFloat_Vertical_Drift>
+        <name>Vertical Drift</name>
+        <value>-0.140000</value>
+    </SliderFloat_Vertical_Drift>
+    <SliderFloat_Scale_factor>
+        <name>Scale factor</name>
+        <value>0.900000</value>
+    </SliderFloat_Scale_factor>
+    <SliderFloat_Blend>
+        <name>Blend</name>
+        <value>0.956000</value>
+    </SliderFloat_Blend>
+    <SliderFloat_Brightness>
+        <name>Brightness</name>
+        <value>0.017200</value>
+    </SliderFloat_Brightness>
+    <SliderFloat_Oscillation>
+        <name>Oscillation</name>
+        <value>5.500000</value>
+    </SliderFloat_Oscillation>
+    <Toggle_Always_on>
+        <name>Always on</name>
         <value>0</value>
-    </Toggle_Enable_Caustics>
-    <SliderFloat_Delta>
-        <name>Delta</name>
-        <value>0.959500</value>
-    </SliderFloat_Delta>
-    <SliderFloat_Drag>
-        <name>Drag</name>
-        <value>0.817910</value>
-    </SliderFloat_Drag>
-    <SliderFloat_Light_X>
-        <name>Light X</name>
-        <value>-0.020000</value>
-    </SliderFloat_Light_X>
-    <SliderFloat_Light_Y>
-        <name>Light Y</name>
-        <value>0.410000</value>
-    </SliderFloat_Light_Y>
-    <SliderFloat_Light_Z>
-        <name>Light Z</name>
-        <value>-0.110000</value>
-    </SliderFloat_Light_Z>
-    <SliderFloat_Glow_Amount>
-        <name>Glow Amount</name>
-        <value>0.100000</value>
-    </SliderFloat_Glow_Amount>
-    <SliderFloat_Drop_Scale>
-        <name>Drop Scale</name>
-        <value>15.850000</value>
-    </SliderFloat_Drop_Scale>
-    <SliderFloat_Drop_Force>
-        <name>Drop Force</name>
-        <value>0.010990</value>
-    </SliderFloat_Drop_Force>
-    <Toggle_Draw_Debug_Texture>
-        <name>Draw Debug Texture</name>
-        <value>0</value>
-    </Toggle_Draw_Debug_Texture>
+    </Toggle_Always_on>
 </controls>

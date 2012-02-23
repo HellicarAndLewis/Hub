@@ -34,4 +34,5 @@ private:
 	bool enabled;
 	KinectTouchListener *listener;
 	KinectTouch touch;
+	bool mouseIsDown;
 };

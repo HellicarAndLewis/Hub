@@ -35,6 +35,31 @@ public:
 	Caustics();
 	~Caustics();
 	
+	
+	
+	// tweakable variables
+	// how much it goes down by [-2->+2]
+	float verticalDrift;
+	
+	// how much the zoom blur happens [0-10]
+	// it doesnt make any difference to performance
+	// how much you do.
+	float scaleFactor;
+	
+	
+	// how much the back fades out [0.95-1]
+	float fade;
+	
+	
+	// [0.01-0.1]
+	float brightness;
+	
+	
+	// how much oscillation there is 
+	// in the waves. [0-100]?
+	// default is 5?
+	float oscillation;
+	
 	float width, height;
 private:
 	
@@ -48,7 +73,7 @@ private:
 	ofFbo *ping;
 	ofFbo *pong;
 	
-	void drawLine(ofVec2f a, ofVec2f b, ofVec3f ca, ofVec3f cb);
+	void drawWavyLine(ofVec2f a, ofVec2f b);
 
 	float currTime;
 	// check if the FBO has been cleared for initialization
