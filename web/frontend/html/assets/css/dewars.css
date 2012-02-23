@@ -102,7 +102,8 @@ ul#last li .username {
 }
 
 body {
-	background:url(/assets/images/background.jpg) top center no-repeat black;
+	/*background:url(/assets/images/background.jpg) top center no-repeat black;*/
+	background-color:black;
 }
 body.disabled {
 	overflow:hidden;

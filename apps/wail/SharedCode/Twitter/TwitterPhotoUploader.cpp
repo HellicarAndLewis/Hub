@@ -38,7 +38,7 @@ void TwitterPhotoUploader::threadedFunction() {
 		// get next item from send queue; when it's empty wait for a while
 		bool result = app.getNextSendItemFromSendQueue(username, filepath, queue_id);
 		if(!result) {
-			printf("Info: there are no items in the send queue. Waiting for a couple of seconds\n");
+			//printf("Info: there are no items in the send queue. Waiting for a couple of seconds\n");
 			sleep(2);
 			continue;
 		}

@@ -30,6 +30,16 @@ var DewarsAdmin = new Class({
 				name:$('new_track').get('value').toLowerCase()
 			});
 		});
+		$('new_track').focus();
+		
+		$('new_track').addEvent('keydown',function(e){
+				if(e.key == "enter") {
+					$('new_track_button').fireEvent('click');
+					e.stop();
+					return false;
+				}
+				
+		});
 		
 		$$('span.remove_button').addEvent('click', function() {
 			var c = confirm("Sure?");
@@ -152,7 +162,6 @@ var DewarsAdmin = new Class({
 							$('twitter_status').set('class',(r) ? 'connected' : 'disconnected');
 							prev = r;
 						}
-						console.log(r);
 					}
 				}).post();
 		}

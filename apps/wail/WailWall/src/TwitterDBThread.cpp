@@ -54,9 +54,9 @@ void TwitterDBThread::threadedFunction() {
 					
 					if(r && search_results.size() > 0) {
 						std::sort(search_results.begin(), search_results.end(), TweetTimestampSorter());
-						for(int i = 0; i < search_results.size(); ++i) {
-							printf("[%zu][%s] %s\n", search_results[i].created_at_timestamp, search_results[i].created_at_string.c_str(), search_results[i].text.c_str());
-						}
+//						for(int i = 0; i < search_results.size(); ++i) {
+//							printf("[%zu] %s\n", search_results[i].created_at_timestamp, search_results[i].text.c_str());
+//						}
 						
 						search_for_older_then = search_results.back().created_at_timestamp;
 						printf("NEXT MUST BE OLDER THAN: %zu\n", search_for_older_then);
@@ -73,13 +73,7 @@ void TwitterDBThread::threadedFunction() {
 					db.insertTweet(insert_task->tweet);
 				}
 
-				// SET SEND ITEM AS SEND
-				// ---------------------
-//				else if(task->kind_of_task == TwitterDBThreadTask::TASK_SET_AS_SEND) {
-//					printf("--------- TASK: SET AS SEND\n");
-//					TwitterDBThreadTask_SetAsSend* send_task = static_cast<TwitterDBThreadTask_SetAsSend*>(task);
-//					 db.setSendQueueItemAsSend(send_task->id);
-//				}
+	
 				delete task;
 				it = tasks.erase(it);
 				

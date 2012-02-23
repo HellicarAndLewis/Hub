@@ -29,6 +29,12 @@ void TwitterOSCReceiver::update() {
 				listeners[i]->simulateSearch(search_term);
 			}
 		}
+		else if(m.getAddress() == "/twitter/remove_tweet") {
+			uint32_t id = m.getArgAsInt(0);
+			for(int i = 0; i < listeners.size(); ++i) {
+				listeners[i]->removeTweet(id);
+			}
+		}
 	}
 }
 

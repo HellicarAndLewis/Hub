@@ -11,7 +11,7 @@ ofImage* ofxWWTweetParticle::highlightImage = NULL;
 
 
 ofxWWTweetParticle::ofxWWTweetParticle(){
-	
+	delete_id = 0;
 	whichImage = ofRandom(0, 1);
 	if(whichImage<0.5) whichImage = 0;
 	else whichImage = ofMap(whichImage, 0.5, 1, 0, 1);
@@ -39,10 +39,10 @@ ofxWWTweetParticle::ofxWWTweetParticle(){
 	}
 }
 
-void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
+void ofxWWTweetParticle::setTweet(rtt::Tweet tw){
 	lastPos = pos;
 	createdTime = ofGetElapsedTimef();
-	this->tweet = tweet;
+	this->tweet = tw;
 	scale = 1.0;
 	opacity = 1.0;
 	dead = false;
@@ -105,7 +105,7 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tweet){
 	
 	atSignWidth = manager->sharedUserFont.getStringBoundingBox("@", 0, 0).width;
 	atSignHeight = manager->sharedUserFont.getStringBoundingBox("@", 0, 0).height;
-
+	printf("SET PARTICLE WITH TEXT: %s\n", this->tweet.getText().c_str());
 //	totalWidth  = MAX(lineOneWidth,lineTwoWidth);
 //	totalHeight = userNameHeight + atSignHeight + lineOneHeight + lineTwoHeight;
 }
@@ -280,6 +280,13 @@ void ofxWWTweetParticle::drawDebug(){
 		ofSetColor(255, 255, 255);	
 	}
 	ofRect(boundingRect);
+
+	// Draw the ID of this tweet so we can remove it.
+	stringstream ss;
+	ss << delete_id;
+	manager->sharedTweetFont.drawString(ss.str().c_str(), pos.x, pos.y);
+
+	
 	ofPopStyle();
 }
 

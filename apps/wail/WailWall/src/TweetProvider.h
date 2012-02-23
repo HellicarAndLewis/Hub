@@ -11,7 +11,14 @@ using std::vector;
 
 class TweetProvider {
 public:
-
+	enum ProviderTypes {
+		 PROVIDER_NONE
+		,PROVIDER_DB
+		,PROVIDER_STREAM
+	};
+	
+	TweetProvider(int providerKind = PROVIDER_NONE);
+	
 	virtual void update() = 0;
 	virtual void activate() = 0;
 	virtual void deactivate() = 0;
@@ -22,6 +29,7 @@ public:
 	void disable();
 	bool isEnabled();	
 	
+	int kind_of_provider;
 	bool is_enabled;
 	vector<TweetProviderListener*> listeners;
 };

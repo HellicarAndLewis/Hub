@@ -68,9 +68,9 @@ class ofxWWTweetParticle {
 	
 	ofVec2f getBoundingCorner(int cornerIndex); //0-4 top left, top right, bot left, bottom right
 
-	float dot_opacity; // TODO trying to get the new animation into place
-	ofVec2f static_force; // TODO used in the forces class
-	
+	float dot_opacity; 
+	ofVec2f static_force; 
+	uint32_t delete_id; // used to remove a tweet from screen.
 	
   protected:
 	
