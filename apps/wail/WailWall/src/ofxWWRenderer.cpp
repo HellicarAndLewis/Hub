@@ -253,7 +253,8 @@ void ofxWWRenderer::render(){
 	tweets.renderTweets();	
 	
 	ofEnableBlendMode(OF_BLENDMODE_ADD);
-	glColor4f(1,1,1,1.f - tweets.tweetLayerOpacity);
+//	glColor4f(1,1,1,1.f - tweets.tweetLayerOpacity);
+	glColor4f(1,1,1,1.f );
 	caust.getFbo().draw(0, 0);
 	
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);

@@ -12,6 +12,7 @@ public:
 
 	SelectedForce(ofxWWTweetParticleManager& manager);
 	
+
 	virtual void hide();
 	virtual bool isReadyWithHiding();
 	
@@ -19,7 +20,7 @@ public:
 	virtual void activate();
 	virtual void deactivateParticle(ofxWWTweetParticle& p) ;
 	virtual void deactivate();
-	
+
 	virtual void show();
 };
 

@@ -21,7 +21,6 @@ void TweetProviderStream::onStatusUpdate(const rtt::Tweet& tweet) {
 		return;
 	}
 	
-	//printf("[ok] %s \n", tweet.getText().c_str());
 
 	// Check if we've got a search term; if so we will not pass it through;
 	// search terms are handled in the TwitterMentionsListener thread.
@@ -62,10 +61,8 @@ void TweetProviderStream::onStatusUpdate(const rtt::Tweet& tweet) {
 		app.insertTweet(tweet_copy);
 	}
 	
-	// Only when this data provider is enabled we make sure the event listeners
-	// get notified by this new tweet.
+	// Only when this data provider is enabled we make sure the event listeners get notified by this new tweet.
 	if(isEnabled()) {
-		//printf("[STREAM] %s\n", tweet_copy.getText().c_str());
 		onNewTweet(tweet_copy);
 	}
 }

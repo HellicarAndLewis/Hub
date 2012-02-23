@@ -9,4 +9,5 @@ class TweetProviderListener {
 public:
 	virtual void onNewTweet(const rtt::Tweet& tweet) = 0;
 };
+
 #endif

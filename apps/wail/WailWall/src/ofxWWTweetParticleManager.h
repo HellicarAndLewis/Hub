@@ -64,6 +64,7 @@ class ofxWWTweetParticleManager : public TweetProviderListener, public SearchLay
 	ofxWWSearchTermManager searchTermManager;
 	ofxWWSearchTermManager& getSearchTermManager();
 	bool getTweetWithDeleteID(uint32_t id, ofxWWTweetParticle& result);
+	void removeTweetWithDeleteID(uint32_t id);
 	
 	
 	#ifdef USE_FTGL
@@ -178,7 +179,8 @@ class ofxWWTweetParticleManager : public TweetProviderListener, public SearchLay
 	SelectedForce* selected_force;
 
 	
-
+	// force GUI vars.
+	
   
 protected:
 
