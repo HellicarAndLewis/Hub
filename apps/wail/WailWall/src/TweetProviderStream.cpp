@@ -65,7 +65,7 @@ void TweetProviderStream::onStatusUpdate(const rtt::Tweet& tweet) {
 	// Only when this data provider is enabled we make sure the event listeners
 	// get notified by this new tweet.
 	if(isEnabled()) {
-		printf("[STREAM] %s\n", tweet_copy.getText().c_str());
+		//printf("[STREAM] %s\n", tweet_copy.getText().c_str());
 		onNewTweet(tweet_copy);
 	}
 }

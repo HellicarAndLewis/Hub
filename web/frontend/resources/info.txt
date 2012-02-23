@@ -1,0 +1,23 @@
+
+FTP
+Username	:	ftp_dewarshub
+Password	:	YH3bDM#bn1Va
+Host		:	beta.dewarshub.com
+
+FTP
+Username:	ftp_imagedew
+Password:	Mn3Fv1fM21b
+Host:		image.dewarshub.com
+
+
+MySQL
+
+Database	:	db_dewarshub
+Username	:	sql_dewarshub
+Password	:	ijKM3nfBF12
+
+grant all on db_dewarshub.* to 'sql_dewarshub'@'localhost' identified by 'ijKM3nfBF12' 
+
+Adminer
+
+http://beta.dewarshub.com/adminer

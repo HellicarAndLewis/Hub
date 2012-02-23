@@ -528,7 +528,7 @@ void ofxWWTweetParticleManager::onNewTweet(const rtt::Tweet& tweet) {
 	static int tweet_id_counter = 0;
 	tweet_id_counter = ++tweet_id_counter % maxTweets;
 	particle.delete_id = tweet_id_counter;	
-	printf(">> [RECEIVING] : %s\n", tweet.getText().c_str());	
+	//printf(">> [RECEIVING] : %s\n", tweet.getText().c_str());	
 
 
 	if(current_force->isHiding()) {
@@ -539,6 +539,7 @@ void ofxWWTweetParticleManager::onNewTweet(const rtt::Tweet& tweet) {
 	}
 	
 	tweets.push_back(particle);
+
 }
 
 
@@ -637,5 +638,13 @@ void ofxWWTweetParticleManager::onAllSearchTermsDeselected() {
 }
 
 bool ofxWWTweetParticleManager::getTweetWithDeleteID(uint32_t id, ofxWWTweetParticle& result) {
-	return true;
+	vector<ofxWWTweetParticle>::iterator it = tweets.begin();
+	while(it != tweets.end()) {
+		if((*it).delete_id == id) {
+			result = *it;
+			return true;
+		}
+		++it;
+	}
+	return false;
 }
