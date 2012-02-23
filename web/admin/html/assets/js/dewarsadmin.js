@@ -169,7 +169,7 @@ var DewarsAdmin = new Class({
 					}
 				}).post();
 		}
-		//check.periodical(500);
+		check.periodical(500);
 	}
 	
 });

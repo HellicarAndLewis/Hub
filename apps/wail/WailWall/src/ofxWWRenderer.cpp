@@ -291,11 +291,13 @@ void ofxWWRenderer::render(){
 	tweets.renderTweets();	
 	
 	ofEnableBlendMode(OF_BLENDMODE_ADD);
+
 	if(causticsAlwaysOn) {
 		ofSetHexColor(0xFFFFFF);
 	} else {
 		glColor4f(1,1,1,1.f - tweets.tweetLayerOpacity);
 	}
+<<<<<<< HEAD
 	
 
 	ofVec2f term;
@@ -306,6 +308,9 @@ void ofxWWRenderer::render(){
 	searchTermHaloShader.setUniform1f("amount", 1);
 */
 	
+=======
+
+>>>>>>> adc588d89b46372dc3f70e32b346998c126518d5
 	caust.getFbo().draw(0, 0);
 	//searchTermHaloShader.end();
 	

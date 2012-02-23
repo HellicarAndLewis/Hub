@@ -202,7 +202,7 @@ public:
 	bool statusesRetweetedByMe(rcp::Collection* extraParams = NULL);
 	bool statusesRetweetedToMe(rcp::Collection* extraParams = NULL);
 	bool statusesRetweetsOfMe(rcp::Collection* extraParams = NULL);
-	bool statusesUserTimeline(rcp::Collection* extraParams = NULL);
+	bool statusesUserTimeline(uint32_t howMany = 0, rcp::Collection* extraParams = NULL);
 	bool statusesRetweetedToUser(const string& screenName, rcp::Collection* extraParams = NULL);
 	bool statusesRetweetedByUser(const string& screenName, rcp::Collection* extraParams = NULL);
 	

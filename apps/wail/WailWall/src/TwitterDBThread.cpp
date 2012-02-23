@@ -18,7 +18,7 @@ void TwitterDBThread::threadedFunction() {
 	if(!db.open("twitter.db")) {
 		printf("Error: Cannot open twitter db.\n");
 	}
-	printf("Info: opened database.\n");
+
 	if(!db.createTables()) {
 		printf("Error: Cannot create database.\n");
 	}
@@ -37,12 +37,9 @@ void TwitterDBThread::threadedFunction() {
 			std::deque<TwitterDBThreadTask*>::iterator it = tasks.begin();
 			while(it != tasks.end()) {		
 				TwitterDBThreadTask* task = (*it);
-				//tasks.pop_front();	
 
 				// APPLY A SEARCH
-				// --------------
 				if(task->kind_of_task == TwitterDBThreadTask::TASK_SEARCH) {
-					printf("--------- TASK: SEARCH\n");
 					search_results.clear();
 					TwitterDBThreadTask_Search* search_task = static_cast<TwitterDBThreadTask_Search*>(task);
 					bool r = db.getTweetsWithSearchTerm(
@@ -54,26 +51,21 @@ void TwitterDBThread::threadedFunction() {
 					
 					if(r && search_results.size() > 0) {
 						std::sort(search_results.begin(), search_results.end(), TweetTimestampSorter());
-//						for(int i = 0; i < search_results.size(); ++i) {
-//							printf("[%zu] %s\n", search_results[i].created_at_timestamp, search_results[i].text.c_str());
-//						}
-						
 						search_for_older_then = search_results.back().created_at_timestamp;
-						printf("NEXT MUST BE OLDER THAN: %zu\n", search_for_older_then);
 					}
 					else {
 						printf("Cannot search results.\n");
 					}
 				}
+				
 				// INSERT TWEET
-				// -------------
 				else if (task->kind_of_task == TwitterDBThreadTask::TASK_INSERT_TWEET) {
 					//printf("--------- TASK: INSERT TWEET\n");
 					TwitterDBThreadTask_InsertTweet* insert_task = static_cast<TwitterDBThreadTask_InsertTweet*>(task);
 					db.insertTweet(insert_task->tweet);
 				}
+				
 				// DELETE TWEET
-				// -------------
 				else if(task->kind_of_task == TwitterDBThreadTask::TASK_DELETE_TWEET) {
 					TwitterDBThreadTask_DeleteTweet* del_task = static_cast<TwitterDBThreadTask_DeleteTweet*>(task);
 					db.deleteTweetByTweetID(del_task->id);
@@ -81,8 +73,10 @@ void TwitterDBThread::threadedFunction() {
 				delete task;
 				it = tasks.erase(it);
 				
-			}
+			} // while
+			
 			unlock();
+			
 		} // handl_task
 	}
 }
@@ -110,7 +104,6 @@ void TwitterDBThread::getMoreTweetsMatchingCurrentSearchTerm() {
 	task->setSearchOlderThan(search_for_older_then);
 	task->setSearchHowMany(search_howmany);
 	task->setSearchTerm(search_term);
-	printf("ADD SEARCH TASK!\n");
 	addTask(task);
 }
 
@@ -127,8 +120,6 @@ bool TwitterDBThread::retrieveSearchResultsFromThread(vector<rtt::Tweet>& result
 	if(search_results.size()) {
 		result = search_results; // copy
 		search_results.clear(); // and remove
-		//unlock();
-		//return true;
 	}
 	unlock();
 	return false;
@@ -139,8 +130,6 @@ bool TwitterDBThread::setSendQueueItemAsSend(int queueID) {
 	lock();
 		bool r = db.setSendQueueItemAsSend(queueID);
 	unlock();
-	//TwitterDBThreadTask_SetAsSend* task = new TwitterDBThreadTask_SetAsSend(queueID);
-	//addTask(task);
 	return r;
 }
 

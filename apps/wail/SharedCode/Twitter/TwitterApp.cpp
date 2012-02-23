@@ -4,8 +4,6 @@
 
 ofEvent<TwitterAppEvent> twitter_app_dispatcher;
 
-// Init
-// -------------------------------------
 TwitterApp::TwitterApp(ofxWWTweetParticleManager& manager)
 	:stream(twitter)
 	,uploader(*this)
@@ -25,21 +23,16 @@ void TwitterApp::init(int oscPort) {
 	initTwitter();
 	initOSC(oscPort);
 	initStoredSearchTerms();
-	
 	image_writer.startThread(true, false);
-	
 	initialized = true;
 }
 
 void TwitterApp::initTwitter() {
-	// @todo set to correct dewarshub consumer key + secret
+	// TODO make sure dewarshub key is set
 	twitter.setConsumerKey("kyw8bCAWKbkP6e1HMMdAvw");
 	twitter.setConsumerSecret("PwVuyjLeUdVZbi4ER6yRAo0byF55AIureauV6UhLRw");
 	
-	//string token_file = ofToDataPath("twitter_roxlu.txt", true);
-	//string token_file = ofToDataPath("twitter_roxlutest.txt", true);
-	string token_file = ofToDataPath("twitter_dewarshub.txt", true);
-	//string token_file = ofToDataPath("twitter.txt", true);
+	string token_file = ofToDataPath("twitter_dewarshub.txt", true);	
 	if(!twitter.loadTokens(token_file)) {
         string auth_url;
         twitter.requestToken(auth_url);
@@ -50,7 +43,6 @@ void TwitterApp::initTwitter() {
 	
 	// We listen to "connection" events of the stream.
 	stream.addEventListener(this);
-	
 	
 	mentions.setup(twitter.getConsumerKey(), twitter.getConsumerSecret(), token_file);
 	mentions.startThread(true,false);
@@ -63,12 +55,12 @@ void TwitterApp::initTwitter() {
 
 // removes 20 tweets per times!
 void TwitterApp::removeTweetsFromConnectedAccount() {
-	twitter.statusesUserTimeline();
+	twitter.statusesUserTimeline(50);
 	vector<rtt::Tweet> result;
 	twitter.getJSON().parseStatusArray(twitter.getResponse(), result);
 	for(int i = 0; i < result.size(); ++i) {
 		rtt::Tweet& tweet = result[i];
-		printf("> %s %s\n", tweet.getText().c_str(), tweet.getTweetID().c_str());
+		printf("> (%d) - %s %s\n",i, tweet.getText().c_str(), tweet.getTweetID().c_str());
 		twitter.statusesDestroy(tweet.getTweetID());
 	}
 }
@@ -80,8 +72,8 @@ void TwitterApp::initOSC(int port) {
 
 void TwitterApp::initDB() {
 	//grant all on dewarscube_admin.* to dewarscube_admin@"%" identified by "dewarscube_admin"
-	if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin", "/Applications/MAMP/tmp/mysql/mysql.sock")) {
-	//if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin", "/tmp/mysql.sock")) {
+	//if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin", "/Applications/MAMP/tmp/mysql/mysql.sock")) {
+	if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin", "/tmp/mysql.sock")) {
 		exit(0);
 	}
 	
@@ -96,8 +88,6 @@ void TwitterApp::initStoredSearchTerms() {
 	search_queue.setup(ofToDataPath("twitter_search_terms.bin",true));
 }
 
-// OSC
-// -------------------------------------
 
 // OSC event: bad words handling
 void TwitterApp::onUpdateBadWordList() {
@@ -114,27 +104,16 @@ bool TwitterApp::reloadBadWords() {
 	return true;
 }
 
-// only used to make testing everything a bit more easy.
-void TwitterApp::simulateSearch(const string& term) {
-	printf("> simulate search.\n");
-	rtt::Tweet tweet;
-	tweet.setScreenName("roxlu");
-	tweet.setText("@dewarshub " +term);
-	vector<roxlu::twitter::IEventListener*>& listeners = twitter.getEventListeners();
-	for(int i = 0; i < listeners.size(); ++i) {
-		listeners[i]->onStatusUpdate(tweet);
-	}
-}	
 
 void TwitterApp::removeTweet(uint32_t id) {
 	ofxWWTweetParticle tweet;
 	if(manager.getTweetWithDeleteID(id, tweet)) {
 		db_thread.deleteTweetByTweetID(tweet.tweet.getTweetID());
+		manager.removeTweetWithDeleteID(id);
 	}
 }
 				 			 
-// Bad words & hash tags				 
-// -------------------------------------				 
+// Bad words & hash tags				 				 
 bool TwitterApp::containsBadWord(const string& text, string& foundWord) {
 	return bad_words.containsBadWord(text, foundWord);
 }
@@ -162,8 +141,6 @@ void TwitterApp::reloadHashTags() {
 }
 
 
-// Twitter
-// -------------------------------------
 bool TwitterApp::connect(){
 	if(!stream.connect(URL_STREAM_USER)) {
 		printf("Error: cannot connect to user stream.\n");
@@ -230,13 +207,6 @@ void TwitterApp::onNewSearchTerm(rtt::Tweet tweet, const string& term, bool isUs
 }
 
 
-// TODO: remove this; not used in Wailwall
-// get the list of people to follow, separated by comma
-bool TwitterApp::getFollowers(vector<string>& result) {
-	// TODO: fix db
-//	return db.getFollowers(result);
-}
-
 void TwitterApp::onTwitterStreamDisconnected() {
 	mysql.setSetting("twitter_connected", "n");
 }
@@ -244,6 +214,19 @@ void TwitterApp::onTwitterStreamDisconnected() {
 void TwitterApp::onTwitterStreamConnected() {
 	mysql.setSetting("twitter_connected", "y");
 }
+
+// only used to make testing everything a bit more easy.
+void TwitterApp::simulateSearch(const string& term) {
+	printf("> simulate search.\n");
+	rtt::Tweet tweet;
+	tweet.setScreenName("roxlu");
+	tweet.setText("@dewarshub " +term);
+	vector<roxlu::twitter::IEventListener*>& listeners = twitter.getEventListeners();
+	for(int i = 0; i < listeners.size(); ++i) {
+		listeners[i]->onStatusUpdate(tweet);
+	}
+}	
+
 
 void TwitterApp::executeSearchTest() {
 	db_thread.getTweetsWithSearchTerm("love", 100);

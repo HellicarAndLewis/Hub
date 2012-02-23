@@ -11,18 +11,11 @@ class TwitterDB {
 public:
 	TwitterDB();
 	bool open(const string& name);
-	bool createTables();
-	
-	// follower
-	bool insertFollower(const rtt::StreamEvent& event);
-	bool removeFollower(const rtt::StreamEvent& event);
-	bool getFollowers(vector<string>& result);
+	bool createTables();	
 	
 	// tweets
 	bool insertTweet(const rtt::Tweet& tweet);
 	bool deleteTweetByTweetID(const string& id);
-	bool getTagID(const string& tag, int& result);
-	bool getTweetsWithTag(const string& tag, int howMany, vector<rtt::Tweet>& result);
 	bool getTweetsNewerThan(int age, int howMany, vector<rtt::Tweet>& result);
 	bool getTweetsWithSearchTerm(const string& q, time_t olderThan, int howMany,vector<rtt::Tweet>& result);
 	
