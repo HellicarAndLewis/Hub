@@ -63,6 +63,7 @@ class ofxWWTweetParticleManager : public TweetProviderListener, public SearchLay
 
 	ofxWWSearchTermManager searchTermManager;
 	ofxWWSearchTermManager& getSearchTermManager();
+	bool getTweetWithDeleteID(uint32_t id, ofxWWTweetParticle& result);
 	
 	
 	#ifdef USE_FTGL

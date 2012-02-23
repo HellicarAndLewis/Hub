@@ -217,6 +217,7 @@ span.command {
 	margin-bottom:30px;
 }
 
+input.tweet_id,
 input.search_term {
 	border-radius:10px 10px 0px 0px;
 	border:1px solid #ccc;
@@ -225,7 +226,7 @@ input.search_term {
 	width:290px;
 	margin:0px;
 }
-.fake_search span.command {
+.half_round span.command {
 	border-radius:0px 0px 5px 5px;
 }
 .fake_search {

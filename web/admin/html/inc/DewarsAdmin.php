@@ -209,9 +209,13 @@ class DewarsAdmin {
 		$html = '<div id="commands">'
 					.'<span class="command" rel="/twitter/reload_hashtags">Update hashtags</span>'
 					.'<span class="command" rel="/twitter/reload_badwords">Update badwords</span>'
-					.'<div class="fake_search">'
+					.'<div class="half_round">'
 						.'<input type="text" class="search_term">'
 						.'<span class="command search" rel="/twitter/simulate_search">Simulate search</span>'
+					.'</div>'
+					.'<div class="half_round remove_tweet">'
+						.'<input type="text" class="tweet_id">'
+						.'<span class="command remove_tweet" rel="/twitter/remove_tweet">Remove tweet</span>'
 					.'</div>'
 				.'</div>';
 		return $html;
@@ -228,9 +232,19 @@ class DewarsAdmin {
 		if($message == '/twitter/simulate_search') {
 			$data = $req['data'];
 		}
+		else if($message == '/twitter/remove_tweet') {
+			$data = $req['data'];
+		}
 		$client = new OSCClient($osc['host'], $osc['port']);
 		$msg = new OscMessage($message);
-		$msg->add_arg($data, "s");
+		if(!is_numeric($data)){
+			$msg->add_arg($data, "s");
+		}
+		else {
+			$msg->add_arg($data, "i");
+			
+		}
+		l('added id: '.$data);
 		$client->send($msg);
 		return true;
 		/*

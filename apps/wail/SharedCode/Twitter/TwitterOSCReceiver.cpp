@@ -30,7 +30,7 @@ void TwitterOSCReceiver::update() {
 			}
 		}
 		else if(m.getAddress() == "/twitter/remove_tweet") {
-			uint32_t id = m.getArgAsInt(0);
+			uint32_t id = m.getArgAsInt32(0);
 			for(int i = 0; i < listeners.size(); ++i) {
 				listeners[i]->removeTweet(id);
 			}

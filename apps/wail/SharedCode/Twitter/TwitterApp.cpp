@@ -1,15 +1,17 @@
 #include "TwitterApp.h"
 #include "ofxXmlSettings.h"
+#include "ofxWWTweetParticleManager.h"
 
 ofEvent<TwitterAppEvent> twitter_app_dispatcher;
 
 // Init
 // -------------------------------------
-TwitterApp::TwitterApp()
+TwitterApp::TwitterApp(ofxWWTweetParticleManager& manager)
 	:stream(twitter)
 	,uploader(*this)
 	,image_writer(*this)
 	,initialized(false)	
+	,manager(manager)
 {
 
 }

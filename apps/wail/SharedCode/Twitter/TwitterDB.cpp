@@ -353,7 +353,7 @@ bool TwitterDB::getTweetsWithSearchTerm(const string& q, time_t olderThan, int h
 	}
 	int end = ofGetElapsedTimeMillis();	
 	int diff = end - start;
-	printf("Searched for %s and found %zu rows in %d ms. Using older than: %d and max %d many rows.\n", q.c_str(), result.size(), diff, olderThan, howMany);
+	printf("Searched for %s and found %zu rows in %d ms. Using older than: %zu and max %d many rows.\n", q.c_str(), result.size(), diff, olderThan, howMany);
 	return true;
 }
 

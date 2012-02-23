@@ -12,6 +12,7 @@ ofxWWTweetParticleManager::ofxWWTweetParticleManager():
 	,current_force(NULL)
 	,default_force(NULL)
 	,selected_force(NULL)
+	,twitter(*this)
 {
 	maxTweets = 100;
 
@@ -633,4 +634,8 @@ void ofxWWTweetParticleManager::onAllSearchTermsDeselected() {
 	printf("+++++++++++++ ALL SEARCH TERMS DESELECTED \n");
 	setCurrentProvider(stream_provider);
 	setCurrentForce(default_force);
+}
+
+bool ofxWWTweetParticleManager::getTweetWithDeleteID(uint32_t id, ofxWWTweetParticle& result) {
+	return true;
 }

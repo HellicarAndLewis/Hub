@@ -136,6 +136,9 @@ var DewarsAdmin = new Class({
 			if(this.hasClass("search")) {
 				data = this.getParent('div').getElement('input.search_term').get('value');
 			}
+			else if(this.hasClass("remove_tweet")) {
+				data = this.getParent('div').getElement('input.tweet_id').get('value');
+			}
 			var req = new Request.JSON({
 					url:"/?act=do_command"
 					,onSuccess:function(id) {
@@ -162,10 +165,11 @@ var DewarsAdmin = new Class({
 							$('twitter_status').set('class',(r) ? 'connected' : 'disconnected');
 							prev = r;
 						}
+						
 					}
 				}).post();
 		}
-		check.periodical(500);
+		//check.periodical(500);
 	}
 	
 });

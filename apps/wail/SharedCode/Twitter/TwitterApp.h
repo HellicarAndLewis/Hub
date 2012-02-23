@@ -58,7 +58,7 @@ public:
 
 extern ofEvent<TwitterAppEvent> twitter_app_dispatcher;
 
-
+class ofxWWTweetParticleManager;
 
 class TwitterApp : 
 			 public TwitterOSCReceiverListener
@@ -67,7 +67,7 @@ class TwitterApp :
 
 public:
 
-	TwitterApp();
+	TwitterApp(ofxWWTweetParticleManager& manager);
 	~TwitterApp();
 	
 	void init(int oscPort);
@@ -109,7 +109,7 @@ public:
 	virtual void onUpdateBadWordList();
 	virtual void onUpdateHashTags();
 	virtual void simulateSearch(const string& term);
-	virtual void removeTweet(uint32_t id) = 0;
+	virtual void removeTweet(uint32_t id) ;
 	
 	void removeTweetsFromConnectedAccount();
 	
@@ -126,6 +126,7 @@ private:
 	void initStoredSearchTerms();
 	void executeSearchTest();
 	
+	ofxWWTweetParticleManager& 	manager;
 	rt::Twitter 				twitter;
 	rt::Stream					stream;
 	TwitterDBThread				db_thread;
