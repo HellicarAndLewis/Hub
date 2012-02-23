@@ -162,6 +162,8 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Repulsion between particles", default_force->force_repulsion_from_eachother,0,1500);
 	webGui.addSlider("Duration of repulsion effect millis", default_force->hide_duration_millis,300,3000);
 	webGui.addSlider("Startup force  duration", default_force->apply_startup_force_duration_seconds,0.1,3.5);
+	webGui.addSlider("Database: number items to fetch", db_provider->fetch_total, 10,1000);
+	webGui.addSlider("Database: spawn delay millis", db_provider->spawn_delay, 10, 300);
 	
 	//TODO set up in XML ONLY CAN HAVE 4 right now , least to most common
 	causticColors.push_back(ofColor::fromHex(0xf8edc0)); //LIGHT YELLOW
@@ -191,21 +193,21 @@ void ofxWWTweetParticleManager::checkFonts(){
 			if(!sharedTweetFont.loadFont("fonts/montreal-ttf/Montreal-LightIta.ttf", tweetFontSize, true, true, false)){
 				ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load tweet font!");
 			}	
-			cout << "tweet font allocating! " << tweetFontSize << " " << sharedTweetFont.getSize() << endl;
+			//cout << "tweet font allocating! " << tweetFontSize << " " << sharedTweetFont.getSize() << endl;
 		}
 		
 		if(!sharedSearchFont.isLoaded() || searchTermManager.searchTermFontSize != sharedSearchFont.getSize()){
 			if(!sharedSearchFont.loadFont("fonts/montreal-ttf/Montreal-BoldIta.ttf", searchTermManager.searchTermFontSize, true, true, false)){
 				ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load search  font!");
 			}	
-			cout << "search font allocating! " << searchTermManager.searchTermFontSize << " " << sharedSearchFont.getSize() << endl;
+			//cout << "search font allocating! " << searchTermManager.searchTermFontSize << " " << sharedSearchFont.getSize() << endl;
 		}
 		
 		if(!sharedUserFont.isLoaded() || userFontSize != sharedUserFont.getSize()){
 			if(!sharedUserFont.loadFont("fonts/montreal-ttf/Montreal-BoldIta.ttf", userFontSize, true, true, false)){
 				ofLogError("ofxWWTweetParticleManager::setup() -- couldn't load search  font!");
 			}	
-			cout << "user font allocating! " << userFontSize << " " << sharedUserFont.getSize() << endl;
+			//cout << "user font allocating! " << userFontSize << " " << sharedUserFont.getSize() << endl;
 		}
 	
 	#else 
@@ -348,12 +350,10 @@ void ofxWWTweetParticleManager::updateTweets(){
 	if(current_force->isHiding()) {
 		current_force->hide();
 		if(current_force->isReadyWithHiding()){	
-			printf("CURRENT FORCE IS READY WITH HIDING\n");
 			current_force->setShouldHide(false);
 			current_force->deactivate();
 			new_force->activate();
 			current_force = new_force;
-			printf("CHANGED FORCE\n");
 		}		
 	}
 	else {
@@ -599,9 +599,6 @@ void ofxWWTweetParticleManager::onNewSearchTerm(TwitterAppEvent& event) {
 void ofxWWTweetParticleManager::setCurrentProvider(TweetProvider* prov) {
 	if(current_provider != NULL) {
 		current_provider->disable();
-		if(current_provider->kind_of_provider == TweetProvider::PROVIDER_STREAM) {
-			printf("YES STRAEM PROVIDER ***************************************\n");
-		}
 	}
 	current_provider = prov;
 	current_provider->enable();
@@ -613,11 +610,8 @@ void ofxWWTweetParticleManager::setCurrentForce(Force* force) {
 	if(current_force != NULL) {
 		current_force->deactivate();
 		current_force->setShouldHide(true);
-		//new_force->activate();
-
 	}
 	else {
-		
 		current_force = force;
 		current_force->activate();
 	}

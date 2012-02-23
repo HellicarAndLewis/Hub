@@ -29,7 +29,7 @@ public:
 	 * e.g. addHandler("*", handler); 
 	 * this would send all URL requests to the handler
 	 * 
-	 * e.g. addHandler("actions/*", handler);
+	 * e.g. addHandler("actions", handler);
 	 * this would send any url beginning with actions/ to
 	 * the handler.
 	 */

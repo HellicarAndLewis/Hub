@@ -4,6 +4,7 @@ TweetProviderDB::TweetProviderDB(TwitterApp& app)
 	,should_create_new_tweet_on(0)
 	,spawn_delay(50)
 	,TweetProvider(TweetProvider::PROVIDER_DB)
+	,fetch_total(200)
 {
 }
 
@@ -20,11 +21,9 @@ void TweetProviderDB::update() {
 		should_create_new_tweet_on = now + spawn_delay;
 		if(found_tweets.size() > 0) {
 			tweet_index = ++tweet_index % found_tweets.size();
-			//printf("> PASSING: %s\n", found_tweets[tweet_index].getText().c_str());
 			onNewTweet(found_tweets[tweet_index]);
 		}
 	}
-	
 }
 
 
@@ -42,7 +41,7 @@ void TweetProviderDB::setSearchInfoForNewParticles(
 void TweetProviderDB::fillWithTweetsWhichContainTerm(const string& term) {
 	found_tweets.clear();
 	tweet_index = 0;
-	app.getTweetsWithSearchTerm(term, 200);
+	app.getTweetsWithSearchTerm(term, fetch_total);
 }
 
 void TweetProviderDB::activate() {

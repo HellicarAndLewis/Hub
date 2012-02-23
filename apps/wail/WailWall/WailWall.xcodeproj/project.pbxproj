@@ -1265,7 +1265,6 @@
 			children = (
 				1F28065614F68A7B00BCE529 /* Caustics.cpp */,
 				1F28065714F68A7B00BCE529 /* Caustics.h */,
-				A683B90E14D5A9A800C3B6F7 /* ofxWWRenderer.h */,
 				A683B90F14D5A9A800C3B6F7 /* ofxWWRenderer.cpp */,
 				1F58DC4214F40DEB00767916 /* Colours.cpp */,
 				1F58DC4414F40DF500767916 /* Colours.h */,
@@ -1657,6 +1656,7 @@
 				A683B91114D5A9BD00C3B6F7 /* Renderer */,
 				A683B8E614D5A60C00C3B6F7 /* ScreenManagement */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.mm */,
+				A683B90E14D5A9A800C3B6F7 /* ofxWWRenderer.h */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
 				A69C743B14D6470B00C0EABC /* ofModifiers.h */,

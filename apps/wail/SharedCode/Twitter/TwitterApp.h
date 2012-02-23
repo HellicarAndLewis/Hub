@@ -80,7 +80,6 @@ public:
 
 	bool getUnusedSearchTerms(vector<TwitterSearchTerm*>& result);
 	bool setSearchTermAsUsed(const string& user, const string& term);
-	bool getFollowers(vector<string>& result);
 	bool getTweetsWithSearchTerm(const string& q, int howMany);
 	void onNewSearchTerm(rtt::Tweet tweet, const string& term, bool isUsed = false);
 	void uploadScreenshot(const string& filePath, const string& username, const string& message);
@@ -179,12 +178,9 @@ inline bool TwitterApp::setSearchTermAsUsed(const string& user, const string& te
 	return search_queue.setSearchTermAsUsed(user, term);
 }
 
-
 inline TwitterThreadedImageWriter& TwitterApp::getImageWriter() {
 	return image_writer;
 }
-
-
 
 inline rt::Twitter& TwitterApp::getTwitter() {
 	return twitter;
