@@ -11,6 +11,11 @@
 Caustics::Caustics() {
 	ping = NULL;
 	pong = NULL;
+	verticalDrift = 0.5;
+	scaleFactor = 1;
+	fade = 0.98;
+	brightness = 0.03;
+	oscillation = 5;
 }
 
 Caustics::~Caustics() {
@@ -35,8 +40,8 @@ void Caustics::setup(int width, int height, int maxNumPoints) {
 	pong = new ofFbo();
 	this->width = width;
 	this->height = height;
-	ping->allocate(width, height, GL_RGB);
-	pong->allocate(width, height, GL_RGB);
+	ping->allocate(width, height, GL_RGB16);
+	pong->allocate(width, height, GL_RGB16);
 	triangulator.init(200);
 	clearedFbo = false;
 }
@@ -79,17 +84,19 @@ void Caustics::drawCaustics() {
 		
 		ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 		ofClear(0, 0, 0, 0);
-		glColor4f(1, 1, 1, 0.98);
+		glColor4f(1, 1, 1, fade);
 		
 		glPushMatrix();
 		glTranslatef(width/2, height/2, 0);
-		float s = 1.001;//ofMap(sin(ofGetElapsedTimef()*4), -1, 1, 0.998, 1.002);
+		float s = 1 + 0.001 * scaleFactor;
+		
+		//ofMap(sin(ofGetElapsedTimef()*4), -1, 1, 0.998, 1.002);
 		glScalef(s, s, 1);
 		pong->setAnchorPercent(0.5, 0.5);
 		
-		pong->draw(0, 0.5);//0.5, ofGetWidth(), ofGetHeight());
+		pong->draw(0, verticalDrift);//0.5, ofGetWidth(), ofGetHeight());
 		glPopMatrix();
-		glColor4f(1, 1, 1, 0.03);
+		glColor4f(1, 1, 1, brightness);
 		
 		int numTris = triangulator.getNumTriangles();
 		ITRIANGLE *tris = triangulator.getTriangles();
@@ -102,12 +109,12 @@ void Caustics::drawCaustics() {
 			ofVec2f a = ofVec2f(points[tris[i].p1].x, points[tris[i].p1].y);
 			ofVec2f b = ofVec2f(points[tris[i].p2].x, points[tris[i].p2].y);
 			ofVec2f c = ofVec2f(points[tris[i].p3].x, points[tris[i].p3].y);
-			ofVec3f ca = getColor(indexToPointId[tris[i].p1]);
-			ofVec3f cb = getColor(indexToPointId[tris[i].p2]);
-			ofVec3f cc = getColor(indexToPointId[tris[i].p3]);
-			drawLine(a, b, ca, cb);
-			drawLine(b, c, cb, cc);
-			drawLine(c, a, cc, ca);
+			//ofVec3f ca = getColor(indexToPointId[tris[i].p1]);
+			//ofVec3f cb = getColor(indexToPointId[tris[i].p2]);
+			//ofVec3f cc = getColor(indexToPointId[tris[i].p3]);
+			drawWavyLine(a, b);
+			drawWavyLine(b, c);
+			drawWavyLine(c, a);
 			
 
 			
@@ -126,7 +133,7 @@ void Caustics::drawCaustics() {
 	
 }
 
-void Caustics::drawLine(ofVec2f a, ofVec2f b, ofVec3f ca, ofVec3f cb) {
+void Caustics::drawWavyLine(ofVec2f a, ofVec2f b) {
 	
 	float increment = PI/5.f;
 	ofVec2f diff = (b-a);
@@ -143,11 +150,11 @@ void Caustics::drawLine(ofVec2f a, ofVec2f b, ofVec3f ca, ofVec3f cb) {
 	
 	glBegin(GL_LINE_STRIP);
 	int i = 0;
-	for(float f = 0; f <= PI*2; f+=increment) {
+	for(float f = 0; f < PI*2; f+=increment) {
 		float d = ofMap(f, 0, PI*2, 0, 1);
 		
 		float window = 1-4*(d-0.5)*(d-0.5);
-		ofVec2f sine = n * sin(f+currTime)*ofMap(length, 0, 200, 0, 5)*window;
+		ofVec2f sine = n * sin(f+currTime)*ofMap(length, 0, 200, 0, oscillation)*window;
 		ofVec2f p = sine + a + diff * d;
 		
 		//glColor4f(ca.x, ca.y, ca.z, 0.03);
@@ -158,6 +165,7 @@ void Caustics::drawLine(ofVec2f a, ofVec2f b, ofVec3f ca, ofVec3f cb) {
 		glVertex2f(p.x, p.y);
 		i++;
 	}
+	glVertex2f(b.x, b.y);
 	//glVertex2f(a.x, a.y);
 	//a += step;
 	//glVertex2f(a.x, a.y);
@@ -173,7 +181,7 @@ void Caustics::renderToFbo() {
 	
 	ofEnableAlphaBlending();
 	// push our gl state stuff
-	/*
+	
 	bool lineSmoothedWasOn = glIsEnabled(GL_LINE_SMOOTH);
 	if(!lineSmoothedWasOn) {
 		glEnable(GL_LINE_SMOOTH);
@@ -184,7 +192,7 @@ void Caustics::renderToFbo() {
 	glGetFloatv(GL_LINE_WIDTH, &oldLineWidth);
 	
 	glLineWidth(2);
-	*/
+	
 	
 	
 	
@@ -194,7 +202,7 @@ void Caustics::renderToFbo() {
 	
 	
 	
-	/*
+	
 	
 	// pop the gl state stuff
 	if(!lineSmoothedWasOn) {
@@ -202,7 +210,7 @@ void Caustics::renderToFbo() {
 	
 	}
 	glLineWidth(oldLineWidth);
-	*/
+	
 }
 ofFbo &Caustics::getFbo() {
 	return *pong;

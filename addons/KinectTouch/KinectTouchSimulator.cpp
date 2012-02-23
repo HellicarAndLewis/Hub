@@ -39,8 +39,8 @@ void KinectTouchSimulator::mousePressed(int x, int y) {
 	touch.id = idCounter;
 	touch.x = ofMap(x, 0, ofGetWidth(), 0, 1);
 	touch.y = ofMap(y, 0, ofGetHeight(), 0, 1);
-	touch.z = 0.02;
-	touch.size = 0.1;
+	touch.z = 0.75;
+	touch.size = 0.15;
 	listener->touchDown(touch);
 	
 }
@@ -53,8 +53,9 @@ void KinectTouchSimulator::mouseDragged(int x, int y) {
 	ofVec3f oldTouch = ofVec3f(touch.x, touch.y, touch.z);
 	touch.x = ofMap(x, 0, ofGetWidth(), 0, 1);
 	touch.y = ofMap(y, 0, ofGetHeight(), 0, 1);
-	touch.z = getTouchZ(ofGetElapsedTimef() - touchDownTime);
-	touch.size = 0.01 + touch.z*0.3;
+	touch.z = 0.75;
+	//touch.z = getTouchZ(ofGetElapsedTimef() - touchDownTime);
+	//touch.size = 0.01 + touch.z*0.3;
 	touch.vel.x = touch.x - oldTouch.x;
 	touch.vel.y = touch.y - oldTouch.y;
 	touch.vel.z = touch.z - oldTouch.z;

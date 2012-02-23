@@ -17,6 +17,9 @@ void ofxWWRenderer::setup(int width, int height){
 	targetWidth = width;
 	targetHeight = height;
 
+
+	
+	causticsAlwaysOn = false;
 	// max number of particles is the final arg, might need higher
 	caust.setup(width, height, 500);
 	accumbuf = 0;
@@ -123,7 +126,7 @@ void ofxWWRenderer::setupGui(){
 	webGui.addSlider("Influence Width", tweets.touchInfluenceFalloff, 200, 5000);
 	webGui.addToggle("Draw Touch Debug", drawTouchDebug);
 	
-	webGui.addPage("Caustics");
+	/*webGui.addPage("Caustics");
 	webGui.addToggle("Enable Caustics", enableCaustics);
 	webGui.addSlider("Delta", caustics.delta, .1, 1.0);
 	webGui.addSlider("Drag", caustics.drag, .8, .999);
@@ -134,6 +137,32 @@ void ofxWWRenderer::setupGui(){
 	webGui.addSlider("Drop Scale", dropScale, 10, 100);
 	webGui.addSlider("Drop Force", dropForce, .001, 1.0);
 	webGui.addToggle("Draw Debug Texture", drawCausticsDebug);
+	*/
+	
+	webGui.addPage("Caustics");
+	
+	// tweakable variables
+	// how much it goes down by [-2->+2]
+	webGui.addSlider("Vertical Drift", caust.verticalDrift, -2, 2);
+	
+	// how much the zoom blur happens [0-10]
+	// it doesnt make any difference to performance
+	// how much you do.
+	webGui.addSlider("Scale factor",  caust.scaleFactor, 0, 10);
+	
+	
+	// how much the back fades out [0.95-1]
+	webGui.addSlider("Blend",  caust.fade, 0.95, 1);
+	
+	
+	// [0.01-0.1]
+	webGui.addSlider("Brightness",  caust.brightness, 0.01, 0.1);
+	
+	webGui.addSlider("Oscillation",  caust.oscillation, 0, 20);
+	webGui.addToggle("Always on", causticsAlwaysOn);
+	
+	
+	
 	
 	webGui.addPage("Connections");
 	webGui.addToggle("Draw Connections", enableConnections);
@@ -253,7 +282,11 @@ void ofxWWRenderer::render(){
 	tweets.renderTweets();	
 	
 	ofEnableBlendMode(OF_BLENDMODE_ADD);
-	glColor4f(1,1,1,1.f - tweets.tweetLayerOpacity);
+	if(causticsAlwaysOn) {
+		ofSetHexColor(0xFFFFFF);
+	} else {
+		glColor4f(1,1,1,1.f - tweets.tweetLayerOpacity);
+	}
 	caust.getFbo().draw(0, 0);
 	
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);

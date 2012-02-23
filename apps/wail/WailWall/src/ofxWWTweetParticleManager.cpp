@@ -3,6 +3,7 @@
 #include "ofxWebSimpleGuiToo.h"
 #include "Error.h"
 #include "Colours.h"
+#include "mathutils.h"
 
 ofxWWTweetParticleManager::ofxWWTweetParticleManager():
 	renderer(NULL)
@@ -356,22 +357,27 @@ void ofxWWTweetParticleManager::updateTweets(){
 				for(int c = 0; c < 4; c++){
 					ofVec2f corner = tweets[i].getBoundingCorner(c);
 					if(tweets[j].boundingRect.inside( corner )){
+						//float overlapAmount = rectangleOverlap(tweets[j].boundingRect, tweets[i].boundingRect);
 						ofVec2f myCenter = ofVec2f(tweets[i].boundingRect.x + tweets[i].totalWidth/2, 
 												   tweets[i].boundingRect.y + tweets[i].totalHeight/2);
 						ofVec2f otherCenter = ofVec2f(tweets[j].boundingRect.x + tweets[j].totalWidth/2, 
 													  tweets[j].boundingRect.y + tweets[j].totalHeight/2);
 						if(myCenter.x > otherCenter.x){
-							tweets[i].force.x -= (tweets[j].boundingRect.x+tweets[j].boundingRect.width - (myCenter.x+tweets[i].boundingRect.width/2) ) * tweetRepulsionAtten;
+							tweets[i].force.x -= ((tweets[j].boundingRect.x+tweets[j].boundingRect.width - (myCenter.x+tweets[i].boundingRect.width/2) ) * tweetRepulsionAtten)
+							;
 						}
 						else{
-							tweets[i].force.x += (tweets[j].boundingRect.x - (myCenter.x+tweets[i].boundingRect.width/2) ) * tweetRepulsionAtten;
+							tweets[i].force.x += ((tweets[j].boundingRect.x - (myCenter.x+tweets[i].boundingRect.width/2) ) * tweetRepulsionAtten)
+									;
 						}
 						
 						if(myCenter.y > otherCenter.y){
-							tweets[i].force.y -= (tweets[j].boundingRect.y+tweets[j].boundingRect.height - (myCenter.y+tweets[i].boundingRect.height/2) ) * tweetRepulsionAtten;
+							tweets[i].force.y -= ((tweets[j].boundingRect.y+tweets[j].boundingRect.height - (myCenter.y+tweets[i].boundingRect.height/2) ) * tweetRepulsionAtten);
 						}
 						else{
-							tweets[i].force.y += (tweets[j].boundingRect.y - (myCenter.y+tweets[i].boundingRect.height/2) ) * tweetRepulsionAtten;
+							tweets[i].force.y += ((tweets[j].boundingRect.y - (myCenter.y+tweets[i].boundingRect.height/2) ) * tweetRepulsionAtten)
+								;
+							
 						}
 					}
 				}

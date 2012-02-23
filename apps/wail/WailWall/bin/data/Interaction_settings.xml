@@ -17,6 +17,6 @@
     </SliderFloat_Influence_Width>
     <Toggle_Draw_Touch_Debug>
         <name>Draw Touch Debug</name>
-        <value>0</value>
+        <value>1</value>
     </Toggle_Draw_Touch_Debug>
 </controls>
