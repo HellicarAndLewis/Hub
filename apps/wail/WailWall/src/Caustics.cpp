@@ -173,7 +173,7 @@ void Caustics::renderToFbo() {
 	
 	ofEnableAlphaBlending();
 	// push our gl state stuff
-	
+	/*
 	bool lineSmoothedWasOn = glIsEnabled(GL_LINE_SMOOTH);
 	if(!lineSmoothedWasOn) {
 		glEnable(GL_LINE_SMOOTH);
@@ -184,7 +184,7 @@ void Caustics::renderToFbo() {
 	glGetFloatv(GL_LINE_WIDTH, &oldLineWidth);
 	
 	glLineWidth(2);
-	
+	*/
 	
 	
 	
@@ -194,7 +194,7 @@ void Caustics::renderToFbo() {
 	
 	
 	
-	
+	/*
 	
 	// pop the gl state stuff
 	if(!lineSmoothedWasOn) {
@@ -202,7 +202,7 @@ void Caustics::renderToFbo() {
 	
 	}
 	glLineWidth(oldLineWidth);
-	
+	*/
 }
 ofFbo &Caustics::getFbo() {
 	return *pong;

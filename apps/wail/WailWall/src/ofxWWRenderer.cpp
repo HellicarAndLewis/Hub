@@ -225,8 +225,10 @@ void ofxWWRenderer::update(){
 	
 	vector<ofxWWTweetParticle>::iterator twit = tweets.tweets.begin();
 	int i = 0;
+	ofVec2f offset(tweets.dotShift, 0);
 	while(twit!=tweets.tweets.end()) {
-		caust.addPoint((*twit).pos, i++);
+
+		caust.addPoint((*twit).pos+offset, i++);
 		twit++;
 	}
 	
@@ -235,79 +237,26 @@ void ofxWWRenderer::update(){
 
 void ofxWWRenderer::render(){
 
-	//type
-//	renderLayer1();
-//	renderLayer2();
-	
-	//effects
 	renderGradientOverlay();
-	renderDynamics();
-	//renderWarpMap();
-	
+	caust.renderToFbo();
 	//blit to main render target
 	renderTarget.begin();
 	ofClear(0);
 	ofEnableAlphaBlending();
-	//gradientOverlay.draw(0,0,targetWidth,targetHeight);
-					
-
-	//BLIT DYNAMICS
-	glowShader.begin();
-	//warpShader.setUniform1f("warpScale", warpAmount);
-	glowShader.setUniform1f("glowScale", glowAmount);
-	//our shader uses two textures, the top layer and the alpha
-	//we can load two textures into a shader using the multi texture coordinate extensions
-	glActiveTexture(GL_TEXTURE0_ARB);
-	//accumulator[accumbuf].getTextureReference().bind();
-	gradientOverlay.getTextureReference().bind();
 	
-	glActiveTexture(GL_TEXTURE1_ARB);
-	caustics.getTextureReference().bind();
+	gradientOverlay.draw(0,0, targetWidth, targetHeight);
 	
-	//draw a quad the size of the frame
-	glBegin(GL_QUADS);
-	
-	//move the mask around with the mouse by modifying the texture coordinates
-	glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, 0);
-	glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, 0);
-	glVertex2f( 0, 0 );
-	
-	glMultiTexCoord2d(GL_TEXTURE0_ARB, gradientOverlay.getWidth(), 0);
-	glMultiTexCoord2d(GL_TEXTURE1_ARB, caustics.getTextureReference().getWidth(), 0);
-	glVertex2f( targetWidth, 0 );
-	
-	glMultiTexCoord2d(GL_TEXTURE0_ARB, gradientOverlay.getWidth(), gradientOverlay.getHeight());
-	glMultiTexCoord2d(GL_TEXTURE1_ARB, caustics.getTextureReference().getWidth(), caustics.getTextureReference().getHeight());
-	glVertex2f( targetWidth, targetHeight );
-	
-	glMultiTexCoord2d(GL_TEXTURE0_ARB, 0, gradientOverlay.getHeight());
-	glMultiTexCoord2d(GL_TEXTURE1_ARB, 0, caustics.getTextureReference().getHeight());
-	glVertex2f( 0, targetHeight );
-	
-	glEnd();
-	
-	//deactive and clean up
-	glActiveTexture(GL_TEXTURE1_ARB);
-	caustics.getTextureReference().unbind();
-	
-	glActiveTexture(GL_TEXTURE0_ARB);
-	//accumulator[accumbuf].getTextureReference().unbind();
-	gradientOverlay.getTextureReference().unbind();
-	
-	glowShader.end();
-	
-	caust.renderToFbo();
-	ofEnableBlendMode(OF_BLENDMODE_ADD);
-	glTranslatef(ofGetMouseX(), ofGetMouseY(),0);
-	caust.getFbo().draw(0, 0);
-	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-	accumulator[accumbuf].draw(0, 0);
-	accumbuf = (accumbuf+1)%2;
 	
 
 	tweets.renderSearchTerms();
 	
 	tweets.renderTweets();	
+	
+	ofEnableBlendMode(OF_BLENDMODE_ADD);
+	glColor4f(1,1,1,1.f - tweets.tweetLayerOpacity);
+	caust.getFbo().draw(0, 0);
+	
+	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	
 	// JAMES, can you create a function which creates the caustics for the 
 	// tweets which are currently rendered. If it's just a function we need
@@ -321,15 +270,7 @@ void ofxWWRenderer::render(){
 	
 	callToAction.draw();
 	
-	//DEBUG
-	if(justDrawWarpTexture){
-		warpMap.draw(0,0);	
-	}
-	
-	if(drawCausticsDebug){
-		caustics.getTextureReference().draw(0, 0, targetWidth, targetHeight);
-	}
-	
+		
 	float maxTouchRadius = targetHeight*tweets.touchSizeScale;	
 	map<int,KinectTouch>::iterator it;
 	if(drawTouchDebug){ 
@@ -355,32 +296,26 @@ void ofxWWRenderer::render(){
 	}
 	
 	ofPushStyle();
-    
-    ofColor surfaceHalo = ofColor::fromHex(Colours::get(HALO_SURFACE));
-    ofColor bottomHalo = ofColor::fromHex(Colours::get(HALO_SEARCH));
-    
-    float tweenedSmootherStep = smootherStep(layer1Opacity, 0.f, 1.f);
-    
-    surfaceHalo.lerp(bottomHalo, tweenedSmootherStep);
-    
-	//ofEnableBlendMode(OF_BLENDMODE_ADD);
-	ofSetColor(surfaceHalo.r, surfaceHalo.g, surfaceHalo.b, 100);
-	for(it = blobs->begin(); it != blobs->end(); it++){
-		ofVec2f touchCenter = ofVec2f( it->second.x*targetWidth, it->second.y*targetHeight );
-		float radius = it->second.size*maxTouchRadius;
-		halo.draw(ofRectangle(touchCenter.x-radius,touchCenter.y-radius, radius*2,radius*2));
+    {
+		ofColor surfaceHalo = ofColor::fromHex(Colours::get(HALO_SURFACE));
+		ofColor bottomHalo = ofColor::fromHex(Colours::get(HALO_SEARCH));
+		
+		float tweenedSmootherStep = smootherStep(layer1Opacity, 0.f, 1.f);
+		
+		surfaceHalo.lerp(bottomHalo, tweenedSmootherStep);
+		
+		//ofEnableBlendMode(OF_BLENDMODE_ADD);
+		ofSetColor(surfaceHalo.r, surfaceHalo.g, surfaceHalo.b, 100);
+		for(it = blobs->begin(); it != blobs->end(); it++){
+			ofVec2f touchCenter = ofVec2f( it->second.x*targetWidth, it->second.y*targetHeight );
+			float radius = it->second.size*maxTouchRadius;
+			halo.draw(ofRectangle(touchCenter.x-radius,touchCenter.y-radius, radius*2,radius*2));
+		}
+		//ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	}
-	//ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	ofPopStyle();
 	
 	renderTarget.end();	
-	
-//	// TODO: this is done in testApp now..
-//	if(test_screenshot) {
-//		//tweets.addCurrentRenderToScreenshotQueue();
-//		test_screenshot = false;
-//	}
-
 }
 
 //roxlu: testing screenshots
