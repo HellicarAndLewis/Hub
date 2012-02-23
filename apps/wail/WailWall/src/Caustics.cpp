@@ -33,8 +33,10 @@ void Caustics::setup(int width, int height, int maxNumPoints) {
 	cleanUp();
 	ping = new ofFbo();
 	pong = new ofFbo();
-	ping->allocate(ofGetWidth(), ofGetHeight(), GL_RGB);
-	pong->allocate(ofGetWidth(), ofGetHeight(), GL_RGB);
+	this->width = width;
+	this->height = height;
+	ping->allocate(width, height, GL_RGB);
+	pong->allocate(width, height, GL_RGB);
 	triangulator.init(200);
 	clearedFbo = false;
 }
@@ -45,7 +47,7 @@ void Caustics::reset() {
 }
 void Caustics::addPoint(const ofVec2f &p, int pointId) {
 	int delId = triangulator.addPoint(p.x, p.y);
-	indexToPointId[delId] = pointId;
+	//indexToPointId[delId] = pointId;
 }
 
 void Caustics::update() {
@@ -63,20 +65,24 @@ ofVec3f getColor(int a) {
 	
 }
 void Caustics::drawCaustics() {
+	
 	if(!clearedFbo) {
 		pong->begin();
 		ofClear(0, 0, 0, 0);
 		pong->end();
 		clearedFbo = true;
 	}
+	
 	ping->begin();
 	{
+		
+		
 		ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 		ofClear(0, 0, 0, 0);
 		glColor4f(1, 1, 1, 0.98);
 		
 		glPushMatrix();
-		glTranslatef(ofGetWidth()/2, ofGetHeight()/2, 0);
+		glTranslatef(width/2, height/2, 0);
 		float s = 1.001;//ofMap(sin(ofGetElapsedTimef()*4), -1, 1, 0.998, 1.002);
 		glScalef(s, s, 1);
 		pong->setAnchorPercent(0.5, 0.5);
@@ -117,6 +123,7 @@ void Caustics::drawCaustics() {
 	ping->end();
 	pong->setAnchorPercent(0, 0);
 	ofSetHexColor(0xFFFFFF);
+	
 }
 
 void Caustics::drawLine(ofVec2f a, ofVec2f b, ofVec3f ca, ofVec3f cb) {
@@ -166,7 +173,7 @@ void Caustics::renderToFbo() {
 	
 	ofEnableAlphaBlending();
 	// push our gl state stuff
-	
+	/*
 	bool lineSmoothedWasOn = glIsEnabled(GL_LINE_SMOOTH);
 	if(!lineSmoothedWasOn) {
 		glEnable(GL_LINE_SMOOTH);
@@ -177,7 +184,7 @@ void Caustics::renderToFbo() {
 	glGetFloatv(GL_LINE_WIDTH, &oldLineWidth);
 	
 	glLineWidth(2);
-	
+	*/
 	
 	
 	
@@ -187,7 +194,7 @@ void Caustics::renderToFbo() {
 	
 	
 	
-	
+	/*
 	
 	// pop the gl state stuff
 	if(!lineSmoothedWasOn) {
@@ -195,7 +202,7 @@ void Caustics::renderToFbo() {
 	
 	}
 	glLineWidth(oldLineWidth);
-	
+	*/
 }
 ofFbo &Caustics::getFbo() {
 	return *pong;

@@ -35,8 +35,9 @@ public:
 	Caustics();
 	~Caustics();
 	
-	
+	float width, height;
 private:
+	
 	void cleanUp();
 	
 	ofxDelaunay triangulator;

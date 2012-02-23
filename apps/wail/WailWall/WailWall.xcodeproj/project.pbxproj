@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		1F082DE514F290E1005008A4 /* CallToAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F082DE314F290E1005008A4 /* CallToAction.cpp */; };
 		1F082DF214F2D6D2005008A4 /* ofxWWSearchTermManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F082DF114F2D6D1005008A4 /* ofxWWSearchTermManager.cpp */; };
+		1F28065814F68A7B00BCE529 /* Caustics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F28065614F68A7B00BCE529 /* Caustics.cpp */; };
+		1F28066014F68B0B00BCE529 /* Delaunay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F28065B14F68B0B00BCE529 /* Delaunay.cpp */; };
+		1F28066114F68B0B00BCE529 /* ofxDelaunay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F28065E14F68B0B00BCE529 /* ofxDelaunay.cpp */; };
 		1F58DC4314F40DEB00767916 /* Colours.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F58DC4214F40DEB00767916 /* Colours.cpp */; };
 		1FB8A9DF14F568B60097AF3F /* mathutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FB8A9DE14F568B60097AF3F /* mathutils.cpp */; };
 		4818285D14EEF48600BAA8B9 /* FTBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818280414EEF48600BAA8B9 /* FTBuffer.cpp */; };
@@ -215,6 +218,12 @@
 		1F082DE414F290E1005008A4 /* CallToAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallToAction.h; sourceTree = "<group>"; };
 		1F082DF114F2D6D1005008A4 /* ofxWWSearchTermManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxWWSearchTermManager.cpp; sourceTree = "<group>"; };
 		1F082DF314F2D6FD005008A4 /* ofxWWSearchTermManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxWWSearchTermManager.h; sourceTree = "<group>"; };
+		1F28065614F68A7B00BCE529 /* Caustics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Caustics.cpp; sourceTree = "<group>"; };
+		1F28065714F68A7B00BCE529 /* Caustics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Caustics.h; sourceTree = "<group>"; };
+		1F28065B14F68B0B00BCE529 /* Delaunay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Delaunay.cpp; sourceTree = "<group>"; };
+		1F28065C14F68B0B00BCE529 /* Delaunay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Delaunay.h; sourceTree = "<group>"; };
+		1F28065E14F68B0B00BCE529 /* ofxDelaunay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDelaunay.cpp; sourceTree = "<group>"; };
+		1F28065F14F68B0B00BCE529 /* ofxDelaunay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxDelaunay.h; sourceTree = "<group>"; };
 		1F2E091514F3DA9D0035A851 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		1F58DC4214F40DEB00767916 /* Colours.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Colours.cpp; sourceTree = "<group>"; };
 		1F58DC4414F40DF500767916 /* Colours.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colours.h; sourceTree = "<group>"; };
@@ -779,6 +788,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1F28065914F68B0B00BCE529 /* ofxDelaunay */ = {
+			isa = PBXGroup;
+			children = (
+				1F28065A14F68B0B00BCE529 /* libs */,
+				1F28065D14F68B0B00BCE529 /* src */,
+			);
+			name = ofxDelaunay;
+			path = ../../../addons/ofxDelaunay;
+			sourceTree = "<group>";
+		};
+		1F28065A14F68B0B00BCE529 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				1F28065B14F68B0B00BCE529 /* Delaunay.cpp */,
+				1F28065C14F68B0B00BCE529 /* Delaunay.h */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		1F28065D14F68B0B00BCE529 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				1F28065E14F68B0B00BCE529 /* ofxDelaunay.cpp */,
+				1F28065F14F68B0B00BCE529 /* ofxDelaunay.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		4818280214EEF48600BAA8B9 /* src */ = {
 			isa = PBXGroup;
 			children = (
@@ -1226,6 +1263,8 @@
 		A683B91114D5A9BD00C3B6F7 /* Renderer */ = {
 			isa = PBXGroup;
 			children = (
+				1F28065614F68A7B00BCE529 /* Caustics.cpp */,
+				1F28065714F68A7B00BCE529 /* Caustics.h */,
 				A683B90E14D5A9A800C3B6F7 /* ofxWWRenderer.h */,
 				A683B90F14D5A9A800C3B6F7 /* ofxWWRenderer.cpp */,
 				1F58DC4214F40DEB00767916 /* Colours.cpp */,
@@ -1532,6 +1571,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				1F28065914F68B0B00BCE529 /* ofxDelaunay */,
 				A6C6286914F1932C000C1C14 /* ofxCaustics */,
 				E70140E914E54B89007926C9 /* ofxCocoaWindow */,
 				EAAD76E314E2DD5200EF1CC3 /* ofxWebServer */,
@@ -2183,6 +2223,9 @@
 				481F67D014F411EA0024DFBF /* Force.cpp in Sources */,
 				4897883A14F41B2F00A5CF6E /* SelectedForce.cpp in Sources */,
 				1FB8A9DF14F568B60097AF3F /* mathutils.cpp in Sources */,
+				1F28065814F68A7B00BCE529 /* Caustics.cpp in Sources */,
+				1F28066014F68B0B00BCE529 /* Delaunay.cpp in Sources */,
+				1F28066114F68B0B00BCE529 /* ofxDelaunay.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
