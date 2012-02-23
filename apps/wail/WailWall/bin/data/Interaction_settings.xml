@@ -1,7 +1,7 @@
 <controls>
     <SliderFloat_Layer_Barrier_Z>
         <name>Layer Barrier Z</name>
-        <value>0.502500</value>
+        <value>0.505000</value>
     </SliderFloat_Layer_Barrier_Z>
     <SliderFloat_Layer_Barrier_Width>
         <name>Layer Barrier Width</name>
@@ -17,6 +17,6 @@
     </SliderFloat_Influence_Width>
     <Toggle_Draw_Touch_Debug>
         <name>Draw Touch Debug</name>
-        <value>1</value>
+        <value>0</value>
     </Toggle_Draw_Touch_Debug>
 </controls>

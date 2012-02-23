@@ -10,6 +10,7 @@
 
 KinectTouchSimulator::KinectTouchSimulator() {
 	listener = NULL;
+	mouseIsDown = false;
 	enabled = false;
 	idCounter = 0;
 	touchDownTime = 0;
@@ -33,7 +34,8 @@ float KinectTouchSimulator::getTouchZ(float time) {
 void KinectTouchSimulator::mousePressed(int x, int y) {
 	if(!enabled || listener==NULL) return;
 	idCounter++;
-
+	
+	mouseIsDown = true;
 	touchDownTime = ofGetElapsedTimef();
 	
 	touch.id = idCounter;
@@ -65,7 +67,10 @@ void KinectTouchSimulator::mouseDragged(int x, int y) {
 }
 
 void KinectTouchSimulator::mouseReleased(int x, int y) {
-	if(!enabled || listener==NULL) return;
+	if(listener==NULL) return;
+	if(!enabled && !mouseIsDown) return;
+	mouseIsDown = false;
+	
 	touch.x = ofMap(x, 0, ofGetWidth(), 0, 1);
 	touch.y = ofMap(y, 0, ofGetHeight(), 0, 1);
 	touch.z = getTouchZ(ofGetElapsedTimef() - touchDownTime);

@@ -215,7 +215,9 @@ void ofxWWTweetParticle::drawText(){
 	
 
 	ofColor atcolor = ofColor::fromHex(Colours::get(AT_SIGN));
-	atcolor.a = opacity*255;
+	
+	// square root makes the alpha brighter at lower values (0-1)
+	atcolor.a = sqrt(opacity)*255;
 	ofSetColor(atcolor);
 	//DRAW @ 
 	ofVec2f atPos = getAtDrawPos();
@@ -225,7 +227,7 @@ void ofxWWTweetParticle::drawText(){
 	ofEnableBlendMode(OF_BLENDMODE_ADD);
 	
 	ofColor fontcolor = ofColor::fromHex(Colours::get(LAYER_1_FONT));
-	fontcolor.a = opacity*255;
+	fontcolor.a = atcolor.a;
 	ofSetColor(fontcolor);
 	
 	//USER -- use the same size as search ftm
