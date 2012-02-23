@@ -1,5 +1,5 @@
 <settings>
-    <setting id="View" value="2"></setting>
+    <setting id="View" value="1"></setting>
     <setting id="Blur Size" value="6.000000000"></setting>
     <setting id="Blur Iterations" value="6.000000000"></setting>
     <setting id="Erode Image" value="true"></setting>

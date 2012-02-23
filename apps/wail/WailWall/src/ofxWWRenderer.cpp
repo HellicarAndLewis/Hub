@@ -228,7 +228,7 @@ void ofxWWRenderer::update(){
 	ofVec2f offset(tweets.dotShift, 0);
 	while(twit!=tweets.tweets.end()) {
 
-		caust.addPoint((*twit).pos+offset, i++);
+		if((*twit).dot_opacity>0) caust.addPoint((*twit).pos+offset, i++);
 		twit++;
 	}
 	

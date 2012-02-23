@@ -71,7 +71,7 @@ class ofxWWTweetParticle {
 	float dot_opacity; 
 	ofVec2f static_force; 
 	uint32_t delete_id; // used to remove a tweet from screen.
-	
+	int state;
   protected:
 	
 	FuzzySelection smoothedSelectionWeight;
@@ -93,7 +93,7 @@ class ofxWWTweetParticle {
 
 	static ofImage *highlightImage;
 
-	int state;
+	
 	float lifetime;
 	float highlight_duration; // general timer...
 

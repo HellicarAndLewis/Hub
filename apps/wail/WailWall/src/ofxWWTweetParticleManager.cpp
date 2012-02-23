@@ -528,7 +528,7 @@ void ofxWWTweetParticleManager::onNewTweet(const rtt::Tweet& tweet) {
 	static int tweet_id_counter = 0;
 	tweet_id_counter = ++tweet_id_counter % maxTweets;
 	particle.delete_id = tweet_id_counter;	
-	printf(">> [RECEIVING] : %s\n", tweet.getText().c_str());	
+	//printf(">> [RECEIVING] : %s\n", tweet.getText().c_str());	
 
 
 	if(current_force->isHiding()) {

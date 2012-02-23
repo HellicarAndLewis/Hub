@@ -105,7 +105,7 @@ void ofxWWTweetParticle::setTweet(rtt::Tweet tw){
 	
 	atSignWidth = manager->sharedUserFont.getStringBoundingBox("@", 0, 0).width;
 	atSignHeight = manager->sharedUserFont.getStringBoundingBox("@", 0, 0).height;
-	printf("SET PARTICLE WITH TEXT: %s\n", this->tweet.getText().c_str());
+//	printf("SET PARTICLE WITH TEXT: %s\n", this->tweet.getText().c_str());
 //	totalWidth  = MAX(lineOneWidth,lineTwoWidth);
 //	totalHeight = userNameHeight + atSignHeight + lineOneHeight + lineTwoHeight;
 }
