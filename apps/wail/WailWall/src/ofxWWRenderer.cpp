@@ -17,7 +17,7 @@ void ofxWWRenderer::setup(int width, int height){
 	targetWidth = width;
 	targetHeight = height;
 
-
+	searchTermHaloShader.load("shaders/halo.vert", "shaders/halo.frag");
 	
 	causticsAlwaysOn = false;
 	// max number of particles is the final arg, might need higher
@@ -252,9 +252,18 @@ void ofxWWRenderer::update(){
 	tweets.update();
 	caust.reset();
 	
+	
+	
+	
 	vector<ofxWWTweetParticle>::iterator twit = tweets.tweets.begin();
 	int i = 0;
 	ofVec2f offset(tweets.dotShift, 0);
+
+	if(tweets.searchTermManager.selectedSearchTermIndex!=-1) {
+		ofVec2f searchTermLocation = tweets.searchTermManager.searchTerms[tweets.searchTermManager.selectedSearchTermIndex].pos;
+		caust.addPoint(searchTermLocation-ofVec2f(5, 0),0);
+		caust.addPoint(searchTermLocation+ofVec2f(5, 0),1);
+	}
 	while(twit!=tweets.tweets.end()) {
 
 		if((*twit).dot_opacity>0) caust.addPoint((*twit).pos+offset, i++);
@@ -287,7 +296,18 @@ void ofxWWRenderer::render(){
 	} else {
 		glColor4f(1,1,1,1.f - tweets.tweetLayerOpacity);
 	}
+	
+
+	ofVec2f term;
+	/*searchTermHaloShader.begin();
+	searchTermHaloShader.setUniformTexture("tex", caust.getFbo().getTextureReference(0), 0);
+	searchTermHaloShader.setUniform2f("centre", term.x, term.y);
+	searchTermHaloShader.setUniform1f("radius", 1000);
+	searchTermHaloShader.setUniform1f("amount", 1);
+*/
+	
 	caust.getFbo().draw(0, 0);
+	//searchTermHaloShader.end();
 	
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	

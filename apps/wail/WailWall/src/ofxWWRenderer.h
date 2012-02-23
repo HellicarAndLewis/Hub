@@ -144,6 +144,7 @@ class ofxWWRenderer: public KinectTouchListener {
     int surfaceColourHex;
     int bottomColourHex;
 	bool causticsAlwaysOn;
+	ofShader searchTermHaloShader;
 };
 
 inline ofFbo& ofxWWRenderer::getScreenshotFbo() {

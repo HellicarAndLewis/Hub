@@ -12,6 +12,8 @@
 		1F28065814F68A7B00BCE529 /* Caustics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F28065614F68A7B00BCE529 /* Caustics.cpp */; };
 		1F28066014F68B0B00BCE529 /* Delaunay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F28065B14F68B0B00BCE529 /* Delaunay.cpp */; };
 		1F28066114F68B0B00BCE529 /* ofxDelaunay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F28065E14F68B0B00BCE529 /* ofxDelaunay.cpp */; };
+		1F49BFE914F6C3F6008B4CD6 /* halo.vert in Sources */ = {isa = PBXBuildFile; fileRef = 1F49BFE814F6C3F5008B4CD6 /* halo.vert */; };
+		1F49BFEB14F6C414008B4CD6 /* halo.frag in Sources */ = {isa = PBXBuildFile; fileRef = 1F49BFEA14F6C414008B4CD6 /* halo.frag */; };
 		1F58DC4314F40DEB00767916 /* Colours.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F58DC4214F40DEB00767916 /* Colours.cpp */; };
 		1FB8A9DF14F568B60097AF3F /* mathutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FB8A9DE14F568B60097AF3F /* mathutils.cpp */; };
 		4818285D14EEF48600BAA8B9 /* FTBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4818280414EEF48600BAA8B9 /* FTBuffer.cpp */; };
@@ -225,6 +227,8 @@
 		1F28065E14F68B0B00BCE529 /* ofxDelaunay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxDelaunay.cpp; sourceTree = "<group>"; };
 		1F28065F14F68B0B00BCE529 /* ofxDelaunay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxDelaunay.h; sourceTree = "<group>"; };
 		1F2E091514F3DA9D0035A851 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
+		1F49BFE814F6C3F5008B4CD6 /* halo.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = halo.vert; path = bin/data/shaders/halo.vert; sourceTree = "<group>"; };
+		1F49BFEA14F6C414008B4CD6 /* halo.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = halo.frag; path = bin/data/shaders/halo.frag; sourceTree = SOURCE_ROOT; };
 		1F58DC4214F40DEB00767916 /* Colours.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Colours.cpp; sourceTree = "<group>"; };
 		1F58DC4414F40DF500767916 /* Colours.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colours.h; sourceTree = "<group>"; };
 		1FB8A9DD14F568AB0097AF3F /* mathutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mathutils.h; path = src/mathutils.h; sourceTree = "<group>"; };
@@ -1637,6 +1641,8 @@
 			children = (
 				1FB8A9DD14F568AB0097AF3F /* mathutils.h */,
 				1FB8A9DE14F568B60097AF3F /* mathutils.cpp */,
+				1F49BFEA14F6C414008B4CD6 /* halo.frag */,
+				1F49BFE814F6C3F5008B4CD6 /* halo.vert */,
 				1FE6C33914F2604B007F7B84 /* DisplayLayout_dev.xml */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				A6FDBDED14D9F46E0003EBE5 /* data */,
@@ -2226,6 +2232,8 @@
 				1F28065814F68A7B00BCE529 /* Caustics.cpp in Sources */,
 				1F28066014F68B0B00BCE529 /* Delaunay.cpp in Sources */,
 				1F28066114F68B0B00BCE529 /* ofxDelaunay.cpp in Sources */,
+				1F49BFE914F6C3F6008B4CD6 /* halo.vert in Sources */,
+				1F49BFEB14F6C414008B4CD6 /* halo.frag in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,7 +13,7 @@
     </SliderFloat_Blend>
     <SliderFloat_Brightness>
         <name>Brightness</name>
-        <value>0.017200</value>
+        <value>0.091450</value>
     </SliderFloat_Brightness>
     <SliderFloat_Oscillation>
         <name>Oscillation</name>
@@ -21,6 +21,6 @@
     </SliderFloat_Oscillation>
     <Toggle_Always_on>
         <name>Always on</name>
-        <value>0</value>
+        <value>1</value>
     </Toggle_Always_on>
 </controls>
