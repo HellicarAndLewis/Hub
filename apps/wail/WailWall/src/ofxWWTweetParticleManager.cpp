@@ -405,7 +405,7 @@ void ofxWWTweetParticleManager::renderTweets(){
 			}
 		}
 	}
-	// applyCaustict();
+
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	ofPopStyle();
 }
