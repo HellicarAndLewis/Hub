@@ -21,18 +21,10 @@ void ofxWWRenderer::setup(int width, int height){
 	
 	causticsAlwaysOn = false;
 	// max number of particles is the final arg, might need higher
-	caust.setup(width, height, 500);
-	accumbuf = 0;
-	//anything that diffuses in liquid gets drawn into here
-	accumulator[0].allocate(width, height, GL_RGBA);
-	accumulator[1].allocate(width, height, GL_RGBA);
-	//glowTarget.allocate(width, height, GL_RGBA);
+	caust.setup(width, height, 5000);
 	
 	screenshotTarget.allocate(width/4, height/4, GL_RGB);
 	
-	//type layer
-	//draw everything into here that needs to be warped
-	warpMap.allocate(width/2, height/2, GL_RGB);
 	
 	//final buffer for comping it all together
 	renderTarget.allocate(width, height, GL_RGB);
@@ -58,8 +50,6 @@ void ofxWWRenderer::setup(int width, int height){
 	ofClear(0);
 	accumulator[1].end();
 	
-//	fluid.setup(width/20.0,height/20.0,100000);
-//	fluid.scaleFactor = 6.4;
 	tweets.fluidRef = &fluid;
 	tweets.blobsRef = blobs;
 	
@@ -126,18 +116,7 @@ void ofxWWRenderer::setupGui(){
 	webGui.addSlider("Influence Width", tweets.touchInfluenceFalloff, 200, 5000);
 	webGui.addToggle("Draw Touch Debug", drawTouchDebug);
 	
-	/*webGui.addPage("Caustics");
-	webGui.addToggle("Enable Caustics", enableCaustics);
-	webGui.addSlider("Delta", caustics.delta, .1, 1.0);
-	webGui.addSlider("Drag", caustics.drag, .8, .999);
-	webGui.addSlider("Light X", caustics.light.x, -1.0, 1.0);
-	webGui.addSlider("Light Y", caustics.light.y, -1.0, 1.0);
-	webGui.addSlider("Light Z", caustics.light.z, -1.0, 1.0);
-	webGui.addSlider("Glow Amount", glowAmount, 0, 10); 
-	webGui.addSlider("Drop Scale", dropScale, 10, 100);
-	webGui.addSlider("Drop Force", dropForce, .001, 1.0);
-	webGui.addToggle("Draw Debug Texture", drawCausticsDebug);
-	*/
+	
 	
 	webGui.addPage("Caustics");
 	
@@ -163,28 +142,7 @@ void ofxWWRenderer::setupGui(){
 	
 	
 	
-	
-	webGui.addPage("Connections");
-	webGui.addToggle("Draw Connections", enableConnections);
-	webGui.addSlider("Fade Decay", fadeSpeed, .002, .01);
-	
-	webGui.addPage("Fluid");
-	webGui.addToggle("Enable Fluid",	enableFluid);
-	webGui.addSlider("Force Scale",		fluid.forceScale,	1.0, 200); 
-	webGui.addSlider("Zoom",			fluid.scaleFactor,	1.0, 40.0); 	
-	webGui.addSlider("Offset X",		fluid.offsetX,		-200.0, 0); 	
-	webGui.addSlider("Offset Y",		fluid.offsetY,		-200.0, 0); 	
-	webGui.addSlider("Particles",		fluid.numParticles,		1000, 100000); 
-	webGui.addSlider("Density",			fluid.densitySetting,	0, 30.0);	
-	webGui.addSlider("Stiffness",		fluid.stiffness,		0, 2.0);
-	webGui.addSlider("Bulk Viscosity",	fluid.bulkViscosity,	0, 10.0);
-	webGui.addSlider("Elasticity",		fluid.elasticity,		0, 4.0);
-	webGui.addSlider("Viscosity",		fluid.viscosity,		0, 4.0);
-	webGui.addSlider("Yield Rate",		fluid.yieldRate,		0, 2.0);
-	webGui.addSlider("Gravity",			fluid.gravity,			0, 0.02);
-	webGui.addSlider("Smoothing",		fluid.smoothing,		0, 3.0);
-	webGui.addToggle("Do Obstacles",	fluid.bDoObstacles); 
-	
+		
 	webGui.addPage("Shader");
 	webGui.addToggle("Use Background A", useBackgroundSetA);
 	webGui.addSlider("Blur Diffuse", blurAmount, 0, 10);
@@ -217,32 +175,14 @@ void ofxWWRenderer::setupGui(){
 }
 
 void ofxWWRenderer::update(){
-	enableFluid = false;
-
-	if(enableFluid){
-		fluid.update();
-	}
 	
-	if(enableCaustics){
-		caustics.update();
-	}
 	
 	float maxTouchZ = 0;
 	map<int,KinectTouch>::iterator it;
 	for(it = blobs->begin(); it != blobs->end(); it++){
 		if(it->second.z > maxTouchZ){
 			maxTouchZ = it->second.z;
-			
 		}	
-		
-//		caustics.addDrop(caustics.getTextureReference().getWidth()*it->second.x, 
-//						 caustics.getTextureReference().getHeight()*it->second.y, dropScale, ofGetFrameNum() % 2 == 0 ? dropForce : -dropForce);
-		ofVec2f touchCenter = ofVec2f(caustics.getTextureReference().getWidth()*it->second.x,
-									  caustics.getTextureReference().getHeight()*it->second.y);
-		
-		ofVec2f dropPoint = randomPointInCircle(ofVec2f(touchCenter.x,touchCenter.y), it->second.size*caustics.getTextureReference().getHeight()/2.0);
-		caustics.addDrop(dropPoint.x, dropPoint.y, dropScale, ofGetFrameNum() % 2 == 0 ? dropForce : -dropForce);
-		
 	}
 	float targetOpacity = ofMap(maxTouchZ, layerBarrierZ-layerBarrierWidth/2, layerBarrierZ+layerBarrierWidth/2, 1.0, 0.0, true);
 	
@@ -315,17 +255,7 @@ void ofxWWRenderer::render(){
 	//searchTermHaloShader.end();
 	
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-	
-	// JAMES, can you create a function which creates the caustics for the 
-	// tweets which are currently rendered. If it's just a function we need
-	// to call we can activate/deactivate it ourselves later. The "tweets.tweets"
-	// vector contains all the particles which are drawn;
-	// Example of effects:
-	// - http://www.flickr.com/photos/tantle/4836091801/
-	// - http://www.flickr.com/photos/pixelero/5656846478/in/photostream/
-	// - http://www.flickr.com/photos/peryburge/5687731318/
-	
-	
+		
 	callToAction.draw();
 	
 		
@@ -383,49 +313,6 @@ void ofxWWRenderer::keyPressed(ofKeyEventArgs& args) {
 //	}
 }
 
-void ofxWWRenderer::renderDynamics(){
-	//enableFluid = false; // TODO: remove
-	
-	accumulator[accumbuf].begin();
-	
-	
-	ofPushStyle();
-	ofSetColor(255, 255, 255);
-
-	ofClear(0);
-	ofDisableAlphaBlending();
-	
-	alphaFade.begin();
-	alphaFade.setUniform1f("fadeSpeed", fadeSpeed);
-	accumulator[(accumbuf+1)%2].draw(0,0); //this x offset causes the blur to cascade away
-	alphaFade.end();
-	/*
-	blurShader.begin();
-	blurShader.setUniform2f("sampleOffset", 0, blurAmount);
-	accumulator[(accumbuf+1)%2].draw(7,0); //this x offset causes the blur to cascade away
-	blurShader.end();
-
-	blurShader.begin();
-	blurShader.setUniform2f("sampleOffset", blurAmount, 0);
-	accumulator[(accumbuf+1)%2].draw(3,0); //this x offset causes the blur to cascade away
-	blurShader.end();
-*/
-	if(enableFluid){
-		fluid.draw(0,0,targetWidth,targetHeight);
-	}
-
-	if(enableConnections){
-		tweets.renderConnections();
-	}
-	
-//	for(int i = 0; i < 10; i++){
-//		ofCircle(ofRandom(targetWidth), ofRandom(targetHeight), ofRandom(20));
-//	}
-	ofPopStyle();
-	
-	accumulator[accumbuf].end();
-}
-
 void ofxWWRenderer::renderLayer1(){
 	layer1Target.begin();
 	ofClear(0,0,0,0);
@@ -442,63 +329,12 @@ void ofxWWRenderer::renderLayer2(){
 	layer2Target.end();
 }
 
-//JG NO LONGER USED
-void ofxWWRenderer::renderWarpMap(){
-	
-	warpMap.begin();
-	ofClear(0);
-	
-	noiseShader.begin();
-	
-	noiseShader.setUniform1f("flow", -ofGetElapsedTimef()*noiseFlow);
-	noiseShader.setUniform1f("wobbleX", sin(ofGetElapsedTimef()*noiseWobbleSpeedX) * noiseWobbleAmplitudeX);
-	noiseShader.setUniform1f("wobbleY", sin(ofGetElapsedTimef()*noiseWobbleSpeedY) * noiseWobbleAmplitudeY);
-	noiseShader.setUniform2f("scale", noiseScale.x, noiseScale.y);
-	
-	permutationImage.getTextureReference().bind();
-	
-	glBegin(GL_QUADS);
-	glTexCoord2f(0, 0);
-	glVertex2f(0, 0);
-	
-	glTexCoord2f(warpMap.getWidth(), 0);
-	glVertex2f(warpMap.getWidth(), 0);
-
-	glTexCoord2f(warpMap.getWidth(), warpMap.getHeight());
-	glVertex2f(warpMap.getWidth(), warpMap.getHeight());
-
-	glTexCoord2f(0, warpMap.getHeight());
-	glVertex2f(0, warpMap.getHeight());
-
-	permutationImage.getTextureReference().unbind();
-	glEnd();
-	
-	noiseShader.end();
-	
-	warpMap.end();
-}
-
 void ofxWWRenderer::renderGradientOverlay(){
 	ofPushStyle();
 	gradientOverlay.begin();
 	ofClear(0);
 	ofEnableAlphaBlending();
-	/*
-	if(useBackgroundSetA){
-		layerTwoBackgroundA.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
-		ofSetColor(255, 255, 255, layer1Opacity*255);		
-		//ofSetColor(255, 255, 255, (sin(ofGetElapsedTimef())*.5 + .5) *255);		
-//		cout << "layer1Opacity " << layer1Opacity << endl;
-		layerOneBackgroundA.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
-	}  
-	else{
-		layerTwoBackgroundB.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
-		ofSetColor(255, 255, 255, layer1Opacity*255);				
-		layerOneBackgroundB.draw(0, 0, gradientOverlay.getWidth(), gradientOverlay.getHeight());
-	}
 	
-	
-	*/
 	ofColor surface = ofColor::fromHex(Colours::get(SURFACE_BG));
     ofColor bottom = ofColor::fromHex(Colours::get(SEARCH_BG));
     

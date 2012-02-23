@@ -9,11 +9,11 @@
     </SliderFloat_Scale_factor>
     <SliderFloat_Blend>
         <name>Blend</name>
-        <value>0.956000</value>
+        <value>0.983750</value>
     </SliderFloat_Blend>
     <SliderFloat_Brightness>
         <name>Brightness</name>
-        <value>0.091450</value>
+        <value>0.011350</value>
     </SliderFloat_Brightness>
     <SliderFloat_Oscillation>
         <name>Oscillation</name>

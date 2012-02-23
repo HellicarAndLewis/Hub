@@ -48,7 +48,6 @@ class ofxWWTweetParticleManager : public TweetProviderListener, public SearchLay
 	void onNewTweet(const rtt::Tweet& tweet);
 
 	void onNewSearchTerm(TwitterAppEvent& event);
-	void setupColors();
 	
 	// implementing: SearchLayerListener
 	virtual void onSearchTermSelected(const SearchTermSelectionInfo& term);

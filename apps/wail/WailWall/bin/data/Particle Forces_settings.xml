@@ -1,0 +1,32 @@
+<controls>
+    <SliderFloat_Select_repulsion_distance>
+        <name>Select repulsion distance</name>
+        <value>2500.000000</value>
+    </SliderFloat_Select_repulsion_distance>
+    <SliderFloat_Select_repulsion_springyness>
+        <name>Select repulsion springyness</name>
+        <value>0.050000</value>
+    </SliderFloat_Select_repulsion_springyness>
+    <SliderFloat_Repulsion_between_particles>
+        <name>Repulsion between particles</name>
+        <value>260.000000</value>
+    </SliderFloat_Repulsion_between_particles>
+    <SliderFloat_Duration_of_repulsion_effect_millis>
+        <name>Duration of repulsion effect millis</name>
+        <value>2800.000000</value>
+    </SliderFloat_Duration_of_repulsion_effect_millis>
+    <SliderFloat_Startup_force__duration>
+        <name>Startup force  duration</name>
+        <value>1.500000</value>
+    </SliderFloat_Startup_force__duration>
+    <SliderInt_Database>
+        <_number_items_to_fetch></_number_items_to_fetch>
+        <name>Database: number items to fetch</name>
+        <value>10</value>
+    </SliderInt_Database>
+    <SliderFloat_Database>
+        <_spawn_delay_millis></_spawn_delay_millis>
+        <name>Database: spawn delay millis</name>
+        <value>10.000000</value>
+    </SliderFloat_Database>
+</controls>

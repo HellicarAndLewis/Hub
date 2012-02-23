@@ -217,7 +217,7 @@ void ofxWWTweetParticle::drawText(){
 	ofColor atcolor = ofColor::fromHex(Colours::get(AT_SIGN));
 	
 	// square root makes the alpha brighter at lower values (0-1)
-	atcolor.a = sqrt(opacity)*255;
+	atcolor.a = (opacity)*255;
 	ofSetColor(atcolor);
 	//DRAW @ 
 	ofVec2f atPos = getAtDrawPos();

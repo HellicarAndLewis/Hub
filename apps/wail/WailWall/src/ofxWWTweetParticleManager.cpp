@@ -44,7 +44,7 @@ void ofxWWTweetParticleManager::setup(ofxWWRenderer* ren){
 	burstOne.loadImage("images/burst1.png");
 	burstTwo.loadImage("images/burst2.png");
 	
-	setupColors();
+
 	
 	// Create tweet providers
 	// ----------------------
@@ -464,38 +464,6 @@ void ofxWWTweetParticleManager::renderSearchTerms(){
 	searchTermManager.render();
 }
 
-void ofxWWTweetParticleManager::renderConnections(){
-	
-	ofPushStyle();
-	ofSetLineWidth(2);
-	
-	if(tweetLayerOpacity > 0){
-//		cout << "testing connections!!" << endl;
-		for(int i = 0; i < tweets.size(); i++){
-			if(tweets[i].clampedSelectionWeight <= 0){
-				continue;
-			}
-			
-			for(int j = 0; j < tweets.size(); j++){
-				if(j != i){
-					attemptConnection(tweets[i].pos, tweets[i].clampedSelectionWeight,
-									  tweets[j].pos, tweets[j].clampedSelectionWeight, tweetLayerOpacity);
-				}
-			}
-		}	
-	}
-	
-//	if(isDoingSearch){
-//		for(int i = 0; i < tweets.size(); i++){
-//			if(tweets[i].isSearchTweet){
-//				cout << "++++++ DRAWING CAUSTICS BETWEEN " << tweets[i].pos << " " << searchTerms[selectedSearchTerm].pos << endl;
-//				attemptConnection(tweets[i].pos, 1.0, searchTerms[selectedSearchTermIndex].pos, 1.0, 1-tweetLayerOpacity);
-//			}
-//		}
-//	}
-	
-	ofPopStyle();	
-}
 
 void ofxWWTweetParticleManager::attemptConnection(ofVec2f pos1, float weight1, ofVec2f pos2, float weight2, float layerOpacity){
 //	ofLine(pos1, pos2);
@@ -505,40 +473,6 @@ void ofxWWTweetParticleManager::attemptConnection(ofVec2f pos1, float weight1, o
 		setRandomCausticColor(layerOpacity);
 		ofLine(pos1, pos2);
 	}
-}
-
-void ofxWWTweetParticleManager::setRandomCausticColor(float layerOpacity){
-	
-	//JG just returned white for now
-	ofSetColor(255);
-	return;
-	
-	float diceroll = ofRandomuf();
-	if(diceroll < .1){
-		ofSetColor(causticColors[0], 100*layerOpacity);
-	}
-	else if(diceroll < .3){
-		ofSetColor(causticColors[1], 100*layerOpacity);	
-	}
-	else if(diceroll < .6){
-		ofSetColor(causticColors[2], 100*layerOpacity);		
-	}
-	else{ 
-		ofSetColor(causticColors[3], 100*layerOpacity);	
-	}
-}
-
-void ofxWWTweetParticleManager::setupColors(){
-	/*ofxXmlSettings colors;
-	if(colors.loadFile(ofToDataPath("fonts/fontcolor.xml"))){
-		atSignColor = ofColor::fromHex( ofHexToInt( colors.getValue("colors:atsign", "0xFFFFFF")) );
-		layerOneFontColor = ofColor::fromHex( ofHexToInt( colors.getValue("colors:layerone", "0xFFFFFF")) );
-		layerTwoFontColor = ofColor::fromHex( ofHexToInt( colors.getValue("colors:layerone", "0xFFFFFF")) );
-	}
-	else{
-		ofSystemAlertDialog("fonts/fontcolor.xml not found!");
-	}*/
-	
 }
 
 void ofxWWTweetParticleManager::onNewTweet(const rtt::Tweet& tweet) {
