@@ -17,6 +17,8 @@ void ofxWWRenderer::setup(int width, int height){
 	targetWidth = width;
 	targetHeight = height;
 
+	// max number of particles is the final arg, might need higher
+	caust.setup(width, height, 500);
 	accumbuf = 0;
 	//anything that diffuses in liquid gets drawn into here
 	accumulator[0].allocate(width, height, GL_RGBA);
@@ -219,6 +221,16 @@ void ofxWWRenderer::update(){
 	tweets.tweetLayerOpacity = layer1Opacity;
 	
 	tweets.update();
+	caust.reset();
+	
+	vector<ofxWWTweetParticle>::iterator twit = tweets.tweets.begin();
+	int i = 0;
+	while(twit!=tweets.tweets.end()) {
+		caust.addPoint((*twit).pos, i++);
+		twit++;
+	}
+	
+	caust.update();
 }
 
 void ofxWWRenderer::render(){
@@ -284,6 +296,11 @@ void ofxWWRenderer::render(){
 	
 	glowShader.end();
 	
+	caust.renderToFbo();
+	ofEnableBlendMode(OF_BLENDMODE_ADD);
+	glTranslatef(ofGetMouseX(), ofGetMouseY(),0);
+	caust.getFbo().draw(0, 0);
+	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	accumulator[accumbuf].draw(0, 0);
 	accumbuf = (accumbuf+1)%2;
 	

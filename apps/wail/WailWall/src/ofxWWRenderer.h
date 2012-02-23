@@ -14,6 +14,7 @@
 #include "KinectTouchListener.h"
 #include "ofxCaustics.h"
 #include "CallToAction.h"
+#include "Caustics.h"
 
 class ofxWWRenderer: public KinectTouchListener {
   public:
@@ -47,6 +48,7 @@ class ofxWWRenderer: public KinectTouchListener {
 	void keyPressed(ofKeyEventArgs& args); //roxlu: testing screenshots
 	bool test_screenshot; // roxlu: testing screenshots
 	
+	Caustics caust;
   protected:
 	int targetWidth;
 	int targetHeight;
