@@ -1,0 +1,2 @@
+#min    hour    mday    month   wday    command
+*/1     *     *       *       *      /Users/ctnamacpro8/ProjectWail/apps/wail/WailWall/bin/data/backup.sh
