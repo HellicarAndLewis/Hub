@@ -28,5 +28,7 @@ NameVirtualHost *:8888
 - Goto localhost:8888, open PHPMyAdmin, import the ProjectWail/web/admin/resources/dewarshub_admin.structure.sql
 - Import ProjectWail/web/admin/resources/dewarshub_admin.data.sql
 - Give the database permission:  grant all on dewarshub_admin.* to dewarshub_admin@"localhost" identified by "dewarshub_admin"
-- Install firefox
-- Install sqlitebrowser addon for firefox
+- Install sqlitebrowser 
+- Fix backup script: read create_backup_for_twitter_db.txt 
+- Make cronjob: $crontab -e , then enter:
+- * */10 * * * /Users/ctnamacpro8/ProjectWail/apps/wail/WailWall/bin/data/backup.sh 

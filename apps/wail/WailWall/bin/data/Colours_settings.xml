@@ -1,33 +1,33 @@
 <controls>
     <HexColorPicker_Surface_Background>
         <name>Surface Background</name>
-        <values_0>122.000000</values_0>
-        <values_1>22.000000</values_1>
-        <values_2>1.000000</values_2>
+        <values_0>250.000000</values_0>
+        <values_1>166.000000</values_1>
+        <values_2>52.000000</values_2>
     </HexColorPicker_Surface_Background>
     <HexColorPicker_Search_Background>
         <name>Search Background</name>
-        <values_0>59.000000</values_0>
-        <values_1>8.000000</values_1>
-        <values_2>7.000000</values_2>
+        <values_0>168.000000</values_0>
+        <values_1>77.000000</values_1>
+        <values_2>16.000000</values_2>
     </HexColorPicker_Search_Background>
     <HexColorPicker_Halo_Surface>
         <name>Halo Surface</name>
-        <values_0>251.000000</values_0>
-        <values_1>164.000000</values_1>
-        <values_2>70.000000</values_2>
+        <values_0>255.000000</values_0>
+        <values_1>255.000000</values_1>
+        <values_2>255.000000</values_2>
     </HexColorPicker_Halo_Surface>
     <HexColorPicker_Halo_Bottom>
         <name>Halo Bottom</name>
-        <values_0>159.000000</values_0>
-        <values_1>237.000000</values_1>
-        <values_2>252.000000</values_2>
+        <values_0>255.000000</values_0>
+        <values_1>255.000000</values_1>
+        <values_2>255.000000</values_2>
     </HexColorPicker_Halo_Bottom>
     <HexColorPicker_At_Sign_Color>
         <name>At Sign Color</name>
-        <values_0>251.000000</values_0>
-        <values_1>163.000000</values_1>
-        <values_2>70.000000</values_2>
+        <values_0>0.000000</values_0>
+        <values_1>45.000000</values_1>
+        <values_2>86.000000</values_2>
     </HexColorPicker_At_Sign_Color>
     <HexColorPicker_Layer_One_Font_Color>
         <name>Layer One Font Color</name>
@@ -41,4 +41,20 @@
         <values_1>255.000000</values_1>
         <values_2>253.000000</values_2>
     </HexColorPicker_Layer_Two_Font_Color>
+    <Toggle_Monday>
+        <name>Monday</name>
+        <value>0</value>
+        <name>Monday</name>
+        <value>0</value>
+        <name>Monday</name>
+        <value>0</value>
+        <name>Monday</name>
+        <value>0</value>
+        <name>Monday</name>
+        <value>0</value>
+    </Toggle_Monday>
+    <Toggle_Monday></Toggle_Monday>
+    <Toggle_Monday></Toggle_Monday>
+    <Toggle_Monday></Toggle_Monday>
+    <Toggle_Monday></Toggle_Monday>
 </controls>

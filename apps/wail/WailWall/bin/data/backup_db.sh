@@ -1,7 +1,8 @@
 #!/bin/sh
+set -x
 remote_host="nelson.datamaniacs.net"
 remote_user="diederick"
-remote_dir="~/backup/"
+remote_dir="/media/data/backup/ted2012/"
 dt=$(date +%Y-%m-%d-%H-%M-%S)
 file="${dt}_twitter_db_backup.db"
 if [ ! -f ${file} ] ; then
