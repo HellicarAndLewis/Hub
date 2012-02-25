@@ -31,6 +31,9 @@ float mixR = 0.5;
 float feedbackL = 0.1;
 float feedbackR = 0.1;
 
+#define ROTATE 0
+#define SIMULATE 1
+int mouseMode = ROTATE;
 //--------------------------------------------------------------
 void testApp::setup(){
 	
@@ -68,7 +71,7 @@ void testApp::setup(){
 	gui.addSlider("Feedback Right", feedbackR, 0, 1);
 	gui.addSlider("Mix L", mixL, 0, 1);
 	gui.addSlider("Mix R", mixR, 0, 1);
-	
+	gui.addSegmented("Mouse Mode", mouseMode, "ROTATE|SIMULATE");
 	
 	gui.loadSettings("wailnoise.xml");
 	gui.y = PREVIEW_HEIGHT + 10;
@@ -100,7 +103,9 @@ void testApp::setup(){
 	bgLoopPlayer = audio::createPlayer(bgLoop);
 	audio::setLooping(bgLoopPlayer, true);
 	audio::setVolume(bgLoopPlayer, bgLoopVolume);
-	audio::playOnBus(bgLoopPlayer, hiPassBus);
+	audio::play(bgLoopPlayer);
+	
+	//audio::playOnBus(bgLoopPlayer, hiPassBus);
 	
 	// initial splash
 	splash.setup("plop");
@@ -266,6 +271,8 @@ void testApp::keyReleased(int key){
 ofVec3f mouseStart;
 ofVec3f oldRotation;
 bool dragging;
+KinectTouch fakeTouch;
+
 //--------------------------------------------------------------
 void testApp::mouseMoved(int x, int y ){
 	
@@ -273,25 +280,65 @@ void testApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
-	if(dragging && x<PREVIEW_WIDTH &&y<PREVIEW_HEIGHT) {
-		ofVec3f delta = ofVec3f(x,y) - mouseStart;
-		rotation = oldRotation + delta;
+	if(x<PREVIEW_WIDTH &&y<PREVIEW_HEIGHT) {
+		if(mouseMode==ROTATE) {
+			if(dragging) {
+				ofVec3f delta = ofVec3f(x,y) - mouseStart;
+				rotation = oldRotation + delta;
+			}
+		} else {
+			
+			// SIMULATE
+			float xx = ofMap(x, 0, PREVIEW_WIDTH, 0, 1, true);
+			float yy = ofMap(y, 0, PREVIEW_HEIGHT, 0, 1, true);
+			
+			fakeTouch.vel.x = xx - fakeTouch.x;
+			fakeTouch.vel.y = yy - fakeTouch.y;
+			
+			fakeTouch.x = xx;
+			fakeTouch.y = yy;
+			fakeTouch.age++;
+			touchMoved(fakeTouch);
+		}
 	}
 }
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
+	
 	if(x<PREVIEW_WIDTH && y<PREVIEW_HEIGHT) {
-		dragging = true;
-		mouseStart = ofVec3f(x, y);
-		oldRotation = rotation;
+		if(mouseMode==ROTATE) {
+			dragging = true;
+			mouseStart = ofVec3f(x, y);
+			oldRotation = rotation;
+		} else {
+			// SIMULATE
+			fakeTouch.x = ofMap(x, 0, PREVIEW_WIDTH, 0, 1, true);
+			fakeTouch.y = ofMap(y, 0, PREVIEW_HEIGHT, 0, 1, true);
+			fakeTouch.z = ofRandom(0.1, 0.2);
+			fakeTouch.age = 0;
+			touchDown(fakeTouch);
+		}
 	}
 
 }
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
-
+	if(x<PREVIEW_WIDTH && y<PREVIEW_HEIGHT) {
+		if(mouseMode==SIMULATE) {
+			// SIMULATE
+			float xx = ofMap(x, 0, PREVIEW_WIDTH, 0, 1, true);
+			float yy = ofMap(y, 0, PREVIEW_HEIGHT, 0, 1, true);
+			
+			fakeTouch.vel.x = xx - fakeTouch.x;
+			fakeTouch.vel.y = yy - fakeTouch.y;
+			fakeTouch.age++;
+			fakeTouch.x = xx;
+			fakeTouch.y = yy;
+			touchUp(fakeTouch);
+		}
+	}
 }
 
 //--------------------------------------------------------------
@@ -311,6 +358,7 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 
 void testApp::touchDown(const KinectTouch &touch) {
 	blobs[touch.id] = touch;
+	printf("Touch down\n");
 	
 	
 }
@@ -324,6 +372,7 @@ void testApp::touchMoved(const KinectTouch &touch) {
 		);
 		messageString = "touch:    size:"+ofToString(touch.size, 3) + "    z:" + ofToString(touch.z, 3);
 	}
+	printf("Touch moved\n");
 }
 
 void testApp::touchUp(const KinectTouch &touch) {
