@@ -1,0 +1,32 @@
+- Install chrome
+- Install iterm 2
+- Generate ssh: ssh-keygen -t rsa
+- Upload key to github
+- Install jEdit
+- Install skype
+- Make sure the Time is synchronized with a time server (see preferences)!!!
+- Download color scheme for vi: http://dengmao.wordpress.com/2007/01/22/vim-color-scheme-wombat/ 
+- Copy color sheme to /usr/share/vim/vim73/colors/
+- Edit ~/.vimrc - add "colorscheme wombat"
+- Edit apache conf so it includes http-vhosts.conf 
+- Add this to the vhost:
+
++++++++++
+
+NameVirtualHost *:8888
+
+<VirtualHost *:8888>
+    DocumentRoot "/Applications/MAMP/htdocs/dewarshub"
+    ServerName dewarshub.local
+    ErrorLog "logs/dewarshub_error_log"
+    CustomLog "logs/dewarshub_access_log" common
+</VirtualHost>
+
++++++++++
+
+- Restart MAMP
+- Goto localhost:8888, open PHPMyAdmin, import the ProjectWail/web/admin/resources/dewarshub_admin.structure.sql
+- Import ProjectWail/web/admin/resources/dewarshub_admin.data.sql
+- Give the database permission:  grant all on dewarshub_admin.* to dewarshub_admin@"localhost" identified by "dewarshub_admin"
+- Install firefox
+- Install sqlitebrowser addon for firefox

@@ -5,7 +5,7 @@
     </SliderFloat_Flow_Speed>
     <SliderFloat_Flow_Variance>
         <name>Flow Variance</name>
-        <value>0.000000</value>
+        <value>4.400000</value>
     </SliderFloat_Flow_Variance>
     <SliderFloat_Flow_Chaos_Speed>
         <name>Flow Chaos Speed</name>
@@ -13,15 +13,15 @@
     </SliderFloat_Flow_Chaos_Speed>
     <SliderFloat_Flow_Chaos_Amp>
         <name>Flow Chaos Amp</name>
-        <value>1.000000</value>
+        <value>1.195000</value>
     </SliderFloat_Flow_Chaos_Amp>
     <SliderFloat_Flow_Chaos_Damp>
         <name>Flow Chaos Damp</name>
-        <value>14.965000</value>
+        <value>366.085022</value>
     </SliderFloat_Flow_Chaos_Damp>
     <SliderFloat_Flow_Rotate_Amp>
         <name>Flow Rotate Amp</name>
-        <value>0.200000</value>
+        <value>12.000000</value>
     </SliderFloat_Flow_Rotate_Amp>
     <SliderFloat_Flow_Rotate_Damp>
         <name>Flow Rotate Damp</name>

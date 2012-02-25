@@ -6,9 +6,17 @@ class Database {
 	}
 	
 	public function connect($host, $database, $username, $password) {
+		//mysql:unix_socket=/tmp/mysql.sock;dbname=testdb
+		if(strstr($host,'unix_socket')) {
+			$host_str = 'mysql:' .$host .';dbname='.$database;
+		}
+		else {
+			$host_str = 'mysql:host=' .$host;
+		}
+		
 		try {
 			$this->db = new PDO(
-				'mysql:host=' .$host
+				$host_str
 				.';dbname=' .$database 
 				,$username
 				,$password
@@ -16,6 +24,7 @@ class Database {
 			);
 		}
 		catch(PDOException $ex) {
+			p($ex->getMessage());
 			die('Cannot connect to database');
 		}
 			

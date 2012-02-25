@@ -10,7 +10,9 @@ $server_switch = new ServerSwitch();
 $config['db']['database']	= 'dewarshub_admin';
 $config['db']['username']  	= 'dewarshub_admin';
 $config['db']['password']  	= 'dewarshub_admin';
-$config['db']['host']  		= 'localhost';
+//$config['db']['host']  		= '/Applications/MAMP/tmp/mysql/mysql.sock';
+//$config['db']['host']  		= 'localhost';
+$config['db']['host'] = 'unix_socket:/Applications/MAMP/tmp/mysql/mysql.sock';
 $config['upload_dir'] 		= $base .'/uploads';
 
 $config['osc'] = array(
