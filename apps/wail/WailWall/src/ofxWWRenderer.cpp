@@ -13,6 +13,12 @@
 #include "mathutils.h"
 
 
+bool monday = false;
+bool tuesday = false;
+bool wednesday = false;
+bool thursday = false;
+bool friday = false;
+
 void ofxWWRenderer::setup(int width, int height){
 	targetWidth = width;
 	targetHeight = height;
@@ -170,13 +176,62 @@ void ofxWWRenderer::setupGui(){
 	webGui.addHexColor("Layer One Font Color", Colours::get(LAYER_1_FONT));
 	webGui.addHexColor("Layer Two Font Color", Colours::get(LAYER_2_FONT));
 	
+	webGui.addToggle("Monday", monday);
+	webGui.addToggle("Monday", tuesday);
+	webGui.addToggle("Monday", wednesday);
+	webGui.addToggle("Monday", thursday);
+	webGui.addToggle("Monday", friday);
+	
 	
 	tweets.setupGui();
 }
 
 void ofxWWRenderer::update(){
+	if(monday) {
+		monday = false;
+		Colours::set(AT_SIGN,		0xf9b40f);
+		Colours::set(SURFACE_BG,	0x7a1600);
+		Colours::set(HALO_SEARCH,	0xe2ded9);
+		Colours::set(HALO_SURFACE,	0xe2ded9);
+		Colours::set(SEARCH_BG,		0x3b0608);
+	}
+	if(tuesday) {
+		tuesday = false;
+		Colours::set(AT_SIGN,		0xf9b40f);
+		Colours::set(SURFACE_BG,	0x002d56);
+		Colours::set(HALO_SEARCH,	0xf9b40f);
+		Colours::set(HALO_SURFACE,	0xf9b40f);
+		Colours::set(SEARCH_BG,		0x000c2e);
+	}
 	
+	if(wednesday) {
+		wednesday = false;
+		Colours::set(AT_SIGN,		0xfdf3e4);
+		Colours::set(SURFACE_BG,	0xe86d1f);
+		Colours::set(HALO_SEARCH,	0xfdf3e4);
+		Colours::set(HALO_SURFACE,	0xfdf3e4);
+		Colours::set(SEARCH_BG,		0x571c1f);
+	}
+
 	
+	if(thursday) {
+		thursday = false;
+		Colours::set(AT_SIGN,		0x002d56);
+		Colours::set(SURFACE_BG,	0xfaa634);
+		Colours::set(HALO_SEARCH,	0xFFFFFF);
+		Colours::set(HALO_SURFACE,	0xFFFFFF);
+		Colours::set(SEARCH_BG,		0xa84d10);
+	}
+	
+	if(friday) {
+		friday = false;
+		Colours::set(AT_SIGN,		0xe86d1f);
+		Colours::set(SURFACE_BG,	0xd1c8b3);
+		Colours::set(HALO_SEARCH,	0xd1c8b3);
+		Colours::set(HALO_SURFACE,	0xd1c8b3);
+		Colours::set(SEARCH_BG,		0x00334e);
+	}
+
 	float maxTouchZ = 0;
 	map<int,KinectTouch>::iterator it;
 	for(it = blobs->begin(); it != blobs->end(); it++){
