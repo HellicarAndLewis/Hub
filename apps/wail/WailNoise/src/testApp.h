@@ -50,5 +50,10 @@ public:
     float bgLoopVolume;
 	float splashVolume;
 	audio::PlayerRef bgLoopPlayer;
+	audio::EffectRef hiPass;
+	audio::EffectRef delay;
+	
+	void chaseDepth(float z);
+	void chaseDisturbance(float x, float y);
 };
 

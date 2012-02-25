@@ -13,4 +13,7 @@
     <setting id="Mix L" value="0.026666667"></setting>
     <setting id="Mix R" value="0.033333335"></setting>
     <setting id="Mouse Mode" value="1"></setting>
+    <setting id="Depth" value=""></setting>
+    <setting id="Depth Lerp" value="0.813866675"></setting>
+    <setting id="Disturbance" value=""></setting>
 </settings>

@@ -177,10 +177,10 @@ void ofxWWRenderer::setupGui(){
 	webGui.addHexColor("Layer Two Font Color", Colours::get(LAYER_2_FONT));
 	
 	webGui.addToggle("Monday", monday);
-	webGui.addToggle("Monday", tuesday);
-	webGui.addToggle("Monday", wednesday);
-	webGui.addToggle("Monday", thursday);
-	webGui.addToggle("Monday", friday);
+	webGui.addToggle("Tuesday", tuesday);
+	webGui.addToggle("Wednesday", wednesday);
+	webGui.addToggle("Thursday", thursday);
+	webGui.addToggle("Friday", friday);
 	
 	
 	tweets.setupGui();

@@ -12,17 +12,23 @@
 // to the "WailWall" app.
 //
 
+
+// these are the VU's
+float depth = 0;
+float disturbance = 0;
+
+float targetDepth = 0;
+
+float depthLerp = 0.92;
+// these are constants
 float PREVIEW_WIDTH = 500;
 float PREVIEW_HEIGHT = 500;
 float minSplashDepth = 0;
 float maxSplashDepth = 0;
 
-audio::EffectRef hiPass;
-audio::EffectRef delay;
-
 float bgCutoff = 8000;
 float bgRes = 0.1;
-void drawCube();
+
 
 float delayTimeL = 500;
 float delayTimeR = 1000;
@@ -34,12 +40,15 @@ float feedbackR = 0.1;
 #define ROTATE 0
 #define SIMULATE 1
 int mouseMode = ROTATE;
+
+void drawCube();
+
 //--------------------------------------------------------------
 void testApp::setup(){
 	
 	kinect.setup(2468);
 	kinect.setListener(this);
-	ofSetFrameRate(30);
+	ofSetFrameRate(60);
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
 	
@@ -73,6 +82,10 @@ void testApp::setup(){
 	gui.addSlider("Mix R", mixR, 0, 1);
 	gui.addSegmented("Mouse Mode", mouseMode, "ROTATE|SIMULATE");
 	
+	gui.addColumn();
+	gui.addMeter("Depth", depth);
+	gui.addSlider("Depth Lerp", depthLerp, 0.8, 0.96);
+	gui.addMeter("Disturbance", disturbance);
 	gui.loadSettings("wailnoise.xml");
 	gui.y = PREVIEW_HEIGHT + 10;
 	oscInterface.setup(gui, 1098, 1097);
@@ -167,6 +180,8 @@ void testApp::exit() {
 void testApp::update(){
 	kinect.update();
 	oscInterface.update();
+
+	depth = depth * depthLerp + targetDepth * (1.f - depthLerp);
 	
 }
 string messageString = "";
@@ -362,9 +377,18 @@ void testApp::touchDown(const KinectTouch &touch) {
 	
 	
 }
+void testApp::chaseDepth(float z) {
+	targetDepth = z;
+}
 
+void testApp::chaseDisturbance(float x, float y) {
+	
+}
 void testApp::touchMoved(const KinectTouch &touch) {
 	blobs[touch.id] = touch;
+	chaseDepth(touch.z);
+	chaseDisturbance(touch.x, touch.y);
+	
 	slosh.trigger(ofVec3f(ofClamp(touch.x, 0, 1), 0, ofRandom(0, 1)));
 	if(touch.age==1) {
 		splash.trigger(
@@ -376,6 +400,9 @@ void testApp::touchMoved(const KinectTouch &touch) {
 }
 
 void testApp::touchUp(const KinectTouch &touch) {
+	
+	chaseDepth(0);
+	chaseDisturbance(touch.x, touch.y);
 	if(blobs.find(touch.id)!=blobs.end()) {
 		blobs.erase(touch.id);
 	}
