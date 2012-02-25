@@ -18,7 +18,7 @@ bool tuesday = false;
 bool wednesday = false;
 bool thursday = false;
 bool friday = false;
-
+float causticHaloRadius = 1000;
 void ofxWWRenderer::setup(int width, int height){
 	targetWidth = width;
 	targetHeight = height;
@@ -146,23 +146,10 @@ void ofxWWRenderer::setupGui(){
 	webGui.addSlider("Oscillation",  caust.oscillation, 0, 20);
 	webGui.addToggle("Always on", causticsAlwaysOn);
 	
+	webGui.addSlider("caustic halo radius", causticHaloRadius, 200, 3500);    
 	
 	
-		
-	webGui.addPage("Shader");
-	webGui.addToggle("Use Background A", useBackgroundSetA);
-	webGui.addSlider("Blur Diffuse", blurAmount, 0, 10);
-	webGui.addSlider("Clear Speed", clearSpeed, 0, 15);
-	webGui.addSlider("Warp Amount", warpAmount, 0, 75);
-	webGui.addSlider("Noise Scale X", noiseScale.x, 50, 500);
-	webGui.addSlider("Noise Scale Y", noiseScale.y, 50, 500);
-	webGui.addSlider("Noise Flow", noiseFlow, 0, 200);
-	webGui.addSlider("Wobble Speed X", noiseWobbleSpeedX, 0, .2);
-	webGui.addSlider("Noise Wobble Speed Y", noiseWobbleSpeedY, 0, .2);
-	webGui.addSlider("Noise Wobble Amplitude X", noiseWobbleAmplitudeX, 0, 100);
-	webGui.addSlider("Noise Wobble Amplitude Y", noiseWobbleAmplitudeY, 0, 100);
-	webGui.addToggle("Just Draw Warp", justDrawWarpTexture);
-    
+	
     webGui.addPage("Colours");
 
     webGui.addHexColor("Surface Background", Colours::get(SURFACE_BG));
@@ -177,10 +164,10 @@ void ofxWWRenderer::setupGui(){
 	webGui.addHexColor("Layer Two Font Color", Colours::get(LAYER_2_FONT));
 	
 	webGui.addToggle("Monday", monday);
-	webGui.addToggle("Monday", tuesday);
-	webGui.addToggle("Monday", wednesday);
-	webGui.addToggle("Monday", thursday);
-	webGui.addToggle("Monday", friday);
+	webGui.addToggle("Tuesday", tuesday);
+	webGui.addToggle("Wednesday", wednesday);
+	webGui.addToggle("Thursday", thursday);
+	webGui.addToggle("Friday", friday);
 	
 	
 	tweets.setupGui();
@@ -290,24 +277,25 @@ void ofxWWRenderer::render(){
 	if(causticsAlwaysOn) {
 		ofSetHexColor(0xFFFFFF);
 	} else {
+
 		glColor4f(1,1,1,1.f - tweets.tweetLayerOpacity);
 	}
 
 	
 
 	ofVec2f term;
-	/*searchTermHaloShader.begin();
+	searchTermHaloShader.begin();
 	searchTermHaloShader.setUniformTexture("tex", caust.getFbo().getTextureReference(0), 0);
 	searchTermHaloShader.setUniform2f("centre", term.x, term.y);
-	searchTermHaloShader.setUniform1f("radius", 1000);
+	searchTermHaloShader.setUniform1f("radius", causticHaloRadius);
 	searchTermHaloShader.setUniform1f("amount", 1);
-*/
+
 	
 
 
 
 	caust.getFbo().draw(0, 0);
-	//searchTermHaloShader.end();
+	searchTermHaloShader.end();
 	
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 		

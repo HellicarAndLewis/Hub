@@ -12,17 +12,23 @@
 // to the "WailWall" app.
 //
 
+
+// these are the VU's
+float depth = 0;
+float disturbance = 0;
+
+float targetDepth = 0;
+
+float depthLerp = 0.92;
+// these are constants
 float PREVIEW_WIDTH = 500;
 float PREVIEW_HEIGHT = 500;
 float minSplashDepth = 0;
 float maxSplashDepth = 0;
 
-audio::EffectRef hiPass;
-audio::EffectRef delay;
-
 float bgCutoff = 8000;
 float bgRes = 0.1;
-void drawCube();
+
 
 float delayTimeL = 500;
 float delayTimeR = 1000;
@@ -31,12 +37,18 @@ float mixR = 0.5;
 float feedbackL = 0.1;
 float feedbackR = 0.1;
 
+#define ROTATE 0
+#define SIMULATE 1
+int mouseMode = ROTATE;
+
+void drawCube();
+
 //--------------------------------------------------------------
 void testApp::setup(){
 	
 	kinect.setup(2468);
 	kinect.setListener(this);
-	ofSetFrameRate(30);
+	ofSetFrameRate(60);
 	ofSetVerticalSync(true);
 	ofEnableAlphaBlending();
 	
@@ -68,8 +80,12 @@ void testApp::setup(){
 	gui.addSlider("Feedback Right", feedbackR, 0, 1);
 	gui.addSlider("Mix L", mixL, 0, 1);
 	gui.addSlider("Mix R", mixR, 0, 1);
+	gui.addSegmented("Mouse Mode", mouseMode, "ROTATE|SIMULATE");
 	
-	
+	gui.addColumn();
+	gui.addMeter("Depth", depth);
+	gui.addSlider("Depth Lerp", depthLerp, 0.8, 0.96);
+	gui.addMeter("Disturbance", disturbance);
 	gui.loadSettings("wailnoise.xml");
 	gui.y = PREVIEW_HEIGHT + 10;
 	oscInterface.setup(gui, 1098, 1097);
@@ -100,7 +116,9 @@ void testApp::setup(){
 	bgLoopPlayer = audio::createPlayer(bgLoop);
 	audio::setLooping(bgLoopPlayer, true);
 	audio::setVolume(bgLoopPlayer, bgLoopVolume);
-	audio::playOnBus(bgLoopPlayer, hiPassBus);
+	audio::play(bgLoopPlayer);
+	
+	//audio::playOnBus(bgLoopPlayer, hiPassBus);
 	
 	// initial splash
 	splash.setup("plop");
@@ -162,6 +180,8 @@ void testApp::exit() {
 void testApp::update(){
 	kinect.update();
 	oscInterface.update();
+
+	depth = depth * depthLerp + targetDepth * (1.f - depthLerp);
 	
 }
 string messageString = "";
@@ -266,6 +286,8 @@ void testApp::keyReleased(int key){
 ofVec3f mouseStart;
 ofVec3f oldRotation;
 bool dragging;
+KinectTouch fakeTouch;
+
 //--------------------------------------------------------------
 void testApp::mouseMoved(int x, int y ){
 	
@@ -273,25 +295,65 @@ void testApp::mouseMoved(int x, int y ){
 
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
-	if(dragging && x<PREVIEW_WIDTH &&y<PREVIEW_HEIGHT) {
-		ofVec3f delta = ofVec3f(x,y) - mouseStart;
-		rotation = oldRotation + delta;
+	if(x<PREVIEW_WIDTH &&y<PREVIEW_HEIGHT) {
+		if(mouseMode==ROTATE) {
+			if(dragging) {
+				ofVec3f delta = ofVec3f(x,y) - mouseStart;
+				rotation = oldRotation + delta;
+			}
+		} else {
+			
+			// SIMULATE
+			float xx = ofMap(x, 0, PREVIEW_WIDTH, 0, 1, true);
+			float yy = ofMap(y, 0, PREVIEW_HEIGHT, 0, 1, true);
+			
+			fakeTouch.vel.x = xx - fakeTouch.x;
+			fakeTouch.vel.y = yy - fakeTouch.y;
+			
+			fakeTouch.x = xx;
+			fakeTouch.y = yy;
+			fakeTouch.age++;
+			touchMoved(fakeTouch);
+		}
 	}
 }
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
+	
 	if(x<PREVIEW_WIDTH && y<PREVIEW_HEIGHT) {
-		dragging = true;
-		mouseStart = ofVec3f(x, y);
-		oldRotation = rotation;
+		if(mouseMode==ROTATE) {
+			dragging = true;
+			mouseStart = ofVec3f(x, y);
+			oldRotation = rotation;
+		} else {
+			// SIMULATE
+			fakeTouch.x = ofMap(x, 0, PREVIEW_WIDTH, 0, 1, true);
+			fakeTouch.y = ofMap(y, 0, PREVIEW_HEIGHT, 0, 1, true);
+			fakeTouch.z = ofRandom(0.1, 0.2);
+			fakeTouch.age = 0;
+			touchDown(fakeTouch);
+		}
 	}
 
 }
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
-
+	if(x<PREVIEW_WIDTH && y<PREVIEW_HEIGHT) {
+		if(mouseMode==SIMULATE) {
+			// SIMULATE
+			float xx = ofMap(x, 0, PREVIEW_WIDTH, 0, 1, true);
+			float yy = ofMap(y, 0, PREVIEW_HEIGHT, 0, 1, true);
+			
+			fakeTouch.vel.x = xx - fakeTouch.x;
+			fakeTouch.vel.y = yy - fakeTouch.y;
+			fakeTouch.age++;
+			fakeTouch.x = xx;
+			fakeTouch.y = yy;
+			touchUp(fakeTouch);
+		}
+	}
 }
 
 //--------------------------------------------------------------
@@ -311,12 +373,22 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 
 void testApp::touchDown(const KinectTouch &touch) {
 	blobs[touch.id] = touch;
+	printf("Touch down\n");
 	
 	
 }
+void testApp::chaseDepth(float z) {
+	targetDepth = z;
+}
 
+void testApp::chaseDisturbance(float x, float y) {
+	
+}
 void testApp::touchMoved(const KinectTouch &touch) {
 	blobs[touch.id] = touch;
+	chaseDepth(touch.z);
+	chaseDisturbance(touch.x, touch.y);
+	
 	slosh.trigger(ofVec3f(ofClamp(touch.x, 0, 1), 0, ofRandom(0, 1)));
 	if(touch.age==1) {
 		splash.trigger(
@@ -324,9 +396,13 @@ void testApp::touchMoved(const KinectTouch &touch) {
 		);
 		messageString = "touch:    size:"+ofToString(touch.size, 3) + "    z:" + ofToString(touch.z, 3);
 	}
+	printf("Touch moved\n");
 }
 
 void testApp::touchUp(const KinectTouch &touch) {
+	
+	chaseDepth(0);
+	chaseDisturbance(touch.x, touch.y);
 	if(blobs.find(touch.id)!=blobs.end()) {
 		blobs.erase(touch.id);
 	}

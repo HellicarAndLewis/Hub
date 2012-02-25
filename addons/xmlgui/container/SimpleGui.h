@@ -9,6 +9,8 @@
 #include "ofGuiEventDispatcher.h"
 #include "Drawable.h"
 #include "Panner.h"
+#include "VU.h"
+#include "Meter.h"
 
 //#define SIMPLE_GUI_WIDTH 150
 
@@ -117,6 +119,25 @@ namespace xmlgui {
 			addChild(seg);
 			columnCheck();
 			return seg;
+		}
+		
+		VU *addVU(string name, float &value) {
+			VU *vu = (VU*)INSTANTIATE_WITH_ID("vu", name);
+			vu->pointToValue(&value);
+			addChild(vu);
+			columnCheck();
+			return vu;
+			
+		}
+		
+		Meter *addMeter(string name, float &value) {
+			Meter *meter = (Meter*)INSTANTIATE_WITH_ID("meter", name);
+			meter->pointToValue(&value);
+			meter->vertical = false;
+			addChild(meter);
+			columnCheck();
+			return meter;
+			
 		}
 		
 		SegmentedControl *addSegmented(string name, int &value, vector<string> options) {

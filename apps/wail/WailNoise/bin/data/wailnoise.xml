@@ -1,7 +1,19 @@
 <settings>
     <setting id="Splash Volume" value="1.000000000"></setting>
-    <setting id="Bubble Volume" value="0.993333340"></setting>
-    <setting id="Background Loop Volume" value="0.973333359"></setting>
-    <setting id="Min splash depth" value="0.140000001"></setting>
+    <setting id="Bubble Volume" value="0.079999998"></setting>
+    <setting id="Background Loop Volume" value="0.033333335"></setting>
+    <setting id="Background Cutoff" value="164.000000000"></setting>
+    <setting id="Background Resonance" value="0.749999940"></setting>
+    <setting id="Min splash depth" value="0.066666670"></setting>
     <setting id="Max splash depth" value="0.446666658"></setting>
+    <setting id="Delay Time Left" value="6832.000000000"></setting>
+    <setting id="Delay Time Right" value="1000.000000000"></setting>
+    <setting id="Feedback Left" value="0.100000001"></setting>
+    <setting id="Feedback Right" value="0.100000001"></setting>
+    <setting id="Mix L" value="0.026666667"></setting>
+    <setting id="Mix R" value="0.033333335"></setting>
+    <setting id="Mouse Mode" value="1"></setting>
+    <setting id="Depth" value=""></setting>
+    <setting id="Depth Lerp" value="0.813866675"></setting>
+    <setting id="Disturbance" value=""></setting>
 </settings>
