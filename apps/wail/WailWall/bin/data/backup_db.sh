@@ -1,5 +1,6 @@
 #!/bin/sh
 set -x
+echo "hi" >> test.txt
 remote_host="nelson.datamaniacs.net"
 remote_user="diederick"
 remote_dir="/media/data/backup/ted2012/"

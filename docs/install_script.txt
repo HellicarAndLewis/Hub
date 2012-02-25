@@ -30,5 +30,6 @@ NameVirtualHost *:8888
 - Give the database permission:  grant all on dewarshub_admin.* to dewarshub_admin@"localhost" identified by "dewarshub_admin"
 - Install sqlitebrowser 
 - Fix backup script: read create_backup_for_twitter_db.txt 
-- Make cronjob: $crontab -e , then enter:
+- Make cronjob: $crontab -e , then enter: 
 - * */10 * * * /Users/ctnamacpro8/ProjectWail/apps/wail/WailWall/bin/data/backup.sh 
+- OR: crontab crontab.txt
