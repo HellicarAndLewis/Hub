@@ -75,6 +75,16 @@ void Looper::tick() {
     }
 }
 
+void Looper::addLoop(string path, float modulation, float volume, float frequency) {
+	loops.push_back(audio::loadSample(ofToDataPath(path)));
+	faders.push_back(SineFader());
+	faders.back().modulation = modulation;
+	faders.back().volume     = volume;
+	faders.back().frequency  = frequency;
+	faders.back().phase      = 0;
+	pans.push_back(0.5);
+}
+
 void Looper::loadLoops(ofxXmlSettings &xml) {
     int numLoops = xml.getNumTags("loop");
     

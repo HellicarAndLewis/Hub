@@ -643,6 +643,9 @@ EffectRef audio::createEffect(BusRef busRef, EffectType effectType) {
 		
 		AudioEffect *effect = NULL;
 		switch(effectType) {
+			case EFFECT_TYPE_REVERB:
+				effect = new ReverbEffect();
+				break;
 			case EFFECT_TYPE_DELAY:
 				effect = new DelayEffect();
 				break;

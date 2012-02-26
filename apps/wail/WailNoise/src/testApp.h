@@ -8,7 +8,7 @@
 #include "AudioSystem.h"
 #include "KinectTouchReceiver.h"
 #include "OSCInterface.h"
-
+#include "Looper.h"
 class testApp : public ofBaseApp, public KinectTouchListener, public xmlgui::Listener {
 public:
 	void setup();
@@ -17,6 +17,7 @@ public:
 	void update();
 	void draw();
 
+	
 	void keyPressed  (int key);
 	void keyReleased(int key);
 	void mouseMoved(int x, int y );
@@ -51,9 +52,17 @@ public:
 	float splashVolume;
 	audio::PlayerRef bgLoopPlayer;
 	audio::EffectRef hiPass;
-	audio::EffectRef delay;
+	audio::EffectRef reverb;
 	
+	audio::BusRef reverbBus;
+	void chasePan(float pan);
+	void setPan(float pan);
+	audio::PlayerRef lows[3];
+	audio::PlayerRef highs[3];
 	void chaseDepth(float z);
-	void chaseDisturbance(float x, float y);
+	void chaseDisturbance(float dxy);
+	void setLowVolume(float vol);
+	void setHighVolume(float vol);
+	Looper lowLooper;
 };
 

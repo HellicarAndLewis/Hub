@@ -20,7 +20,7 @@ public:
     void fadeOut(float duration);    
     void tick();
     
-    
+	void addLoop(string path, float modulation, float volume, float frequency);
     
 private:
     void loadLoops(ofxXmlSettings &xml);

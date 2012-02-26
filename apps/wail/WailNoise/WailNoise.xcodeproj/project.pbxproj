@@ -25,6 +25,10 @@
 		E4C2424910CC5A17004149E2 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C2424610CC5A17004149E2 /* IOKit.framework */; };
 		E4EB6799138ADC1D00A09F29 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
 		EA05662114D958D0009282B0 /* KinectTouchReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA05662014D958D0009282B0 /* KinectTouchReceiver.cpp */; };
+		EA1F522114F9F41600C9DD19 /* allpass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA1F521914F9F41500C9DD19 /* allpass.cpp */; };
+		EA1F522214F9F41600C9DD19 /* comb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA1F521B14F9F41600C9DD19 /* comb.cpp */; };
+		EA1F522314F9F41600C9DD19 /* revmodel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA1F521E14F9F41600C9DD19 /* revmodel.cpp */; };
+		EA1F522614F9F44D00C9DD19 /* ReverbEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA1F522414F9F44D00C9DD19 /* ReverbEffect.cpp */; };
 		EA8E87CD14C492EE00940115 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA8E87AA14C492ED00940115 /* tinyxml.cpp */; };
 		EA8E87CE14C492EE00940115 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA8E87AC14C492ED00940115 /* tinyxmlerror.cpp */; };
 		EA8E87CF14C492EE00940115 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA8E87AD14C492ED00940115 /* tinyxmlparser.cpp */; };
@@ -111,6 +115,16 @@
 		EA05661E14D958B9009282B0 /* KinectTouchListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KinectTouchListener.h; sourceTree = "<group>"; };
 		EA05661F14D958B9009282B0 /* KinectTouchReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KinectTouchReceiver.h; sourceTree = "<group>"; };
 		EA05662014D958D0009282B0 /* KinectTouchReceiver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KinectTouchReceiver.cpp; sourceTree = "<group>"; };
+		EA1F521914F9F41500C9DD19 /* allpass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = allpass.cpp; path = freeverb/allpass.cpp; sourceTree = "<group>"; };
+		EA1F521A14F9F41600C9DD19 /* allpass.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = allpass.hpp; path = freeverb/allpass.hpp; sourceTree = "<group>"; };
+		EA1F521B14F9F41600C9DD19 /* comb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = comb.cpp; path = freeverb/comb.cpp; sourceTree = "<group>"; };
+		EA1F521C14F9F41600C9DD19 /* comb.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = comb.hpp; path = freeverb/comb.hpp; sourceTree = "<group>"; };
+		EA1F521D14F9F41600C9DD19 /* denormals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = denormals.h; path = freeverb/denormals.h; sourceTree = "<group>"; };
+		EA1F521E14F9F41600C9DD19 /* revmodel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = revmodel.cpp; path = freeverb/revmodel.cpp; sourceTree = "<group>"; };
+		EA1F521F14F9F41600C9DD19 /* revmodel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = revmodel.hpp; path = freeverb/revmodel.hpp; sourceTree = "<group>"; };
+		EA1F522014F9F41600C9DD19 /* tuning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tuning.h; path = freeverb/tuning.h; sourceTree = "<group>"; };
+		EA1F522414F9F44D00C9DD19 /* ReverbEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReverbEffect.cpp; sourceTree = "<group>"; };
+		EA1F522514F9F44D00C9DD19 /* ReverbEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReverbEffect.h; sourceTree = "<group>"; };
 		EA4CBCB314D6AD1500684485 /* SimpleGui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleGui.h; sourceTree = "<group>"; };
 		EA4CBCB514D6AD1500684485 /* ColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPicker.h; sourceTree = "<group>"; };
 		EA4CBCB614D6AD1500684485 /* Contour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Contour.h; sourceTree = "<group>"; };
@@ -318,6 +332,14 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				EA1F521914F9F41500C9DD19 /* allpass.cpp */,
+				EA1F521A14F9F41600C9DD19 /* allpass.hpp */,
+				EA1F521B14F9F41600C9DD19 /* comb.cpp */,
+				EA1F521C14F9F41600C9DD19 /* comb.hpp */,
+				EA1F521D14F9F41600C9DD19 /* denormals.h */,
+				EA1F521E14F9F41600C9DD19 /* revmodel.cpp */,
+				EA1F521F14F9F41600C9DD19 /* revmodel.hpp */,
+				EA1F522014F9F41600C9DD19 /* tuning.h */,
 				EAC8156714D705F400595518 /* Slosh.cpp */,
 				EAC8156814D705F400595518 /* Slosh.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
@@ -585,6 +607,8 @@
 				EAC8154F14D703B800595518 /* AudioSystem.h */,
 				EA9427FD14E430D8003D615A /* AudioEffect.cpp */,
 				EA9427FE14E430D8003D615A /* AudioEffect.h */,
+				EA1F522414F9F44D00C9DD19 /* ReverbEffect.cpp */,
+				EA1F522514F9F44D00C9DD19 /* ReverbEffect.h */,
 				EA9427FA14E42F9A003D615A /* AudioBus.cpp */,
 				EA9427FB14E42F9A003D615A /* AudioBus.h */,
 				EAC8155014D703B800595518 /* Sample.h */,
@@ -735,6 +759,10 @@
 				EA9427FC14E42F9A003D615A /* AudioBus.cpp in Sources */,
 				EA9427FF14E430D8003D615A /* AudioEffect.cpp in Sources */,
 				EA94280814E9798D003D615A /* OSCInterface.cpp in Sources */,
+				EA1F522114F9F41600C9DD19 /* allpass.cpp in Sources */,
+				EA1F522214F9F41600C9DD19 /* comb.cpp in Sources */,
+				EA1F522314F9F41600C9DD19 /* revmodel.cpp in Sources */,
+				EA1F522614F9F44D00C9DD19 /* ReverbEffect.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

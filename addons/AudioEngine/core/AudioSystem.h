@@ -19,6 +19,7 @@
 
 #include "FilterEffect.h"
 #include "DelayEffect.h"
+#include "ReverbEffect.h"
 
 #ifdef USING_RTAUDIO
 #include "RtAudio.h"
@@ -42,7 +43,18 @@ namespace audio {
 			EFFECT_TYPE_HI_PASS,
 			EFFECT_TYPE_LOW_PASS,
 			EFFECT_TYPE_BAND_PASS,
-			EFFECT_TYPE_NOTCH
+			EFFECT_TYPE_NOTCH,
+		
+		
+			// reverb params:
+			// 0: ROOMSIZE,
+			// 1: DAMP,
+			// 2: WET,
+			// 3: DRY,
+			// 4: WIDTH,
+			EFFECT_TYPE_REVERB
+		
+		
 		
 	};
 	
