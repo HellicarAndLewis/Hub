@@ -275,12 +275,12 @@ void ofxWWRenderer::render(){
 	
 	ofEnableBlendMode(OF_BLENDMODE_ADD);
 
-	if(causticsAlwaysOn) {
-		ofSetHexColor(0xFFFFFF);
-	} else {
+	//if(causticsAlwaysOn) {
+	//	ofSetHexColor(0xFFFFFF);
+	//} else {
 
-		glColor4f(1,1,1,1.f - tweets.tweetLayerOpacity);
-	}
+		
+	//}
 
 	
 
@@ -289,11 +289,11 @@ void ofxWWRenderer::render(){
 	searchTermHaloShader.setUniform2f("centre", searchTermLocation.x, searchTermLocation.y);
 	searchTermHaloShader.setUniform1f("radius", causticHaloRadius);
 	searchTermHaloShader.setUniform1f("amount", 1.0);
-	searchTermHaloShader.setUniform1f("alpha", 1.0 - tweets.tweetLayerOpacity);
+	searchTermHaloShader.setUniform1f("__alpha", 1.0 - tweets.tweetLayerOpacity);
 
-	
+	printf("Alpha %f\n", 1.0-tweets.tweetLayerOpacity);
 
-
+    glColor4f(1,1,1,0);//1.f - tweets.tweetLayerOpacity);
 
 	caust.getFbo().draw(0, 0);
 	searchTermHaloShader.end();

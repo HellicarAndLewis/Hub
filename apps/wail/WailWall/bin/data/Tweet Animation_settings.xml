@@ -1,11 +1,11 @@
 <controls>
     <SliderFloat_Flow_Speed>
         <name>Flow Speed</name>
-        <value>-13.200001</value>
+        <value>-9.299999</value>
     </SliderFloat_Flow_Speed>
     <SliderFloat_Flow_Variance>
         <name>Flow Variance</name>
-        <value>4.400000</value>
+        <value>8.000000</value>
     </SliderFloat_Flow_Variance>
     <SliderFloat_Flow_Chaos_Speed>
         <name>Flow Chaos Speed</name>
@@ -13,7 +13,7 @@
     </SliderFloat_Flow_Chaos_Speed>
     <SliderFloat_Flow_Chaos_Amp>
         <name>Flow Chaos Amp</name>
-        <value>1.195000</value>
+        <value>8.410000</value>
     </SliderFloat_Flow_Chaos_Amp>
     <SliderFloat_Flow_Chaos_Damp>
         <name>Flow Chaos Damp</name>

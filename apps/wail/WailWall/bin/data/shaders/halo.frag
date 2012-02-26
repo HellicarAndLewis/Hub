@@ -4,7 +4,7 @@ uniform sampler2DRect tex;
 uniform vec2 centre;
 uniform float radius;
 uniform float amount;
-uniform float alpha;
+uniform float __alpha;
 void main()
 {
 	
@@ -29,5 +29,5 @@ void main()
 	
 	
 	amt = amt * amount * 2.0 + 1.0*(1.0-amount);
-	gl_FragColor = color*vec4(1.0, 1.0, 1.0, amt*alpha);
+	gl_FragColor = color*vec4(1.0, 1.0, 1.0, amt*__alpha);//amt*alpha);
 }
