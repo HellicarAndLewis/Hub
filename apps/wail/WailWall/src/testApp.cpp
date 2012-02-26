@@ -51,7 +51,7 @@ void testApp::setup(){
 	//screenSettingsFile = "DisplayLayout_triplehead.xml";
 	//DEV is for testing on smaller screens
 	//screenSettingsFile = "DisplayLayout_dev.xml";
-	screenSettingsFile = "DisplayLayout_dev.xml";
+	screenSettingsFile = "DisplayLayout_bigscreen.xml";
 	screenManager.loadScreens(screenSettingsFile);
 
 	webGui.addToggle("Show Preview Rects", previewScreenLayout);
