@@ -36,7 +36,7 @@ void testApp::setup(){
 	
 	generateScreens = false;
 	shouldLoadScreens = false;
-	shouldSaveScreens = false;
+	shouldSaveScreens = false; // used?? James??
 	shouldTakeScreenshot = false;
 	previewScreenLayout = false;
 
@@ -50,8 +50,8 @@ void testApp::setup(){
 	//JOEL: change this to the triplehead layout for your test
 	//screenSettingsFile = "DisplayLayout_triplehead.xml";
 	//DEV is for testing on smaller screens
+	//screenSettingsFile = "DisplayLayout_dev.xml";
 	screenSettingsFile = "DisplayLayout_dev.xml";
-	//screenSettingsFile = "DisplayLayout_bigscreen.xml";
 	screenManager.loadScreens(screenSettingsFile);
 
 	webGui.addToggle("Show Preview Rects", previewScreenLayout);
@@ -59,6 +59,7 @@ void testApp::setup(){
 	renderer.blobs = &blobs;
 	cout << "setting up renderer" << endl;
 	renderer.setup(screenManager.sourceRect.width, screenManager.sourceRect.height);	
+
 	renderer.setupGui();
 
 	//webGui.addPage("Touch size scaling");
@@ -75,19 +76,22 @@ void testApp::setup(){
 
 	screen_w = ofGetWidth();
 	screen_h = ofGetHeight();
+	//screen_w = 3840;
+	//screen_h = 3072;
 	screen_w = 3840;
-	screen_h = 3072;
-	
+    screen_h = 3618;
 	//screen_w = 1024;
 	//screen_h = 768;
 	
 	screen_w = screen_w / 4;
 	screen_h = screen_h / 4;
+	
+	//printf("SCREEN W: %d, SCREEN_H: %d\n", screen_w, screen_h);
 	//printf("================================= %d %d\n", renderer.getFbo().getWidth(), renderer.getFbo().getHeight());
 	int size = screen_w * screen_h * 3;
-	glGenBuffers(1,&pbo);  eglGetError();
-	glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo); eglGetError();
-	glBufferData(GL_PIXEL_PACK_BUFFER, size, NULL, GL_STATIC_READ); eglGetError();
+	glGenBuffers(1,&pbo);  
+	glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo); 
+	glBufferData(GL_PIXEL_PACK_BUFFER, size, NULL, GL_STATIC_READ); 
 	
 	renderer.getSearchTermManager().setScreenshotCallback(&testApp::theScreenshotCallback, this);
 	
@@ -120,8 +124,9 @@ void testApp::theScreenshotCallback(const string& username, void* userdata) {
 
 void testApp::draw(){
 	// roxlu 02/07
-	//ofSetFullscreen(false); 
-	
+	//ofSetFullscreen(false);
+   // ofColor(255,0,0);
+//	ofCircle(20,20,100);
 	ofBackground(0);
 	ofRectangle renderPreview = screenManager.getRenderPreviewRect();
 	renderer.getFbo().getTextureReference().draw(renderPreview);
@@ -164,13 +169,15 @@ void testApp::draw(){
 		filepath.append(filename);
 		
 		glGetError();
-		glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo); eglGetError();
-		renderer.getScreenshotFbo().getTextureReference().bind(); eglGetError();
+		glBindBuffer(GL_PIXEL_PACK_BUFFER, pbo); 
+		renderer.getScreenshotFbo().getTextureReference().bind();
 		
-		glGetTexImage(GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGB, GL_UNSIGNED_BYTE, 0); eglGetError();
+		glGetTexImage(GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGB, GL_UNSIGNED_BYTE, 0); 
+		
 		GLubyte* ptr = 	(GLubyte*) glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY);
 		
 		if(ptr) {
+			
 			renderer.getTweetManager()
 					.getTwitterApp()
 					.getImageWriter()
@@ -180,6 +187,7 @@ void testApp::draw(){
 		}
 		
 		glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
+		glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);
 		shouldTakeScreenshot = false;
 		screenshotUsername.clear();
 	}
@@ -214,6 +222,7 @@ void testApp::keyPressed(int key){
 			
 		case 's': {
 			shouldSaveScreens = true;
+			shouldTakeScreenshot = true;
 			break;
 		}
 		case 'm': {

@@ -1,7 +1,7 @@
 <controls>
     <SliderInt_Max_Tweets>
         <name>Max Tweets</name>
-        <value>398</value>
+        <value>227</value>
     </SliderInt_Max_Tweets>
     <Toggle_Clear_Tweets>
         <name>Clear Tweets</name>

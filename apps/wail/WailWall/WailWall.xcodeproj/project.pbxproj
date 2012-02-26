@@ -632,6 +632,7 @@
 		A6FDBFA114DA1C880003EBE5 /* warp_distort.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = warp_distort.frag; sourceTree = "<group>"; };
 		A6FDBFA214DA1C880003EBE5 /* warp_distort.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = warp_distort.vert; sourceTree = "<group>"; };
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
+		C8015E4314F9C3F400ED5628 /* DisplayLayout_bigscreen.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = DisplayLayout_bigscreen.xml; path = bin/data/DisplayLayout_bigscreen.xml; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
 		E45BE9720E8CC7DD009D7055 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
@@ -1640,6 +1641,7 @@
 			children = (
 				1FB8A9DD14F568AB0097AF3F /* mathutils.h */,
 				1FB8A9DE14F568B60097AF3F /* mathutils.cpp */,
+				C8015E4314F9C3F400ED5628 /* DisplayLayout_bigscreen.xml */,
 				1F49BFEA14F6C414008B4CD6 /* halo.frag */,
 				1F49BFE814F6C3F5008B4CD6 /* halo.vert */,
 				1FE6C33914F2604B007F7B84 /* DisplayLayout_dev.xml */,
