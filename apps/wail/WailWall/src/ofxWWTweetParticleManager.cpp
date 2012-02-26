@@ -256,9 +256,20 @@ void ofxWWTweetParticleManager::updateTweets(){
 		vector<ofxWWTweetParticle>::iterator it = tweets.begin();
 		while(it != tweets.end()) {
 			ofxWWTweetParticle& tweet = *it;
-			if(tweet.pos.y <= -wallRepulsionDistance) {
+			//if(tweet.pos.y <= -wallRepulsionDistance) {
+			if(tweet.pos.y <= 0) {
 				it = tweets.erase(it);
 				++removed;
+				continue;
+			}
+			else if(tweet.pos.x <= 0) {
+				it = tweets.erase(it);
+				++removed;
+				continue;
+			}
+			else if(tweet.pos.x >= simulationWidth) {
+				it = tweets.erase(it);
+				++removed
 				continue;
 			}
 			++it;
@@ -267,16 +278,28 @@ void ofxWWTweetParticleManager::updateTweets(){
 	else if(tweetFlowSpeed >= 0) {
 		// tweets going down;
 		vector<ofxWWTweetParticle>::iterator it = tweets.begin();
-		float remove_pos = simulationHeight + wallRepulsionDistance;
+		//float remove_pos = simulationHeight + wallRepulsionDistance;
+		float remove_pos = simulationHeight;
 		while(it != tweets.end()){
 			ofxWWTweetParticle& tweet = *it;
 			if(tweet.pos.y >= remove_pos) {				
 				it = tweets.erase(it);
 				continue;
 			}
+			else if(tweet.pos.x <= 0) {
+				it = tweets.erase(it);
+				continue;
+			}
+			else if(tweet.pos.x >= simulationWidth) {
+				it = tweets.erase(it);
+				continue;
+			}
 			++it;
 		} 
 	}
+	
+		
+	
 	
 	// just remove tweets when there are too many 
 	{
@@ -516,7 +539,8 @@ void ofxWWTweetParticleManager::attemptConnection(ofVec2f pos1, float weight1, o
 
 void ofxWWTweetParticleManager::onNewTweet(const rtt::Tweet& tweet) {
 	if(tweets.size() > maxTweets) {	
-		return;
+		tweets.erase(tweets.begin());
+//		return;
 	}
 	
 	ofxWWTweetParticle particle = createParticleForTweet(tweet);
