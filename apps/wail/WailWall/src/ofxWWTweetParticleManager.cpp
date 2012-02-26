@@ -269,7 +269,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 			}
 			else if(tweet.pos.x >= simulationWidth) {
 				it = tweets.erase(it);
-				++removed
+				++removed;
 				continue;
 			}
 			++it;
@@ -304,16 +304,16 @@ void ofxWWTweetParticleManager::updateTweets(){
 	// just remove tweets when there are too many 
 	{
 		
-//		if(num_tweets > maxTweets) {
-//			vector<ofxWWTweetParticle>::iterator it = tweets.begin();
-//			while(it != tweets.end()) {
-//				if(!(*it).isDrawingText()) {
-//					tweets.erase(it);
-//					break;
-//				}
-//				it++;
-//			}
-//		}
+		if(num_tweets > maxTweets) {
+			vector<ofxWWTweetParticle>::iterator it = tweets.begin();
+			while(it != tweets.end()) {
+				if(!(*it).isDrawingText()) {
+					tweets.erase(it);
+					break;
+				}
+				it++;
+			}
+		}
 		
 	}
 	
