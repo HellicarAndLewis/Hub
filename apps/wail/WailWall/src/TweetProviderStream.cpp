@@ -21,7 +21,7 @@ void TweetProviderStream::onStatusUpdate(const rtt::Tweet& tweet) {
 		return;
 	}
 	
-	printf("> %s\n", tweet.getText().c_str());
+	//printf("> %s\n", tweet.getText().c_str());
 	// Check if we've got a search term; if so we will not pass it through;
 	// search terms are handled in the TwitterMentionsListener thread.
 	// (we changed this search tweets werent coming into the system when it
