@@ -9,7 +9,7 @@
     </SliderFloat_Select_repulsion_springyness>
     <SliderFloat_Repulsion_between_particles>
         <name>Repulsion between particles</name>
-        <value>260.000000</value>
+        <value>258.500000</value>
     </SliderFloat_Repulsion_between_particles>
     <SliderFloat_Duration_of_repulsion_effect_millis>
         <name>Duration of repulsion effect millis</name>

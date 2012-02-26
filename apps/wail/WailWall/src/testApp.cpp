@@ -36,7 +36,7 @@ void testApp::setup(){
 	
 	generateScreens = false;
 	shouldLoadScreens = false;
-	shouldSaveScreens = false;
+	shouldSaveScreens = false; // used?? James??
 	shouldTakeScreenshot = false;
 	previewScreenLayout = false;
 
@@ -51,7 +51,7 @@ void testApp::setup(){
 	//screenSettingsFile = "DisplayLayout_triplehead.xml";
 	//DEV is for testing on smaller screens
 	//screenSettingsFile = "DisplayLayout_dev.xml";
-	screenSettingsFile = "DisplayLayout_bigscreen.xml";
+	screenSettingsFile = "DisplayLayout_dev.xml";
 	screenManager.loadScreens(screenSettingsFile);
 
 	webGui.addToggle("Show Preview Rects", previewScreenLayout);
@@ -173,9 +173,11 @@ void testApp::draw(){
 		renderer.getScreenshotFbo().getTextureReference().bind();
 		
 		glGetTexImage(GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGB, GL_UNSIGNED_BYTE, 0); 
+		
 		GLubyte* ptr = 	(GLubyte*) glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY);
 		
 		if(ptr) {
+			
 			renderer.getTweetManager()
 					.getTwitterApp()
 					.getImageWriter()
@@ -185,6 +187,7 @@ void testApp::draw(){
 		}
 		
 		glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
+		glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);
 		shouldTakeScreenshot = false;
 		screenshotUsername.clear();
 	}
@@ -219,6 +222,7 @@ void testApp::keyPressed(int key){
 			
 		case 's': {
 			shouldSaveScreens = true;
+			shouldTakeScreenshot = true;
 			break;
 		}
 		case 'm': {

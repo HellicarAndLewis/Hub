@@ -237,7 +237,7 @@ float ofxWWTweetParticleManager::weightBetweenPoints(ofVec2f touch, float normal
 
 void ofxWWTweetParticleManager::updateTweets(){
 	size_t num_tweets = tweets.size();
-	
+	static int removed = 0;
 //	printf("Tweets.siz: %zu, flowspeed: %f, wallRepulsionDistance: %f\n"
 //			,tweets.size()
 //			,tweetFlowSpeed
@@ -250,8 +250,9 @@ void ofxWWTweetParticleManager::updateTweets(){
 		vector<ofxWWTweetParticle>::iterator it = tweets.begin();
 		while(it != tweets.end()) {
 			ofxWWTweetParticle& tweet = *it;
-			if(tweet.pos.y < -wallRepulsionDistance) {
+			if(tweet.pos.y <= -wallRepulsionDistance) {
 				it = tweets.erase(it);
+				++removed;
 				continue;
 			}
 			++it;
@@ -263,7 +264,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 		float remove_pos = simulationHeight + wallRepulsionDistance;
 		while(it != tweets.end()){
 			ofxWWTweetParticle& tweet = *it;
-			if(tweet.pos.y > remove_pos) {				
+			if(tweet.pos.y >= remove_pos) {				
 				it = tweets.erase(it);
 				continue;
 			}
@@ -273,18 +274,18 @@ void ofxWWTweetParticleManager::updateTweets(){
 	
 	// just remove tweets when there are too many 
 	{
-		/*
-		if(num_tweets > maxTweets) {
-			vector<ofxWWTweetParticle>::iterator it = tweets.begin();
-			while(it != tweets.end()) {
-				if(!(*it).isDrawingText()) {
-					tweets.erase(it);
-					break;
-				}
-				it++;
-			}
-		}
-		*/
+		
+//		if(num_tweets > maxTweets) {
+//			vector<ofxWWTweetParticle>::iterator it = tweets.begin();
+//			while(it != tweets.end()) {
+//				if(!(*it).isDrawingText()) {
+//					tweets.erase(it);
+//					break;
+//				}
+//				it++;
+//			}
+//		}
+		
 	}
 	
 //	for(int i = tweets.size()-1; i >= 0; i--) {
@@ -363,8 +364,9 @@ void ofxWWTweetParticleManager::updateTweets(){
 	}
 	
 	
-	/*
+	
 	{
+		/*
 		vector<ofxWWTweetParticle>::iterator ita = tweets.begin();
 		vector<ofxWWTweetParticle>::iterator itb = tweets.begin();
 		while(ita != tweets.end()) {
@@ -387,8 +389,9 @@ void ofxWWTweetParticleManager::updateTweets(){
 				++itb;
 			}
 		}	
+		*/
 	}
-	*/
+		
 	//apply legibility fixes for visible tweets
 	for(int i = 0; i < tweets.size(); i++){
 		for(int j = 0; j < tweets.size(); j++){
@@ -504,6 +507,10 @@ void ofxWWTweetParticleManager::attemptConnection(ofVec2f pos1, float weight1, o
 }
 
 void ofxWWTweetParticleManager::onNewTweet(const rtt::Tweet& tweet) {
+	if(tweets.size() > maxTweets) {	
+		return;
+	}
+	
 	ofxWWTweetParticle particle = createParticleForTweet(tweet);
 	
 	// give the new particle an arbitrary id so we can remove..
