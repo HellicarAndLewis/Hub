@@ -90,6 +90,7 @@ class ofxWWTweetParticle {
 	static const int NUM_DOT_IMAGES = 5;
 	static ofImage *dotImages[NUM_DOT_IMAGES];
 	float imageScale;
+	
 
 	static ofImage *highlightImage;
 

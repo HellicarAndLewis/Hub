@@ -120,9 +120,9 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("User Y Shift", userNameYOffset, -150, 150);
 	webGui.addSlider("Tweet Y Shift", tweetYOffset, -150, 150);
 	webGui.addSlider("Tweet Line Space", tweetLineSpace, 0, 40);
-	webGui.addSlider("Dot Size", dotSize, 5, 50);
+	//webGui.addSlider("Dot Size", dotSize, 5, 50);
 	webGui.addSlider("Dot Shift", dotShift, -50, 50);
-	
+	webGui.addSlider("Particle scale: ", particleImageScale, 0,1.5);
 					   
 	webGui.addPage("Search Term Timing");
 	webGui.addSlider("Max Search Terms", searchTermManager.maxSearchTerms, 5, 15);
@@ -164,7 +164,7 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Startup force  duration", default_force->apply_startup_force_duration_seconds,0.1,3.5);
 	webGui.addSlider("Database: number items to fetch", db_provider->fetch_total, 10,1000);
 	webGui.addSlider("Database: spawn delay millis", db_provider->spawn_delay, 10, 300);
-	
+
 	//TODO set up in XML ONLY CAN HAVE 4 right now , least to most common
 	causticColors.push_back(ofColor::fromHex(0xf8edc0)); //LIGHT YELLOW
 	causticColors.push_back(ofColor::fromHex(0xe35a35)); //BRIGHT ORANGE
@@ -518,7 +518,7 @@ void ofxWWTweetParticleManager::onNewTweet(const rtt::Tweet& tweet) {
 	tweet_id_counter = ++tweet_id_counter % maxTweets;
 	particle.delete_id = tweet_id_counter;	
 	//printf(">> [RECEIVING] : %s\n", tweet.getText().c_str());	
-
+	
 
 	if(current_force->isHiding()) {
 		current_force->deactivateParticle(particle);

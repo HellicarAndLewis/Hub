@@ -147,6 +147,8 @@ class ofxWWTweetParticleManager : public TweetProviderListener, public SearchLay
 	//particle images
 	ofImage burstOne;
 	ofImage burstTwo;
+	float particleImageScale;
+	ofVec3f particleImageColor;
 
 	
 	// search state vars

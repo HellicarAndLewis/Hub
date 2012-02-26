@@ -157,10 +157,12 @@ void ofxWWTweetParticle::drawStarImage(float alpha) {
 	int secondImage = ceil(whichImage);
 	float amt = whichImage - firstImage;
 	glColor4f(1, 1, 1, (1.f - amt)*alpha);
-	dotImages[firstImage]->draw(pos.x+manager->dotShift, pos.y, dotImages[firstImage]->getWidth()*imageScale, dotImages[firstImage]->getHeight()*imageScale);
+	float s = dotImages[firstImage]->getWidth()*imageScale*manager->particleImageScale;
+
+	dotImages[firstImage]->draw(pos.x+manager->dotShift, pos.y, s, s);
 	
 	glColor4f(1, 1, 1, amt*alpha);
-	dotImages[secondImage]->draw(pos.x+manager->dotShift, pos.y, dotImages[secondImage]->getWidth()*imageScale, dotImages[secondImage]->getHeight()*imageScale);
+	dotImages[secondImage]->draw(pos.x+manager->dotShift, pos.y, s, s);
 	
 
 }

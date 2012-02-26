@@ -23,12 +23,13 @@
         <name>Tweet Line Space</name>
         <value>11.200000</value>
     </SliderFloat_Tweet_Line_Space>
-    <SliderFloat_Dot_Size>
-        <name>Dot Size</name>
-        <value>8.195000</value>
-    </SliderFloat_Dot_Size>
     <SliderFloat_Dot_Shift>
         <name>Dot Shift</name>
-        <value>-29.000000</value>
+        <value>-49.500000</value>
     </SliderFloat_Dot_Shift>
+    <SliderFloat_Particle_scale>
+        <_></_>
+        <name>Particle scale: </name>
+        <value>0.210000</value>
+    </SliderFloat_Particle_scale>
 </controls>
