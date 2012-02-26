@@ -159,11 +159,12 @@ string ofxWebSimpleGuiToo::describeControl(ofxSimpleGuiControl *ctrl) {
 	//	desc += ", \"value\":\""
 	//	+ofToString(t->values[0])+","+ofToString(t->values[1])+","+ofToString(t->values[2])+","+ofToString(t->values[3])+"\"";
 	} else if(ctrl->controlType=="HexColorPicker") {
-//		ofxSimpleGuiHexColorPicker *t = (ofxSimpleGuiHexColorPicker*)ctrl;
+		ofxSimpleGuiHexColorPicker *t = (ofxSimpleGuiHexColorPicker*)ctrl;
 //		
 //		
-//			desc += ", \"value\":\""
-//			+ofToString(t->getValue(0))+","+ofToString(t->getValue(1))+","+ofToString(t->getValue(2))+"\"";
+
+			desc += ", \"value\":\""
+			+ofToString(t->getValue(0))+","+ofToString(t->getValue(1))+","+ofToString(t->getValue(2))+"\"";
 		
 	}
 	desc += "}";
