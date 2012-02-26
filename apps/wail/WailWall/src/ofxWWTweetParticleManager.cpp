@@ -14,6 +14,7 @@ ofxWWTweetParticleManager::ofxWWTweetParticleManager():
 	,default_force(NULL)
 	,selected_force(NULL)
 	,twitter(*this)
+	,highlightScale(1)
 {
 	maxTweets = 100;
 
@@ -123,7 +124,7 @@ void ofxWWTweetParticleManager::setupGui(){
 	//webGui.addSlider("Dot Size", dotSize, 5, 50);
 	webGui.addSlider("Dot Shift", dotShift, -50, 50);
 	webGui.addSlider("Particle scale", particleImageScale, 0,1.5);
-
+	webGui.addSlider("Highlight Scale", highlightScale, 0, 1.5);
 					   
 	webGui.addPage("Search Term Timing");
 	webGui.addSlider("Max Search Terms", searchTermManager.maxSearchTerms, 5, 15);

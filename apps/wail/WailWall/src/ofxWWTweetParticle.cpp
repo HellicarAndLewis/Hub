@@ -214,7 +214,7 @@ void ofxWWTweetParticle::drawDot(){
 				drawStarImage(1);
 				
 				glColor4f(1,1,1,p);
-				highlightImage->draw(pos.x + manager->dotShift, pos.y);
+				highlightImage->draw(pos.x + manager->dotShift, pos.y, highlightImage->width*manager->highlightScale, highlightImage->height*manager->highlightScale);
 			}
 		}
 		ofPopStyle();

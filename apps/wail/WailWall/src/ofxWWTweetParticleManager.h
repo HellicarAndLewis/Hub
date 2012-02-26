@@ -150,7 +150,7 @@ class ofxWWTweetParticleManager : public TweetProviderListener, public SearchLay
 	float particleImageScale;
 	ofVec3f particleImageColor;
 	int particleHexImageColor;
-
+	float highlightScale;
 	
 	// search state vars
 

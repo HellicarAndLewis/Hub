@@ -31,4 +31,8 @@
         <name>Particle scale</name>
         <value>0.367500</value>
     </SliderFloat_Particle_scale>
+    <SliderFloat_Highlight_Scale>
+        <name>Highlight Scale</name>
+        <value>0.787500</value>
+    </SliderFloat_Highlight_Scale>
 </controls>

@@ -280,7 +280,6 @@ void ofxWWRenderer::render(){
 	} else {
 
 		glColor4f(1,1,1,1.f - tweets.tweetLayerOpacity);
-		printf("Caustic alpha: %f\n", 1.0 - tweets.tweetLayerOpacity);
 	}
 
 	
