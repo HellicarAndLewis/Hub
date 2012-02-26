@@ -164,60 +164,78 @@ void ofxWWRenderer::setupGui(){
 	
 	webGui.addHexColor("Tweet Color", tweets.particleHexImageColor);
 	
-	webGui.addToggle("Monday", monday);
-	webGui.addToggle("Tuesday", tuesday);
-	webGui.addToggle("Wednesday", wednesday);
-	webGui.addToggle("Thursday", thursday);
-	webGui.addToggle("Friday", friday);
+	webGui.addToggle("Pruple Monday", monday);
+	webGui.addToggle("Bergundy Tuesday", tuesday);
+	webGui.addToggle("Blue Wednesday", wednesday);
+	webGui.addToggle("Orange Thursday", thursday);
+	webGui.addToggle("Green Friday", friday);
 	
 	
 	tweets.setupGui();
 }
 
+#define RGB2HEX(r,g,b,d) {	d = 0; d = r << 16; d |= g << 8; d |= b; }
 void ofxWWRenderer::update(){
+	int surface_bg;
+	int search_bg;
 	if(monday) {
+		RGB2HEX(49,21,34, surface_bg);
+		RGB2HEX(29,6,21, search_bg);
 		monday = false;
+		
 		Colours::set(AT_SIGN,		0xf9b40f);
-		Colours::set(SURFACE_BG,	0x7a1600);
+		Colours::set(SURFACE_BG,	surface_bg);
 		Colours::set(HALO_SEARCH,	0xe2ded9);
 		Colours::set(HALO_SURFACE,	0xe2ded9);
-		Colours::set(SEARCH_BG,		0x3b0608);
+		Colours::set(SEARCH_BG,		search_bg);
 	}
 	if(tuesday) {
+		RGB2HEX(36,1,6, surface_bg);
+		RGB2HEX(24,1,5, search_bg);
 		tuesday = false;
+		
 		Colours::set(AT_SIGN,		0xf9b40f);
-		Colours::set(SURFACE_BG,	0x002d56);
+		Colours::set(SURFACE_BG,	surface_bg);
 		Colours::set(HALO_SEARCH,	0xf9b40f);
 		Colours::set(HALO_SURFACE,	0xf9b40f);
-		Colours::set(SEARCH_BG,		0x000c2e);
+		Colours::set(SEARCH_BG,		search_bg);
 	}
 	
 	if(wednesday) {
+		RGB2HEX(8,1,19, surface_bg);
+		RGB2HEX(0,0,0, search_bg);
 		wednesday = false;
+		
 		Colours::set(AT_SIGN,		0xfdf3e4);
-		Colours::set(SURFACE_BG,	0xe86d1f);
+		Colours::set(SURFACE_BG,	surface_bg);
 		Colours::set(HALO_SEARCH,	0xfdf3e4);
 		Colours::set(HALO_SURFACE,	0xfdf3e4);
-		Colours::set(SEARCH_BG,		0x571c1f);
+		Colours::set(SEARCH_BG,		search_bg);
 	}
 
 	
 	if(thursday) {
+		RGB2HEX(102,22,0, surface_bg);
+		RGB2HEX(72,16,8, search_bg);
 		thursday = false;
+		
 		Colours::set(AT_SIGN,		0x002d56);
-		Colours::set(SURFACE_BG,	0xfaa634);
+		Colours::set(SURFACE_BG,	surface_bg);
 		Colours::set(HALO_SEARCH,	0xFFFFFF);
 		Colours::set(HALO_SURFACE,	0xFFFFFF);
-		Colours::set(SEARCH_BG,		0xa84d10);
+		Colours::set(SEARCH_BG,		search_bg);
 	}
 	
 	if(friday) {
+		RGB2HEX(10,25,14, surface_bg);
+		RGB2HEX(7,15,3, search_bg);
 		friday = false;
+		
 		Colours::set(AT_SIGN,		0xe86d1f);
-		Colours::set(SURFACE_BG,	0xd1c8b3);
+		Colours::set(SURFACE_BG,	surface_bg);
 		Colours::set(HALO_SEARCH,	0xd1c8b3);
 		Colours::set(HALO_SURFACE,	0xd1c8b3);
-		Colours::set(SEARCH_BG,		0x00334e);
+		Colours::set(SEARCH_BG,		search_bg);
 	}
 
 	float maxTouchZ = 0;
