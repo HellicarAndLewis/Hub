@@ -17,7 +17,7 @@
     </SliderFloat_Flow_Chaos_Amp>
     <SliderFloat_Flow_Chaos_Damp>
         <name>Flow Chaos Damp</name>
-        <value>366.085022</value>
+        <value>346.135010</value>
     </SliderFloat_Flow_Chaos_Damp>
     <SliderFloat_Flow_Rotate_Amp>
         <name>Flow Rotate Amp</name>
@@ -37,6 +37,6 @@
     </SliderFloat_Tweet_Repulsion_Dist>
     <SliderFloat_Tweet_Repulsion_Atten>
         <name>Tweet Repulsion Atten</name>
-        <value>0.007000</value>
+        <value>0.148000</value>
     </SliderFloat_Tweet_Repulsion_Atten>
 </controls>

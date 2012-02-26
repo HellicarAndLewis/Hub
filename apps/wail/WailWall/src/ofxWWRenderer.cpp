@@ -28,7 +28,6 @@ void ofxWWRenderer::setup(int width, int height){
 	causticsAlwaysOn = false;
 	// max number of particles is the final arg, might need higher
 	caust.setup(width, height, 5000);
-	
 	screenshotTarget.allocate(width/4, height/4, GL_RGB);
 	
 	

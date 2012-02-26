@@ -273,6 +273,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 	
 	// just remove tweets when there are too many 
 	{
+		/*
 		if(num_tweets > maxTweets) {
 			vector<ofxWWTweetParticle>::iterator it = tweets.begin();
 			while(it != tweets.end()) {
@@ -283,6 +284,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 				it++;
 			}
 		}
+		*/
 	}
 	
 //	for(int i = tweets.size()-1; i >= 0; i--) {
@@ -361,7 +363,32 @@ void ofxWWTweetParticleManager::updateTweets(){
 	}
 	
 	
-	
+	/*
+	{
+		vector<ofxWWTweetParticle>::iterator ita = tweets.begin();
+		vector<ofxWWTweetParticle>::iterator itb = tweets.begin();
+		while(ita != tweets.end()) {
+			ofxWWTweetParticle& a = *ita;
+			if(a.selectionWeight <= 0) {
+				++ita;
+				continue;
+			}
+			itb = ita+1;
+			
+			while(ita != itb && itb != tweets.end()) {
+				ofxWWTweetParticle& b = *itb;
+				if(b.selectionWeight <= 0) {
+					++itb;
+					continue;
+				}
+				
+				float overlap = rectangleOverlap(a.boundingRect, b.boundingRect);
+				printf("overlap: %f\n", overlap);
+				++itb;
+			}
+		}	
+	}
+	*/
 	//apply legibility fixes for visible tweets
 	for(int i = 0; i < tweets.size(); i++){
 		for(int j = 0; j < tweets.size(); j++){
@@ -398,6 +425,7 @@ void ofxWWTweetParticleManager::updateTweets(){
 			}
 		}
 	}
+	
 		
 	numSearchTermTweets = 0;
 	for(int i = 0; i < tweets.size(); i++){

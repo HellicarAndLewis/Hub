@@ -31,7 +31,8 @@ float GetRectangleOverlap( float minx1, float miny1,
 								float maxx2, float maxy2 )
 {
 	float overlap;
-	
+	printf("minx1: %f, miny1: %f, maxx1: %f, maxy1: %f, minx2: %f, miny2: %f, maxx2:%f, maxxy2: %f\n"
+			,minx1, miny1, maxx1, maxy1, minx2, miny2, maxx2, maxy2);
 	if ( minx1 > maxx2 )
 		overlap = 0.0f;
 	else if ( maxx1 < minx2 )
