@@ -259,7 +259,9 @@ void ofxWWRenderer::update(){
 void ofxWWRenderer::render(){
 
 	renderGradientOverlay();
+
 	caust.renderToFbo();
+
 	//blit to main render target
 	renderTarget.begin();
 	ofClear(0);
