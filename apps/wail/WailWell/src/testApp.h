@@ -106,6 +106,8 @@ public:
 	int KINECT_WIDTH;
 	int KINECT_HEIGHT;
 	
+	int VISION_WIDTH;
+	int VISION_HEIGHT;
 	enum {
 		VIEWMODE_RAW,
 		VIEWMODE_BG,
