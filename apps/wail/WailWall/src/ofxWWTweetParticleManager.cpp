@@ -96,7 +96,7 @@ void ofxWWTweetParticleManager::keyPressed(ofKeyEventArgs& args) {
 
 void ofxWWTweetParticleManager::setupGui(){
 	webGui.addPage("Tweet Lifecycle");
-	webGui.addSlider("Max Tweets", maxTweets, 200, 2000);
+	webGui.addSlider("Max Tweets", maxTweets, 10, 700);
 	webGui.addToggle("Clear Tweets", clearTweets);
 	webGui.addToggle("Draw Tweet Debug", drawTweetDebug);
 

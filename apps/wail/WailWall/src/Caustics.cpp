@@ -92,19 +92,19 @@ void Caustics::drawCaustics() {
 		ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 		ofClear(0, 0, 0, 0);
 		glColor4f(1, 1, 1, fade);
-//		
+		
 		glPushMatrix();
-//		glTranslatef(width/2, height/2, 0);
+		glTranslatef(width/2, height/2, 0);
 		float s = 1 + 0.001 * scaleFactor;
-//		
-//		//ofMap(sin(ofGetElapsedTimef()*4), -1, 1, 0.998, 1.002);
+		
+		//ofMap(sin(ofGetElapsedTimef()*4), -1, 1, 0.998, 1.002);
 		glScalef(s, s, 1);
 		pong->setAnchorPercent(0.5, 0.5);
-//		
+		
 		pong->draw(0, verticalDrift);//0.5, ofGetWidth(), ofGetHeight());
 		glPopMatrix();
 		glColor4f(1, 1, 1, brightness);
-
+		
 		int numTris = triangulator.getNumTriangles();
 		ITRIANGLE *tris = triangulator.getTriangles();
 		XYZ *points = triangulator.getPoints();

@@ -254,6 +254,7 @@ void ofxWWRenderer::update(){
 	}
 	
 	caust.update();
+	
 }
 
 void ofxWWRenderer::render(){
