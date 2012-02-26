@@ -1,19 +1,19 @@
 <settings>
-    <setting id="Splash Volume" value="1.000000000"></setting>
+    <setting id="Splash Volume" value="0.486666679"></setting>
     <setting id="Bubble Volume" value="0.519999981"></setting>
-    <setting id="Background Loop Volume" value="0.483333319"></setting>
+    <setting id="Background Loop Volume" value="0.066666670"></setting>
     <setting id="Background Cutoff" value="164.000000000"></setting>
     <setting id="Background Resonance" value="0.749999940"></setting>
     <setting id="Min splash depth" value="0.066666670"></setting>
     <setting id="Max splash depth" value="0.446666658"></setting>
     <setting id="Mouse Mode" value="1"></setting>
-    <setting id="Max Low Volume" value="0.846666694"></setting>
-    <setting id="Max High Volume" value="0.680000007"></setting>
-    <setting id="DAMP" value="0.993333340"></setting>
-    <setting id="ROOMSIZE" value="0.726666689"></setting>
-    <setting id="WET" value="0.379999995"></setting>
-    <setting id="DRY" value="0.653333306"></setting>
-    <setting id="WIDTH" value="0.993333340"></setting>
+    <setting id="Max Low Volume" value="0.473333329"></setting>
+    <setting id="Max High Volume" value="0.266666681"></setting>
+    <setting id="DAMP" value="0.860000014"></setting>
+    <setting id="ROOMSIZE" value="0.886666656"></setting>
+    <setting id="WET" value="0.079999998"></setting>
+    <setting id="DRY" value="0.779999971"></setting>
+    <setting id="WIDTH" value="0.773333311"></setting>
     <setting id="Depth" value=""></setting>
     <setting id="Depth Up Lerp" value="0.914133310"></setting>
     <setting id="Depth Down Lerp" value="0.917800009"></setting>
