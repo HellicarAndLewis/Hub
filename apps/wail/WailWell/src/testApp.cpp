@@ -8,6 +8,7 @@ int KINECT_VIEW_OFFSET = 10;
 float Blob::xySmoothing = 0.3;
 float Blob::zSmoothing = 0.4;	
 bool isFullscreen = false;
+
 //--------------------------------------------------------------
 void testApp::setup(){
 	centre = ofVec2f(320,240);
@@ -17,7 +18,8 @@ void testApp::setup(){
 	yScaleBottom = 1;
 	flipX = false;
 	flipY = false;
-	
+	VISION_WIDTH = 320;
+	VISION_HEIGHT = 240;
 	viewMode = VIEWMODE_RAW;
 	wallOsc.setup("localhost", 1234);
 	soundOsc.setup("localhost", 2468);
@@ -61,10 +63,10 @@ void testApp::setupVision() {
 	kinect.setUseTexture(false);
 	KINECT_WIDTH = kinect.getWidth();
 	KINECT_HEIGHT = kinect.getHeight();
-	depthImg.allocate(KINECT_WIDTH, KINECT_HEIGHT);
-	rangeScaledImg.allocate(KINECT_WIDTH, KINECT_HEIGHT);
-	maskedImg.allocate(KINECT_WIDTH, KINECT_HEIGHT);
-	bgImg.allocate(KINECT_WIDTH, KINECT_HEIGHT);
+	depthImg.allocate(VISION_WIDTH, VISION_HEIGHT);
+	rangeScaledImg.allocate(VISION_WIDTH, VISION_HEIGHT);
+	maskedImg.allocate(VISION_WIDTH, VISION_HEIGHT);
+	bgImg.allocate(VISION_WIDTH, VISION_HEIGHT);
 	bgImg.set(0);
 
 }
@@ -117,10 +119,10 @@ void testApp::controlChanged(xmlgui::Control *ctrl) {
 }
 void testApp::setupMask() {
 	// defaults for mask
-	mask[0] = ofVec2f(KINECT_WIDTH/2, 50);
-	mask[1] = ofVec2f(KINECT_WIDTH-50, KINECT_HEIGHT/2);
-	mask[2] = ofVec2f(KINECT_WIDTH/2, KINECT_HEIGHT-50);
-	mask[3] = ofVec2f(50, KINECT_HEIGHT/2);
+	mask[0] = ofVec2f(VISION_WIDTH/2, 50);
+	mask[1] = ofVec2f(VISION_WIDTH-50, VISION_HEIGHT/2);
+	mask[2] = ofVec2f(VISION_WIDTH/2, VISION_HEIGHT-50);
+	mask[3] = ofVec2f(50, VISION_HEIGHT/2);
 	dragger = NULL;
 	
 	ofxXmlSettings xml;
@@ -131,8 +133,8 @@ void testApp::setupMask() {
 		mask[i] = ofVec2f(xml.getAttribute("point", "x", 0.0, i), xml.getAttribute("point", "y", 0.0, i));
 		if(mask[i].x<0) mask[i].x = 0;
 		if(mask[i].y<0) mask[i].y = 0;
-		if(mask[i].x>KINECT_WIDTH) mask[i].x = KINECT_WIDTH;
-		if(mask[i].y>KINECT_HEIGHT) mask[i].y = KINECT_HEIGHT;
+		if(mask[i].x>VISION_WIDTH) mask[i].x = VISION_WIDTH;
+		if(mask[i].y>VISION_HEIGHT) mask[i].y = VISION_HEIGHT;
 	}
 	int numCentres = xml.getNumTags("centre");
 	if(numCentres>0) {
@@ -191,9 +193,10 @@ void testApp::draw(){
 	glPushMatrix();
 	{
 		if(isFullscreen) {
-			glScalef((float)ofGetWidth()/(float)KINECT_WIDTH, (float)ofGetHeight()/(float)KINECT_HEIGHT, 1);
+			glScalef((float)ofGetWidth()/(float)VISION_WIDTH, (float)ofGetHeight()/(float)VISION_HEIGHT, 1);
 		} else {
 			glTranslatef(KINECT_VIEW_OFFSET, KINECT_VIEW_OFFSET, 0);
+			glScalef(2, 2, 1);
 		}
 		
 		ofSetHexColor(0xFFFFFF);
@@ -201,7 +204,7 @@ void testApp::draw(){
 		drawKinect();
 		
 		ofNoFill();
-		ofRect(0, 0, KINECT_WIDTH, KINECT_HEIGHT);
+		ofRect(0, 0, VISION_WIDTH, VISION_HEIGHT);
 		ofFill();
 		if(drawBlobs) blobTracker.draw(0, 0);
 		
@@ -239,7 +242,7 @@ void testApp::draw(){
 			it != blobs.end(); 
 			it++) {
 			
-			ofVec3f pos = (*it).second * ofVec3f(KINECT_WIDTH, KINECT_HEIGHT);
+			ofVec3f pos = (*it).second * ofVec3f(VISION_WIDTH, VISION_HEIGHT);
 			ofNoFill();
 			ofSetHexColor(0x0000FF);
 			ofCircle(pos, 8);
@@ -282,9 +285,10 @@ void testApp::keyReleased(int key){
 void testApp::mouseMoved(int x, int y ){
 	ofVec2f mouse;
 	if(isFullscreen) {
-		mouse = ofVec2f(x*KINECT_WIDTH/ofGetWidth(), y*KINECT_HEIGHT/ofGetHeight());
+		mouse = ofVec2f(x*VISION_WIDTH/ofGetWidth(), y*VISION_HEIGHT/ofGetHeight());
 	} else {
 		mouse = ofVec2f(x-KINECT_VIEW_OFFSET, y-KINECT_VIEW_OFFSET);
+		mouse /= 2;
 	}
 	for(int i = 0; i < NUM_MASK_POINTS; i++) {
 		if(mask[i].distanceSquared(mouse)<100) {
@@ -303,17 +307,18 @@ void testApp::mouseMoved(int x, int y ){
 void testApp::mouseDragged(int x, int y, int button){
 	ofVec2f mouse;
 	if(isFullscreen) {
-		mouse = ofVec2f(x*KINECT_WIDTH/ofGetWidth(), y*KINECT_HEIGHT/ofGetHeight());
+		mouse = ofVec2f(x*VISION_WIDTH/ofGetWidth(), y*VISION_HEIGHT/ofGetHeight());
 	} else {
 		mouse = ofVec2f(x-KINECT_VIEW_OFFSET, y-KINECT_VIEW_OFFSET);
+		mouse /= 2;
 	}
 	if(dragger!=NULL) {
 		dragger->x = mouse.x;
 		dragger->y = mouse.y;
 		if(dragger->x<0) dragger->x = 0;
 		if(dragger->y<0) dragger->y = 0;
-		if(dragger->x>KINECT_WIDTH) dragger->x = KINECT_WIDTH;
-		if(dragger->y>KINECT_HEIGHT) dragger->y = KINECT_HEIGHT;
+		if(dragger->x>VISION_WIDTH) dragger->x = VISION_WIDTH;
+		if(dragger->y>VISION_HEIGHT) dragger->y = VISION_HEIGHT;
 	}
 }
 
@@ -321,17 +326,18 @@ void testApp::mouseDragged(int x, int y, int button){
 void testApp::mousePressed(int x, int y, int button){
 	ofVec2f mouse;
 	if(isFullscreen) {
-		mouse = ofVec2f(x*KINECT_WIDTH/ofGetWidth(), y*KINECT_HEIGHT/ofGetHeight());
+		mouse = ofVec2f(x*VISION_WIDTH/ofGetWidth(), y*VISION_HEIGHT/ofGetHeight());
 	} else {
 		mouse = ofVec2f(x-KINECT_VIEW_OFFSET, y-KINECT_VIEW_OFFSET);
+		mouse/=2;
 	}
 	if(dragger!=NULL) {
 		dragger->x = mouse.x;
 		dragger->y = mouse.y;
 		if(dragger->x<0) dragger->x = 0;
 		if(dragger->y<0) dragger->y = 0;
-		if(dragger->x>KINECT_WIDTH) dragger->x = KINECT_WIDTH;
-		if(dragger->y>KINECT_HEIGHT) dragger->y = KINECT_HEIGHT;
+		if(dragger->x>VISION_WIDTH) dragger->x = VISION_WIDTH;
+		if(dragger->y>VISION_HEIGHT) dragger->y = VISION_HEIGHT;
 	}
 }
 
