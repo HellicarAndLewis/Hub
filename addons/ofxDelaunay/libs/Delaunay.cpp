@@ -28,23 +28,23 @@ if(abs(y1 - y2) < EPSILON && abs(y2 - y3) < EPSILON)
   return(false);
 if(abs(y2-y1) < EPSILON){ 
   m2 = - (x3 - x2) / (y3 - y2);
-  mx2 = (x2 + x3) / 2.0;
-  my2 = (y2 + y3) / 2.0;
-  xc = (x2 + x1) / 2.0;
+  mx2 = (x2 + x3) * 0.5;
+  my2 = (y2 + y3) * 0.5;
+  xc = (x2 + x1) * 0.5;
   yc = m2 * (xc - mx2) + my2;
 }else if(abs(y3 - y2) < EPSILON){ 
         m1 = - (x2 - x1) / (y2 - y1);
-        mx1 = (x1 + x2) / 2.0;
-        my1 = (y1 + y2) / 2.0;
-        xc = (x3 + x2) / 2.0;
+        mx1 = (x1 + x2) * 0.5;
+        my1 = (y1 + y2) * 0.5;
+        xc = (x3 + x2) * 0.5;
         yc = m1 * (xc - mx1) + my1;
       }else{
          m1 = - (x2 - x1) / (y2 - y1); 
          m2 = - (x3 - x2) / (y3 - y2); 
-         mx1 = (x1 + x2) / 2.0; 
-         mx2 = (x2 + x3) / 2.0;
-         my1 = (y1 + y2) / 2.0;
-         my2 = (y2 + y3) / 2.0;
+         mx1 = (x1 + x2) * 0.5; 
+         mx2 = (x2 + x3) * 0.5;
+         my1 = (y1 + y2) * 0.5;
+         my2 = (y2 + y3) * 0.5;
          xc = (m1 * mx1 - m2 * mx2 + my2 - my1) / (m1 - m2); 
          yc = m1 * (xc - mx1) + my1; 
        }

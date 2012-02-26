@@ -51,7 +51,7 @@ h3 {
 	box-shadow: 3px 3px 10px #666666;
 }
 	
-.SliderInt, .SliderFloat, .Slider2d, .Slider3d, .ColorPicker {
+.SliderInt, .SliderFloat, .Slider2d, .Slider3d, .ColorPicker, .HexColorPicker {
 	width:200px;
 	
 }
@@ -88,6 +88,9 @@ xHandle:hover,
 
 .ColorPicker {
 	height: 120px;
+}
+.HexColorPicker {
+	height: 90px;
 }
 .Toggle, .Button {
 	width:20px;
