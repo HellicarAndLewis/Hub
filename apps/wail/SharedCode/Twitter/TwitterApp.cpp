@@ -19,12 +19,17 @@ TwitterApp::~TwitterApp() {
 }
 
 void TwitterApp::init(int oscPort) {
+	loadSettings();
 	initDB();
 	initTwitter();
 	initOSC(oscPort);
 	initStoredSearchTerms();
 	image_writer.startThread(true, false);
 	initialized = true;
+}
+
+void TwitterApp::loadSettings() {
+
 }
 
 void TwitterApp::initTwitter() {
@@ -71,14 +76,25 @@ void TwitterApp::initOSC(int port) {
 }
 
 void TwitterApp::initDB() {
+	// load mysql settings; see the doc directory for an example
+	INI twitter_settings;
+	if(!twitter_settings.load(ofToDataPath("twitter_settings.ini", true))) {
+		printf("Cannot find twitter settings ini file.\n");
+		exit(0);
+	}
+	string socket 	= twitter_settings.getString("mysql.socket","/tmp/mysql.sock");
+	string username = twitter_settings.getString("mysql.username", "dewarshub_admin");
+	string password = twitter_settings.getString("mysql.password", "dewarshub_admin");
+	string database = twitter_settings.getString("mysql.database", "dewarshub_admin");
+	string host 	= twitter_settings.getString("mysql.host", "localhost");
+
 	//grant all on dewarscube_admin.* to dewarscube_admin@"%" identified by "dewarscube_admin"
-	if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin", "/Applications/MAMP/tmp/mysql/mysql.sock")) {
-	//if(!mysql.connect("localhost" , "dewarshub_admin", "dewarshub_admin", "dewarshub_admin", "/tmp/mysql.sock")) {
+	if(!mysql.connect(host, database, username, password, socket)) {
+		printf("Cannot connect to mysql.\n");
 		exit(0);
 	}
 	
 	db_thread.startThread(true, false);
-		
 	reloadHashTags();	
 	reloadBadWords();	
 }

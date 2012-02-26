@@ -159,6 +159,7 @@ double ofxXmlSettings::getValue(const string& tag, double defaultValue, int whic
 //---------------------------------------------------------
 string ofxXmlSettings::getValue(const string& tag, const string& defaultValue, int which){
     TiXmlHandle valHandle(NULL);
+
 	if (readTag(tag, valHandle, which)){
 		return valHandle.ToText()->ValueStr();
 	}
@@ -175,7 +176,7 @@ bool ofxXmlSettings::readTag(const string&  tag, TiXmlHandle& valHandle, int whi
 		if(x == 0)tagHandle = tagHandle.ChildElement(tokens.at(x), which);
 		else tagHandle = tagHandle.FirstChildElement( tokens.at(x) );
 	}
-
+	
 	// once we've walked, let's get that value...
 	valHandle = tagHandle.Child( 0 );
     return (valHandle.ToText() != NULL);

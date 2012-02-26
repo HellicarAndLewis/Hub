@@ -52,6 +52,7 @@
 		481F67D014F411EA0024DFBF /* Force.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 481F67CC14F411EA0024DFBF /* Force.cpp */; };
 		4848E59014F2FDF000AA5553 /* TwitterMentionsThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4848E58F14F2FDF000AA5553 /* TwitterMentionsThread.cpp */; };
 		4865DF9014EDC7AA00512AF1 /* TwitterThreadedImageWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4865DF8F14EDC7AA00512AF1 /* TwitterThreadedImageWriter.cpp */; };
+		486D28BA14FAA60E003F2C8B /* INI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 486D28B814FAA60E003F2C8B /* INI.cpp */; };
 		48972C8E14F2803600FD9099 /* TweetProviderStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48972C8D14F2803600FD9099 /* TweetProviderStream.cpp */; };
 		48972C9114F2811200FD9099 /* TweetProviderDB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48972C9014F2811200FD9099 /* TweetProviderDB.cpp */; };
 		48972C9414F284F100FD9099 /* TweetProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48972C9314F284F100FD9099 /* TweetProvider.cpp */; };
@@ -332,6 +333,8 @@
 		4848E58F14F2FDF000AA5553 /* TwitterMentionsThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TwitterMentionsThread.cpp; sourceTree = "<group>"; };
 		4848E59D14F3C71700AA5553 /* SearchLayerListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchLayerListener.h; sourceTree = "<group>"; };
 		4865DF8F14EDC7AA00512AF1 /* TwitterThreadedImageWriter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TwitterThreadedImageWriter.cpp; path = ../../SharedCode/Twitter/TwitterThreadedImageWriter.cpp; sourceTree = "<group>"; };
+		486D28B814FAA60E003F2C8B /* INI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = INI.cpp; path = ../INI.cpp; sourceTree = "<group>"; };
+		486D28B914FAA60E003F2C8B /* INI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INI.h; path = ../INI.h; sourceTree = "<group>"; };
 		4895911314EEA5F10016CBD2 /* Error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Error.h; path = ../../../../addons/roxlu/Error.h; sourceTree = "<group>"; };
 		48972C8B14F27F7700FD9099 /* TweetProviderListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetProviderListener.h; sourceTree = "<group>"; };
 		48972C8C14F27FEB00FD9099 /* TweetProviderStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetProviderStream.h; sourceTree = "<group>"; };
@@ -1345,6 +1348,8 @@
 		A6AF03C414DB33EE006816A8 /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				486D28B814FAA60E003F2C8B /* INI.cpp */,
+				486D28B914FAA60E003F2C8B /* INI.h */,
 				54F29A2A14EA945D003A8397 /* MySQL */,
 				54C8B9DB14E11511005896E1 /* Twitter */,
 				54C8B9BD14E1150B005896E1 /* Curl */,
@@ -2236,6 +2241,7 @@
 				1F28066114F68B0B00BCE529 /* ofxDelaunay.cpp in Sources */,
 				1F49BFE914F6C3F6008B4CD6 /* halo.vert in Sources */,
 				1F49BFEB14F6C414008B4CD6 /* halo.frag in Sources */,
+				486D28BA14FAA60E003F2C8B /* INI.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
