@@ -289,9 +289,13 @@ void ofxWWRenderer::render(){
 	searchTermHaloShader.setUniform2f("centre", searchTermLocation.x, searchTermLocation.y);
 	searchTermHaloShader.setUniform1f("radius", causticHaloRadius);
 	searchTermHaloShader.setUniform1f("amount", 1.0);
-	searchTermHaloShader.setUniform1f("__alpha", 1.0 - tweets.tweetLayerOpacity);
+	if(causticsAlwaysOn) {
+		searchTermHaloShader.setUniform1f("__alpha", 1.0);		
+	} else {
+		searchTermHaloShader.setUniform1f("__alpha", 1.0 - tweets.tweetLayerOpacity);
+	}
 
-	printf("Alpha %f\n", 1.0-tweets.tweetLayerOpacity);
+	//printf("Alpha %f\n", 1.0-tweets.tweetLayerOpacity);
 
     glColor4f(1,1,1,0);//1.f - tweets.tweetLayerOpacity);
 

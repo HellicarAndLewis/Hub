@@ -73,6 +73,9 @@ private:
 	ofFbo *ping;
 	ofFbo *pong;
 	
+	ofVbo lines;
+	vector<ofVec2f> linePoints;
+	
 	void drawWavyLine(ofVec2f a, ofVec2f b);
 
 	float currTime;

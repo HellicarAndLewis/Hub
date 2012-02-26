@@ -44,6 +44,7 @@ void Caustics::setup(int width, int height, int maxNumPoints) {
 	pong->allocate(width, height, GL_RGB16);
 	triangulator.init(200);
 	clearedFbo = false;
+	lines.setVertexData(&linePoints[0], linePoints.size(), GL_STREAM_DRAW);
 }
 
 void Caustics::reset() {
@@ -105,6 +106,7 @@ void Caustics::drawCaustics() {
 		currTime = ofGetElapsedTimef();
 		
 		ofEnableBlendMode(OF_BLENDMODE_ADD);
+		linePoints.clear();
 		for(int i = 0; i < numTris; i++) {
 			ofVec2f a = ofVec2f(points[tris[i].p1].x, points[tris[i].p1].y);
 			ofVec2f b = ofVec2f(points[tris[i].p2].x, points[tris[i].p2].y);
@@ -124,6 +126,9 @@ void Caustics::drawCaustics() {
 			//ofLine(b, c);
 			//ofLine(c, a);
 		}
+		
+		lines.updateVertexData(&linePoints[0], linePoints.size());
+		lines.draw(GL_LINES, 0, linePoints.size());
 		ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 		
 	}
@@ -148,29 +153,30 @@ void Caustics::drawWavyLine(ofVec2f a, ofVec2f b) {
 	
 	//step /= PI*2/increment;
 	
-	glBegin(GL_LINE_STRIP);
+	//glBegin(GL_LINE_STRIP);
 	int i = 0;
-	for(float f = 0; f < PI*2; f+=increment) {
-		float d = ofMap(f, 0, PI*2, 0, 1);
+	ofVec2f lastPoint;
+	//float TWO_PI = PI*2;
+	for(float f = 0; f < TWO_PI; f+=increment) {
+		float d = f /TWO_PI;//ofMap(f, 0, PI*2, 0, 1);
 		
 		float window = 1-4*(d-0.5)*(d-0.5);
-		ofVec2f sine = n * sin(f+currTime)*ofMap(length, 0, 200, 0, oscillation)*window;
+//		ofVec2f sine = n * sin(f+currTime)*ofMap(length, 0, 200, 0, oscillation)*window;
+		ofVec2f sine = n * sin(f+currTime)*length*(oscillation/200)*window;
 		ofVec2f p = sine + a + diff * d;
-		
-		//glColor4f(ca.x, ca.y, ca.z, 0.03);
-		//glVertex2f(a.x, a.y);
-		//glColor4f(cb.x, cb.y, cb.z, 0.03);
-		//glVertex2f(b.x, b.y);
-		
-		glVertex2f(p.x, p.y);
+		if(f>0) linePoints.push_back(lastPoint);
+		linePoints.push_back(p);
+		lastPoint = p;
+//		glVertex2f(p.x, p.y);
 		i++;
 	}
-	glVertex2f(b.x, b.y);
-	//glVertex2f(a.x, a.y);
-	//a += step;
-	//glVertex2f(a.x, a.y);
+	linePoints.push_back(lastPoint);
 	
-	glEnd();
+	linePoints.push_back(b);
+
+
+	
+//	glEnd();
 	
 	
 	
