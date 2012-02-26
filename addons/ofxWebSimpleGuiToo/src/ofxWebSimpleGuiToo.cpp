@@ -74,10 +74,10 @@ void ofxWebSimpleGuiToo::httpGet(string url) {
 			//	for(int i = 0; i < 4; i++) 
 			//		t->values[i] = atof(ss[i].c_str());
 			}  else if(ctrl->controlType=="HexColorPicker") {
-//					ofxSimpleGuiHexColorPicker *t = (ofxSimpleGuiHexColorPicker*) ctrl;
-//					vector<string> ss = ofSplitString(value, ",");
-//					for(int i = 0; i < 3; i++) 
-//						t->setValue(atof(ss[i].c_str()), i);
+					ofxSimpleGuiHexColorPicker *t = (ofxSimpleGuiHexColorPicker*) ctrl;
+					vector<string> ss = ofSplitString(value, ",");
+					for(int i = 0; i < 3; i++) 
+						t->setValue(atof(ss[i].c_str()), i);
 
 			} else if(ctrl->controlType=="Slider2D") {
 				ofxSimpleGuiSlider2d *t = (ofxSimpleGuiSlider2d*) ctrl;
