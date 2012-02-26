@@ -242,7 +242,7 @@ void ofxWWRenderer::update(){
 	ofVec2f offset(tweets.dotShift, 0);
 
 	if(tweets.searchTermManager.selectedSearchTermIndex!=-1) {
-		ofVec2f searchTermLocation = tweets.searchTermManager.searchTerms[tweets.searchTermManager.selectedSearchTermIndex].pos;
+        searchTermLocation = tweets.searchTermManager.searchTerms[tweets.searchTermManager.selectedSearchTermIndex].pos;
 		caust.addPoint(searchTermLocation-ofVec2f(5, 0),0);
 		caust.addPoint(searchTermLocation+ofVec2f(5, 0),1);
 	}
@@ -283,10 +283,9 @@ void ofxWWRenderer::render(){
 
 	
 
-	ofVec2f term;
 	searchTermHaloShader.begin();
 	searchTermHaloShader.setUniformTexture("tex", caust.getFbo().getTextureReference(0), 0);
-	searchTermHaloShader.setUniform2f("centre", term.x, term.y);
+	searchTermHaloShader.setUniform2f("centre", searchTermLocation.x, searchTermLocation.y);
 	searchTermHaloShader.setUniform1f("radius", causticHaloRadius);
 	searchTermHaloShader.setUniform1f("amount", 1);
 

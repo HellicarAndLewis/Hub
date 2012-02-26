@@ -6,16 +6,16 @@
     <setting id="Dilate Image" value="false"></setting>
     <setting id="Accumulate Background" value=""></setting>
     <setting id="Background Hysteresis" value="0.059708741"></setting>
-    <setting id="Draw Blobs" value="true"></setting>
-    <setting id="Water Surface Level" value="0.867475748"></setting>
-    <setting id="Maximum Water Depth" value="0.972087383"></setting>
+    <setting id="Draw Blobs" value="false"></setting>
+    <setting id="Water Surface Level" value="0.923543692"></setting>
+    <setting id="Maximum Water Depth" value="0.997572780"></setting>
     <setting id="Minimum Blob Size" value="67.000000000"></setting>
     <setting id="Maximum Blob Size" value="623.000000000"></setting>
-    <setting id="Blob XY Smoothing" value="0.951456308"></setting>
+    <setting id="Blob XY Smoothing" value="0.786407769"></setting>
     <setting id="Blob Z Smoothing" value="0.859223306"></setting>
     <setting id="Blob x top frustrum factor" value="3.412621260"></setting>
     <setting id="Blob y top frustrum factor" value="3.208737850"></setting>
-    <setting id="Blob x bottom frustrum factor" value="1.781553388"></setting>
+    <setting id="Blob x bottom frustrum factor" value="1.169902921"></setting>
     <setting id="Blob y bottom frustrum factor" value="2.121359348"></setting>
     <setting id="Flip X" value="true"></setting>
     <setting id="Flip Y" value="false"></setting>

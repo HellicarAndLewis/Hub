@@ -5,15 +5,15 @@
     </SliderFloat_Vertical_Drift>
     <SliderFloat_Scale_factor>
         <name>Scale factor</name>
-        <value>0.900000</value>
+        <value>0.400000</value>
     </SliderFloat_Scale_factor>
     <SliderFloat_Blend>
         <name>Blend</name>
-        <value>0.983750</value>
+        <value>0.959000</value>
     </SliderFloat_Blend>
     <SliderFloat_Brightness>
         <name>Brightness</name>
-        <value>0.011350</value>
+        <value>0.024850</value>
     </SliderFloat_Brightness>
     <SliderFloat_Oscillation>
         <name>Oscillation</name>
@@ -21,6 +21,10 @@
     </SliderFloat_Oscillation>
     <Toggle_Always_on>
         <name>Always on</name>
-        <value>1</value>
+        <value>0</value>
     </Toggle_Always_on>
+    <SliderFloat_caustic_halo_radius>
+        <name>caustic halo radius</name>
+        <value>1487.000000</value>
+    </SliderFloat_caustic_halo_radius>
 </controls>

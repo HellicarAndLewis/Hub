@@ -39,7 +39,7 @@ class ofxWWRenderer: public KinectTouchListener {
 	float layerBarrierWidth; //controls layer transition fade	
 	bool fakeZOnTouch;
 	float fakeZLevel;
-	
+	ofVec2f searchTermLocation;
 	ofxWWTweetParticleManager& getTweetManager(); // roxlu 02/07
 	ofxWWSearchTermManager& getSearchTermManager();
 	
