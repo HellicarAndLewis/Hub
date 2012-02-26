@@ -36,19 +36,19 @@ ofVec3f testApp::getBlobCoords(ofxCvTrackedBlob &blob) {
 
 
 float testApp::getBlobSize(ofxCvTrackedBlob &blob) {
-	return (blob.boundingRect.width/KINECT_WIDTH + blob.boundingRect.height/KINECT_HEIGHT)*0.5;
+	return (blob.boundingRect.width/VISION_WIDTH + blob.boundingRect.height/VISION_HEIGHT)*0.5;
 }
 
 void testApp::normalizeBlobCoords(ofVec3f &blob) {
-	blob.x /= KINECT_WIDTH;
-	blob.y /= KINECT_HEIGHT;
+	blob.x /= VISION_WIDTH;
+	blob.y /= VISION_HEIGHT;
 	
 	// x and y now need to be tapered to work with the frustrum of the camera
 	// this is done by feel with sliders in the gui.
 	
 	float scaleFactorX = ofMap(blob.z, 0, 1, xScaleTop, xScaleBottom);
 	float scaleFactorY = ofMap(blob.z, 0, 1, yScaleTop, yScaleBottom);
-	ofVec2f normCentre = centre/ofVec2f(KINECT_WIDTH, KINECT_HEIGHT);
+	ofVec2f normCentre = centre/ofVec2f(VISION_WIDTH, VISION_HEIGHT);
 	// scale out from the centre
 	ofVec2f newCoord = ofVec2f(blob.x, blob.y) - normCentre;
 	newCoord *= ofVec2f(scaleFactorX, scaleFactorY);
@@ -140,7 +140,7 @@ void mergeBlobIntoBlob(ofxCvBlob &blob, const ofxCvBlob &dinner) {
 
 void testApp::doVision() {
 	float startTime = ofGetElapsedTimef();
-	float img[KINECT_WIDTH*KINECT_HEIGHT];
+	float img[VISION_WIDTH*VISION_HEIGHT];
 	float *distPix = kinect.getDistancePixels();
 	
 	
@@ -152,16 +152,21 @@ void testApp::doVision() {
 	if(denom==0) denom = 0.0001;
 	float subtractor = kinectRangeFar - waterThreshold*(kinectRangeFar - kinectRangeNear);
 	
-	for(int i = 0; i < KINECT_WIDTH*KINECT_HEIGHT; i++) {
+	for(int i = 0; i < VISION_WIDTH*VISION_HEIGHT; i++) {
+		
+		int x = i % VISION_WIDTH;
+		int y = i / VISION_WIDTH;
+		
+		int ii = x*2 + y * 2 * KINECT_WIDTH;
 		
 		// this is slow
 		//img[i] = ofMap(ofMap(distPix[i], 500, 4000, 1, 0), maxWaterDepth, waterThreshold, 1, 0);
 		
-		img[i] = (subtractor - distPix[i])/denom;
+		img[i] = (subtractor - distPix[ii])/denom;
 		if(img[i]>1) img[i] = 0;
 		if(img[i]<0) img[i] = 0;
 	}
-	depthImg.setFromPixels(img,KINECT_WIDTH,KINECT_HEIGHT);
+	depthImg.setFromPixels(img,VISION_WIDTH,VISION_HEIGHT);
 	
 	if(flipX || flipY) depthImg.mirror(flipY, flipX);
 	
@@ -195,7 +200,7 @@ void testApp::doVision() {
 	float *fgPix = rangeScaledImg.getPixelsAsFloats();
 	float *bgPix = bgImg.getPixelsAsFloats();
 	
-	int numPix = KINECT_WIDTH * KINECT_HEIGHT;
+	int numPix = VISION_WIDTH * VISION_HEIGHT;
 	
 	for(int i = 0; i < numPix; i++) {
 		if(fgPix[i]<=bgPix[i]+backgroundHysteresis) {
@@ -203,7 +208,7 @@ void testApp::doVision() {
 		}
 	}
 	
-	rangeScaledImg.setFromPixels(fgPix, KINECT_WIDTH, KINECT_HEIGHT);
+	rangeScaledImg.setFromPixels(fgPix, VISION_WIDTH, VISION_HEIGHT);
 	
 	
 	maskedImg = rangeScaledImg;
@@ -216,9 +221,9 @@ void testApp::doVision() {
 	
 	CvPoint fill[4];
 	fill[0] = cvPoint(0, 0);
-	fill[1] = cvPoint(KINECT_WIDTH, 0);
-	fill[2] = cvPoint(KINECT_WIDTH, KINECT_HEIGHT);
-	fill[3] = cvPoint(0, KINECT_HEIGHT);
+	fill[1] = cvPoint(VISION_WIDTH, 0);
+	fill[2] = cvPoint(VISION_WIDTH, VISION_HEIGHT);
+	fill[3] = cvPoint(0, VISION_HEIGHT);
 	
 	CvPoint *allPoints[2];
 	allPoints[0] = points;
@@ -281,13 +286,13 @@ void testApp::doVision() {
 
 void testApp::drawKinect() {
 	if(viewMode==VIEWMODE_RAW) {
-		depthImg.draw(0, 0, KINECT_WIDTH, KINECT_HEIGHT);
+		depthImg.draw(0, 0, VISION_WIDTH, VISION_HEIGHT);
 	} else if(viewMode==VIEWMODE_BG) {
-		bgImg.draw(0, 0, KINECT_WIDTH, KINECT_HEIGHT);
+		bgImg.draw(0, 0, VISION_WIDTH, VISION_HEIGHT);
 	} else if(viewMode==VIEWMODE_RANGE_SCALE) {
-		rangeScaledImg.draw(0, 0, KINECT_WIDTH, KINECT_HEIGHT);
+		rangeScaledImg.draw(0, 0, VISION_WIDTH, VISION_HEIGHT);
 	} else if(viewMode==VIEWMODE_MASKED) {
-		maskedImg.draw(0, 0, KINECT_WIDTH, KINECT_HEIGHT);
+		maskedImg.draw(0, 0, VISION_WIDTH, VISION_HEIGHT);
 	} else if(viewMode==VIEWMODE_MUTE) {
 		// nothing
 	}
