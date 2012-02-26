@@ -50,8 +50,8 @@ void testApp::setup(){
 	//JOEL: change this to the triplehead layout for your test
 	//screenSettingsFile = "DisplayLayout_triplehead.xml";
 	//DEV is for testing on smaller screens
-	screenSettingsFile = "DisplayLayout_dev.xml";
-	//screenSettingsFile = "DisplayLayout_bigscreen.xml";
+	//screenSettingsFile = "DisplayLayout_dev.xml";
+	screenSettingsFile = "DisplayLayout_bigscreen.xml";
 	screenManager.loadScreens(screenSettingsFile);
 
 	webGui.addToggle("Show Preview Rects", previewScreenLayout);
@@ -68,7 +68,7 @@ void testApp::setup(){
 	//webGui.addSlider("Out Min Touch Size", outMinTouchSize, 0, 1);
 	//webGui.addSlider("Out Max Touch Size", outMaxTouchSize, 0, 1);
 	// disable for now
-	webGui.startServer();
+	//webGui.startServer();
 	webGui.loadFromXML();
 	webGui.setAutoSave(true);
 	
@@ -111,7 +111,7 @@ void testApp::update(){
 	if(gui.isOn() || !isFullscreen) {
 		ofShowCursor();
 	} else {
-		ofHideCursor();
+		//ofHideCursor();
 	}
 }
 

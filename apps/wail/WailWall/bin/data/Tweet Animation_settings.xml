@@ -1,7 +1,7 @@
 <controls>
     <SliderFloat_Flow_Speed>
         <name>Flow Speed</name>
-        <value>-9.299999</value>
+        <value>-9.300000</value>
     </SliderFloat_Flow_Speed>
     <SliderFloat_Flow_Variance>
         <name>Flow Variance</name>
@@ -21,7 +21,7 @@
     </SliderFloat_Flow_Chaos_Damp>
     <SliderFloat_Flow_Rotate_Amp>
         <name>Flow Rotate Amp</name>
-        <value>12.000000</value>
+        <value>40.000000</value>
     </SliderFloat_Flow_Rotate_Amp>
     <SliderFloat_Flow_Rotate_Damp>
         <name>Flow Rotate Damp</name>
