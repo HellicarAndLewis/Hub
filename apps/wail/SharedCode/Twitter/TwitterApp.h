@@ -15,6 +15,7 @@
 
 #include <vector>
 #include "ofMain.h"
+#include "INI.h"
 #include "Twitter.h"
 #include "TwitterDBThread.h"
 #include "TwitterPhotoUploader.h"
@@ -119,6 +120,7 @@ public:
 	
 private:
 	bool initialized;
+	void loadSettings();
 	void initDB();
 	void initTwitter();
 	void initOSC(int port);
@@ -136,7 +138,7 @@ private:
 	TwitterMySQL 				mysql;
 	TwitterThreadedImageWriter 	image_writer;
 	TwitterMentionsThread		mentions;
-
+	
 };
 
 

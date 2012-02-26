@@ -68,7 +68,7 @@ void testApp::setup(){
 	//webGui.addSlider("Out Min Touch Size", outMinTouchSize, 0, 1);
 	//webGui.addSlider("Out Max Touch Size", outMaxTouchSize, 0, 1);
 	// disable for now
-	//webGui.startServer();
+	webGui.startServer();
 	webGui.loadFromXML();
 	webGui.setAutoSave(true);
 	
