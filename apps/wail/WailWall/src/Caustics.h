@@ -73,6 +73,7 @@ private:
 	ofFbo *ping;
 	ofFbo *pong;
 	
+	//GLuint lines_vbo;
 	ofVbo lines;
 	vector<ofVec2f> linePoints;
 	

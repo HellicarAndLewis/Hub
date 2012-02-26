@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Hellicar & Lewis. All rights reserved.
 //
 
-
+#include "Error.h"
 #include "Caustics.h"
 Caustics::Caustics() {
 	ping = NULL;
@@ -45,6 +45,12 @@ void Caustics::setup(int width, int height, int maxNumPoints) {
 	triangulator.init(200);
 	clearedFbo = false;
 	lines.setVertexData(&linePoints[0], linePoints.size(), GL_STREAM_DRAW);
+	
+//	glGetError();
+//	glGenBuffers(1, &lines_vbo); eglGetError();
+//	glBindBuffer(GL_ARRAY_BUFFER, lines_vbo); eglGetError();
+//	glBufferData(GL_ARRAY_BUFFER, linePoints.size()*sizeof(float), NULL, GL_DYNAMIC_DRAW); eglGetError();
+//	glEnableClientState(GL_VERTEX_ARRAY); eglGetError();
 }
 
 void Caustics::reset() {
@@ -78,7 +84,7 @@ void Caustics::drawCaustics() {
 		pong->end();
 		clearedFbo = true;
 	}
-	
+
 	ping->begin();
 	{
 		
@@ -127,8 +133,22 @@ void Caustics::drawCaustics() {
 			//ofLine(c, a);
 		}
 		
-		lines.updateVertexData(&linePoints[0], linePoints.size());
-		lines.draw(GL_LINES, 0, linePoints.size());
+//		glBegin(GL_LINES);
+//		for(int i = 0; i < linePoints.size(); ++i) {
+//			glVertex2fv(&linePoints[i].x);
+//		}
+//		glEnd();
+		
+		
+//		glBindBuffer(GL_ARRAY_BUFFER, lines_vbo); eglGetError();
+		
+		glEnableClientState(GL_VERTEX_ARRAY); eglGetError();
+		glVertexPointer(2, GL_FLOAT, 0, &linePoints[0].x);
+		glDrawArrays(GL_LINES, 0, linePoints.size());
+//		glBufferSubData(GL_ARRAY_BUFFER, 0, 
+
+		//lines.updateVertexData(&linePoints[0], linePoints.size());
+		//lines.draw(GL_LINES, 0, linePoints.size());
 		ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 		
 	}
@@ -164,8 +184,10 @@ void Caustics::drawWavyLine(ofVec2f a, ofVec2f b) {
 //		ofVec2f sine = n * sin(f+currTime)*ofMap(length, 0, 200, 0, oscillation)*window;
 		ofVec2f sine = n * sin(f+currTime)*length*(oscillation/200)*window;
 		ofVec2f p = sine + a + diff * d;
-		if(f>0) linePoints.push_back(lastPoint);
-		linePoints.push_back(p);
+		if(f>0) {
+			linePoints.push_back(lastPoint);
+			linePoints.push_back(p);
+		}
 		lastPoint = p;
 //		glVertex2f(p.x, p.y);
 		i++;
