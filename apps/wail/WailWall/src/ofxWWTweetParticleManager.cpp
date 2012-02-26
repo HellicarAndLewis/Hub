@@ -495,6 +495,8 @@ void ofxWWTweetParticleManager::renderTweets(){
 
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	ofPopStyle();
+	ofSetHexColor(0xFFFFFF);
+	
 }
 
 void ofxWWTweetParticleManager::renderSearchTerms(){	
