@@ -23,4 +23,8 @@
         <name>Always on</name>
         <value>1</value>
     </Toggle_Always_on>
+    <SliderFloat_caustic_halo_radius>
+        <name>caustic halo radius</name>
+        <value>200.000000</value>
+    </SliderFloat_caustic_halo_radius>
 </controls>

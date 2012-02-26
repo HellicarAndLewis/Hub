@@ -59,6 +59,7 @@ void testApp::setup(){
 	renderer.blobs = &blobs;
 	cout << "setting up renderer" << endl;
 	renderer.setup(screenManager.sourceRect.width, screenManager.sourceRect.height);	
+
 	renderer.setupGui();
 
 	//webGui.addPage("Touch size scaling");
@@ -83,6 +84,8 @@ void testApp::setup(){
 	
 	screen_w = screen_w / 4;
 	screen_h = screen_h / 4;
+	
+	//printf("SCREEN W: %d, SCREEN_H: %d\n", screen_w, screen_h);
 	//printf("================================= %d %d\n", renderer.getFbo().getWidth(), renderer.getFbo().getHeight());
 	int size = screen_w * screen_h * 3;
 	glGenBuffers(1,&pbo);  eglGetError();

@@ -11,6 +11,7 @@ ofImage* ofxWWTweetParticle::highlightImage = NULL;
 
 
 ofxWWTweetParticle::ofxWWTweetParticle(){
+	boundingRect = ofRectangle(0,0,0,0);
 	delete_id = 0;
 	whichImage = ofRandom(0, 1);
 	if(whichImage<0.5) whichImage = 0;

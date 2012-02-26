@@ -44,17 +44,21 @@
     <Toggle_Monday>
         <name>Monday</name>
         <value>0</value>
-        <name>Monday</name>
-        <value>0</value>
-        <name>Monday</name>
-        <value>0</value>
-        <name>Monday</name>
-        <value>0</value>
-        <name>Monday</name>
-        <value>0</value>
     </Toggle_Monday>
-    <Toggle_Monday></Toggle_Monday>
-    <Toggle_Monday></Toggle_Monday>
-    <Toggle_Monday></Toggle_Monday>
-    <Toggle_Monday></Toggle_Monday>
+    <Toggle_Tuesday>
+        <name>Tuesday</name>
+        <value>0</value>
+    </Toggle_Tuesday>
+    <Toggle_Wednesday>
+        <name>Wednesday</name>
+        <value>0</value>
+    </Toggle_Wednesday>
+    <Toggle_Thursday>
+        <name>Thursday</name>
+        <value>0</value>
+    </Toggle_Thursday>
+    <Toggle_Friday>
+        <name>Friday</name>
+        <value>0</value>
+    </Toggle_Friday>
 </controls>
