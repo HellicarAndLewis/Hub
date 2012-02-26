@@ -36,7 +36,9 @@ function createControl(data, parentId) {
 	if(data.type=="Content") return;
 	try {
 		eval('new '+data.type+'(data).render($("#'+parentId+'"));');
-	} catch(e) {}
+	} catch(e) {
+		alert(data.type + " type not found - " + e);
+	}
 }
 
 
@@ -288,6 +290,40 @@ var ColorPicker = Control.extend({
 		else vals[3] = valX;
 		
 		this.value = vals[0]+","+vals[1]+","+vals[2]+","+vals[3];
+	},
+	mouseDragged: 	function(x, y) {
+		this.mousePressed(x,y);
+	}
+});
+
+var HexColorPicker = Control.extend({
+	
+	getControl: function() {
+		return '<div class="rHandle"></div><div class="gHandle"></div><div class="bHandle"></div></div>';
+	},
+	update: function() {
+		var vals = this.value.split(",");
+		
+		$("#"+this.id + " .rHandle").css("width", (parseFloat(vals[0])*this.width/255.0) + "px");
+		$("#"+this.id + " .gHandle").css("width", (parseFloat(vals[1])*this.width/255.0) + "px");
+		$("#"+this.id + " .bHandle").css("width", (parseFloat(vals[2])*this.width/255.0) + "px");
+	},
+	
+	mousePressed: 	function(x, y) {
+		var valX = x / this.width;
+
+
+		var valY = y / this.height;
+		
+		var vals = this.value.split(",");
+		
+		if(valY<0.33) vals[0] = valX*255;
+		else if(valY<0.667) vals[1] = valX*255;
+		else vals[2] = valX*255;
+
+
+		
+		this.value = parseInt(vals[0])+","+parseInt(vals[1])+","+parseInt(vals[2]);
 	},
 	mouseDragged: 	function(x, y) {
 		this.mousePressed(x,y);
