@@ -49,6 +49,7 @@ class ofxWWRenderer: public KinectTouchListener {
 	bool test_screenshot; // roxlu: testing screenshots
 	
 	Caustics caust;
+	ofxWWTweetParticleManager tweets;	
   protected:
 	int targetWidth;
 	int targetHeight;
@@ -83,7 +84,7 @@ class ofxWWRenderer: public KinectTouchListener {
 	
 	//sub objects
 	ofxMPMFluid fluid;
-	ofxWWTweetParticleManager tweets;	
+
 	
 	//for rendering connections
 	ofShader alphaFade;

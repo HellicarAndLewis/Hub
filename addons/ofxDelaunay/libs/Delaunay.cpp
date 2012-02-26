@@ -69,10 +69,13 @@ if(abs(y2-y1) < EPSILON){
 //
 //   qsort(p,nv,sizeof(XYZ),XYZCompare);
 ///////////////////////////////////////////////////////////////////////////////
+#define MAX_TRIS 16384
 
 int Triangulate(int nv, XYZ pxyz[], ITRIANGLE v[], int &ntri){
-  int *complete = NULL;
-  IEDGE *edges = NULL; 
+// hacked this to not use dynamic memory
+  //int *complete = NULL;
+	static IEDGE edges[MAX_TRIS];
+//  IEDGE *edges = NULL; 
   IEDGE *p_EdgeTemp;
   int nedge = 0;
   int trimax, emax = 200;
@@ -85,9 +88,10 @@ int Triangulate(int nv, XYZ pxyz[], ITRIANGLE v[], int &ntri){
 
 /* Allocate memory for the completeness list, flag for each triangle */
   trimax = 4 * nv;
-  complete = new int[trimax];
+	static int complete[MAX_TRIS];
+//  complete = new int[trimax];
 /* Allocate memory for the edge list */
-  edges = new IEDGE[emax];
+ // edges = new IEDGE[emax];
 /*
       Find the maximum and minimum vertex bounds.
       This is to allow calculation of the bounding triangle
@@ -154,7 +158,7 @@ int Triangulate(int nv, XYZ pxyz[], ITRIANGLE v[], int &ntri){
       complete[j] = true;
     if(inside){
 /* Check that we haven't exceeded the edge list size */
-      if(nedge + 3 >= emax){
+     /* if(nedge + 3 >= emax){
         emax += 100;
         p_EdgeTemp = new IEDGE[emax];
         for (int i = 0; i < nedge; i++) { // Fix by John Bowman
@@ -162,7 +166,7 @@ int Triangulate(int nv, XYZ pxyz[], ITRIANGLE v[], int &ntri){
         }
         delete []edges;
         edges = p_EdgeTemp;
-      }
+      }*/
       edges[nedge+0].p1 = v[j].p1;
       edges[nedge+0].p2 = v[j].p2;
       edges[nedge+1].p1 = v[j].p2;
@@ -224,8 +228,8 @@ int Triangulate(int nv, XYZ pxyz[], ITRIANGLE v[], int &ntri){
       i--;
     }
   }
-  delete[] edges;
-  delete[] complete;
+ // delete[] edges;
+  //delete[] complete;
   return 0;
 } 
 

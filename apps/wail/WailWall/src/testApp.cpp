@@ -199,6 +199,7 @@ void testApp::draw(){
 	}*/
 	
 	webGui.draw();
+	renderer.tweets.sharedUserFont.drawString(ofToString(renderer.tweets.tweets.size()) + " particles", 10, ofGetHeight() - 30);
 }
 
 //--------------------------------------------------------------
