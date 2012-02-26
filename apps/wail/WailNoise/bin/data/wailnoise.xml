@@ -6,14 +6,19 @@
     <setting id="Background Resonance" value="0.749999940"></setting>
     <setting id="Min splash depth" value="0.066666670"></setting>
     <setting id="Max splash depth" value="0.446666658"></setting>
-    <setting id="Delay Time Left" value="6832.000000000"></setting>
-    <setting id="Delay Time Right" value="1000.000000000"></setting>
-    <setting id="Feedback Left" value="0.100000001"></setting>
-    <setting id="Feedback Right" value="0.100000001"></setting>
-    <setting id="Mix L" value="0.026666667"></setting>
-    <setting id="Mix R" value="0.033333335"></setting>
     <setting id="Mouse Mode" value="1"></setting>
+    <setting id="Max Low Volume" value="0.846666694"></setting>
+    <setting id="Max High Volume" value="0.680000007"></setting>
+    <setting id="DAMP" value="0.993333340"></setting>
+    <setting id="ROOMSIZE" value="0.726666689"></setting>
+    <setting id="WET" value="0.379999995"></setting>
+    <setting id="DRY" value="0.653333306"></setting>
+    <setting id="WIDTH" value="0.993333340"></setting>
     <setting id="Depth" value=""></setting>
-    <setting id="Depth Lerp" value="0.813866675"></setting>
+    <setting id="Depth Up Lerp" value="0.914133310"></setting>
+    <setting id="Depth Down Lerp" value="0.917800009"></setting>
     <setting id="Disturbance" value=""></setting>
+    <setting id="Disturbance Gain" value="12.273332596"></setting>
+    <setting id="Disturbance Up Lerp" value="0.915419996"></setting>
+    <setting id="Disturbance Down Lerp" value="0.958079994"></setting>
 </settings>
