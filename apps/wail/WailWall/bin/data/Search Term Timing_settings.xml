@@ -13,7 +13,7 @@
     </SliderInt_Search_Font_Size>
     <SliderFloat_Unselected_Term_Min_Alpha>
         <name>Unselected Term Min Alpha</name>
-        <value>0.400000</value>
+        <value>0.900000</value>
     </SliderFloat_Unselected_Term_Min_Alpha>
     <SliderFloat_Selected_Term_Min_Alpha>
         <name>Selected Term Min Alpha</name>

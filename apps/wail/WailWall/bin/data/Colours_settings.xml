@@ -1,15 +1,15 @@
 <controls>
     <HexColorPicker_Surface_Background>
         <name>Surface Background</name>
-        <values_0>7.000000</values_0>
-        <values_1>24.000000</values_1>
-        <values_2>8.000000</values_2>
+        <values_0>10.000000</values_0>
+        <values_1>25.000000</values_1>
+        <values_2>14.000000</values_2>
     </HexColorPicker_Surface_Background>
     <HexColorPicker_Search_Background>
         <name>Search Background</name>
-        <values_0>0.000000</values_0>
-        <values_1>51.000000</values_1>
-        <values_2>78.000000</values_2>
+        <values_0>7.000000</values_0>
+        <values_1>15.000000</values_1>
+        <values_2>3.000000</values_2>
     </HexColorPicker_Search_Background>
     <HexColorPicker_Halo_Surface>
         <name>Halo Surface</name>
@@ -47,24 +47,24 @@
         <values_1>240.000000</values_1>
         <values_2>109.000000</values_2>
     </HexColorPicker_Tweet_Color>
-    <Toggle_Monday>
-        <name>Monday</name>
+    <Toggle_Pruple_Monday>
+        <name>Pruple Monday</name>
         <value>0</value>
-    </Toggle_Monday>
-    <Toggle_Tuesday>
-        <name>Tuesday</name>
+    </Toggle_Pruple_Monday>
+    <Toggle_Bergundy_Tuesday>
+        <name>Bergundy Tuesday</name>
         <value>0</value>
-    </Toggle_Tuesday>
-    <Toggle_Wednesday>
-        <name>Wednesday</name>
+    </Toggle_Bergundy_Tuesday>
+    <Toggle_Blue_Wednesday>
+        <name>Blue Wednesday</name>
         <value>0</value>
-    </Toggle_Wednesday>
-    <Toggle_Thursday>
-        <name>Thursday</name>
+    </Toggle_Blue_Wednesday>
+    <Toggle_Orange_Thursday>
+        <name>Orange Thursday</name>
         <value>0</value>
-    </Toggle_Thursday>
-    <Toggle_Friday>
-        <name>Friday</name>
+    </Toggle_Orange_Thursday>
+    <Toggle_Green_Friday>
+        <name>Green Friday</name>
         <value>0</value>
-    </Toggle_Friday>
+    </Toggle_Green_Friday>
 </controls>
