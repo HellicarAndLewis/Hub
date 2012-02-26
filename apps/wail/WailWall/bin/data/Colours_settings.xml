@@ -41,6 +41,12 @@
         <values_1>255.000000</values_1>
         <values_2>253.000000</values_2>
     </HexColorPicker_Layer_Two_Font_Color>
+    <HexColorPicker_Tweet_Color>
+        <name>Tweet Color</name>
+        <values_0>248.000000</values_0>
+        <values_1>240.000000</values_1>
+        <values_2>109.000000</values_2>
+    </HexColorPicker_Tweet_Color>
     <Toggle_Monday>
         <name>Monday</name>
         <value>0</value>

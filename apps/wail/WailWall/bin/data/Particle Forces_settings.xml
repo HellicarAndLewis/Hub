@@ -5,7 +5,7 @@
     </SliderFloat_Select_repulsion_distance>
     <SliderFloat_Select_repulsion_springyness>
         <name>Select repulsion springyness</name>
-        <value>0.050000</value>
+        <value>0.049901</value>
     </SliderFloat_Select_repulsion_springyness>
     <SliderFloat_Repulsion_between_particles>
         <name>Repulsion between particles</name>

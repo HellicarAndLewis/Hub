@@ -162,6 +162,8 @@ void ofxWWRenderer::setupGui(){
 	webGui.addHexColor("Layer One Font Color", Colours::get(LAYER_1_FONT));
 	webGui.addHexColor("Layer Two Font Color", Colours::get(LAYER_2_FONT));
 	
+	webGui.addHexColor("Tweet Color", tweets.particleHexImageColor);
+	
 	webGui.addToggle("Monday", monday);
 	webGui.addToggle("Tuesday", tuesday);
 	webGui.addToggle("Wednesday", wednesday);
@@ -278,6 +280,7 @@ void ofxWWRenderer::render(){
 	} else {
 
 		glColor4f(1,1,1,1.f - tweets.tweetLayerOpacity);
+		printf("Caustic alpha: %f\n", 1.0 - tweets.tweetLayerOpacity);
 	}
 
 	
@@ -286,7 +289,8 @@ void ofxWWRenderer::render(){
 	searchTermHaloShader.setUniformTexture("tex", caust.getFbo().getTextureReference(0), 0);
 	searchTermHaloShader.setUniform2f("centre", searchTermLocation.x, searchTermLocation.y);
 	searchTermHaloShader.setUniform1f("radius", causticHaloRadius);
-	searchTermHaloShader.setUniform1f("amount", 1);
+	searchTermHaloShader.setUniform1f("amount", 1.0);
+	searchTermHaloShader.setUniform1f("alpha", 1.0 - tweets.tweetLayerOpacity);
 
 	
 

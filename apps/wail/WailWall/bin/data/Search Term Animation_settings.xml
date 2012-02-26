@@ -5,7 +5,7 @@
     </SliderFloat_Wall_Repulsion_Dist>
     <SliderFloat_Search_Repulse_Dist>
         <name>Search Repulse Dist</name>
-        <value>1452.500000</value>
+        <value>1451.000000</value>
     </SliderFloat_Search_Repulse_Dist>
     <SliderFloat_Search_Repulse_Atten>
         <name>Search Repulse Atten</name>
@@ -25,6 +25,6 @@
     </SliderFloat_Search_Deselection_Delay>
     <SliderFloat_searchTermSelectionRadiusPercent>
         <name>searchTermSelectionRadiusPercent</name>
-        <value>0.134150</value>
+        <value>0.134280</value>
     </SliderFloat_searchTermSelectionRadiusPercent>
 </controls>

@@ -122,7 +122,8 @@ void ofxWWTweetParticleManager::setupGui(){
 	webGui.addSlider("Tweet Line Space", tweetLineSpace, 0, 40);
 	//webGui.addSlider("Dot Size", dotSize, 5, 50);
 	webGui.addSlider("Dot Shift", dotShift, -50, 50);
-	webGui.addSlider("Particle scale: ", particleImageScale, 0,1.5);
+	webGui.addSlider("Particle scale", particleImageScale, 0,1.5);
+
 					   
 	webGui.addPage("Search Term Timing");
 	webGui.addSlider("Max Search Terms", searchTermManager.maxSearchTerms, 5, 15);
@@ -174,6 +175,10 @@ void ofxWWTweetParticleManager::setupGui(){
 
 
 void ofxWWTweetParticleManager::update(){
+	ofColor col = ofColor::fromHex(particleHexImageColor);
+
+	particleImageColor.set(col.r/255.0f, col.g/255.0f, col.b/255.0f);
+
 	twitter.update();
 	current_provider->update();
 	
