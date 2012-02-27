@@ -178,12 +178,15 @@ void ofxWWRenderer::setupGui(){
 void ofxWWRenderer::update(){
 	int surface_bg;
 	int search_bg;
+	int at;
+	RGB2HEX(249, 180,15, at);
 	if(monday) {
 		RGB2HEX(49,21,34, surface_bg);
 		RGB2HEX(29,6,21, search_bg);
+		
 		monday = false;
 		
-		Colours::set(AT_SIGN,		0xf9b40f);
+		Colours::set(AT_SIGN,		at);
 		Colours::set(SURFACE_BG,	surface_bg);
 		Colours::set(HALO_SEARCH,	0xe2ded9);
 		Colours::set(HALO_SURFACE,	0xe2ded9);
@@ -194,7 +197,7 @@ void ofxWWRenderer::update(){
 		RGB2HEX(24,1,5, search_bg);
 		tuesday = false;
 		
-		Colours::set(AT_SIGN,		0xf9b40f);
+		Colours::set(AT_SIGN,		at);
 		Colours::set(SURFACE_BG,	surface_bg);
 		Colours::set(HALO_SEARCH,	0xf9b40f);
 		Colours::set(HALO_SURFACE,	0xf9b40f);
@@ -206,7 +209,7 @@ void ofxWWRenderer::update(){
 		RGB2HEX(0,0,0, search_bg);
 		wednesday = false;
 		
-		Colours::set(AT_SIGN,		0xfdf3e4);
+		Colours::set(AT_SIGN,		at);
 		Colours::set(SURFACE_BG,	surface_bg);
 		Colours::set(HALO_SEARCH,	0xfdf3e4);
 		Colours::set(HALO_SURFACE,	0xfdf3e4);
@@ -219,7 +222,7 @@ void ofxWWRenderer::update(){
 		RGB2HEX(72,16,8, search_bg);
 		thursday = false;
 		
-		Colours::set(AT_SIGN,		0x002d56);
+		Colours::set(AT_SIGN,		at);
 		Colours::set(SURFACE_BG,	surface_bg);
 		Colours::set(HALO_SEARCH,	0xFFFFFF);
 		Colours::set(HALO_SURFACE,	0xFFFFFF);
@@ -231,7 +234,7 @@ void ofxWWRenderer::update(){
 		RGB2HEX(7,15,3, search_bg);
 		friday = false;
 		
-		Colours::set(AT_SIGN,		0xe86d1f);
+		Colours::set(AT_SIGN,		at);
 		Colours::set(SURFACE_BG,	surface_bg);
 		Colours::set(HALO_SEARCH,	0xd1c8b3);
 		Colours::set(HALO_SURFACE,	0xd1c8b3);
