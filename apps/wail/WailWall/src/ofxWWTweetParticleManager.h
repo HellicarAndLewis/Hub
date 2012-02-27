@@ -181,8 +181,8 @@ class ofxWWTweetParticleManager : public TweetProviderListener, public SearchLay
 	SelectedForce* selected_force;
 
 	
-	// force GUI vars.
-	
+	// timings for fake hand simulation and taking a screenshot
+	int fake_hand_duration;
   
 protected:
 

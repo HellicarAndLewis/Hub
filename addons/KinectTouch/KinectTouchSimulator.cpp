@@ -18,6 +18,18 @@ void KinectTouchSimulator::reset() {
 	enabled = false;
 	idCounter = 0;
 	touchDownTime = 0;
+	
+	touch.x = 0;
+	touch.y = 0;
+	touch.z = 0;
+	touch.vel.x = 0;
+	touch.vel.y = 0;
+	touch.vel.z = 0;
+	touch.size = 0; 
+	
+	if(listener != NULL) {
+		listener->touchUp(touch);
+	}
 }
 
 void KinectTouchSimulator::setEnabled(bool enabled) {

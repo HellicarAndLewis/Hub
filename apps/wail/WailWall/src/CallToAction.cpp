@@ -33,6 +33,7 @@ void CallToAction::reset() {
 	must_do_something = false;
 	state = 0;
 	do_something_until = 0;
+	is_doing_something = false;
 	
 }
 	

@@ -24,7 +24,7 @@ public:
 
 	void setDoingSomethingForMillis(float millis);
 	bool isDoingSomething();
-
+	
 	void reset();
 	int getState();
 	void setState(int state);
@@ -46,6 +46,7 @@ private:
 inline int CallToAction::getState() {
 	return state;
 }
+
 inline void CallToAction::setState(int s) {
 	state = s;
 }

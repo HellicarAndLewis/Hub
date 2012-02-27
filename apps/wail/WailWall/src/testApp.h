@@ -51,7 +51,7 @@ public:
 	GLuint pbo;
 	int screen_w;
 	int screen_h;
-	bool taking_screenshot;
+
 	bool shouldTakeScreenshot;
 	string screenshotUsername;
 	static void theScreenshotCallback(const string& username, void* user);

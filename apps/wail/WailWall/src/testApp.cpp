@@ -39,7 +39,6 @@ void testApp::setup(){
 	shouldLoadScreens = false;
 	shouldSaveScreens = false; // used?? James??
 	shouldTakeScreenshot = false;
-	taking_screenshot = false;
 	previewScreenLayout = false;
 
 	
@@ -139,13 +138,15 @@ void testApp::draw(){
 	renderer.getScreenshotFbo().end();
 	
 	
+	// Simulate a fake hand over search terms and take a screenshot
+	// ------------------------------------------------------------
 	CallToAction& cta = renderer.getCallToAction();
 	ofxWWSearchTermManager& stm = renderer.getSearchTermManager();
 	switch(cta.getState()) {
 		// default state
 		case 0: {
 			if(cta.mustDoSomething()) {
-				cta.setDoingSomethingForMillis(10000);
+				cta.setDoingSomethingForMillis(renderer.tweets.fake_hand_duration);
 				cta.setState(1);
 			}
 			break;
@@ -158,11 +159,12 @@ void testApp::draw(){
 			else {
 				bool r = stm.getSearchTermForWhichWeNeedToTakeScreenshot(screenshot_search_term);
 				if(r) {
+					float now = ofGetElapsedTimef();
 					float norm_x = (float)screenshot_search_term.pos.x/renderer.tweets.simulationWidth;
 					float norm_y = (float)screenshot_search_term.pos.y/renderer.tweets.simulationHeight;
 					simulator.simulateTouch(
-						norm_x
-						,norm_y
+						norm_x + (cos(now * 1.2) * 0.03)
+						,norm_y + (sin(now * 1.5) * 0.03)
 					);
 				}	
 				else {
@@ -173,45 +175,20 @@ void testApp::draw(){
 			}
 			break;
 		}
+		
 		// after applying "hand" for X-millis....
 		case 2: {
+			
 			stm.setTookScreenshotForSearchTerm(screenshot_search_term);
 			testApp::theScreenshotCallback(screenshot_search_term.user, this); 
+			
 			cta.reset();
-			printf("Ready doing something...\n");
+			simulator.reset();
 			break;
 		}
 		default:break;
 	}
-	/*
-	if(taking_screenshot) {
-		printf("taking a screenshot!\n");
-	}
-	else if(cta.isReadyDoingSomething()) {
-		printf("Read doing something....: %s\n", screenshot_search_term.term.c_str());
-		testApp::theScreenshotCallback(screenshot_search_term.user, this); // roxlu(screenshot_search_term.user, this); // roxlu
-		taking_screenshot = true;
-		cta.reset();
-	}
-	else if(cta.isDoingSomething()) {
-		printf("doing something....\n");
-		
-		// Check if there is a new search term we need to activate:
 
-		bool r = stm.getSearchTermForWhichWeNeedToTakeScreenshot(screenshot_search_term);
-		if(r) {
-			//printf("YES THERE IS A SEARCH TERM TO ACTIVATE\n");
-			//printf("%f, %f, %f, %f\n", st.pos.x, st.pos.y, renderer.tweets.simulationWidth, renderer.tweets.simulationHeight);
-			simulator.simulateTouch((float)screenshot_search_term.pos.x/renderer.tweets.simulationWidth, (float)screenshot_search_term.pos.y/renderer.tweets.simulationHeight);
-		}	
-	}
-	else if(cta.mustDoSomething()) {	
-		cta.setDoingSomethingForMillis(15000);
-		printf("===========> DID SOMETHING!\n");	
-	//	cta.reset();
-	}
-	*/
-	
 
 	if(previewScreenLayout){
 		//draw preview rects
@@ -262,7 +239,6 @@ void testApp::draw(){
 		glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);
 		shouldTakeScreenshot = false;
 		screenshotUsername.clear();
-		printf("TOOK SCREENSHOT---------------------------\n");
 	}
 	
 	/*

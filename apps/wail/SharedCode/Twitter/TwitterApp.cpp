@@ -33,7 +33,7 @@ void TwitterApp::loadSettings() {
 }
 
 void TwitterApp::initTwitter() {
-	bool use_test_account = true;
+	bool use_test_account = false;
 	string token_file;
 	if(!use_test_account) {
 		twitter.setConsumerKey("kyw8bCAWKbkP6e1HMMdAvw");

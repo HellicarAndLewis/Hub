@@ -490,7 +490,6 @@ bool ofxWWSearchTermManager::setTookScreenshotForSearchTerm(ofxWWSearchTerm& ter
 		// same searchterm?
 		if(st.user == term.user && st.term == term.term) {
 			st.took_screenshot = true;
-			printf(">> FLAGGED!\n");
 			return true;
 		}
 		++it;
