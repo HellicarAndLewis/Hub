@@ -106,7 +106,7 @@ void ofxWWRenderer::setup(int width, int height){
 //	cout << "setting up tweets" << endl;
 	tweets.setup(this);
 
-	//callToAction.setup(&tweets);
+	callToAction.setup(&tweets); // rolu
 	// roxlu: test screenshots
 	ofAddListener(ofEvents.keyPressed, this, &ofxWWRenderer::keyPressed);
 	test_screenshot = false;
@@ -176,10 +176,12 @@ void ofxWWRenderer::setupGui(){
 
 #define RGB2HEX(r,g,b,d) {	d = 0; d = r << 16; d |= g << 8; d |= b; }
 void ofxWWRenderer::update(){
+
 	int surface_bg;
 	int search_bg;
 	int at;
 	RGB2HEX(249, 180,15, at);
+	
 	if(monday) {
 		RGB2HEX(49,21,34, surface_bg);
 		RGB2HEX(29,6,21, search_bg);
@@ -240,6 +242,9 @@ void ofxWWRenderer::update(){
 		Colours::set(HALO_SURFACE,	0xd1c8b3);
 		Colours::set(SEARCH_BG,		search_bg);
 	}
+	
+	callToAction.update(); // roxlu
+	
 
 	float maxTouchZ = 0;
 	map<int,KinectTouch>::iterator it;
@@ -328,7 +333,7 @@ void ofxWWRenderer::render(){
 	
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 		
-	//callToAction.draw();
+	//callToAction.draw(); // roxlu
 	
 		
 	float maxTouchRadius = targetHeight*tweets.touchSizeScale;	
@@ -450,7 +455,7 @@ void ofxWWRenderer::touchDown(const KinectTouch &touch) {
 void ofxWWRenderer::touchMoved(const KinectTouch &touch) {
 
 	fluid.applyForce(ofVec2f(touch.x, touch.y), ofVec2f(touch.vel.x, touch.vel.y));
-	//callToAction.justInteracted();
+	callToAction.justInteracted(); // roxlu
 }
 
 void ofxWWRenderer::touchUp(const KinectTouch &touch) {
@@ -466,6 +471,9 @@ ofxWWSearchTermManager& ofxWWRenderer::getSearchTermManager() {
 	return tweets.getSearchTermManager();
 }
 
+CallToAction& ofxWWRenderer::getCallToAction() {
+	return callToAction;
+}
 
 void ofxWWRenderer::stopFluidThread(){
 	fluid.stopThread(true);

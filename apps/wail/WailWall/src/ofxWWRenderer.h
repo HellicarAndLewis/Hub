@@ -42,6 +42,7 @@ class ofxWWRenderer: public KinectTouchListener {
 	ofVec2f searchTermLocation;
 	ofxWWTweetParticleManager& getTweetManager(); // roxlu 02/07
 	ofxWWSearchTermManager& getSearchTermManager();
+	CallToAction& getCallToAction(); // roxlu
 	
 	void stopFluidThread();
 	

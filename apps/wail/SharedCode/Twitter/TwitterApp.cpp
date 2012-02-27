@@ -33,11 +33,20 @@ void TwitterApp::loadSettings() {
 }
 
 void TwitterApp::initTwitter() {
-	// TODO make sure dewarshub key is set
-	twitter.setConsumerKey("kyw8bCAWKbkP6e1HMMdAvw");
-	twitter.setConsumerSecret("PwVuyjLeUdVZbi4ER6yRAo0byF55AIureauV6UhLRw");
+	bool use_test_account = true;
+	string token_file;
+	if(!use_test_account) {
+		twitter.setConsumerKey("kyw8bCAWKbkP6e1HMMdAvw");
+		twitter.setConsumerSecret("PwVuyjLeUdVZbi4ER6yRAo0byF55AIureauV6UhLRw");
+		token_file = ofToDataPath("twitter_dewarshub.txt", true);	
+		
+	}
+	else {
+		twitter.setConsumerKey("e0vURm6xhSYaS0nsS97pQ");
+		twitter.setConsumerSecret("R7HfL0vgy2FvQsnYaPAaPy1P1QokzeaBSLXCyboNYo");
+		token_file = ofToDataPath("twitter_roxlutest.txt", true);
+	}
 	
-	string token_file = ofToDataPath("twitter_dewarshub.txt", true);	
 	if(!twitter.loadTokens(token_file)) {
         string auth_url;
         twitter.requestToken(auth_url);
@@ -235,12 +244,14 @@ void TwitterApp::onTwitterStreamConnected() {
 void TwitterApp::simulateSearch(const string& term) {
 	printf("> simulate search.\n");
 	rtt::Tweet tweet;
-	tweet.setScreenName("roxlu");
+	tweet.setScreenName("roxlutest");
 	tweet.setText("@dewarshub " +term);
 	vector<roxlu::twitter::IEventListener*>& listeners = twitter.getEventListeners();
 	for(int i = 0; i < listeners.size(); ++i) {
 		listeners[i]->onStatusUpdate(tweet);
 	}
+	
+	mentions.simulateSearch(term);
 }	
 
 

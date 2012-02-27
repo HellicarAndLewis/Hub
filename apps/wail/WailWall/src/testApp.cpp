@@ -39,6 +39,7 @@ void testApp::setup(){
 	shouldLoadScreens = false;
 	shouldSaveScreens = false; // used?? James??
 	shouldTakeScreenshot = false;
+	taking_screenshot = false;
 	previewScreenLayout = false;
 
 	
@@ -51,8 +52,8 @@ void testApp::setup(){
 	//JOEL: change this to the triplehead layout for your test
 	//screenSettingsFile = "DisplayLayout_triplehead.xml";
 	//DEV is for testing on smaller screens
-	//screenSettingsFile = "DisplayLayout_dev.xml";
-	screenSettingsFile = "DisplayLayout_bigscreen.xml";
+	screenSettingsFile = "DisplayLayout_dev.xml";
+	//screenSettingsFile = "DisplayLayout_bigscreen.xml";
 	screenManager.loadScreens(screenSettingsFile);
 
 	webGui.addToggle("Show Preview Rects", previewScreenLayout);
@@ -124,10 +125,6 @@ void testApp::theScreenshotCallback(const string& username, void* userdata) {
 }
 
 void testApp::draw(){
-	// roxlu 02/07
-	//ofSetFullscreen(false);
-   // ofColor(255,0,0);
-//	ofCircle(20,20,100);
 	ofBackground(0);
 	ofRectangle renderPreview = screenManager.getRenderPreviewRect();
 	renderer.getFbo().getTextureReference().draw(renderPreview);
@@ -140,6 +137,80 @@ void testApp::draw(){
 	renderer.getScreenshotFbo().begin();
 	renderer.getFbo().draw(0,0,screen_w, screen_h);
 	renderer.getScreenshotFbo().end();
+	
+	
+	CallToAction& cta = renderer.getCallToAction();
+	ofxWWSearchTermManager& stm = renderer.getSearchTermManager();
+	switch(cta.getState()) {
+		// default state
+		case 0: {
+			if(cta.mustDoSomething()) {
+				cta.setDoingSomethingForMillis(10000);
+				cta.setState(1);
+			}
+			break;
+		}
+		// apply fake "hand" for X-millis
+		case 1: {
+			if(!cta.isDoingSomething()) {
+				cta.setState(2);
+			}
+			else {
+				bool r = stm.getSearchTermForWhichWeNeedToTakeScreenshot(screenshot_search_term);
+				if(r) {
+					float norm_x = (float)screenshot_search_term.pos.x/renderer.tweets.simulationWidth;
+					float norm_y = (float)screenshot_search_term.pos.y/renderer.tweets.simulationHeight;
+					simulator.simulateTouch(
+						norm_x
+						,norm_y
+					);
+				}	
+				else {
+					// no searchterms for which we didn't create a screenshot
+					cta.reset();
+					simulator.reset();
+				}
+			}
+			break;
+		}
+		// after applying "hand" for X-millis....
+		case 2: {
+			stm.setTookScreenshotForSearchTerm(screenshot_search_term);
+			testApp::theScreenshotCallback(screenshot_search_term.user, this); 
+			cta.reset();
+			printf("Ready doing something...\n");
+			break;
+		}
+		default:break;
+	}
+	/*
+	if(taking_screenshot) {
+		printf("taking a screenshot!\n");
+	}
+	else if(cta.isReadyDoingSomething()) {
+		printf("Read doing something....: %s\n", screenshot_search_term.term.c_str());
+		testApp::theScreenshotCallback(screenshot_search_term.user, this); // roxlu(screenshot_search_term.user, this); // roxlu
+		taking_screenshot = true;
+		cta.reset();
+	}
+	else if(cta.isDoingSomething()) {
+		printf("doing something....\n");
+		
+		// Check if there is a new search term we need to activate:
+
+		bool r = stm.getSearchTermForWhichWeNeedToTakeScreenshot(screenshot_search_term);
+		if(r) {
+			//printf("YES THERE IS A SEARCH TERM TO ACTIVATE\n");
+			//printf("%f, %f, %f, %f\n", st.pos.x, st.pos.y, renderer.tweets.simulationWidth, renderer.tweets.simulationHeight);
+			simulator.simulateTouch((float)screenshot_search_term.pos.x/renderer.tweets.simulationWidth, (float)screenshot_search_term.pos.y/renderer.tweets.simulationHeight);
+		}	
+	}
+	else if(cta.mustDoSomething()) {	
+		cta.setDoingSomethingForMillis(15000);
+		printf("===========> DID SOMETHING!\n");	
+	//	cta.reset();
+	}
+	*/
 	
 
 	if(previewScreenLayout){
@@ -191,6 +262,7 @@ void testApp::draw(){
 		glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);
 		shouldTakeScreenshot = false;
 		screenshotUsername.clear();
+		printf("TOOK SCREENSHOT---------------------------\n");
 	}
 	
 	/*
@@ -243,7 +315,11 @@ void testApp::keyPressed(int key){
 			webGui.nextPage();
 			break;
 		}
-			
+		case 'q': {
+			renderer.getTweetManager().getTwitterApp().simulateSearch("economy");
+
+			break;
+		}	
 	}
 }
 

@@ -27,6 +27,8 @@ public:
 	void mouseReleased(int x, int y);
 	void setEnabled(bool enabled);
 	bool getEnabled();
+	void simulateTouch(float normX, float normY, float depth = 0.75) ;
+	void reset();
 private:
 	float getTouchZ(float time);
 	float touchDownTime;

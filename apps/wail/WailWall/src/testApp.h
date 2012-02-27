@@ -6,6 +6,7 @@
 #include "ofxWWRenderer.h"
 #include "KinectTouchReceiver.h"
 #include "KinectTouchSimulator.h"
+// gordon, tom
 
 class testApp : public ofBaseApp, public KinectTouchListener {
 
@@ -33,6 +34,7 @@ public:
 	void touchUp(const KinectTouch &touch);
 	KinectTouchSimulator simulator;
 	map<int,KinectTouch> blobs;
+	ofxWWSearchTerm screenshot_search_term;
 	
 	//one for each triplehead output
 	ofxWWScreenManager screenManager;
@@ -49,6 +51,7 @@ public:
 	GLuint pbo;
 	int screen_w;
 	int screen_h;
+	bool taking_screenshot;
 	bool shouldTakeScreenshot;
 	string screenshotUsername;
 	static void theScreenshotCallback(const string& username, void* user);

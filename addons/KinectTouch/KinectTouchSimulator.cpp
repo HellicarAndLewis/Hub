@@ -10,11 +10,16 @@
 
 KinectTouchSimulator::KinectTouchSimulator() {
 	listener = NULL;
+	reset();
+}
+
+void KinectTouchSimulator::reset() {
 	mouseIsDown = false;
 	enabled = false;
 	idCounter = 0;
 	touchDownTime = 0;
 }
+
 void KinectTouchSimulator::setEnabled(bool enabled) {
 	this->enabled = enabled;
 }
@@ -63,7 +68,7 @@ void KinectTouchSimulator::mouseDragged(int x, int y) {
 	touch.vel.z = touch.z - oldTouch.z;
 	touch.size = 0.1;
 	listener->touchMoved(touch);	
-
+	//printf("x: %f, y:%f, depth:%f\n", touch.x, touch.y, touch.z);
 }
 
 void KinectTouchSimulator::mouseReleased(int x, int y) {
@@ -76,4 +81,17 @@ void KinectTouchSimulator::mouseReleased(int x, int y) {
 	touch.z = getTouchZ(ofGetElapsedTimef() - touchDownTime);
 	touch.size = 0.01 + touch.z*0.3;
 	listener->touchUp(touch);
+}
+
+void KinectTouchSimulator::simulateTouch(float normX, float normY, float depth) {
+
+	touch.x = normX;
+	touch.y = normY;
+	touch.z = depth;
+	touch.vel.x = 0;
+	touch.vel.y = 0;
+	touch.vel.z = 0;
+	touch.size = 0.4; 
+	listener->touchMoved(touch);
+	//printf("x: %f, y:%f\n", touch.x, touch.y);
 }

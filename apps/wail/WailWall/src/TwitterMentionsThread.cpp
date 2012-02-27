@@ -134,6 +134,16 @@ void TwitterMentionsThread::threadedFunction() {
 	}
 }
 
+void TwitterMentionsThread::simulateSearch(const string& term) {
+	lock();
+		rtt::Tweet tweet;
+		string t = "@dewarshub " +term;
+		tweet.setText(t);
+		tweet.setScreenName("roxlutest");
+		TwitterMentionSearchTerm twit_search_term = {tweet, "#"+term, false};
+		search_terms.push_back(twit_search_term);
+	unlock();
+}
 
 bool TwitterMentionsThread::getSearchTerms(vector<TwitterMentionSearchTerm>& result) {
 	lock();

@@ -35,13 +35,14 @@ public:
 	// this sets the selected search term and fires events.
 	void setSelectedSearchTerm(ofxWWSearchTerm& searchTerm);
 	bool getSelectedSearchTerm(ofxWWSearchTerm& result);
+	bool getSearchTermForWhichWeNeedToTakeScreenshot(ofxWWSearchTerm& term);
+	bool setTookScreenshotForSearchTerm(ofxWWSearchTerm& term);
 		
 	// search term manager only needs
 	// to know when these events happen
 	// for (de)selection purposes.
 	void touchUp();
 	void touchDown();
-	
 
 	
 	void addSearchLayerListener(SearchLayerListener *listener);
@@ -106,5 +107,6 @@ private:
 	
 	TwitterApp *twitter;
 	queue<ofxWWSearchTerm> incomingSearchTerms;
+	
 };
 

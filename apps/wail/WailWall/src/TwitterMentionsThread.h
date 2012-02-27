@@ -39,6 +39,8 @@ public:
 	
 	bool getSearchTerms(vector<TwitterMentionSearchTerm>& result);
 	
+	void simulateSearch(const string& term);
+	
 	
 private:
 

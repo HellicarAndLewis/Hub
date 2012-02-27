@@ -59,7 +59,7 @@ void ofxWWSearchTermManager::update() {
 		selectedSearchTermIndex = -1;
 	}
 	if(ofGetElapsedTimef() > should_take_picture_on) {
-		screenshot_callback(screenshot_searchterm.user, screenshot_userdata);
+		//screenshot_callback(screenshot_searchterm.user, screenshot_userdata); // roxlu
 		should_take_picture_on = FLT_MAX;
 		
 		// do not store this item in the queue.
@@ -463,3 +463,38 @@ void ofxWWSearchTermManager::setScreenshotCallback(takeScreenshotCallback func, 
 	screenshot_userdata = userdata;
 }
 
+
+bool ofxWWSearchTermManager::getSearchTermForWhichWeNeedToTakeScreenshot(ofxWWSearchTerm& term) {
+	vector<ofxWWSearchTerm>::iterator it = searchTerms.begin();
+	while(it != searchTerms.end()) {
+		if(!(*it).took_screenshot) {
+			term = *it;
+			return true;
+		}
+		++it;
+	}
+	return false;	
+}
+
+bool ofxWWSearchTermManager::setTookScreenshotForSearchTerm(ofxWWSearchTerm& term) {
+	vector<ofxWWSearchTerm>::iterator it = searchTerms.begin();
+	while(it != searchTerms.end()) {
+	
+		// skip terms for which we already created screenshots.
+		ofxWWSearchTerm& st = (*it);
+		if(st.took_screenshot) {
+			++it;
+			continue;
+		}
+		
+		// same searchterm?
+		if(st.user == term.user && st.term == term.term) {
+			st.took_screenshot = true;
+			printf(">> FLAGGED!\n");
+			return true;
+		}
+		++it;
+	};
+	return false;
+
+}
