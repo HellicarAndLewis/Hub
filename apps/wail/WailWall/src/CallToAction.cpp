@@ -29,8 +29,8 @@ void CallToAction::justInteracted() {
 // call this every draw. The method
 // will decide for itself when to draw.
 void CallToAction::draw() {
-
-
+	// Marek commented this out because we don't want a call to action anymore
+/*
 	float fadeInTime = 3;
 	// this is the time since the last interaction
 	float t = ofGetElapsedTimef() - lastInteractionTime - manager->callToActionTime;
@@ -62,5 +62,5 @@ void CallToAction::draw() {
 		float dx = sin(t/7.f) * 300;
 		image.draw(manager->simulationWidth/2 + dx , manager->simulationHeight/2 + dy, image.getWidth()*scale, image.getHeight()*scale);
 	}
-
+*/
 }
