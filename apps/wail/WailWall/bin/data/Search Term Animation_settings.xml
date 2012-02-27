@@ -1,7 +1,7 @@
 <controls>
     <SliderFloat_Wall_Repulsion_Dist>
         <name>Wall Repulsion Dist</name>
-        <value>27.000000</value>
+        <value>585.000000</value>
     </SliderFloat_Wall_Repulsion_Dist>
     <SliderFloat_Search_Repulse_Dist>
         <name>Search Repulse Dist</name>

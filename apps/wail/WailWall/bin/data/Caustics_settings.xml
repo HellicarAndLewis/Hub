@@ -13,11 +13,11 @@
     </SliderFloat_Blend>
     <SliderFloat_Brightness>
         <name>Brightness</name>
-        <value>0.010000</value>
+        <value>0.041950</value>
     </SliderFloat_Brightness>
     <SliderFloat_Oscillation>
         <name>Oscillation</name>
-        <value>5.500000</value>
+        <value>9.500000</value>
     </SliderFloat_Oscillation>
     <Toggle_Always_on>
         <name>Always on</name>
@@ -25,6 +25,6 @@
     </Toggle_Always_on>
     <SliderFloat_caustic_halo_radius>
         <name>caustic halo radius</name>
-        <value>926.000000</value>
+        <value>1503.500000</value>
     </SliderFloat_caustic_halo_radius>
 </controls>

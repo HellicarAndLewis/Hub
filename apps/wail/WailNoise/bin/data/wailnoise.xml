@@ -8,12 +8,12 @@
     <setting id="Max splash depth" value="0.446666658"></setting>
     <setting id="Mouse Mode" value="1"></setting>
     <setting id="Max Low Volume" value="0.473333329"></setting>
-    <setting id="Max High Volume" value="0.266666681"></setting>
-    <setting id="DAMP" value="0.860000014"></setting>
-    <setting id="ROOMSIZE" value="0.886666656"></setting>
-    <setting id="WET" value="0.079999998"></setting>
-    <setting id="DRY" value="0.779999971"></setting>
-    <setting id="WIDTH" value="0.773333311"></setting>
+    <setting id="Max High Volume" value="0.053333335"></setting>
+    <setting id="DAMP" value="0.119999997"></setting>
+    <setting id="ROOMSIZE" value="0.293333322"></setting>
+    <setting id="WET" value="0.046666667"></setting>
+    <setting id="DRY" value="0.526666641"></setting>
+    <setting id="WIDTH" value="0.926666677"></setting>
     <setting id="Depth" value=""></setting>
     <setting id="Depth Up Lerp" value="0.914133310"></setting>
     <setting id="Depth Down Lerp" value="0.917800009"></setting>
