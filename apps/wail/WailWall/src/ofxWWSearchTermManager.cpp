@@ -249,7 +249,7 @@ void ofxWWSearchTermManager::addSearchTerm(const string& user, const string& ter
 	search_term.manager = this;
 	search_term.term = term;
 	search_term.user = user;
-	
+	search_term.took_screenshot = isUsed;
 	if(!isUsed) {
 		printf(">>>>>>>>>>>>>>>>>>>>>>>> %s <<<<<<<<<<<<<<<<<<<<<<<<<<\n", search_term.term.c_str());
 		incomingSearchTerms.push(search_term);
