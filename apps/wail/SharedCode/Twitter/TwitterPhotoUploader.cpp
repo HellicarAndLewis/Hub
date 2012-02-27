@@ -118,7 +118,7 @@ void TwitterPhotoUploader::threadedFunction() {
 		
 		string file_hash = json_string_value(node);
 		string photo_url = URL_TWITTER_UPLOADER +"uploads/"  +created_file;					
-		string message = "@" +username +" check your search result here " +photo_url;
+		string message = "@" +username +" your search has been added to the Dewar's Hub. See here " +photo_url;
 		printf(">>>>>>> %s\n", message.c_str());
 	
 		twitter.statusesUpdate(message);
