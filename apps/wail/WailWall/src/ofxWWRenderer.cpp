@@ -106,7 +106,7 @@ void ofxWWRenderer::setup(int width, int height){
 //	cout << "setting up tweets" << endl;
 	tweets.setup(this);
 
-	callToAction.setup(&tweets);
+	//callToAction.setup(&tweets);
 	// roxlu: test screenshots
 	ofAddListener(ofEvents.keyPressed, this, &ofxWWRenderer::keyPressed);
 	test_screenshot = false;
@@ -328,7 +328,7 @@ void ofxWWRenderer::render(){
 	
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 		
-	callToAction.draw();
+	//callToAction.draw();
 	
 		
 	float maxTouchRadius = targetHeight*tweets.touchSizeScale;	
@@ -450,7 +450,7 @@ void ofxWWRenderer::touchDown(const KinectTouch &touch) {
 void ofxWWRenderer::touchMoved(const KinectTouch &touch) {
 
 	fluid.applyForce(ofVec2f(touch.x, touch.y), ofVec2f(touch.vel.x, touch.vel.y));
-	callToAction.justInteracted();
+	//callToAction.justInteracted();
 }
 
 void ofxWWRenderer::touchUp(const KinectTouch &touch) {
