@@ -118,7 +118,7 @@ void TwitterMentionsThread::threadedFunction() {
 						if(tokens.count() > 0 && tokens[0].length() <= 20) {
 							search_query = "#" +tokens[0];
 							TwitterMentionSearchTerm twit_search_term = {tweet, search_query, is_first_request};
-							search_terms.push_back(twit_search_term);
+                            search_terms.push_back(twit_search_term);
 						}
 						else {
 							printf("[search term invalid] %s\n", search_query.c_str());

@@ -1,33 +1,33 @@
 <controls>
     <HexColorPicker_Surface_Background>
         <name>Surface Background</name>
-        <values_0>8.000000</values_0>
-        <values_1>1.000000</values_1>
-        <values_2>19.000000</values_2>
+        <values_0>49.000000</values_0>
+        <values_1>21.000000</values_1>
+        <values_2>34.000000</values_2>
     </HexColorPicker_Surface_Background>
     <HexColorPicker_Search_Background>
         <name>Search Background</name>
-        <values_0>0.000000</values_0>
-        <values_1>0.000000</values_1>
-        <values_2>0.000000</values_2>
+        <values_0>29.000000</values_0>
+        <values_1>6.000000</values_1>
+        <values_2>21.000000</values_2>
     </HexColorPicker_Search_Background>
     <HexColorPicker_Halo_Surface>
         <name>Halo Surface</name>
-        <values_0>253.000000</values_0>
-        <values_1>243.000000</values_1>
-        <values_2>228.000000</values_2>
+        <values_0>226.000000</values_0>
+        <values_1>222.000000</values_1>
+        <values_2>217.000000</values_2>
     </HexColorPicker_Halo_Surface>
     <HexColorPicker_Halo_Bottom>
         <name>Halo Bottom</name>
-        <values_0>247.000000</values_0>
-        <values_1>247.000000</values_1>
-        <values_2>243.000000</values_2>
+        <values_0>226.000000</values_0>
+        <values_1>222.000000</values_1>
+        <values_2>217.000000</values_2>
     </HexColorPicker_Halo_Bottom>
     <HexColorPicker_At_Sign_Color>
         <name>At Sign Color</name>
-        <values_0>229.000000</values_0>
-        <values_1>179.000000</values_1>
-        <values_2>17.000000</values_2>
+        <values_0>249.000000</values_0>
+        <values_1>180.000000</values_1>
+        <values_2>15.000000</values_2>
     </HexColorPicker_At_Sign_Color>
     <HexColorPicker_Layer_One_Font_Color>
         <name>Layer One Font Color</name>

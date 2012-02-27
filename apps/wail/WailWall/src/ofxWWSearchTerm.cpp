@@ -121,7 +121,6 @@ void ofxWWSearchTerm::draw(){
 		glTranslatef(pos.x, pos.y, 0);
 		glScalef(scaleFactor, scaleFactor, 1);
 		glTranslatef(-searchTermWidth/2, 0, 0);
-		
 		manager->parent->sharedSearchFont.drawString(term, 0, 0);
 	}
 	glPopMatrix();
