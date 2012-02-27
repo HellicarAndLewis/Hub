@@ -141,7 +141,7 @@ void ofxWWTweetParticleManager::setupGui(){
 	
 	
 	webGui.addSlider("Call to action time", callToActionTime, 5, 60);
-	webGui.addSlider("Fake hand duration (millis)", fake_hand_duration, 1000, 15000);
+	webGui.addSlider("Fake hand duration millis", fake_hand_duration, 1000, 15000);
 	
 	
 	webGui.addToggle("Tweet Debug", drawTweetDebug);
