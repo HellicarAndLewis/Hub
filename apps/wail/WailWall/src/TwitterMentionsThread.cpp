@@ -24,7 +24,8 @@ void TwitterMentionsThread::threadedFunction() {
 	vector<rtt::Tweet> queried_mentions;
 	vector<rtt::Tweet> newer_mentions;
 	bool is_first_request = true;
-	
+	pcrecpp::RE hash_regex("#+");
+	pcrecpp::RE search_regex("^@dewarshub (.*)$");
 	while(true) {
 		
 		
@@ -49,6 +50,7 @@ void TwitterMentionsThread::threadedFunction() {
 		// filter out mentions which are newer then previous		
 		for(int i = 0; i < queried_mentions.size(); ++i) {	
 			rtt::Tweet& tw = queried_mentions[i];
+			printf("[raw mention]  %s\n", tw.getText().c_str());
 			if(tw.created_at_timestamp > last_timestamp) {
 				newer_mentions.push_back(tw);
 			}
@@ -111,12 +113,16 @@ void TwitterMentionsThread::threadedFunction() {
 					tweet_text_lower = trim(tweet_text_lower);
 					
 					// Check if it's a correct search term:
-					pcrecpp::RE re("^@dewarshub (.*)$");
-					re.FullMatch(tweet_text_lower, &search_query);
+					search_regex.FullMatch(tweet_text_lower, &search_query);
 					if(search_query.length()) {
+						printf("[filtered mention]: %s\n", search_query.c_str());
 						StringTokenizer tokens(search_query, " ",Poco::StringTokenizer::TOK_IGNORE_EMPTY);
 						if(tokens.count() > 0 && tokens[0].length() <= 20) {
-							search_query = "#" +tokens[0];
+							string s = "@dewarshub search";
+							string token = tokens[0];
+							hash_regex.GlobalReplace("", &token);
+						
+							search_query = "#" +token;
 							TwitterMentionSearchTerm twit_search_term = {tweet, search_query, is_first_request};
                             search_terms.push_back(twit_search_term);
 						}
