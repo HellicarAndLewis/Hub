@@ -117,7 +117,7 @@ void TwitterMentionsThread::threadedFunction() {
 					if(search_query.length()) {
 						printf("[filtered mention]: %s\n", search_query.c_str());
 						StringTokenizer tokens(search_query, " ",Poco::StringTokenizer::TOK_IGNORE_EMPTY);
-						if(tokens.count() > 0 && tokens[0].length() <= 20) {
+						if(tokens.count() > 0 && tokens[0].length() <= 30) {
 							string s = "@dewarshub search";
 							string token = tokens[0];
 							hash_regex.GlobalReplace("", &token);
