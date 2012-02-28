@@ -87,6 +87,7 @@ public:
 	bool setSendQueueItemAsSend(int queueID);
 	bool getNextSendItemFromSendQueue(string& username, string& filename, int& id);
 	
+	int areThereTweetsForSearchTerm(const string& term);
 	
 private:
 	vector<rtt::Tweet> search_results;

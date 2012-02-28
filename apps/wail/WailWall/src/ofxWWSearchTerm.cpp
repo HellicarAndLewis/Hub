@@ -1,12 +1,3 @@
-/*
- *  ofxWWSearchTerm.cpp
- *  WailWall
- *
- *  Created by James George on 1/30/12.
- *  Copyright 2012 __MyCompanyName__. All rights reserved.
- *
- */
-
 #include "ofxWWSearchTerm.h"
 #include "ofxWWTweetParticleManager.h"
 #include "Colours.h"
@@ -86,8 +77,8 @@ void ofxWWSearchTerm::draw(){
 	}
 	
 	p = selection.getValue();
-	
-	
+
+	//printf("P: %f	pointer: %p\n", p, this);
 	float t = timeSpeedVariation * ofGetElapsedTimef()+timeOffset;
 	
 	//TODO center this
@@ -167,7 +158,6 @@ void ofxWWSearchTerm::highlight() {
 
 void ofxWWSearchTerm::warmUp() {
 	selection.warmUp();
-	printf("warm up\n");
 }
 void ofxWWSearchTerm::select() {
 	selection.setTarget(1);

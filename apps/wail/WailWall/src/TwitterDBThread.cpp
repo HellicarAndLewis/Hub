@@ -147,3 +147,10 @@ bool TwitterDBThread::getNextSendItemFromSendQueue(string& username, string& fil
 	unlock();
 	return r;
 }
+
+int TwitterDBThread::areThereTweetsForSearchTerm(const string& term) {
+	lock();
+		int r = db.areThereTweetsForSearchTerm(term);
+	unlock();
+	return r;
+}

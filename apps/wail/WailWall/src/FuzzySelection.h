@@ -27,6 +27,7 @@ public:
 	}
 	
 	void update() {
+		//printf("target: %f value: %f\n", target, value);
 		if(target==value) return;
 		
 		if(target>value) {
@@ -48,6 +49,10 @@ public:
 	
 	float getValue() {
 		return value;
+	}
+	
+	void setValue(float v) {
+		value = v;
 	}
 	
 	void warmUp() {

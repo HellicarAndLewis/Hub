@@ -93,6 +93,7 @@ public:
 	bool getNextSendItemFromSendQueue(string& username, string& filename, int& id);
 	bool retrieveSearchResultsFromThread(vector<rtt::Tweet>& result);
 	void getMoreTweetsMatchingCurrentSearchTerm();
+	int areThereTweetsForSearchTerm(const string& term);
 	
 	void addCustomStreamListener(rt::IEventListener& listener);
 	
@@ -178,6 +179,10 @@ inline bool TwitterApp::getUnusedSearchTerms(vector<TwitterSearchTerm*>& result)
 
 inline bool TwitterApp::setSearchTermAsUsed(const string& user, const string& term) {
 	return search_queue.setSearchTermAsUsed(user, term);
+}
+
+inline int TwitterApp::areThereTweetsForSearchTerm(const string& term) {
+	return db_thread.areThereTweetsForSearchTerm(term);
 }
 
 inline TwitterThreadedImageWriter& TwitterApp::getImageWriter() {

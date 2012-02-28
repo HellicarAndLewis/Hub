@@ -28,12 +28,16 @@ public:
 	void reset();
 	int getState();
 	void setState(int state);
+	
+	float getCompletionPercentage();
 private:
 	// 0 - doing nothing; handling interaction
 	// 1 - doing something for x-millis
 	// 2 - the x-millis are complete.. waiting for a reset.
+	// 3 - 
 	int state; 
 	int do_something_until;
+	int do_something_millis;
 	bool is_doing_something;
 	bool must_do_something; // used for call to action before, now to enable screenshots
 	float lastInteractionTime;

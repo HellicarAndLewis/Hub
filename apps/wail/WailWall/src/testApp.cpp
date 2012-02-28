@@ -40,7 +40,7 @@ void testApp::setup(){
 	shouldSaveScreens = false; // used?? James??
 	shouldTakeScreenshot = false;
 	previewScreenLayout = false;
-
+	does_search_term_has_tweets = -1;
 	
 	// touch stuff
 	touchReceiver.setup(1234);
@@ -51,8 +51,8 @@ void testApp::setup(){
 	//JOEL: change this to the triplehead layout for your test
 	//screenSettingsFile = "DisplayLayout_triplehead.xml";
 	//DEV is for testing on smaller screens
-	//screenSettingsFile = "DisplayLayout_dev.xml";
-	screenSettingsFile = "DisplayLayout_bigscreen.xml";
+	screenSettingsFile = "DisplayLayout_dev.xml";
+	//screenSettingsFile = "DisplayLayout_bigscreen.xml";
 	screenManager.loadScreens(screenSettingsFile);
 
 	webGui.addToggle("Show Preview Rects", previewScreenLayout);
@@ -148,6 +148,7 @@ void testApp::draw(){
 			if(cta.mustDoSomething()) {
 				cta.setDoingSomethingForMillis(renderer.tweets.fake_hand_duration);
 				cta.setState(1);
+				does_search_term_has_tweets = -1;
 			}
 			break;
 		}
@@ -159,13 +160,32 @@ void testApp::draw(){
 			else {
 				bool r = stm.getSearchTermForWhichWeNeedToTakeScreenshot(screenshot_search_term);
 				if(r) {
-					float now = ofGetElapsedTimef();
-					float norm_x = (float)screenshot_search_term.pos.x/renderer.tweets.simulationWidth;
-					float norm_y = (float)screenshot_search_term.pos.y/renderer.tweets.simulationHeight;
-					simulator.simulateTouch(
-						norm_x + (cos(now * 1.2) * 0.03)
-						,norm_y + (sin(now * 1.5) * 0.03)
-					);
+					
+					
+					// Check if we have tweets for term.
+					if(does_search_term_has_tweets == -1) {
+						does_search_term_has_tweets = renderer
+														.tweets
+														.getTwitterApp()
+														.areThereTweetsForSearchTerm(screenshot_search_term.term);
+						
+						// No tweets.
+						if(does_search_term_has_tweets <= 0) {
+							stm.selectSearchTerm(screenshot_search_term.term);
+						}
+					}
+					
+					if(does_search_term_has_tweets > 0) {
+					
+						// Yes tweets.
+						float now = ofGetElapsedTimef();
+						float norm_x = (float)screenshot_search_term.pos.x/renderer.tweets.simulationWidth;
+						float norm_y = (float)screenshot_search_term.pos.y/renderer.tweets.simulationHeight;
+						simulator.simulateTouch(
+							norm_x + (cos(now * 1.2) * 0.03)
+							,norm_y + (sin(now * 1.5) * 0.03)
+						);
+					}
 				}	
 				else {
 					// no searchterms for which we didn't create a screenshot
@@ -181,7 +201,7 @@ void testApp::draw(){
 			
 			stm.setTookScreenshotForSearchTerm(screenshot_search_term);
 			testApp::theScreenshotCallback(screenshot_search_term.user, this); 
-			
+			stm.deselectSearchTerm(screenshot_search_term.term);
 			cta.reset();
 			simulator.reset();
 			break;
