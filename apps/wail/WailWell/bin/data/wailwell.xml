@@ -10,7 +10,7 @@
     <setting id="Water Surface Level" value="0.782524228"></setting>
     <setting id="Maximum Water Depth" value="0.997572780"></setting>
     <setting id="Minimum Blob Size" value="33.000000000"></setting>
-    <setting id="Maximum Blob Size" value="623.000000000"></setting>
+    <setting id="Maximum Blob Size" value="486.000000000"></setting>
     <setting id="Blob XY Smoothing" value="0.786407769"></setting>
     <setting id="Blob Z Smoothing" value="0.888349533"></setting>
     <setting id="Blob x top frustrum factor" value="4.466019630"></setting>

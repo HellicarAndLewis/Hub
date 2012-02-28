@@ -13,19 +13,19 @@
     </SliderInt_Search_Font_Size>
     <SliderFloat_Unselected_Term_Min_Alpha>
         <name>Unselected Term Min Alpha</name>
-        <value>0.224000</value>
+        <value>0.240000</value>
     </SliderFloat_Unselected_Term_Min_Alpha>
     <SliderFloat_Selected_Term_Min_Alpha>
         <name>Selected Term Min Alpha</name>
-        <value>0.995500</value>
+        <value>0.946000</value>
     </SliderFloat_Selected_Term_Min_Alpha>
     <SliderFloat_Call_to_action_time>
         <name>Call to action time</name>
-        <value>7.750000</value>
+        <value>5.000000</value>
     </SliderFloat_Call_to_action_time>
     <SliderInt_Fake_hand_duration_millis>
         <name>Fake hand duration millis</name>
-        <value>5690</value>
+        <value>7790</value>
     </SliderInt_Fake_hand_duration_millis>
     <Toggle_Tweet_Debug>
         <name>Tweet Debug</name>
