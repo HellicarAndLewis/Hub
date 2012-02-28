@@ -138,7 +138,7 @@ void ofxWWTweetParticle::update(){
 	}
 	
 	// smoothe the clampedSelectionWeight
-	//smoothedSelectionWeight.setTarget(clampedSelectionWeight);
+	smoothedSelectionWeight.setTarget(clampedSelectionWeight);
 	smoothedSelectionWeight.update();
 	
 	//distance attenuation
