@@ -19,6 +19,7 @@ void CallToAction::setup(ofxWWTweetParticleManager *manager) {
 
 void CallToAction::setDoingSomethingForMillis(float millis) {
 	do_something_until = ofGetElapsedTimeMillis() + millis;
+	do_something_millis = millis;
 }
 
 
@@ -27,14 +28,20 @@ bool CallToAction::isDoingSomething() {
 	return do_something_until > ofGetElapsedTimeMillis();
 }
 
+// get current percentage of doing something.
+float CallToAction::getCompletionPercentage() {
+	float diff = MAX(0,do_something_until - ofGetElapsedTimeMillis());
+	float p = 1.0 - (diff/do_something_millis);
+	return p;
+}
+
 // Is called after we "did something" with the call to action.
 void CallToAction::reset() {
 	justInteracted();
 	must_do_something = false;
 	state = 0;
 	do_something_until = 0;
-	is_doing_something = false;
-	
+	is_doing_something = false;	
 }
 	
 // call this when someone interacts, only update when we're not already "doing something"

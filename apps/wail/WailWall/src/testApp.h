@@ -34,7 +34,7 @@ public:
 	void touchUp(const KinectTouch &touch);
 	KinectTouchSimulator simulator;
 	map<int,KinectTouch> blobs;
-	ofxWWSearchTerm screenshot_search_term;
+
 	
 	//one for each triplehead output
 	ofxWWScreenManager screenManager;
@@ -55,7 +55,10 @@ public:
 	bool shouldTakeScreenshot;
 	string screenshotUsername;
 	static void theScreenshotCallback(const string& username, void* user);
+	ofxWWSearchTerm screenshot_search_term;
+	int does_search_term_has_tweets; // > 0 is true
 	void scaleTouchSize(KinectTouch &touch);
+	
 	
 	float inMinTouchSize;
 	float inMaxTouchSize;

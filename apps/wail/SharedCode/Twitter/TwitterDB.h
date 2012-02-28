@@ -23,6 +23,8 @@ public:
 	bool insertSendQueueItem(const string& username, const string& filename, int& newID);
 	bool setSendQueueItemAsSend(int queueID);
 	bool getNextSendItemFromSendQueue(string& username, string& filename, int& id);
+	
+	int areThereTweetsForSearchTerm(const string& term);
 
 private:
 	roxlu::Database db;	

@@ -202,6 +202,34 @@ bool TwitterDB::getTweetsWithSearchTerm(const string& q, time_t olderThan, int h
 	return true;
 }
 
+int TwitterDB::areThereTweetsForSearchTerm(const string& q) {
+	// create where.
+	stringstream where;
+	where << "tweet_texts MATCH '";
+	where << q;
+	where << "' ";
+	
+	// join on FTS table
+	QueryResult qr(db);
+	int start = ofGetElapsedTimeMillis();
+	bool r = db.select("t_id")
+		.from("tweet_texts")
+		.where(where.str())
+		.join("tweets on t_id = id")
+		.limit(1)
+		.execute(qr);
+	
+	if(!r) {
+		printf("Error: cannot execute search query.\n");
+		return false;
+	}
+	
+	qr.next();
+	int id = qr.getInt(0);
+
+	return id;
+}
+
 // Send queue: is queried in a thread which sends messages to twitter users
 bool TwitterDB::insertSendQueueItem(const string& username, const string& filename, int& newID) {
 	bool result = db.insert("send_queue")

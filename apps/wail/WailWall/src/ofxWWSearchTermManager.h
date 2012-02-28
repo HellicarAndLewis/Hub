@@ -37,6 +37,8 @@ public:
 	bool getSelectedSearchTerm(ofxWWSearchTerm& result);
 	bool getSearchTermForWhichWeNeedToTakeScreenshot(ofxWWSearchTerm& term);
 	bool setTookScreenshotForSearchTerm(ofxWWSearchTerm& term);
+	void selectSearchTerm(const string& term);
+	void deselectSearchTerm(const string& term);
 		
 	// search term manager only needs
 	// to know when these events happen

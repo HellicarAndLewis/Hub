@@ -465,15 +465,31 @@ void ofxWWSearchTermManager::setScreenshotCallback(takeScreenshotCallback func, 
 
 
 bool ofxWWSearchTermManager::getSearchTermForWhichWeNeedToTakeScreenshot(ofxWWSearchTerm& term) {
-	vector<ofxWWSearchTerm>::iterator it = searchTerms.begin();
-	while(it != searchTerms.end()) {
-		if(!(*it).took_screenshot) {
-			term = *it;
+	for(int i = 0; i < searchTerms.size(); ++i) {
+		if(!searchTerms[i].took_screenshot) {
+			term = searchTerms[i];
 			return true;
-		}
-		++it;
+		}		
 	}
-	return false;	
+	return false;
+}
+
+void ofxWWSearchTermManager::selectSearchTerm(const string& term) {
+	for(int i = 0; i < searchTerms.size(); ++i) {
+		if(searchTerms[i].term == term) {
+			searchTerms[i].select();
+			return ;
+		}		
+	}
+}
+
+void ofxWWSearchTermManager::deselectSearchTerm(const string& term) {
+	for(int i = 0; i < searchTerms.size(); ++i) {
+		if(searchTerms[i].term == term) {
+			searchTerms[i].deselect();
+			return ;
+		}		
+	}
 }
 
 bool ofxWWSearchTermManager::setTookScreenshotForSearchTerm(ofxWWSearchTerm& term) {
